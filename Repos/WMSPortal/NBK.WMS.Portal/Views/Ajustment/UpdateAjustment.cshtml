@@ -1,0 +1,463 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.AdjustmentViewDto
+@{
+    ViewBag.Title = "编辑损益单";
+}
+
+@Html.Breadcrumb("损益单管理", "/Ajustment/AjustmentMaintain", "编辑损益单")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/dropzone/dropZoneStyles")
+    @Styles.Render("~/plugins/jasnyBootstrapStyles")
+    @Styles.Render("~/plugins/codeEditorStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="UpdateAjustment" class="ibox-content m-b-sm border-bottom">
+
+        <form id="AjustmentForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">损益明细</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.AdjustmentOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    损益类型:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.TypeName </div>
+                        <input type="hidden" id="TypeValue" name="TypeValue" value="@Model.Type" />
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    损益单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.AdjustmentOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    创建时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CreateInfoDisplay</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    仓库:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.WareHouseName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <label class="col-sm-2 control-label" style="text-align:left;">商品明细</label>
+                <div class="col-sm-10"></div>
+                <div class="col-sm-12">
+                    <table id="ajustmentDetails" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="SkuCode">商品编号</th>
+                                <th data-data="SkuName">商品名称</th>
+                                <th data-data="SkuDescr">商品描述</th>
+                                <th data-data="UPC">商品条码</th>
+                                <th data-data="Loc">货位</th>
+                                <th data-data="Lot">批次</th>
+                                <th data-data="UOMCode">单位</th>
+                                <th data-data="AdjustlevelCode">损益级别</th>
+                                <th data-data="DisplayQty">数量</th>
+                                <th data-data="Remark">备注</th>
+                                <th>图片</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="ibox-footer text-right tooltip-demo">
+                @if ((bool)ViewData["IsSaveDisplay"] == true)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnSave"><i class="fa fa-check-square-o"></i> 保存</a>
+                    <a class="btn btn-sm btn-danger" id="btnVoid"><i class="fa fa-check-square-o"></i> 作废</a>
+                }
+
+                <a class="btn btn-white btn-sm" id="btnReturn"><i class="fa fa-times"></i> 返回</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/barcode")
+
+    <script>
+        var UpdateAjustmentModel = {
+            ajustmentModel: {},
+            ajustmentDetailsTable: {},
+            ajustmentDetailsSource: {},
+            adjustmentLevelSource: {},
+            init: function () {
+                var _self = this;
+
+                //var click = function (e) {
+                //    var _td = this;
+                //    var selectIndex = $(_td).parent().index();
+
+                //    $('#ajustmentDetails').off('click', 'tbody td:last-child', click);
+                //    var val = _td.innerText;
+                //    $(_td).text('');
+                //    var textBox = $('<input type="number" style="width:100px;" />').blur(function () {
+                //        var _txt = this;
+
+                //        var re = /^-?\d+$/;
+                //        if (!re.test($(_txt).val()) || $(_txt).val() == 0) {
+                //            msgAlert("损益数量必须必须是非0整数!");
+                //            $(_txt).focus();
+                //            return;
+                //        }
+
+                //        $('#ajustmentDetails').on('click', 'tbody td:last-child', click);
+                //        $(_td).text($(_txt).val());
+
+                //        UpdateAjustmentModel.ajustmentDetailsTable.data()[selectIndex]["Qty"] = $(_td).text();
+
+                //        $(_txt).remove();
+                //    }).val(val);
+                //    $(_td).append(textBox);
+                //    textBox.focus();
+                //};
+
+                //$('#ajustmentDetails').on('click', 'tbody td:last-child', click);
+
+                _self.ajustmentDetailsTable = $('#ajustmentDetails').DataTable({
+                    data: _self.ajustmentDetailsSource,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '删除',
+                            action: function (e, dt, node, config) {
+                                var sysIdList = GetGridMultiselectSysId();
+                                if (sysIdList != null) {
+
+                                    msgConfirm("确定要删除所选的记录吗？", function (isConfirm) {
+                                        if (isConfirm) {
+                                            $.ajax({
+                                                url: "/Ajustment/DeleteAjustmentSkus?sysIdList=" + sysIdList,
+                                                type: "GET",
+                                                success: function (data) {
+                                                    if (data.success) {
+                                                        msgSuccess("删除成功!");
+                                                        location.reload();
+                                                    }
+                                                    else {
+                                                        msgErro(data.message);
+                                                    }
+                                                },
+                                                error: function () {
+                                                    msgErro("操作失败");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        },
+                        {
+                            "targets": 8,
+                            //"width": "15px",
+                            render: function (data, type, full, meta) {
+                                var selection = '<select id="AdjustlevelCode" name="AdjustlevelCode" class="form-control" onchange="UpdateAjustmentModel.adjustmentLevelChange(this)">';
+
+                                _self.adjustmentLevelSource.forEach(function (e, i) {
+                                    if (full.AdjustlevelCode == e.Value) {
+                                        selection += '<option value="' + e.Value + '" selected="selected">' + e.Text + '</option>';
+                                    }
+                                    else {
+                                        selection += '<option value="' + e.Value + '">' + e.Text + '</option>';
+                                    }
+                                });
+
+                                selection += '</select>';
+                                return selection;
+                            }
+                        },
+                        {
+                            "targets": 9,
+                            //"width": "15px",
+                            render: function (data, type, full, meta) {
+                                if ($("#TypeValue").val() != '10') {
+                                    return '<input type="text" style="width:100px;" value="' + full.DisplayQty + '"  disabled="disabled"/>';
+                                }
+                                else {
+                                    return '<input type="number" style="width:100px;" value="' + full.DisplayQty + '" onblur="UpdateAjustmentModel.qtyBlur(this)"/>';
+                                }
+                            }
+                        },
+        {
+            "targets": 10,
+            render: function (data, type, full, meta) {
+                return '<input style="width:200px;" value="' + full.Remark + '" onblur="UpdateAjustmentModel.remarkBlur(this)" />';
+            }
+        },
+        {
+            "targets": 11,
+            "width": "20%",
+            render: function (data, type, full, meta) {
+                if (full.PictureDtoList != null && full.PictureDtoList.length > 0) {
+                    var spans = new Array();
+                    for (var i in full.PictureDtoList) {
+                        spans.push('<span style="margin-left:5px;" class="fileinput-filename" Name="' + full.PictureDtoList[i].Name + '" Url="' + full.PictureDtoList[i].Url + '" Size="' + full.PictureDtoList[i].Size + '" Suffix="' + full.PictureDtoList[i].Suffix + '"><a href="' + full.PictureDtoList[i].ShowUrl + '"  target="_blank">' + full.PictureDtoList[i].Name + '</a></span><a class="close" data-dismiss="fileinput" style="float: none" onclick="RemovePiciture(this);">&times;</a>');
+                    }
+                    return '<div class="fileinput fileinput-new" data-provides="fileinput"><span class="btn btn-default btn-file"><span class="fileinput-new">选择图片</span><input type="file" id="file_' + full.SysId + '" onchange="UploadImage(this);"></span><div class="pictures">' + spans.join('') + '</div></div>';
+                } else {
+                    return '<div class="fileinput fileinput-new" data-provides="fileinput"><span class="btn btn-default btn-file"><span class="fileinput-new">选择图片</span><input type="file" id="file_' + full.SysId + '" onchange="UploadImage(this);"></span><div class="pictures"></div></div>';
+                }
+            }
+        }
+                    ],
+                    "bServerSide": false,
+                    "bProcessing": true,
+                    "bPaginate": false, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $.ajax({
+                    url: "@Url.Action("GetAdjustmentLevelSysCode", "Ajustment")",
+                    type: "get",
+                    success: function (data) {
+                        _self.adjustmentLevelSource = data.adjustmentLevelList;
+
+                        //初始化明细列表
+                        _self.ajustmentModel = JSON.parse('@Html.Raw(Json.Encode(Model))');
+                        UpdateAjustmentModel.ajustmentDetailsTable.rows.add(_self.ajustmentModel.AdjustmentDetailList).draw();
+                    }
+                });
+
+                var flag = false;
+
+                $("#btnSave").bind("click", function () {
+                    saveLoading('show');
+                    if (flag) {
+                        return;
+                    }
+                    flag = true;
+                    var adjustmentDetailList = UpdateAjustmentModel.getAdjustmentDetailSource();
+                    var requestData = {
+                        SysId: UpdateAjustmentModel.ajustmentModel.SysId,
+                        AdjustmentDetailList: adjustmentDetailList
+                    };
+
+                    $.ajax({
+                        url: "@Url.Action("UpdateAjustmentService", "Ajustment")",
+                        data: requestData,
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            flag = false;
+                            saveLoading();
+                            if (data.success) {
+                                msgSuccess("保存成功!");
+                                UpdateAjustmentModel.backParentPage();
+                            }
+                            else {
+                                msgErro(data.message);
+                            }
+                        },
+                        error: function () {
+                            flag = false;
+                            saveLoading();
+                            msgErro("操作失败！");
+                        }
+                    });
+
+                });
+
+                $("#btnReturn").bind("click", function () {
+                    UpdateAjustmentModel.backParentPage();
+                });
+
+                $("#btnVoid").click(function () {
+                    var request = {
+                        SysId: '@Model.SysId'
+                    };
+
+                    $.ajax({
+                        url: "@Url.Action("Void", "Ajustment")",
+                        data: request,
+                        type: "post",
+                        success: function (data) {
+                            if (data.success) {
+                                msgSuccess("作废成功!");
+                                UpdateAjustmentModel.backParentPage();
+                            }
+                            else {
+                                msgErro(data.message);
+                            }
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+
+                });
+            },
+            qtyBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+                if ($(obj).val() == 0) {
+                    $(obj).val('1');
+                    return;
+                }
+                UpdateAjustmentModel.ajustmentDetailsTable.data()[selectIndex]["DisplayQty"] = $(obj).val();
+            },
+            adjustmentLevelChange: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                UpdateAjustmentModel.ajustmentDetailsTable.data()[selectIndex]["AdjustlevelCode"] = $(obj).val();
+            },
+            remarkBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                UpdateAjustmentModel.ajustmentDetailsTable.data()[selectIndex]["Remark"] = $(obj).val();
+            },
+            getAdjustmentDetailSource: function () {
+                var adjustmentDetailList = [];
+                var ajustmentDetaildata = UpdateAjustmentModel.ajustmentDetailsTable.data();
+
+                for (var i = 0; i < ajustmentDetaildata.length; i++) {
+                    var pictures = [];
+                    $("#file_" + ajustmentDetaildata[i].SysId).parent().parent().children(".pictures").children(".fileinput-filename").each(function () {
+                        var picture = {
+                            Name: $(this).attr("Name"),
+                            Url: $(this).attr("Url"),
+                            Size: $(this).attr("Size"),
+                            Suffix: $(this).attr("Suffix")
+                        };
+                        pictures.push(picture);
+                    });
+                    ajustmentDetaildata[i].PictureDtoList = pictures;
+                    adjustmentDetailList.push(ajustmentDetaildata[i]);
+                }
+
+                return adjustmentDetailList;
+            },
+            backParentPage: function () {
+                window.location.href = '@Url.Action("AjustmentMaintain", "Ajustment")'
+            }
+        }
+
+        $(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+            UpdateAjustmentModel.init();
+
+        })
+
+        function UploadImage(obj) {
+            var _this = $(obj);
+            var pictures = $(obj).parent().parent().children(".pictures");
+            if (pictures.children(".fileinput-filename").length >= 3) {
+                msgErro("最多上传3张图片！");
+                return false;
+            }
+            saveLoading('show');
+            var formData = new FormData();
+            formData.append("file", $(obj)[0].files[0]);
+            $.ajax({
+                url: "@Url.Action("UploadImage", "Ajustment")",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    saveLoading('hide');
+                    _this.val('');
+                    if (data.Success) {
+                        msgSuccess("上传成功！");
+                        pictures.append('<span style="margin-left:5px;max-width:100px" title="' + data.Name + '" class="fileinput-filename" Name="' + data.Name + '" Url="' + data.Url + '" Size="' + data.Size + '" Suffix="' + data.Suffix + '"><a href="' + data.ShowUrl + '"  target="_blank">' + data.Name + '</a></span><a class="close" data-dismiss="fileinput" style="float: none" onclick="RemovePiciture(this);">&times;</a>');
+                    }
+                    else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function (data) {
+                    saveLoading('hide');
+                    _this.val('');
+                    msgErro("上传失败！");
+                }
+            });
+        }
+
+        function RemovePiciture(obj) {
+            $(obj).prev().remove();
+            $(obj).remove();
+        }
+    </script>
+}

@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+    <div class="page-group">
+        <div id="page-home-index" class="page page-current">
+
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back" href="../../Home.html">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">扫描出库</h1>
+            </header>
+
+            <div class="row page-content content">
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+
+                        <div class="col-xs-12" onclick="$.router.load('../Pick/OutboundList.html');">
+                            <div class="widget style1 yellow-bg">
+                                <div class="row">
+                                    <div class="col-xs-12 text-right">
+                                        <span> pick </span>
+                                        <h2 class="font-bold">拣货</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="../Pick/PickingList.html">
+                            <div class="col-xs-12">
+                                <div class="widget style1 lazur-bg" style="background-color:#b0ad63">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-right">
+                                            <span> containerpicking </span>
+                                            <h2 class="font-bold">容器拣货</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="ScanVanning.html">
+                            <div class="col-xs-12">
+                                <div class="widget style1 blue-bg">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-right">
+                                            <span> ScanVanning </span>
+                                            <h2 class="font-bold">箱号发货</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="ScanExpressOrder.html">
+                            <div class="col-xs-12">
+                                <div class="widget style1 lazur-bg">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-right">
+                                            <span> ScanExpressOrder </span>
+                                            <h2 class="font-bold">快递单号发货</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!--<a href="QuickDelivery.html">
+                            <div class="col-xs-12">
+                                <div class="widget style1 lazur-bg" style="background-color:#3db666">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-right">
+                                            <span> QuickDelivery </span>
+                                            <h2 class="font-bold">快速发货</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>-->
+
+                        <div class="col-xs-12" onclick="$.router.load('Review/OutboundReview.html');">
+                            <div class="widget style1 navy-bg" style="background-color:#b27389">
+                                <div class="row">
+                                    <div class="col-xs-12 text-right">
+                                        <span> OutboundReview </span>
+                                        <h2 class="font-bold">复核出库</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="OutboundReview.html">
+                            <div class="col-xs-12">
+                                <div class="widget style1 navy-bg">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-right">
+                                            <span> OutboundReview </span>
+                                            <h2 class="font-bold">整件复核</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="TransferOrderReview.html">
+                            <div class="col-xs-12">
+                                <div class="widget style1 navy-bg" style="background-color:#6fa0c1">
+                                    <div class="row">
+                                        <div class="col-xs-12 text-right">
+                                            <span> ScatteredReview </span>
+                                            <h2 class="font-bold">散件复核</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

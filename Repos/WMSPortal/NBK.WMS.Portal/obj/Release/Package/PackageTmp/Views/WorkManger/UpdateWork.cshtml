@@ -1,0 +1,236 @@
+﻿
+@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.WorkDetailDto
+@{
+    ViewBag.Title = "工单明细编辑";
+}
+@Html.Breadcrumb("工单管理", "/WorkManger/Index", "工单明细编辑")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="WorkOrderView" class="ibox-content m-b-sm border-bottom">
+        <form id="PrePackForm" class="form-horizontal">
+            <input type="hidden" value="@Model.SysId" id="WorkSysId" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <h2 style="color: red; text-align: left">工单明细</h2>
+                </label>
+                <div class="col-sm-7">
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divWorkOrder">
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align: right" id="divWorkOrderValue">@Model.WorkOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    工单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.WorkOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    工单状态:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    工单类型:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.WorkTypeName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    指派人:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select id="AppointUserId" name="AppointUserId" class="form-control">
+                                @{
+                                    <option value="">请选择</option>
+                                    foreach (var user in (List<SelectListItem>)ViewBag.UserList)
+                                    {
+                                        if (user.Value == Model.AppointUserId.ToString())
+                                        {
+                                            <option value="@user.Value" selected>@user.Text</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@user.Value">@user.Text</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    来源:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.Source </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    来源单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.DocOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    开始时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.DisplayStartTime </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    结束时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.DisplayEndTime </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    工作时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.DisplayWorkTime </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group   hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    批次:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.Lot </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    来源货位:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.FromLoc </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    目标货位:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ToLoc </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox-footer text-right tooltip-demo">
+
+                <a class="btn btn-sm btn-primary" id="btnSave"><i class="fa fa-check-square-o"></i> 保存</a>
+
+                <a class="btn btn-white btn-sm" id="btnReturn"><i class="fa fa-times"></i> 返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript">
+        $(function () {
+            $("#divWorkOrder").empty().barcode($("#divWorkOrderValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+            $("#btnReturn").on('click', function () {
+                window.location.href = '@Url.Action("Index", "WorkManger")'
+            });
+
+            var flag = false;
+            $("#btnSave").on('click', function () {
+                if (flag) {
+                    return;
+                }
+                flag = true;
+                var appointUserId = $("#AppointUserId").val();
+                var appointUserName = $("#AppointUserId").find("option:selected").text();
+                if (appointUserId == '') {
+                    msgErro("请选择指定人");
+                    return;
+                }
+                var requestData = {
+                    SysId: $("#WorkSysId").val(),
+                    AppointUserId: appointUserId,
+                    AppointUserName: appointUserName
+                };
+
+                $.ajax({
+                    url: "@Url.Action("UpdateWorkInfo", "WorkManger")",
+                    data: requestData,
+                    dataType: "json",
+                    type: "post",
+                    success: function (data) {
+                        flag = false
+                        if (data.Success) {
+                            msgSuccess("保存成功!");
+                            _self.backParentPage();
+                        }
+                        else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function () {
+                        flag = false
+                        msgErro("操作失败！");
+                    }
+                });
+
+            });
+        });
+
+    </script>
+}

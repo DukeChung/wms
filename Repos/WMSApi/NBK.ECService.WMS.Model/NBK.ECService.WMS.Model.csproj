@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4B986AAB-284C-4583-952C-4E9D8F5DD426}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBK.ECService.WMS.Model</RootNamespace>
+    <AssemblyName>NBK.ECService.WMS.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Abp">
+      <HintPath>..\packages\Abp.0.7.1.0\lib\net451\Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="Abp.EntityFramework">
+      <HintPath>..\packages\Abp.EntityFramework.0.7.1.0\lib\net451\Abp.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Abp.Web">
+      <HintPath>..\packages\Abp.Web.0.7.1.0\lib\net451\Abp.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Logging">
+      <HintPath>..\packages\Castle.LoggingFacility.3.3.0\lib\net45\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FortuneLab">
+      <HintPath>..\packages\FortuneLab.1.6.4.13\lib\net451\FortuneLab.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Abp">
+      <HintPath>..\packages\FortuneLab.Abp.1.6.2.1\lib\net451\FortuneLab.Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Abp.EntityFramework">
+      <HintPath>..\packages\FortuneLab.Abp.EntityFramework.1.6.3.0\lib\net451\FortuneLab.Abp.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Authorizations">
+      <HintPath>..\packages\FortuneLab.Authorizations.1.0.1.2\lib\net451\FortuneLab.Authorizations.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.9\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\adjustment.cs" />
+    <Compile Include="Models\adjustmentdetail.cs" />
+    <Compile Include="Models\assembly.cs" />
+    <Compile Include="Models\assemblydetail.cs" />
+    <Compile Include="Models\assemblyrule.cs" />
+    <Compile Include="Models\assemblyskuweight.cs" />
+    <Compile Include="Models\carrier.cs" />
+    <Compile Include="Models\component.cs" />
+    <Compile Include="Models\componentdetail.cs" />
+    <Compile Include="Models\container.cs" />
+    <Compile Include="Models\invlot.cs" />
+    <Compile Include="Models\invlotloclpn.cs" />
+    <Compile Include="Models\invskuloc.cs" />
+    <Compile Include="Models\invtran.cs" />
+    <Compile Include="Models\location.cs" />
+    <Compile Include="Models\lottemplate.cs" />
+    <Compile Include="Models\Mapping\adjustmentdetailMap.cs" />
+    <Compile Include="Models\Mapping\adjustmentMap.cs" />
+    <Compile Include="Models\Mapping\assemblydetailMap.cs" />
+    <Compile Include="Models\Mapping\assemblyMap.cs" />
+    <Compile Include="Models\Mapping\assemblyruleMap.cs" />
+    <Compile Include="Models\Mapping\assemblyskuweightMap.cs" />
+    <Compile Include="Models\Mapping\carrierMap.cs" />
+    <Compile Include="Models\Mapping\componentdetailMap.cs" />
+    <Compile Include="Models\Mapping\componentMap.cs" />
+    <Compile Include="Models\Mapping\containerMap.cs" />
+    <Compile Include="Models\Mapping\invlotloclpnMap.cs" />
+    <Compile Include="Models\Mapping\invlotMap.cs" />
+    <Compile Include="Models\Mapping\invskulocMap.cs" />
+    <Compile Include="Models\Mapping\invtranMap.cs" />
+    <Compile Include="Models\Mapping\locationMap.cs" />
+    <Compile Include="Models\Mapping\lottemplateMap.cs" />
+    <Compile Include="Models\Mapping\menuMap.cs" />
+    <Compile Include="Models\Mapping\nextnumbergenMap.cs" />
+    <Compile Include="Models\Mapping\operationlogMap.cs" />
+    <Compile Include="Models\Mapping\outbounddetailMap.cs" />
+    <Compile Include="Models\Mapping\outboundexceptionMap.cs" />
+    <Compile Include="Models\Mapping\outboundMap.cs" />
+    <Compile Include="Models\Mapping\outboundruleMap.cs" />
+    <Compile Include="Models\Mapping\outboundtransferorderdetailMap.cs" />
+    <Compile Include="Models\Mapping\outboundtransferorderMap.cs" />
+    <Compile Include="Models\Mapping\packMap.cs" />
+    <Compile Include="Models\Mapping\pickdetailMap.cs" />
+    <Compile Include="Models\Mapping\pickingMap.cs" />
+    <Compile Include="Models\Mapping\pickingrecordsMap.cs" />
+    <Compile Include="Models\Mapping\pictureMap.cs" />
+    <Compile Include="Models\Mapping\prebulkpackdetailMap.cs" />
+    <Compile Include="Models\Mapping\prebulkpackMap.cs" />
+    <Compile Include="Models\Mapping\preorderruleMap.cs" />
+    <Compile Include="Models\Mapping\prepackdetailMap.cs" />
+    <Compile Include="Models\Mapping\prepackMap.cs" />
+    <Compile Include="Models\Mapping\prepackrelationMap.cs" />
+    <Compile Include="Models\Mapping\purchasedetailMap.cs" />
+    <Compile Include="Models\Mapping\purchaseextendMap.cs" />
+    <Compile Include="Models\Mapping\purchaseMap.cs" />
+    <Compile Include="Models\Mapping\qualitycontroldetailMap.cs" />
+    <Compile Include="Models\Mapping\qualitycontrolMap.cs" />
+    <Compile Include="Models\Mapping\receiptdatarecordMap.cs" />
+    <Compile Include="Models\Mapping\receiptdetailMap.cs" />
+    <Compile Include="Models\Mapping\receiptMap.cs" />
+    <Compile Include="Models\Mapping\receiptsnMap.cs" />
+    <Compile Include="Models\Mapping\skuborrowdetailMap.cs" />
+    <Compile Include="Models\Mapping\skuborrowMap.cs" />
+    <Compile Include="Models\Mapping\skuclassMap.cs" />
+    <Compile Include="Models\Mapping\skuMap.cs" />
+    <Compile Include="Models\Mapping\stockfrozenMap.cs" />
+    <Compile Include="Models\Mapping\stockmovementMap.cs" />
+    <Compile Include="Models\Mapping\stocktakedetailMap.cs" />
+    <Compile Include="Models\Mapping\stocktakeMap.cs" />
+    <Compile Include="Models\Mapping\stocktransferMap.cs" />
+    <Compile Include="Models\Mapping\syscodedetailMap.cs" />
+    <Compile Include="Models\Mapping\syscodeMap.cs" />
+    <Compile Include="Models\Mapping\transferinventorydetailMap.cs" />
+    <Compile Include="Models\Mapping\transferinventoryMap.cs" />
+    <Compile Include="Models\Mapping\transferinventoryreceiptextendMap.cs" />
+    <Compile Include="Models\Mapping\unitconversiontranMap.cs" />
+    <Compile Include="Models\Mapping\uomMap.cs" />
+    <Compile Include="Models\Mapping\userwarehousemappingMap.cs" />
+    <Compile Include="Models\Mapping\vanningdetailMap.cs" />
+    <Compile Include="Models\Mapping\vanningMap.cs" />
+    <Compile Include="Models\Mapping\vanningpickdetailMap.cs" />
+    <Compile Include="Models\Mapping\vendorMap.cs" />
+    <Compile Include="Models\Mapping\warehouseMap.cs" />
+    <Compile Include="Models\Mapping\workMap.cs" />
+    <Compile Include="Models\Mapping\workuserMap.cs" />
+    <Compile Include="Models\Mapping\workruleMap.cs" />
+    <Compile Include="Models\Mapping\zoneMap.cs" />
+    <Compile Include="Models\menu.cs" />
+    <Compile Include="Models\nextnumbergen.cs" />
+    <Compile Include="Models\operationlog.cs" />
+    <Compile Include="Models\outbound.cs" />
+    <Compile Include="Models\outbounddetail.cs" />
+    <Compile Include="Models\outboundexception.cs" />
+    <Compile Include="Models\outboundrule.cs" />
+    <Compile Include="Models\outboundtransferorder.cs" />
+    <Compile Include="Models\outboundtransferorderdetail.cs" />
+    <Compile Include="Models\pack.cs" />
+    <Compile Include="Models\pickdetail.cs" />
+    <Compile Include="Models\picking.cs" />
+    <Compile Include="Models\pickingrecords.cs" />
+    <Compile Include="Models\picture.cs" />
+    <Compile Include="Models\prebulkpack.cs" />
+    <Compile Include="Models\preorderrule.cs" />
+    <Compile Include="Models\prepack.cs" />
+    <Compile Include="Models\prepackdetail.cs" />
+    <Compile Include="Models\prepackrelation.cs" />
+    <Compile Include="Models\purchase.cs" />
+    <Compile Include="Models\purchasedetail.cs" />
+    <Compile Include="Models\purchaseextend.cs" />
+    <Compile Include="Models\qualitycontrol.cs" />
+    <Compile Include="Models\qualitycontroldetail.cs" />
+    <Compile Include="Models\receipt.cs" />
+    <Compile Include="Models\receiptdatarecord.cs" />
+    <Compile Include="Models\receiptdetail.cs" />
+    <Compile Include="Models\receiptsn.cs" />
+    <Compile Include="Models\sku.cs" />
+    <Compile Include="Models\skuborrow.cs" />
+    <Compile Include="Models\skuborrowdetail.cs" />
+    <Compile Include="Models\skuclass.cs" />
+    <Compile Include="Models\stockfrozen.cs" />
+    <Compile Include="Models\stockmovement.cs" />
+    <Compile Include="Models\stocktake.cs" />
+    <Compile Include="Models\stocktakedetail.cs" />
+    <Compile Include="Models\stocktransfer.cs" />
+    <Compile Include="Models\syscode.cs" />
+    <Compile Include="Models\syscodedetail.cs" />
+    <Compile Include="Models\transferinventory.cs" />
+    <Compile Include="Models\transferinventorydetail.cs" />
+    <Compile Include="Models\transferinventoryreceiptextend.cs" />
+    <Compile Include="Models\unitconversiontran.cs" />
+    <Compile Include="Models\uom.cs" />
+    <Compile Include="Models\userwarehousemapping.cs" />
+    <Compile Include="Models\vanning.cs" />
+    <Compile Include="Models\vanningdetail.cs" />
+    <Compile Include="Models\vanningpickdetail.cs" />
+    <Compile Include="Models\vendor.cs" />
+    <Compile Include="Models\warehouse.cs" />
+    <Compile Include="Models\work.cs" />
+    <Compile Include="Models\workuser.cs" />
+    <Compile Include="Models\workrule.cs" />
+    <Compile Include="Models\zone.cs" />
+    <Compile Include="NBK_WMSContext.cs" />
+    <Compile Include="Models\prebulkpackdetail.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WMSContextModule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

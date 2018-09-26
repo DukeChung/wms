@@ -1,0 +1,219 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "新增容器";
+}
+
+@Html.Breadcrumb("容器管理", "/Container/ContainerMaintain", "新增容器")
+@section Styles {
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="AddContainer" class="ibox-content m-b-sm border-bottom">
+
+        <form id="ContainerForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <label class="col-sm-3 control-label" style="margin-top:5px;">容器名称</label>
+                    <div class="col-sm-9"><input id="ContainerName" name="ContainerName" v-model="ContainerName" type="text" class="form-control required"></div>
+                </div>
+                <div class="col-sm-2">
+                    <label> <input id="IsActive" name="IsActive" type="checkbox" class="i-checks" v-model="IsActive"> 启用</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <label class="col-sm-3 control-label" style="margin-top:5px;">容器描述</label>
+                    <div class="col-sm-9"><input id="ContainerDescr" name="ContainerDescr" v-model="ContainerDescr" type="text" class="form-control required"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <label class="col-sm-3 control-label" style="margin-top:5px;">长</label>
+                    <div class="col-sm-9"><input id="Length" name="Length" v-model="Length" type="number" class="form-control required" onchange="calculateCube()"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <label class="col-sm-3 control-label" style="margin-top:5px;">宽</label>
+                    <div class="col-sm-9"><input id="Width" name="Width" v-model="Width" type="number" class="form-control required" onchange="calculateCube()"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <label class="col-sm-3 control-label" style="margin-top:5px;">高</label>
+                    <div class="col-sm-9"><input id="Height" name="Height" v-model="Height" type="number" class="form-control required" onchange="calculateCube()"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <label class="col-sm-3 control-label" style="margin-top:5px;">体积</label>
+                    <div class="col-sm-9"><input id="Cube" name="Cube" v-model="Cube" type="number" class="form-control required"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <label class="col-sm-3 control-label" style="margin-top:5px;">净重</label>
+                    <div class="col-sm-9"><input id="NetWeight" name="NetWeight" v-model="NetWeight" type="number" class="form-control required"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    @*<label class="col-sm-3 control-label" style="margin-top:5px;">成本价格</label>
+                    <div class="col-sm-9"><input id="CostPrice" name="CostPrice" v-model="CostPrice" type="number" class="form-control required"></div>*@
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    @*<label class="col-sm-3 control-label" style="margin-top:5px;">销售价格</label>
+                    <div class="col-sm-9"><input id="SalePrice" name="SalePrice" v-model="SalePrice" type="number" class="form-control required"></div>*@
+                </div>
+            </div>
+
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-sm btn-primary" id="btnAddContainer" v-on:click="AddContainer"><i class="fa fa-check-square-o"></i> 保存</a>
+                <a class="btn btn-white btn-sm" id="btnReturn"  v-on:click="Return"><i class="fa fa-times"></i> 返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+@Scripts.Render("~/plugins/iCheck")
+
+    <script>
+
+        var AddContainer = {
+            container: {},
+            init: function () {
+                var _self = this;
+
+                $("#ContainerForm").validate({
+                    ignore: [],
+                    rules: {
+                        ContainerName: {
+                            required: true,
+                            maxlength: 32
+                        },
+                        ContainerDescr: {
+                            required: true,
+                            maxlength: 128
+                        },
+                        Length: {
+                            required: true,
+                            maxlength: 6
+                        },
+                        Width: {
+                            required: true,
+                            maxlength: 6
+                        },
+                        Height: {
+                            required: true,
+                            maxlength: 6
+                        },
+                        Cube: {
+                            required: true,
+                            maxlength: 9
+                        },
+                        NetWeight: {
+                            required: true,
+                            maxlength: 6
+                        },
+                        CostPrice: {
+                            required: true,
+                            maxlength: 12
+                        },
+                        SalePrice: {
+                            required: true,
+                            maxlength: 12
+                        },
+                    },
+                    messages: {
+                    }
+                });
+
+                _self.container = new Vue({
+                    el: '#AddContainer',
+                    data: JSON.parse('@Html.Raw(Json.Encode(Model))'),
+                    methods: {
+                        AddContainer: function (event) {
+
+                            if ($("#ContainerForm").valid()) {
+                                $.ajax({
+                                    url: "@Url.Action("AddContainerService", "Container")",
+                                    data: AddContainer.getUISpecialValue(),
+                                    type: "post",
+                                    success: function (data) {
+                                        if (data.success) {
+                                            msgSuccess("添加成功!");
+                                            AddContainer.backParentPage();
+                                        }
+                                        else {
+                                            msgErro(data.message);
+                                        }
+                                    },
+                                    error: function () {
+                                        msgErro("操作失败！");
+                                    }
+                                });
+                            }
+                        },
+                        Return: function (event) {
+                            AddContainer.backParentPage();
+                        }
+                    }
+                });
+            },
+            getUISpecialValue: function () {
+                //注意 icheck 插件的赋值取值 与 vue 不兼容，所以需要单独给vue 的数据源赋值，radio估计也有类似问题
+                $('.i-checks').each(function () {
+                    AddContainer.container.$data[$(this).prop("id")] = $(this).prop("checked");
+                });
+                return AddContainer.container.$data;
+            },
+            backParentPage: function () {
+                window.location.href = '@Url.Action("ContainerMaintain", "Container")'
+            }
+        }
+
+        $(function () {
+          
+            AddContainer.init();
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green'
+            });
+        })
+
+        function calculateCube() {
+            var length = $("#Length").val();
+            var width = $("#Width").val();
+            var height = $("#Height").val();
+            if (!isNaN(length) && !isNaN(width) && !isNaN(height)) {
+                AddContainer.container.Cube = (length * width * height).toFixed(2);
+            } else {
+                AddContainer.container.Cube = "";
+            }
+        }
+
+    </script>
+}

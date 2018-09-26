@@ -1,0 +1,94 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.DTO.System;
+@using NBK.WMS.Portal.Controllers
+@using System.Security.Claims
+@using NBK.AuthServiceUtil
+@using Newtonsoft.Json;
+@using NBK.WMS.Portal.Models
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <ul class="nav" id="side-menu">
+        <li class="nav-header">
+            <div class="dropdown profile-element text-center">
+                <span>
+                    <img id="UserImage" alt="image" class="img-circle" style="width:80px;height:80px;" src="~/Images/wms.png" />
+                </span>
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <span class="clear">
+                        <span class="block m-t-xs">
+                            <strong class="font-bold">
+                                @{
+                                    var loginUserJson = (HttpContext.Current.User.Identity as ClaimsIdentity).Claims.FirstOrDefault(p => p.Type.Equals(SystemDataConst.LoginUser, StringComparison.OrdinalIgnoreCase));
+
+                                    if (loginUserJson == null || string.IsNullOrEmpty(loginUserJson.Value))
+                                    {
+                                        Response.Redirect("/Account/LogOut");
+                                    }
+
+                                    var loginUser = JsonConvert.DeserializeObject<ApplicationUser>(loginUserJson.Value);
+                                    if (loginUser != null)
+                                    {
+                                        @loginUser.WarehouseName;
+                                    }
+                                }
+                            </strong>
+                            <b class="caret"></b>
+                        </span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                    @{
+                        if (loginUser != null && loginUser.WareHouseList != null && loginUser.WareHouseList.Count > 0)
+                        {
+                            foreach (var item in loginUser.WareHouseList)
+                            {
+                                <li><a href="/Home/Index?id=@item.SysId">@item.Name</a></li>
+                            }
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="logo-element">
+                IN+
+            </div>
+        </li>
+
+        @{
+            List<MenuDto> menuList = LoginController.GetSystemMenu(User.Identity.Name);
+            var mainMenuList = menuList.Where(p => p.ParentSysId.HasValue == false).ToList();
+
+            foreach (var mainMenuItem in mainMenuList.OrderBy(p => p.SortSequence))
+            {
+                <li class="@Html.IsSelected(controller: mainMenuItem.GroupMenuController)">
+                    <a href="#"><i class="fa @Html.Raw(mainMenuItem.ICons)"></i> <span class="nav-label">@mainMenuItem.MenuName</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: mainMenuItem.GroupMenuController, cssClass: "in")">
+                        @{
+                            var subMenuList = menuList.Where(p => p.ParentSysId == mainMenuItem.SysId);
+                            if (subMenuList != null)
+                            {
+                                foreach (var subMenuItem in subMenuList.ToList().OrderBy(p => p.SortSequence))
+                                {
+                                    <li class="@Html.IsSelected(controller: subMenuItem.Controller,action: subMenuItem.Action) childMenu"><a href="@Url.Action(subMenuItem.Action, subMenuItem.Controller)">@subMenuItem.MenuName</a></li>
+                                }
+                            }
+                        }
+                    </ul>
+                </li>
+            }
+        }
+    </ul>
+</nav>
+<script>
+    window.onload = function () {
+        var childMenu = document.getElementsByClassName("childMenu");
+        for (var i = 0; i < childMenu.length; i++)
+        {
+            if (childMenu[i].getAttribute('class') == 'active childMenu')
+            {
+                childMenu[i].parentElement.classList.add('in');
+                childMenu[i].parentElement.parentElement.classList.add("active");
+            }
+        }
+    }
+
+</script>

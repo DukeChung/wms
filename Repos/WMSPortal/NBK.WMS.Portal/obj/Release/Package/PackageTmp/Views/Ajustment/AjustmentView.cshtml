@@ -1,0 +1,217 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.AdjustmentViewDto
+
+@{
+    ViewBag.Title = "损益单明细";
+}
+
+@Html.Breadcrumb("损益单管理", "/Ajustment/AjustmentMaintain", "损益单明细")
+
+@section Styles {
+    @Styles.Render("~/plugins/jasnyBootstrapStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="AjustmentView" class="ibox-content m-b-sm border-bottom">
+
+        <form id="AjustmentForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">损益明细</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.AdjustmentOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    损益类型:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.TypeName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    损益单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.AdjustmentOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    来源单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.SourceOrder</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    创建时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CreateInfoDisplay</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    仓库:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.WareHouseName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <label class="col-sm-2 control-label" style="text-align:left;">商品明细</label>
+                <div class="col-sm-10"></div>
+
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>商品编号</th>
+                                <th>商品名称</th>
+                                <th>商品描述</th>
+                                <th>商品条码</th>
+                                <th>单位</th>
+                                <th>货位</th>
+                                <th>批次</th>
+                                <th>托盘</th>
+                                <th>渠道</th>
+                                <th>损益级别</th>
+                                <th>损益数量</th>
+                                <th>备注</th>
+                                <th>图片</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var index = 0;
+                                foreach (var info in Model.AdjustmentDetailList)
+                                {
+                                    index++;
+                                    <tr>
+                                        <td>@index</td>
+                                        <td>@info.SkuCode</td>
+                                        <td>@info.SkuName</td>
+                                        <td>@info.SkuDescr</td>
+                                        <td>@info.UPC</td>
+                                        <td>@info.UOMCode</td>
+                                        <td>@info.Loc</td>
+                                        <td>@info.Lot</td>
+                                        <td>@info.Lpn</td>
+                                        <td>@info.Channel</td>
+                                        <td>@info.AdjustlevelDisplay</td>
+                                        <td>@info.DisplayQty</td>
+                                        <td>@info.Remark</td>
+                                        <td>
+                                            @if (info.PictureDtoList != null && info.PictureDtoList.Count > 0)
+                                            {
+                                                foreach (var item in info.PictureDtoList)
+                                                {
+                                                    <span style="margin-left:5px;" class="fileinput-filename"><a href="@item.ShowUrl" target="_blank">@item.Name</a></span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="ibox-footer text-right tooltip-demo">
+                @if ((bool)ViewData["IsAuditDisplay"])
+                {
+                    <a class="btn btn-sm btn-primary" id="btnAudit"><i class="fa fa-check-square-o"></i> 审核</a>
+                }
+
+                <a class="btn btn-white btn-sm" id="btnReturn"><i class="fa fa-times"></i> 返回</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+            $("#btnReturn").click(function () {
+                backParentPage();
+            });
+
+            $("#btnAudit").click(function () {
+                var request = {
+                    SysId: '@Model.SysId'
+                };
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("Audit", "Ajustment")",
+                    data: request,
+                    type: "post",
+                    success: function (data) {
+                        saveLoading();
+                        if (data.success) {
+                            msgSuccess("审核成功!");
+                            backParentPage();
+                        }
+                        else {
+                            msgErro(data.message);
+                        }
+                    },
+                    error: function () {
+                        saveLoading();
+                        msgErro("操作失败！");
+                    }
+                });
+
+            });
+        });
+
+        var backParentPage = function () {
+            window.location.href = '@Url.Action("AjustmentMaintain", "Ajustment")';
+        };
+
+    </script>
+}

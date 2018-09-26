@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+<body>
+    <div class="page-group">
+        <div id="page-invskuloc-listing" class="page page-current">
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back" href="../Home.html">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">库存查询</h1>
+            </header>
+
+            <div class="row page-content content">
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <h5>商品UPC:</h5>
+                                    <input id="skuUPC" name="skuUPC" class="form-control input-s" placeholder="请输入商品UPC">
+                                </div>
+                                <div class="ibox-content">
+                                    <div><h5>货位:</h5></div>
+                                    <input id="loc" name="loc" class="form-control input-s" placeholder="请输入货位">
+                                </div>
+                                <div class="ibox-content">
+                                    <h4 id="msg" name="msg" class="msg-error"></h4>
+                                </div>
+                                <div class="ibox-content">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th width="45%">商品名称</th>
+                                                <th width="20%">货位</th>
+                                                <th width="15%">数量</th>
+                                                <th width="20%">可用数量</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="InvSkuLocListing"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

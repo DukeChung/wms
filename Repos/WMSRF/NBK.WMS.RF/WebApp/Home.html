@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>
+<body>
+    <div class="page-group">
+        <div id="page-home-index" class="page page-current page-content content">
+
+            <header class="bar bar-nav">
+                <a class="pull-left open-panel" data-panel=".panel-left">
+                    <span class="icon" style="width:80px;"><i class="fa fa-bars pad-l-10"></i></span>
+                </a>
+                <h1 class="title" id="wareHouseName">WMSRF</h1>
+            </header>
+
+            <div class="page-content content">
+                <div class="wrapper wrapper-content animated fadeInRight">
+
+                    <div class="row">
+                        <div class="col-xs-6" onclick="$.router.load('Pages/Inbound/InboundIndex.html');">
+                            <div class="col-xs-12 widget style1 yellow-bg" style="background-color:#1c8b84;">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-sign-in fa-16x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> inbound </span>
+                                    </div>
+                                </div>
+                                <div class="row pad-t-b-5">
+                                    <h2 class="font-bold font-2x">入库</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="$.router.load('Pages/Delivery/ScanIndex.html');">
+                            <div class="col-xs-12 widget style1 red-bg">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-sign-out fa-16x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> outbound </span>
+                                    </div>
+                                </div>
+                                <div class="row pad-t-b-5">
+                                    <h2 class="font-bold font-2x">出库</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6" onclick="$.router.load('Pages/Inventory/InventoryIndex.html');">
+                            <div class="col-xs-12 widget style1 lazur-bg">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-pie-chart fa-16x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> inventory </span>
+                                    </div>
+                                </div>
+                                <div class="row pad-t-b-5">
+                                    <h2 class="font-bold  font-2x">库存</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="$.router.load('Pages/PrePack/PrePackIndex.html');">
+                            <div class="col-xs-12 widget style1 yellow-bg" style="background-color:#f563b2;">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-archive fa-16x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> prepack </span>
+                                    </div>
+                                </div>
+                                <div class="row pad-t-b-5">
+                                    <h2 class="font-bold   font-2x">预包装</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-xs-6" onclick="$.router.load('Pages/Assembly/AssemblyIndex.html');">
+                            <div class="col-xs-12 widget style1 yellow-bg" style="background-color:#b75089;">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-cogs fa-16x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> assembly </span>
+                                    </div>
+                                </div>
+                                <div class="row pad-t-b-5">
+                                    <h2 class="font-bold   font-2x">加工</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="$.router.load('Pages/StockMovement/StockMovementIndex.html');">
+                            <div class="col-xs-12 widget style1 yellow-bg" style="background-color:#7b8b51;">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-retweet fa-16x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> movement </span>
+                                    </div>
+                                </div>
+                                <div class="row pad-t-b-5">
+                                    <h2 class="font-bold   font-2x">库位变更</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6" onclick="$.router.load('Pages/Basics/BasicsIndex.html');">
+                            <div class="col-xs-12 widget style1 blue-bg">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-bar-chart-o fa-16x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> basics </span>
+                                    </div>
+                                </div>
+                                <div class="row pad-t-b-5">
+                                    <h2 class="font-bold   font-2x">基础</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6" onclick="ExitLogin();">
+                            <div class="col-xs-12 widget style1 lazur-bg" style="background-color:#35bb37;">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-close fa-16x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> exit </span>
+                                    </div>
+                                </div>
+                                <div class="row pad-t-b-5">
+                                    <h2 class="font-bold   font-2x">退出登录</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel-overlay"></div>
+        <div class="panel panel-left panel-reveal active" style="display: block;">
+            <div class="list-block mrg-l-r-15 warehouselist"></div>
+            <div class="list-block mrg-l-r-15">
+                <p><a class="close-panel">关闭</a></p>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
+

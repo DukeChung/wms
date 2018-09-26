@@ -1,0 +1,159 @@
+﻿@model WMS.Global.Portal.Models.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html id="extr-page">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>国资商城 | Report</title>
+
+    <link rel="shortcut icon" href="~/content/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="~/content/img/favicon/favicon.ico" type="image/x-icon">
+    @Styles.Render("~/content/smartadmin")
+    @Styles.Render("~/font-awesome/css")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jsencrypt.min.js"></script>
+
+</head>
+
+<body class="gray-bg animated fadeInDown desktop-detected  pace-done">
+    <header id="header">
+        <div id="logo-group" style="line-height:49px;padding-left:15px;width:300px;padding-top: 10px;">
+            <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+                <p style="float: left;font-size: x-large;color: #bd1616;">WMS</p>
+                <p style="float: left;font-size: x-large;color: #100c0c;padding-left:10px">Global Report</p>
+            </a>
+        </div>
+
+    </header>
+
+    <div id="main" role="main">
+        <div id="content" class="container">
+            <div class="row">
+                @{ Html.RenderPartial("_LoginText"); }
+                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+                    <div class="well no-padding">
+                        <div id="login-form" class="smart-form client-form">
+                            <header>
+                                登 录
+                            </header>
+                            <fieldset>
+                                <section>
+                                    <label class="label">用户名</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-user"></i>
+                                        <input type="text" id="LoginName" name="LoginName" value="" placeholder="请输入用户名">
+                                        <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> 请输入用户名</b>
+                                    </label>
+                                </section>
+
+                                <section>
+                                    <label class="label">密  码</label>
+                                    <label class="input">
+                                        <i class="icon-append fa fa-lock"></i>
+                                        <input type="password" id="Password" name="Password" value="" placeholder="请输入密码">
+                                        <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> 请输入密码</b>
+                                    </label>
+                                    <div class="note">
+                                        <i class="fa fa-frown-o"></i> 忘记密码请联系helpdesk
+                                    </div>
+                                </section>
+
+                                <section>
+                                    <div class="validation-summary-errors text-danger" id="msgDisplay" style="display:none;"></div>
+                                </section>
+
+                                <section style="display:none">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="rememberMe" value="true" checked="checked">
+                                        <input type="hidden" name="rememberMe" value="false" />
+                                        <i></i>Stay signed in
+                                    </label>
+                                </section>
+                            </fieldset>
+                            <footer>
+                                <button type="button" id="btnLogin" class="btn btn-primary">
+                                    进入
+                                </button>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="hdnkey" value="MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGsXYGuspXPOoIcBdmLhgMIM+EOE
+        3OwvNcw8FWfYRGeuhvv4ARFgPn8W/MRjyc/LbeceLux2h13/eaure3zPUfzzmvDj
+        fKoTs+uTlH21R/vQF17nZJKw+OJ/xztjILeGzMp2cJj8Yn4khOiuc8yVIZTSJt1O
+        1Q6LSf+S61dD+oLfAgMBAAE=" />
+    <script type="text/javascript">
+        var LoginModel = {
+            init: function () {
+                $("#btnLogin").bind("click", LoginModel.login);
+            },
+            login: function () {
+
+                var loginName = $("#LoginName").val();
+                var psd = $("#Password").val();
+
+                if (loginName == '' || loginName == null) {
+                    LoginModel.displayMsg("请输入用户名");
+                    return false;
+                } if (psd == '' || psd == null) {
+                    LoginModel.displayMsg("请输入密码");
+                    return false;
+                }
+
+                var encrypt = new JSEncrypt();
+                encrypt.setPublicKey($("#hdnkey").val());
+                loginName = encrypt.encrypt(loginName);
+                psd = encrypt.encrypt(psd);
+
+                $('#btnLogin').html('正在进入...');
+                $('#btnLogin').unbind("click");
+                var loginData = {
+                    LoginName: encodeURI(loginName).replace(/\+/g, '%2B'),
+                    Password: encodeURI(psd).replace(/\+/g, '%2B')
+                };
+                $.ajax({
+                    url: "@Url.Action("Login", "Account")" + "?ReturnUrl=" + "@ViewBag.ReturnUrl",
+                    data: loginData,
+                    dataType: "json",
+                    type: "post",
+                    success: function (response) {
+                        if (response.success == true) {
+                            window.location.href = response.returnUrl;
+                        } else {
+                            $('#btnLogin').html('进入');
+                            LoginModel.displayMsg(response.message);
+                        }
+                        $("#btnLogin").bind("click", LoginModel.login);
+                    },
+                    error: function (response) {
+                        $('#btnLogin').html('进入');
+                        alert("服务器异常，请联系support");
+                        $("#btnLogin").bind("click", LoginModel.login);
+                    }
+                });
+            },
+            displayMsg: function (msg) {
+                $("#msgDisplay").html(msg);
+                $("#msgDisplay").show(300)
+                setTimeout(function () { $("#msgDisplay").hide(300); }, 3000);
+
+            }
+        }
+
+        $(function () {
+            LoginModel.init();
+        })
+    </script>
+</body>
+
+</html>

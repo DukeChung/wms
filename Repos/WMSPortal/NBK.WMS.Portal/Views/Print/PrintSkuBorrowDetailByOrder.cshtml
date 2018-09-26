@@ -1,0 +1,94 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.Utility.Enum
+@model NBK.ECService.WMS.DTO.SkuBorrowViewDto
+@{
+    ViewBag.Title = "";
+    Layout = null;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">外借单</H1>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("外借单号", Model.SkuBorrowOrder)
+                @Html.PrintTitle("借出时间", Model.BorrowStartTimeDisplay)
+                @Html.PrintTitle("归还时间", Model.BorrowEndTimeDisplay)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("借出人", Model.BorrowName)
+                @Html.PrintTitle("借出部门", Model.LendingDepartment)
+                @Html.PrintTitle("外部单据号", Model.OtherId)
+
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("SKU个数", Model.SkuBorrowDetailList.Select(p => p.SkuSysId).Distinct().Count().ToString())
+                @Html.PrintTitle("商品总数", Model.SkuBorrowDetailList.Sum(p => p.DisplayQty).ToString("#0.######"))
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("序号")
+                            @Html.PrintTh("商品条码")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("库位")
+                            @Html.PrintTh("借出数量")
+                            @if (Model.Status == (int)SkuBorrowStatus.ReturnAudit)
+                            {
+                               @Html.PrintTh("归还数量")
+                            }
+                            @Html.PrintTh("是否损坏")
+
+                        </tr>
+                        @{
+                            var index = 0;
+                            foreach (var info in Model.SkuBorrowDetailList)
+                            {
+                                index++;
+                                <tr>
+                                    @Html.PrintTd(index.ToString())
+                                    <td style="padding: 8px 0;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;text-align: left;font-family: 宋体;font-size: 12px;">@info.UPC</td>
+                                    <td style="padding: 8px 0;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;text-align: left;font-family: 宋体;font-size: 12px;">@info.SkuName</td>
+                                    <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;text-align: left;font-family: 宋体;font-size: 12px;width:80px;">@info.Loc</td>
+                                    @Html.PrintTd(info.DisplayQty.ToString("#0.######"))
+                                    @if (Model.Status == (int)SkuBorrowStatus.ReturnAudit)
+                                    {
+                                        @Html.PrintTd(info.DisplayReturnQty.ToString("#0.######"))
+                                    }
+                                    <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;text-align: left;font-family: 宋体;font-size: 12px;width:80px;">@info.IsDamageDisplay</td>
+                                </tr>
+                            }
+                        }
+                        <tbody>
+                            <tr>
+                                @Html.PrintTh("")
+                                @Html.PrintTh("")
+                                @Html.PrintTh("")
+                                @Html.PrintTh("打印时间")
+                                @Html.PrintTh(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                                @Html.PrintTh("打印人")
+                                @Html.PrintTh($"{ViewBag.PrintUserName}")
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+

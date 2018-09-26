@@ -1,0 +1,252 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "商品管理";
+}
+
+@Html.Breadcrumb("基础资料管理", "商品管理")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品编号", "SkuCodeSearch")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品名称", "SkuNameSearch")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品描述", "SkuDescrSearch")
+            </div>
+            <div class="col-sm-3">
+                <label class="control-label">是否启用</label>
+                <select id="IsActiveSearch" name="IsActiveSearch" class="form-control">
+                    @{
+                        foreach (var isActive in (List<SelectListItem>)ViewBag.IsActiveList)
+                        {
+                            if (Convert.ToBoolean(isActive.Value))
+                            {
+                                <option value="@isActive.Value" selected>@isActive.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@isActive.Value">@isActive.Text</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("UPC", "UPCSearch")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("外部ID", "OtherIdSearch")
+            </div>
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:23px;float: left; ">查询</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content" style="overflow-x:auto">
+                    <table id="gvSku" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="SkuCode" style="width:100px">商品编号</th>
+                                <th data-data="SkuName" style="width:100px">商品名称</th>
+                                <th data-data="SkuDescr" style="width:100px">描述</th>
+                                <th data-data="UPC" style="width:100px">UPC</th>
+                                <th data-data="RecommendLoc" style="width:100px">推荐库位</th>
+                                <th data-data="OtherId" style="width:100px">外部Id</th>
+                                <th data-data="IsActiveText" style="width:100px">是否启用</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form class="form-horizontal">
+        <div class="modal inmodal fade" id="printSkuModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body" style="max-height:600px;">
+                        <div class="form-group">
+                            <label class="col-sm-12">请输入打印数量:</label>
+                            <div class="col-sm-12">
+                                <input type="number" id="printQty" name="printQty" class="form-control">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-sm btn-primary" id="btnPrint" onclick="PrintSku();"><i class="fa fa-print"></i>打印</a>
+                            <a class="btn btn-white btn-sm" id="btnClose" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/print")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+            table = $('#gvSku').DataTable({
+                "sAjaxSource": "GetSkuList",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "SkuCodeSearch", "value": $("#SkuCodeSearch").val() },
+                        { "name": "SkuNameSearch", "value": $("#SkuNameSearch").val() },
+                        { "name": "SkuDescrSearch", "value": $("#SkuDescrSearch").val() },
+                        { "name": "IsActiveSearch", "value": $("#IsActiveSearch").val() },
+                        { "name": "UPCSearch", "value": $("#UPCSearch").val() },
+                        { "name": "OtherIdSearch", "value": $("#OtherIdSearch").val() }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: '新增',
+                        action: function () {
+                            window.location.href = "/Sku/AddSku";
+                        }
+                    },
+                    {
+                        text: '编辑',
+                        action: function (e, dt, node, config) {
+                            var sysId = GetGridSysId();
+                            if (sysId != null) {
+                                window.location.href = "/Sku/EditSku?sysId=" + sysId;
+                            }
+                        }
+                    },
+                    {
+                        text: '删除',
+                        action: function (e, dt, node, config) {
+                            var sysIds = GetGridMultiselectSysId();
+                            if (sysIds != null) {
+                                msgConfirm("确定要删除所选记录吗？", function (isConfirm) {
+                                    if (isConfirm) {
+                                        $.ajax({
+                                            url: "/Sku/DeleteSku?sysIds=" + sysIds,
+                                            type: "GET",
+                                            success: function (data) {
+                                                if (data.Success) {
+                                                    msgSuccess(data.Message, setTimeout(function () { table.ajax.reload(); }, 100));
+                                                }
+                                                else {
+                                                    msgErro(data.Message);
+                                                }
+                                            },
+                                            error: function (data) {
+                                                msgErro(data.Message);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    {
+                        text: '打印条码',
+                        action: function (e, dt, node, config) {
+                            var check = $("table tbody input:checked");
+                            if (check.length === 0) {
+                                msgErro("请在列表中勾选一项!");
+                                return null;
+                            }
+                            if ($(check[0]).attr("upc") === "null") {
+                                msgErro("选择的商品没有UPC无法进行打印!");
+                                return null;
+                            }
+                            $('#printSkuModal').modal('show');
+                        }
+                    }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": 0,
+                        "width": "15px",
+                        render: function (data, type, full, meta) {
+                            return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" UPC="' + full.UPC + '"/>';
+                        }
+                    }
+                ],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                table.ajax.reload();
+            });
+        });
+
+        //打印条码
+        function PrintSku() {
+            msgConfirm("确定要打印条码吗？", function (isConfirm) {
+                if (isConfirm) {
+                    var check = $("table tbody input:checked");
+                    var printQty = parseInt($("#printQty").val());
+
+                    for (var i = 0; i < check.length; i++) {
+                        if ($(check[i]).attr("UPC").length == 0 || $(check[i]).attr("UPC") == "null") {
+                            msgErro("有商品的条码为空，请检查!");
+                            return;
+                        }
+                    }
+
+                    for (var i = 0; i < check.length; i++) {
+                        for (var j = 0; j < printQty; j++) {
+                            var LODOP = getLodop();
+                            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                            LODOP.SET_PRINT_PAGESIZE(0, 800, 140, "CreateCustomPage");
+
+                            LODOP.ADD_PRINT_BARCODE(10, 15, 140, 40, "128B", $(check[i]).attr("UPC"));
+
+                            j = j + 1;
+                            if (i < check.length) {
+                                LODOP.ADD_PRINT_BARCODE(10, 175, 140, 40, "128B", $(check[i]).attr("UPC"));
+                            }
+                            //LODOP.PREVIEW();
+                            LODOP.PRINT();
+                        }
+                    }
+                    msgAlert("打印成功");
+                }
+            });
+        }
+    </script>
+}

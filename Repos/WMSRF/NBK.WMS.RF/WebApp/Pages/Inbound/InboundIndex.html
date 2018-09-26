@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+    <div class="page-group">
+        <div id="page-home-index" class="page page-current">
+
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back" href="../../Home.html">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">入库</h1>
+            </header>
+
+            <div class="row page-content content">
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+
+                        <div class="col-xs-12" onclick="$.router.load('../Receipt/ReceiptList.html');">
+                            <div class="widget style1 blue-bg">
+                                <div class="row">
+                                    <div class="col-xs-12 text-right">
+                                        <span> receipt </span>
+                                        <h2 class="font-bold">收货</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12" onclick="$.router.load('../Shelves/ShelvesIndex.html');">
+                            <div class="widget style1 lazur-bg">
+                                <div class="row">
+                                    <div class="col-xs-12 text-right">
+                                        <span> shelves </span>
+                                        <h2 class="font-bold">上架</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+

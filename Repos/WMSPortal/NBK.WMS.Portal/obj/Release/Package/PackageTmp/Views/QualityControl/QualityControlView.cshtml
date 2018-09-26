@@ -1,0 +1,639 @@
+﻿@using NBK.ECService.WMS.Utility.Enum
+@using NBK.AuthServiceUtil
+@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.QualityControlDto
+
+@{
+    ViewBag.Title = "质检单详情";
+}
+
+@Html.Breadcrumb("质检单管理", "/QualityControl/QualityControlList", "质检单详情")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <input id="SysId" type="hidden" value="@Model.SysId" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">质检单</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.QCOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed">
+                <div class="col-sm-12">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    质检单号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.QCOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    单据状态:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusText </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    质检类型:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.QCTypeText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    相关单据:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.DocOrder</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    质检人:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.QCUserName</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    质检时间:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.QCDateText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    备注:
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @Model.Descr
+                        </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px;"> </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <label style="margin-left:15px">相关单据明细</label>
+            <div class="ibox-content col-lg-12" style="padding-bottom:0px">
+                <table id="gvDocDetail" class="table table-striped table-bordered table-hover dataTables-example">
+                    <thead>
+                        <tr>
+                            @if (Model.Status == (int)QCStatus.New)
+                            {
+                                <th><input type="checkbox" id="ckbAll" onclick="gvDocDetailCheckAll(this);" /></th>
+                            }
+                            else
+                            {
+                                <th><input type="checkbox" id="ckbAll" onclick="gvDocDetailCheckAll(this);" disabled /></th>
+                            }
+                            <th data-data="SkuSysId"></th>
+                            <th data-data="UOMSysId"></th>
+                            <th data-data="PackSysId"></th>
+                            <th data-data="SkuName" width="40%">商品名称</th>
+                            <th data-data="UPC" width="25%">UPC</th>
+                            <th data-data="UOMCode" width="15%">包装单位</th>
+                            <th data-data="DisplayQty" width="15%">数量</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <label style="margin-left:15px">质检不合格明细</label>
+            <div class="ibox-content col-lg-12" style="padding-bottom:0px">
+                <table id="gvQCDetail" class="table table-striped table-bordered table-hover dataTables-example">
+                    <thead>
+                        <tr>
+                            @if (Model.Status == (int)QCStatus.New)
+                            {
+                                <th><input type="checkbox" id="ckbAll" onclick="gvQCDetailCheckAll(this);" /></th>
+                            }
+                            else
+                            {
+                                <th><input type="checkbox" id="ckbAll" onclick="gvQCDetailCheckAll(this);" checked disabled /></th>
+                            }
+                            <th data-data="SysId"></th>
+                            <th data-data="QualityControlSysId"></th>
+                            <th data-data="SkuSysId"></th>
+                            <th data-data="UOMSysId"></th>
+                            <th data-data="PackSysId"></th>
+                            <th data-data="SkuName" width="25%">商品名称</th>
+                            <th data-data="UPC" width="15%">UPC</th>
+                            <th data-data="UOMCode" width="15%">包装单位</th>
+                            <th data-data="DisplayQty" width="15%">数量</th>
+                            <th data-data="Descr" width="25%">备注</th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="ibox-footer text-right tooltip-demo">
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.QualityControl_View_Edit, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)QCStatus.New)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnSaveQC" onclick="saveQC()"><i class="fa fa-check-square-o"></i> 保存</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-primary" id="btnSaveQC" disabled><i class="fa fa-check-square-o"></i> 保存</a>
+                }
+            }
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.QualityControl_View_Finish, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)QCStatus.New)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnFinish" onclick="finishQC()">质检完成</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-primary" id="btnFinish" disabled>质检完成</a>
+                }
+            }
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.QualityControl_View_CreateAdj, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)QCStatus.Finish)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnCreateAdj" onclick="createAdj()">生成损益</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-primary" id="btnCreateAdj" disabled>生成损益</a>
+                }
+            }
+            <a class="btn btn-white btn-sm" id="btnPrint" onclick="print()"><i class="fa fa-print"></i> 打印质检单</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+    @Scripts.Render("~/plugins/dataTables")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var docDetailTable;
+        var qcDetailTable;
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+            docDetailTable = $('#gvDocDetail').DataTable({
+                "sAjaxSource": "/QualityControl/GetDocDetails",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "QCType", "value": '@Model.QCType' },
+                        { "name": "DocOrder", "value": '@Model.DocOrder' }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    @if (Model.Status == (int)QCStatus.New)
+                    {
+                        <text>
+                        {
+                            text: '添加',
+                            action: function () {
+                                addQCDetail();
+                            }
+                        }
+                        </text>
+                    }
+                ],
+                "columnDefs": [
+                     {
+                         "targets": 0,
+                         "width": "15px",
+                         render: function (data, type, full, meta) {
+                             @if (Model.Status == (int)QCStatus.New)
+                             {
+                                <text>
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                                </text>
+                             }
+                             else
+                             {
+                                <text>
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" disabled />';
+                                </text>
+                             }
+                         }
+                     },
+                     {
+                         "targets": 1,
+                         "visible": false
+                     },
+                     {
+                         "targets": 2,
+                         "visible": false
+                     },
+                     {
+                         "targets": 3,
+                         "visible": false
+                     }
+                ],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+
+            qcDetailTable = $('#gvQCDetail').DataTable({
+                "sAjaxSource": "/QualityControl/GetQCDetails",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "QCSysId", "value": '@Model.SysId' }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    @if (Model.Status == (int)QCStatus.New)
+                    {
+                        <text>
+                        {
+                            text: '删除',
+                            action: function () {
+                                deleteQCDetail();
+                            }
+                        }
+                        </text>
+                    }
+                ],
+                "columnDefs": [
+                     {
+                         "targets": 0,
+                         "width": "15px",
+                         render: function (data, type, full, meta) {
+                             @if (Model.Status == (int)QCStatus.New)
+                             {
+                                 <text>
+                             return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                             </text>
+                             }
+                             else
+                             {
+                                 <text>
+                             return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" checked disabled />';
+                             </text>
+                             }
+                         }
+                     },
+                     {
+                         "targets": 1,
+                         "visible": false
+                     },
+                     {
+                         "targets": 2,
+                         "visible": false
+                     },
+                     {
+                         "targets": 3,
+                         "visible": false
+                     },
+                     {
+                         "targets": 4,
+                         "visible": false
+                     },
+                     {
+                         "targets": 5,
+                         "visible": false
+                     },
+                     {
+                         "targets": 9,
+                         render: function (data, type, full, meta) {
+                             @if (Model.Status == (int)QCStatus.New)
+                             {
+                                <text>
+                                return '<input type="number" style="width:100%" onblur="qtyBlur(this)" min="0.001" value="' + full.DisplayQty + '" />';
+                                </text>
+                             }
+                             else
+                             {
+                                <text>
+                                return '<input type="number" style="width:100%" onblur="qtyBlur(this)" min="0.001" value="' + full.DisplayQty + '" readonly />';
+                                </text>
+                             }
+                         }
+                     }
+                     ,
+                     {
+                         "targets": 10,
+                         render: function (data, type, full, meta) {
+                             @if (Model.Status == (int)QCStatus.New)
+                             {
+                                <text>
+                                return '<input type="text" style="width:100%" onblur="descrBlur(this)" value="' + full.Descr + '" />';
+                                </text>
+                             }
+                             else
+                             {
+                                <text>
+                                return '<input type="text" style="width:100%" onblur="descrBlur(this)" value="' + full.Descr + '" readonly />';
+                                </text>
+                             }
+                         }
+                     }
+                ],
+                "bServerSide": false,
+                "bProcessing": true,
+                "bPaginate": false, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+        });
+
+        function saveQC() {
+            var qcDetails = [];
+            var datas = qcDetailTable.rows().data();
+            var isValid = true;
+            for (var i = 0; i < datas.length; i++) {
+                var data = datas[i];
+                if (data.DisplayQty <= 0) {
+                    msgErro("请输入大于0的数量");
+                    isValid = false;
+                    break;
+                }
+                if (data.Descr == null || data.Descr.trim() == "") {
+                    msgErro("请输入备注");
+                    isValid = false;
+                    break;
+                }
+                var detail = new qcDetail(data.SysId, data.QualityControlSysId, data.SkuSysId, data.UOMSysId, data.PackSysId, data.DisplayQty, data.Descr);
+                qcDetails.push(detail);
+            }
+
+            if (isValid) {
+                msgConfirm("确定要保存质检单吗？", function (isConfirm) {
+                    if (isConfirm) {
+                        saveLoading('show');
+                        $.ajax({
+                            url: "/QualityControl/SaveQualityControl",
+                            type: "POST",
+                            data: { QualityControlSysId: '@Model.SysId', QCDetails: qcDetails },
+                            dataType: "json",
+                            success: function (data) {
+                                setTimeout(function () {
+                                    saveLoading();
+                                    if (data.Success) {
+                                        msgSuccess(data.Message, setTimeout(function () { qcDetailTable.ajax.reload(); }, 100));
+                                    } else {
+                                        msgErro(data.Message);
+                                    }
+                                }, 100);
+                            },
+                            error: function (data) {
+                                saveLoading();
+                                msgErro(data.Message);
+                            }
+                        });
+                    }
+                }, true);
+            }
+        }
+
+        function finishQC() {
+            msgConfirm("确定要质检完成吗？", function (isConfirm) {
+                if (isConfirm) {
+                    saveLoading('show');
+                    $.ajax({
+                        url: "/QualityControl/FinishQualityControl",
+                        type: "POST",
+                        data: { SysId: '@Model.SysId' },
+                        dataType: "json",
+                        success: function (data) {
+                            setTimeout(function () {
+                                saveLoading();
+                                if (data.Success) {
+                                    msgSuccess(data.Message, setTimeout(function () {
+                                        window.location.href = '@Url.Action("QualityControlView", "QualityControl")' + "?sysId=" + '@Model.SysId';
+                                    }, 1000));
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                            }, 100);
+
+                        },
+                        error: function (data) {
+                            saveLoading();
+                            msgErro(data.Message);
+                        }
+                    });
+                }
+            }, true);
+        }
+
+        function createAdj() {
+            var sysIds = GetQCDetailMultiselectSysId();
+            if (sysIds != null) {
+                msgConfirm("确定要生成损益单吗？", function (isConfirm) {
+                    if (isConfirm) {
+                        saveLoading('show');
+                        $.ajax({
+                            url: "/QualityControl/CreateAdjustment?qcOrder=" + '@Model.QCOrder' + "&warehouseSysId=" + '@Model.WareHouseSysId' + "&detailSysIds=" + sysIds,
+                            type: "GET",
+                            success: function (data) {
+                                setTimeout(function () {
+                                    saveLoading();
+                                    if (data.Success) {
+                                        msgSuccess(data.Message);
+                                    } else {
+                                        msgErro(data.Message);
+                                    }
+                                }, 100);
+
+                            },
+                            error: function (data) {
+                                saveLoading();
+                                msgErro(data.Message);
+                            }
+                        });
+                    }
+                }, true);
+            }
+        }
+
+        function qcDetail(sysId, qualityControlSysId, skuSysId, uomSysId, packSysId, displayQty, descr) {
+            this.SysId = sysId;
+            this.QualityControlSysId = qualityControlSysId;
+            this.SkuSysId = skuSysId;
+            this.UOMSysId = uomSysId;
+            this.PackSysId = packSysId;
+            this.DisplayQty = displayQty;
+            this.Descr = descr;
+        }
+
+        function addQCDetail() {
+            var selectedDocDetails = docDetailTable.rows(':has(:checkbox:checked)').data();
+            if (selectedDocDetails.length > 0) {
+                for (var i = 0; i < selectedDocDetails.length; i++) {
+                    var selectedDocDetail = selectedDocDetails[i];
+                    qcDetailTable.rows.add([{
+                        "SysId": null,
+                        "QualityControlSysId": '@Model.SysId',
+                        "SkuSysId": selectedDocDetail.SkuSysId,
+                        "UOMSysId": selectedDocDetail.UOMSysId,
+                        "UOMCode": selectedDocDetail.UOMCode,
+                        "PackSysId": selectedDocDetail.PackSysId,
+                        "DisplayQty": "0",
+                        "SkuName": selectedDocDetail.SkuName,
+                        "UPC": selectedDocDetail.UPC,
+                        "Descr": "",
+                    }]).draw(false);
+                }
+
+                $("#gvDocDetail tbody input[type='checkbox']").each(function () {
+                    this.checked = false;
+                });
+            } else {
+                msgErro("请在列表中勾选一项!");
+                return false;
+            }
+        }
+
+        function deleteQCDetail() {
+            if (qcDetailTable.rows(':has(:checkbox:checked)').data().length > 0) {
+                qcDetailTable.rows(':has(:checkbox:checked)').remove().draw();
+            } else {
+                msgErro("请在列表中勾选一项!");
+                return false;
+            }
+        }
+
+        function qtyBlur(obj) {
+            var index = $(obj).parent().parent().index();
+            qcDetailTable.rows().data()[index].DisplayQty = $(obj).val();
+        }
+
+        function descrBlur(obj) {
+            var index = $(obj).parent().parent().index();
+            qcDetailTable.rows().data()[index].Descr = $(obj).val();
+        }
+
+        function print() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+            LODOP.SET_PRINT_PAGESIZE(1, "2100", "2970", "");
+            //LODOP.SET_PRINT_PAGESIZE(2, 2100, 2970, "CreateCustomPage");
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintQualityControl?sysId=@Model.SysId" + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            LODOP.ADD_PRINT_BARCODE(40, 500, 206, 58, "128B", "@Model.QCOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            //LODOP.PREVIEW();
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+
+        function gvDocDetailCheckAll(obj) {
+            $("#gvDocDetail tbody input[type='checkbox']").each(function () {
+                this.checked = obj.checked;
+            });
+        }
+
+        function gvQCDetailCheckAll(obj) {
+            $("#gvQCDetail tbody input[type='checkbox']").each(function () {
+                this.checked = obj.checked;
+            });
+        }
+
+        function GetQCDetailMultiselectSysId() {
+            var check = $("#gvQCDetail tbody input:checked");
+            if (check.length === 0) {
+                msgErro("请在列表中勾选一项!");
+                return null;
+            }
+            var ids = "";
+
+            $(check).each(function () {
+                ids += $(this).val() + ",";
+            });
+            return ids;
+        }
+    </script>
+}

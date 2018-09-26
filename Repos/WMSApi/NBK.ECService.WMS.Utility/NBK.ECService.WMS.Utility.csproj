@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9302533B-2489-4BF3-9E43-61DCBD361D01}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBK.ECService.WMS.Utility</RootNamespace>
+    <AssemblyName>NBK.ECService.WMS.Utility</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.2\lib\net45\RabbitMQ.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common, Version=4.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Common.4.5.4\lib\net45\ServiceStack.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces, Version=4.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Interfaces.4.5.4\lib\portable-wp80+sl5+net45+win8+wpa81+monotouch+monoandroid+xamarin.ios10\ServiceStack.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Redis, Version=4.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Redis.4.5.4\lib\net45\ServiceStack.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Text, Version=4.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Text.4.5.4\lib\net45\ServiceStack.Text.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommonBussinessMethod.cs" />
+    <Compile Include="Enum\AssemblyDetailStatus.cs" />
+    <Compile Include="ConverStatus.cs" />
+    <Compile Include="ConvertBytes.cs" />
+    <Compile Include="ConvertType.cs" />
+    <Compile Include="EmailHelper.cs" />
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="Enum\AdjustmentStatus.cs" />
+    <Compile Include="Enum\AdjustmentType.cs" />
+    <Compile Include="Enum\AssemblyStatus.cs" />
+    <Compile Include="Enum\DeliverySortRules.cs" />
+    <Compile Include="Enum\ECC\FreezeTypeForECC.cs" />
+    <Compile Include="Enum\FrozenSource.cs" />
+    <Compile Include="Enum\LocationStatus.cs" />
+    <Compile Include="Enum\FrozenStatus.cs" />
+    <Compile Include="Enum\FrozenType.cs" />
+    <Compile Include="Enum\Log\BusinessName.cs" />
+    <Compile Include="Enum\Log\BusinessType.cs" />
+    <Compile Include="Enum\Log\InterfaceType.cs" />
+    <Compile Include="Enum\OutboundDetailStatus.cs" />
+    <Compile Include="Enum\OutboundReturnStatus.cs" />
+    <Compile Include="Enum\OutboundStatus.cs" />
+    <Compile Include="Enum\OutboundTransferOrderStatus.cs" />
+    <Compile Include="Enum\OutboundTransferOrderType.cs" />
+    <Compile Include="Enum\OutboundType.cs" />
+    <Compile Include="Enum\PickDetailSourceType.cs" />
+    <Compile Include="Enum\PickDetailStatus.cs" />
+    <Compile Include="Enum\PreBulkPackStatus.cs" />
+    <Compile Include="Enum\PrePackStatus.cs" />
+    <Compile Include="Enum\QCStatus.cs" />
+    <Compile Include="Enum\QCType.cs" />
+    <Compile Include="Enum\RabbitMQType.cs" />
+    <Compile Include="Enum\ReceiptConvert.cs" />
+    <Compile Include="Enum\ReceiptSNStatus.cs" />
+    <Compile Include="Enum\ShelvesStatus.cs" />
+    <Compile Include="Enum\SkuBorrowStatus.cs" />
+    <Compile Include="Enum\SkuSpecialTypes.cs" />
+    <Compile Include="Enum\SkuStatus.cs" />
+    <Compile Include="Enum\StockMovementStatus.cs" />
+    <Compile Include="Enum\StockTakeDetailStatus.cs" />
+    <Compile Include="Enum\StockTakeStatus.cs" />
+    <Compile Include="Enum\StockTakeType.cs" />
+    <Compile Include="Enum\StockTransferStatus.cs" />
+    <Compile Include="Enum\SymbolType.cs" />
+    <Compile Include="Enum\TMSOrderType.cs" />
+    <Compile Include="Enum\TMSStatus.cs" />
+    <Compile Include="Enum\TransferInventoryStatus.cs" />
+    <Compile Include="Enum\UserWorkStatus.cs" />
+    <Compile Include="Enum\UserWorkType.cs" />
+    <Compile Include="Enum\VanningStatus.cs" />
+    <Compile Include="Enum\VanningType.cs" />
+    <Compile Include="Enum\WorkBusinessType.cs" />
+    <Compile Include="Enum\WorkStatus.cs" />
+    <Compile Include="FileUploader.cs" />
+    <Compile Include="HttpHelper.cs" />
+    <Compile Include="ImageThumbnail.cs" />
+    <Compile Include="InvTransType.cs" />
+    <Compile Include="Enum\OperationLogType.cs" />
+    <Compile Include="Enum\PurchaseStatus.cs" />
+    <Compile Include="Enum\PurchaseType.cs" />
+    <Compile Include="Enum\ReceiptDetailStatus.cs" />
+    <Compile Include="Enum\ReceiptStatus.cs" />
+    <Compile Include="Enum\ReceiptType.cs" />
+    <Compile Include="ExtendUtility.cs" />
+    <Compile Include="Message\ClientInfo.cs" />
+    <Compile Include="Message\SingalRMessage.cs" />
+    <Compile Include="RabbitMQ\RabbitWMS.cs" />
+    <Compile Include="Redis\RedisSourceMap.cs" />
+    <Compile Include="Redis\RedisWMS.cs" />
+    <Compile Include="StringHelper.cs" />
+    <Compile Include="Wheres.cs" />
+    <Compile Include="Enum\SortingDirection.cs" />
+    <Compile Include="ParameterRebinder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicConst.cs" />
+    <Compile Include="QueryableExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

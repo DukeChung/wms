@@ -1,0 +1,262 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "扫描出库";
+}
+
+@Html.Breadcrumb("出库管理", "扫描出库")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-1" onclick="clearScanInfo()">扫描箱号</a></li>
+            <li class=""><a data-toggle="tab" href="#tab-2" onclick="clearScanInfo()">扫描快递单号</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="panel-body col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">箱号:</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" id="VanningOrder" name="VanningOrder" class="form-control">
+                            </div>
+                            <div class="col-sm-2">
+
+                            </div>
+                        </div>
+                        <div class="form-group" id="divMessage">
+
+                        </div>
+                        <div class="form-group" id="divVanningBox">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">面单号:</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="CarrierNumber" name="CarrierNumber" class="form-control">
+                            </div>
+                            <div class="col-sm-2">
+
+                            </div>
+                        </div>
+                        <div class="form-group" id="divMessageCarrierNumber">
+
+                        </div>
+                        <div class="form-group" id="divCarrierBox">
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="VanningSysId" name="VanningSysId">
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnDelivery" style="margin-top: 10px" onclick="Delivery();" disabled="disabled"><i class="fa fa-check-square-o"></i>发货</a>
+        </div>
+    </div>
+</div>
+<embed src="~/Content/error.wav" autostart="true" hidden="true" loop="false">
+<div id="divBoxTemp" style="display: none">
+    <div class="col-sm-2">
+        <div class="widget className p-lg text-center" id="divVanningOrder">
+            <div class="m-b-md">
+                <i class="fa fa-cube fa-4x"></i>
+                <div class="row">
+                    <div class="col-sm-12" style="font-size: smaller;">VanningOrder</div>
+                    <div class="col-sm-12" style="font-size: smaller;">快递:CarrierName</div>
+                    <div class="col-sm-12" style="font-size: smaller;">重量:Weightkg</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+@section Scripts {
+
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function() {
+            $("#VanningOrder").change(function() {
+                GetBoxByOrderNumber("VanningOrder");
+            });
+            $("#CarrierNumber").change(function() {
+                GetBoxByOrderNumber("CarrierNumber");
+            });
+        });
+        var isLoad = false;
+
+        function PayError() {
+            $("embed").hide();
+            $("embed").show();
+
+        }
+
+        var numberList = "";
+
+        function clearScanInfo() {
+            numberList = "";
+        }
+
+        function GetBoxByOrderNumber(type) {
+            var number = "";
+            if (type === "VanningOrder")
+            {
+                number = $("#VanningOrder").val();
+                $("#divCarrierBox").html("");
+                $("#VanningOrder").val("");
+            } else {
+                number = $("#CarrierNumber").val();
+                $("#divVanningBox").html("");
+                $("#CarrierNumber").val("");
+            }
+            if (number.length === 0) {
+                return;
+            }
+            if ($("#div" + number).length !== 0) {
+                $("#div" + number).removeClass("bg-muted");
+                $("#div" + number).addClass("navy-bg");
+                CheckMsg(type);
+
+            } else {
+                var numberKey = number.split('-');
+                if (numberList.length > 0) {
+                    var list = numberList.split(',');
+
+                    if (list.length > 0) {
+                        for (var i = 0; list.length > i; i++) {
+                            if (list[i] === numberKey[0]) {
+                                //PayError();
+                                //msgErro("未找到相关信息!");
+                                return;
+                            }
+                        }
+                    }
+                }
+                numberList += numberKey[0] + ",";
+
+                $.ajax({
+                    url: "/Delivery/GetDeliveryBoxByOrderNumber?type=" + type + "&orderNumber=" + number,
+                    type: "POST",
+                    data: [],
+                    success: function(data) {
+                        if (data.success) {
+                            if (data.ScanDeliveryDto.length > 0) {
+                                $("#VanningSysId").val($("#VanningSysId").val() + ',' + data.ScanDeliveryDto[0].VanningSysId);
+                                isLoad = true;
+                                for (var i = 0; data.ScanDeliveryDto.length > i; i++) {
+
+                                    var html = $("#divBoxTemp").html();
+                                    var vanningOrder = data.ScanDeliveryDto[i].VanningOrder + "-" + data.ScanDeliveryDto[i].ContainerNumber;
+                                    var className = "";
+                                    if (vanningOrder === number || data.ScanDeliveryDto[i].CarrierNumber === number) {
+                                        className = "navy-bg";
+                                    } else {
+                                        className = "bg-muted";
+                                    }
+                                    html = html
+                                        .replace(/CarrierName/g, data.ScanDeliveryDto[i].CarrierName)
+                                        .replace(/Weight/g, data.ScanDeliveryDto[i].Weight)
+                                        .replace(/className/g, className);
+
+                                    if (type === "VanningOrder") {
+                                        html = html.replace(/VanningOrder/g, vanningOrder)
+                                            .replace(/divVanningOrder/g, "div" + vanningOrder);
+                                        $("#divVanningBox").append(html);
+                                    } else {
+                                        html = html.replace(/VanningOrder/g, data.ScanDeliveryDto[i].CarrierNumber)
+                                            .replace(/divVanningOrder/g, "div" + data.ScanDeliveryDto[i].CarrierNumber);
+                                        $("#divCarrierBox").append(html);
+                                    }
+                                }
+                                $("#btnDelivery").attr("disabled", "disabled");
+                                CheckMsg(type);
+                            } else {
+                                msgErro("未找到相关信息!");
+                                PayError();
+                            }
+
+
+                        } else {
+                            msgErro(data.message);
+                        }
+                    },
+                    error: function() {
+                        msgErro("操作失败");
+                        PayError();
+                    }
+                });
+            }
+
+        }
+
+        function CheckMsg(type) {
+            var html = '<div class="alert className"> Msg</div>';
+
+            if ($(".bg-muted").length > 0) {
+
+                var msg = "当前还剩余" + $(".bg-muted").length + "箱未扫描";
+                html = html.replace(/Msg/g, msg)
+                    .replace(/className/g, "alert-warning");
+
+            } else {
+                msg = "当前已经全部扫描,可以进行发货";
+                html = html.replace(/Msg/g, msg)
+                    .replace(/className/g, "alert-success");
+                $('#btnDelivery').removeAttr("disabled");
+            }
+            if (type === "VanningOrder") {
+
+                $("#divMessage").html(html);
+            } else {
+                $("#divMessageCarrierNumber").html(html);
+            }
+        }
+
+
+        function Delivery() {
+            if ($("#btnDelivery").attr("disabled") === "disabled") {
+                return;
+            }
+            saveLoading('show');
+            $.ajax({
+                url: "/Delivery/SaveDeliveryByVanningSysId?sysIds=" + $("#VanningSysId").val(),
+                type: "POST",
+                data: [],
+                success: function(data) {
+                    if (data.success) {
+                        saveLoading();
+                        msgSuccess('', function() {
+                        });
+                        window.location.href = "/Delivery/ScanVanning";
+
+                    } else {
+                        saveLoading();
+                        msgErro(data.message);
+                        PayError();
+                    }
+                    
+                },
+                error: function() {
+                    msgErro("操作失败");
+                    PayError();
+                    saveLoading();
+                }
+            });
+        }
+    </script>
+}
+

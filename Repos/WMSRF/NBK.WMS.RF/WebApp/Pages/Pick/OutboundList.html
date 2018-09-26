@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+    <div class="page-group">
+        <div id="page-outbound-list" class="page page-current">
+
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">拣货</h1>
+            </header>
+
+            <div class="row page-content content infinite-scroll infinite-scroll-bottom" data-distance="50">
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <input id="outboundOrder" name="outboundOrder" class="form-control input-s" placeholder="请扫描单据条码">
+                                    <p id="msg" name="msg" class="msg-error"></p>
+                                </div>
+                                <div class="ibox-title">
+                                    <h4>以下单据的商品待拣货</h4>
+                                </div>
+                                <div class="ibox-content">
+
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>NO</th>
+                                                <th>单据编号</th>
+                                                <th>SKU数</th>
+                                                <th>商品数</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="OutboundPickList"></tbody>
+
+                                    </table>
+
+                                    <!-- 加载提示符 -->
+                                    <div class="infinite-scroll-preloader">
+                                        <div class="preloader"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+

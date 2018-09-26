@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "http://schemas.gznb.com/schubert/v1.9/module.json",
+  "name": "WMSBussinessApi.Service",
+  "author": "wheecas",
+  "description": "服务接口模块",
+  "version": "1.0",
+  "category": "WMSBussinessApi.Service",
+  "includeUserInterface": false
+}

@@ -1,0 +1,1780 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "首页";
+}
+<style>
+    .diffinvloclotlpn {
+        border-bottom: 1px solid #e7eaec;
+        padding: 15px 0 15px 5px;
+    }
+
+    .checkstoretitle {
+        padding: 10px 15px 10px 5px;
+        border-bottom: 1px solid #e7eaec;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeIn">
+
+    <div class="p-w-md m-t-sm">
+        <div class="row">
+
+            <div id="div_AccessLog" class="col-sm-6">
+                <h1 id="accessLog_StatisticCount" class="m-b-xs">0</h1>
+                <small>
+                    <strong>业务API访问次数</strong>
+                </small>
+                <div class="row">
+                    <br />
+                </div>
+                <div id="accessLog_Sparkline" class="m-b-sm"></div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <small class="stats-label">平均响应时间(s)</small>
+                        <h4 id="accessLog_AvgTime">0.00</h4>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <small class="stats-label">最小响应时间(s)</small>
+                        <h4 id="accessLog_MinTime">0.00 s</h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <small class="stats-label">最大响应时间(s)</small>
+                        <h4 id="accessLog_MaxTime">0.00 s</h4>
+                    </div>
+                </div>
+
+            </div>
+            <div id="div_InterfaceLog" class="col-sm-6">
+                <h1 id="interfaceLog_StatisticCount" class="m-b-xs">0</h1>
+                <small>
+                    <strong>接口访问次数</strong>
+                </small>
+                <div class="row">
+                    <br />
+                </div>
+                <div id="interfaceLog_Sparkline" class="m-b-sm"></div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <small class="stats-label">平均响应时间(s)</small>
+                        <h4 id="interfaceLog_AvgTime">0.00 s</h4>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <small class="stats-label">最小响应时间(s)</small>
+                        <h4 id="interfaceLog_MinTime">0.00 s</h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <small class="stats-label">最大响应时间(s)</small>
+                        <h4 id="interfaceLog_MaxTime">0.00 s</h4>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small pull-right col-md-3 m-t-md text-right">
+            <strong> 最近每分钟的接口调用操作结果统计</strong>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="flot-chart m-b-xl">
+                <div class="flot-chart-content" id="flot-bussiness-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="div_SummaryLog" class="ibox">
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label>日志类型：</label>
+                                        <select style="width:80px" id="logType" name="logType" v-on:change="onConditionChange()">
+                                            <option selected value="">全部</option>
+                                            <option value="400">访问日志</option>
+                                            <option value="500">业务日志</option>
+                                            <option value="600">接口日志</option>
+                                        </select>
+                                    </th>
+                                    <th style="vertical-align:middle">描述</th>
+                                    <th style="vertical-align:middle">耗时(s)</th>
+                                    <th style="vertical-align:middle">创建日期</th>
+                                    <th style="vertical-align:middle">用户编号</th>
+                                    <th style="vertical-align:middle">用户名称</th>
+                                    <th>
+                                        <label>是否成功：</label>
+                                        <select style="width:60px" id="flag" name="flag" v-on:change="onConditionChange()">
+                                            <option selected value="">全部</option>
+                                            <option value="true">是</option>
+                                            <option value="false">否</option>
+                                        </select>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody v-for="item in SummaryLogList">
+                                <tr>
+                                    <td>{{ item.LogName }}</td>
+                                    <td>{{ item.Descr }}</td>
+                                    <td>{{ item.ElapsedTime }}</td>
+                                    <td>{{ item.CreateDateText }}</td>
+                                    <td>{{ item.UserId }}</td>
+                                    <td>{{ item.UserName }}</td>
+                                    <td v-if="item.IsSuccess == true">
+                                        <i style="cursor:pointer" v-on:click="viewLogDetail(item.LogType, item.SysId)" data-toggle="modal" data-target="#logDetailModal" class="fa fa-check fa-2x text-navy"></i>
+                                    </td>
+                                    <td v-else>
+                                        <i style="cursor:pointer" v-on:click="viewLogDetail(item.LogType, item.SysId)" data-toggle="modal" data-target="#logDetailModal" class="fa fa-times fa-2x text-danger"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="div_MaxElapsedTimeLog" class="ibox">
+                <div class="ibox-content">
+                    <h5 style="color:red">上周最耗时接口 TOP5</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>日志类型</th>
+                                    <th>描述</th>
+                                    <th>耗时(s)</th>
+                                    <th>创建日期</th>
+                                    <th>用户编号</th>
+                                    <th>用户名称</th>
+                                    <th>是否成功</th>
+                                </tr>
+                            </thead>
+                            <tbody v-for="item in MaxElapsedTimeLogList">
+                                <tr>
+                                    <td>{{ item.LogName }}</td>
+                                    <td>{{ item.Descr }}</td>
+                                    <td>{{ item.ElapsedTime }}</td>
+                                    <td>{{ item.CreateDateText }}</td>
+                                    <td>{{ item.UserId }}</td>
+                                    <td>{{ item.UserName }}</td>
+                                    <td v-if="item.IsSuccess == true">
+                                        <i style="cursor:pointer" v-on:click="viewLogDetail(item.LogType, item.SysId)" data-toggle="modal" data-target="#logDetailModal" class="fa fa-check fa-2x text-navy"></i>
+                                    </td>
+                                    <td v-else>
+                                        <i style="cursor:pointer" v-on:click="viewLogDetail(item.LogType, item.SysId)" data-toggle="modal" data-target="#logDetailModal" class="fa fa-times fa-2x text-danger"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="div_MaxFrequencyLog" class="ibox">
+                <div class="ibox-content">
+                    <h5 style="color:red">本日{{Inteval}}秒内频繁访问接口 TOP5</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>描述</th>
+                                    <th>总数</th>
+                                    <th style="display:none">详细</th>
+                                </tr>
+                            </thead>
+                            <tbody v-for="item in MaxFrequencyLogDtoList">
+                                <tr>
+                                    <td>{{ item.Descr }}</td>
+                                    <td>{{ item.TotalCount }}</td>
+                                    <td style="display:none">
+                                        <i style="cursor:pointer;" v-on:click="viewFrequencyDetail(item.Descr)" data-toggle="modal" data-target="#frequencyDetailModal" class="fa fa-plus-square-o fa-2x text-navy"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form class="form-horizontal">
+        <div class="modal inmodal fade" id="logDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div id="div_LogDetail" class="modal-content">
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form class="form-horizontal">
+        <div class="modal inmodal fade" id="frequencyDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div id="div_FrequencyDetail" class="modal-content">
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <div class="row" id="bussinessVue" style="margin-bottom:25px;padding:0 15px;">
+        <div class="clearfix">
+            <div style="background-color: #fff;padding-bottom:15px;width:32%;float:left">
+                <div style="margin:15px 0 0 15px ;"><label>126:3306 数据库库存检测</label></div>
+                <div class="col-sm-6">
+                    <div class="diffinvloclotlpn">
+                        <strong>3张库存表Qty数量比较：</strong> <span id="StockDataSet1"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStoreDetailModal1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表Qty数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockDataSetList1">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong>3张库存表可用数量比较：</strong> <span id="StockAvailableQty1"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockAvailableQtyModal1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表可用数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockAvailableQtyList1">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 3张库存表分配数量比较：</strong> <span id="StockAllocatedQty1"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockAllocatedQtyModal1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表分配数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockAllocatedQtyList1">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 3张库存表拣货数量比较：</strong> <span id="StockPickedQty1"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockPickedQtyModal1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表拣货数量比较异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockPickedQtyList1">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="diffinvloclotlpn">
+                        <strong title="invLot和invLotLocLpn表商品相同批次数量比较">商品相同批次数量比较：</strong><span id="StockSkuLotQty1"></span>
+
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockSkuLotQtyModal1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> invLot和invLotLocLpn表商品相同批次数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">批次</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockSkuLotQtyList1">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.Lot }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong title="invSkuLoc和invLotLocLpn表商品相同货位数量比较">商品相同货位数量比较：</strong><span id="StockSkuLocQty1"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockSkuLocQtyModal1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> invSkuLoc和invLotLocLpn表商品相同货位数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">货位</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invSkuLoc数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockSkuLocQtyList1">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.Loc }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 入库=库存+出库差异比较：</strong> <span id="DiffReceiptInvOut1"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkDiffReceiptInvOutModal1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 查询入库，库存，出库的差异比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">入库数量</th>
+                                                    <th valign="middle">库存数量</th>
+                                                    <th valign="middle">出库数量</th>
+                                                    <th valign="middle">差异数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in DiffReceiptInvOutList1">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvQty }}</td>
+                                                    <td>{{ item.StockQty }}</td>
+                                                    <td>{{ item.OutboundQty }}</td>
+                                                    <td>{{ item.DifferentQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong title="库存分配数量和拣货明细分配数量比较"> 库存分配数量和拣货明细数量比较：</strong> <span id="DiffInvAndPickDetailAllocatedQty1"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkDiffInvAndPickDetailAllocatedQtyModal1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 库存分配数量和拣货明细分配数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">库存分配数量</th>
+                                                    <th valign="middle">拣货明细分配数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in DiffInvAndPickDetailAllocatedQtyList1">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InventoryAllocation }}</td>
+                                                    <td>{{ item.PickingDetails }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div style="width:2%;float:left;height:10px;"></div>
+            <div style="background-color: #fff; padding-bottom:15px;width:32%;float:left">
+                <div style="margin:15px 0 0 15px ;"><label>22:3306 数据库库存检测</label></div>
+                <div class="col-sm-6">
+                    <div class="diffinvloclotlpn">
+                        <strong>3张库存表Qty数量比较：</strong> <span id="StockDataSet2"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStoreDetailModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表Qty数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockDataSetList2">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong>3张库存表可用数量比较：</strong> <span id="StockAvailableQty2"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockAvailableQtyModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表可用数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockAvailableQtyList2">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 3张库存表分配数量比较：</strong> <span id="StockAllocatedQty2"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockAllocatedQtyModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表分配数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockAllocatedQtyList2">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 3张库存表拣货数量比较：</strong> <span id="StockPickedQty2"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockPickedQtyModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表拣货数量比较异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockPickedQtyList2">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="diffinvloclotlpn">
+                        <strong title="invLot和invLotLocLpn表商品相同批次数量比较">商品相同批次数量比较：</strong><span id="StockSkuLotQty2"></span>
+
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockSkuLotQtyModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> invLot和invLotLocLpn表商品相同批次数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">批次</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockSkuLotQtyList2">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.Lot }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong title="invSkuLoc和invLotLocLpn表商品相同货位数量比较">商品相同货位数量比较：</strong><span id="StockSkuLocQty2"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockSkuLocQtyModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> invSkuLoc和invLotLocLpn表商品相同货位数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">货位</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invSkuLoc数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockSkuLocQtyList2">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.Loc }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 入库=库存+出库差异比较：</strong> <span id="DiffReceiptInvOut2"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkDiffReceiptInvOutModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 查询入库，库存，出库的差异比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">入库数量</th>
+                                                    <th valign="middle">库存数量</th>
+                                                    <th valign="middle">出库数量</th>
+                                                    <th valign="middle">差异数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in DiffReceiptInvOutList2">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvQty }}</td>
+                                                    <td>{{ item.StockQty }}</td>
+                                                    <td>{{ item.OutboundQty }}</td>
+                                                    <td>{{ item.DifferentQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong title="库存分配数量和拣货明细分配数量比较"> 库存分配数量和拣货明细数量比较：</strong> <span id="DiffInvAndPickDetailAllocatedQty2"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkDiffInvAndPickDetailAllocatedQtyModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 库存分配数量和拣货明细分配数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">库存分配数量</th>
+                                                    <th valign="middle">拣货明细分配数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in DiffInvAndPickDetailAllocatedQtyList2">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InventoryAllocation }}</td>
+                                                    <td>{{ item.PickingDetails }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div style="width:2%;float:left;height:10px;"></div>
+            <div style="background-color: #fff; padding-bottom:15px;width:32%;float:left">
+                <div style="margin:15px 0 0 15px ;"><label>22:3307 数据库库存检测</label></div>
+                <div class="col-sm-6">
+                    <div class="diffinvloclotlpn">
+                        <strong>3张库存表Qty数量比较：</strong> <span id="StockDataSet3"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStoreDetailModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表Qty数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockDataSetList3">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong>3张库存表可用数量比较：</strong> <span id="StockAvailableQty3"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockAvailableQtyModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表可用数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockAvailableQtyList3">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 3张库存表分配数量比较：</strong> <span id="StockAllocatedQty3"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockAllocatedQtyModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表分配数量比较差异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockAllocatedQtyList3">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 3张库存表拣货数量比较：</strong> <span id="StockPickedQty3"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockPickedQtyModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 3张库存表拣货数量比较异内容如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockPickedQtyList3">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="diffinvloclotlpn">
+                        <strong title="invLot和invLotLocLpn表商品相同批次数量比较">商品相同批次数量比较：</strong><span id="StockSkuLotQty3"></span>
+
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockSkuLotQtyModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> invLot和invLotLocLpn表商品相同批次数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">批次</th>
+                                                    <th valign="middle">invskuLoc数量</th>
+                                                    <th valign="middle">invLotLocLpn数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockSkuLotQtyList3">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.Lot }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                    <td>{{ item.InvLotLocLpnQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong title="invSkuLoc和invLotLocLpn表商品相同货位数量比较">商品相同货位数量比较：</strong><span id="StockSkuLocQty3"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkStockSkuLocQtyModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> invSkuLoc和invLotLocLpn表商品相同货位数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">货位</th>
+                                                    <th valign="middle">invLot数量</th>
+                                                    <th valign="middle">invSkuLoc数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in StockSkuLocQtyList3">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.Loc }}</td>
+                                                    <td>{{ item.InvLotQty }}</td>
+                                                    <td>{{ item.InvSkuLocQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong> 入库=库存+出库差异比较：</strong> <span id="DiffReceiptInvOut3"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkDiffReceiptInvOutModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 查询入库，库存，出库的差异比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">入库数量</th>
+                                                    <th valign="middle">库存数量</th>
+                                                    <th valign="middle">出库数量</th>
+                                                    <th valign="middle">差异数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in DiffReceiptInvOutList3">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InvQty }}</td>
+                                                    <td>{{ item.StockQty }}</td>
+                                                    <td>{{ item.OutboundQty }}</td>
+                                                    <td>{{ item.DifferentQty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="diffinvloclotlpn">
+                        <strong title="库存分配数量和拣货明细分配数量比较"> 库存分配数量和拣货明细数量比较：</strong> <span id="DiffInvAndPickDetailAllocatedQty3"></span>
+                        <form class="form-horizontal">
+                            <div class="modal inmodal fade" id="checkDiffInvAndPickDetailAllocatedQtyModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="checkstoretitle"><strong> 库存分配数量和拣货明细分配数量比较如下：</strong></div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th valign="middle">商品Id</th>
+                                                    <th valign="middle">商品编号</th>
+                                                    <th valign="middle">商品名称</th>
+                                                    <th valign="middle">库存分配数量</th>
+                                                    <th valign="middle">拣货明细分配数量</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-for="item in DiffInvAndPickDetailAllocatedQtyList3">
+                                                <tr>
+                                                    <td>{{ item.SkuSysId }}</td>
+                                                    <td>{{ item.SkuCode }}</td>
+                                                    <td>{{ item.SkuName }}</td>
+                                                    <td>{{ item.InventoryAllocation }}</td>
+                                                    <td>{{ item.PickingDetails }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<embed src="~/Content/error.wav" autostart="true" hidden="true" loop="false">
+
+@section Scripts {
+    @Scripts.Render("~/plugins/sparkLine")
+    @Scripts.Render("~/plugins/flot")
+
+    <script type="text/javascript">
+
+        function PayError() {
+            $("embed").hide();
+            $("embed").show();
+
+        }
+
+        var BussinessReport = {
+            successData: [],
+            errorData: [],
+            bussinessVue: {},
+            init: function () {
+                var _self = this;
+
+                _self.bussinessVue = new Vue({
+                    el: '#bussinessVue',
+                    data: {
+                        InboundPorcessTotalCount: '',
+                        //InboundPorcessSuccessPercent: '',
+                        OutboundPorcessTotalCount: '',
+                        // OutboundPorcessSuccessPercent: '',
+                        InboundBizApiDisplayDtoList: [],
+                        OutboundBizApiDisplayDtoList: [],
+
+                        StockDataSetList1: [],
+                        StockAvailableQtyList1: [],
+                        StockAllocatedQtyList1: [],
+                        StockPickedQtyList1: [],
+                        StockSkuLotQtyList1: [],
+                        StockSkuLocQtyList1: [],
+                        DiffReceiptInvOutList1: [],
+                        DiffInvAndPickDetailAllocatedQtyList1: [],
+
+                        StockDataSetList2: [],
+                        StockAvailableQtyList2: [],
+                        StockAllocatedQtyList2: [],
+                        StockPickedQtyList2: [],
+                        StockSkuLotQtyList2: [],
+                        StockSkuLocQtyList2: [],
+                        DiffReceiptInvOutList2: [],
+                        DiffInvAndPickDetailAllocatedQtyList2: [],
+
+                        StockDataSetList3: [],
+                        StockAvailableQtyList3: [],
+                        StockAllocatedQtyList3: [],
+                        StockPickedQtyList3: [],
+                        StockSkuLotQtyList3: [],
+                        StockSkuLocQtyList3: [],
+                        DiffReceiptInvOutList3: [],
+                        DiffInvAndPickDetailAllocatedQtyList3: []
+                    }
+                });
+
+                _self.initInboundStatistics();
+
+                setTimeout(_self.initCheckStore(1), 2000);
+
+                setTimeout(_self.initCheckStore(2), 5000);
+
+                setTimeout(_self.initCheckStore(3), 8000);
+
+                _self.initOutboundStatistics();
+
+                _self.initBussinessProcessContent();
+
+                _self.setBussinessInterval();
+
+            },
+            setBussinessInterval: function () {
+                //设置循环
+                setInterval(BussinessReport.initInboundStatistics, 60 * 1000);  //每分钟刷新一次
+
+                setInterval(BussinessReport.initOutboundStatistics, 60 * 1000);   //每分钟刷新一次
+
+                setInterval(BussinessReport.initBussinessProcessContent, 60 * 1000);   //每分钟刷新一次
+            },
+            initInboundStatistics: function () {
+            },
+            initCheckStore: function (flag) {
+                $.ajax({            //查询有差异的库存(3张库存表差异)
+                    url: "@Url.Action("GetStockDataSet", "Home")",
+                    data: { "type": flag },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success && data.Data != null && data.Data.length > 0) {
+                            if (flag == 1) {
+                                BussinessReport.bussinessVue.StockDataSetList1 = data.Data;
+                            }
+                            else if (flag == 2) {
+                                BussinessReport.bussinessVue.StockDataSetList2 = data.Data;
+                            }
+                            else if (flag == 3) {
+                                BussinessReport.bussinessVue.StockDataSetList3 = data.Data;
+                            }
+                            $("#StockDataSet" + flag).html('<i style="cursor:pointer" data-toggle="modal" data-target="#checkStoreDetailModal' + flag + '" class="fa fa-times fa-2x text-danger"></i>');
+                        }
+                        else {
+                            $("#StockDataSet" + flag).html('<i class="fa fa-check fa-2x text-navy"></i>');
+                        }
+                    }
+                });
+                $.ajax({        //3张库存表可用数量比较
+                    url: "@Url.Action("GetStockAvailableQty", "Home")",
+                    data: { "type": flag },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success && data.Data != null && data.Data.length > 0) {
+                            if (flag == 1) {
+                                BussinessReport.bussinessVue.StockAvailableQtyList1 = data.Data;
+                            }
+                            else if (flag == 2) {
+                                BussinessReport.bussinessVue.StockAvailableQtyList2 = data.Data;
+                            }
+                            else if (flag == 3) {
+                                BussinessReport.bussinessVue.StockAvailableQtyList3 = data.Data;
+                            }
+                            $("#StockAvailableQty" + flag).html('<i style="cursor:pointer" data-toggle="modal" data-target="#checkStockAvailableQtyModal' + flag + '" class="fa fa-times fa-2x text-danger"></i>');
+                        }
+                        else {
+                            $("#StockAvailableQty" + flag).html('<i class="fa fa-check fa-2x text-navy"></i>');
+                        }
+                    }
+                });
+                $.ajax({        //查询有差异的库存分配数量(3张库存表差异)
+                    url: "@Url.Action("GetStockAllocatedQty", "Home")",
+                    data: { "type": flag },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success && data.Data != null && data.Data.length > 0) {
+                            if (flag == 1) {
+                                BussinessReport.bussinessVue.StockAllocatedQtyList1 = data.Data;
+                            }
+                            else if (flag == 2) {
+                                BussinessReport.bussinessVue.StockAllocatedQtyList2 = data.Data;
+                            }
+                            else if (flag == 3) {
+                                BussinessReport.bussinessVue.StockAllocatedQtyList3 = data.Data;
+                            }
+                            $("#StockAllocatedQty" + flag).html('<i style="cursor:pointer" data-toggle="modal" data-target="#checkStockAllocatedQtyModal' + flag + '" class="fa fa-times fa-2x text-danger"></i>');
+                        }
+                        else {
+                            $("#StockAllocatedQty" + flag).html('<i class="fa fa-check fa-2x text-navy"></i>');
+                        }
+                    }
+                });
+                $.ajax({        //查询有差异的库存拣货数量(3张库存表差异)
+                    url: "@Url.Action("GetStockPickedQty", "Home")",
+                    data: { "type": flag },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success && data.Data != null && data.Data.length > 0) {
+                            if (flag == 1) {
+                                BussinessReport.bussinessVue.StockPickedQtyList1 = data.Data;
+                            }
+                            else if (flag == 2) {
+                                BussinessReport.bussinessVue.StockPickedQtyList2 = data.Data;
+                            }
+                            else if (flag == 3) {
+                                BussinessReport.bussinessVue.StockPickedQtyList3 = data.Data;
+                            }
+                            $("#StockPickedQty" + flag).html('<i style="cursor:pointer" data-toggle="modal" data-target="#checkStockPickedQtyModal' + flag + '" class="fa fa-times fa-2x text-danger"></i>');
+
+                        }
+                        else {
+                            $("#StockPickedQty" + flag).html('<i class="fa fa-check fa-2x text-navy"></i>');
+                        }
+                    }
+                });
+
+
+                $.ajax({        //invLot和invLotLocLpn表商品相同批次数量差异
+                    url: "@Url.Action("GetStockSkuLotQty", "Home")",
+                    data: { "type": flag },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success && data.Data != null && data.Data.length > 0) {
+                            if (flag == 1) {
+                                BussinessReport.bussinessVue.StockSkuLotQtyList1 = data.Data;
+                            }
+                            else if (flag == 2) {
+                                BussinessReport.bussinessVue.StockSkuLotQtyList2 = data.Data;
+                            }
+                            else if (flag == 3) {
+                                BussinessReport.bussinessVue.StockSkuLotQtyList3 = data.Data;
+                            }
+                            $("#StockSkuLotQty" + flag).html('<i style="cursor:pointer" data-toggle="modal" data-target="#checkStockSkuLotQtyModal' + flag + '" class="fa fa-times fa-2x text-danger"></i>');
+
+                        }
+                        else {
+                            $("#StockSkuLotQty" + flag).html('<i class="fa fa-check fa-2x text-navy"></i>');
+                        }
+                    }
+                });
+                $.ajax({        //invSkuLoc和invLotLocLpn表商品相同货位数量差异
+                    url: "@Url.Action("GetStockSkuLocQty", "Home")",
+                    data: { "type": flag },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success && data.Data != null && data.Data.length > 0) {
+                            if (flag == 1) {
+                                BussinessReport.bussinessVue.StockSkuLocQtyList1 = data.Data;
+                            }
+                            else if (flag == 2) {
+                                BussinessReport.bussinessVue.StockSkuLocQtyList2 = data.Data;
+                            }
+                            else if (flag == 3) {
+                                BussinessReport.bussinessVue.StockSkuLocQtyList3 = data.Data;
+                            }
+                            $("#StockSkuLocQty" + flag).html('<i style="cursor:pointer" data-toggle="modal" data-target="#checkStockSkuLocQtyModal' + flag + '" class="fa fa-times fa-2x text-danger"></i>');
+                        }
+                        else {
+                            $("#StockSkuLocQty" + flag).html('<i class="fa fa-check fa-2x text-navy"></i>');
+                        }
+                    }
+                });
+                $.ajax({        //查询入库，库存，出库的差异
+                    url: "@Url.Action("GetDiffReceiptInvOut", "Home")",
+                    data: { "type": flag },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success && data.Data != null && data.Data.length > 0) {
+                            if (flag == 1) {
+                                BussinessReport.bussinessVue.DiffReceiptInvOutList1 = data.Data;
+                            }
+                            else if (flag == 2) {
+                                BussinessReport.bussinessVue.DiffReceiptInvOutList2 = data.Data;
+                            }
+                            else if (flag == 3) {
+                                BussinessReport.bussinessVue.DiffReceiptInvOutList3 = data.Data;
+                            }
+                            $("#DiffReceiptInvOut" + flag).html('<i style="cursor:pointer" data-toggle="modal" data-target="#checkDiffReceiptInvOutModal' + flag + '" class="fa fa-times fa-2x text-danger"></i>');
+                        }
+                        else {
+                            $("#DiffReceiptInvOut" + flag).html('<i class="fa fa-check fa-2x text-navy"></i>');
+                        }
+                    }
+                });
+                $.ajax({        //库存分配数量和拣货明细分配数量比较
+                    url: "@Url.Action("GetDiffInvAndPickDetailAllocatedQty", "Home")",
+                    data: { "type": flag },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success && data.Data != null && data.Data.length > 0) {
+                            if (flag == 1) {
+                                BussinessReport.bussinessVue.DiffInvAndPickDetailAllocatedQtyList1 = data.Data;
+                            }
+                            else if (flag == 2) {
+                                BussinessReport.bussinessVue.DiffInvAndPickDetailAllocatedQtyList2 = data.Data;
+                            }
+                            else if (flag == 3) {
+                                BussinessReport.bussinessVue.DiffInvAndPickDetailAllocatedQtyList3 = data.Data;
+                            }
+                            $("#DiffInvAndPickDetailAllocatedQty" + flag).html('<i style="cursor:pointer" data-toggle="modal" data-target="#checkDiffInvAndPickDetailAllocatedQtyModal' + flag + '" class="fa fa-times fa-2x text-danger"></i>');
+                        }
+                        else {
+                            $("#DiffInvAndPickDetailAllocatedQty" + flag).html('<i class="fa fa-check fa-2x text-navy"></i>');
+                        }
+                    }
+                });
+            },
+            initOutboundStatistics: function () {
+            },
+            initBussinessProcessContent: function () {
+                $.ajax({
+                    url: "@Url.Action("GetApiProcessResult", "Home")",
+                    type: "get",
+                    success: function (data) {
+                        if (data.success) {
+                            var result = data.result;
+                            successData = [];
+                            errorData = [];
+
+                            var formatArr = [];
+
+                            $.each(result.SuccessList, function () {
+                                successData.push([this.minutes, this.ProcessCount]);
+                                formatArr.push([this.minutes, this.DisplayDate]);
+                            });
+
+                            $.each(result.ErrorList, function () {
+                                errorData.push([this.minutes, this.ProcessCount]);
+                            });
+
+                            $("#flot-bussiness-chart").length && $.plot($("#flot-bussiness-chart"), [
+                                successData, errorData
+                            ],
+                            {
+                                series: {
+                                    lines: {
+                                        show: false,
+                                        fill: true
+                                    },
+                                    splines: {
+                                        show: true,
+                                        tension: 0.4,
+                                        lineWidth: 1,
+                                        fill: 0.4
+                                    },
+                                    points: {
+                                        radius: 0,
+                                        show: true
+                                    },
+                                    shadowSize: 2
+                                },
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true,
+                                    borderWidth: 2,
+                                    color: 'rgba(111, 111, 111, 0.5)'
+                                },
+                                colors: ["#1ab394", "#fa971f"],
+                                xaxis: {
+                                    ticks: formatArr
+                                },
+                                yaxis: {
+                                    min: 0,
+                                    tickDecimals: 0
+                                },
+                                tooltip: false
+                            }
+                        );
+
+                        }
+                    }
+                });
+            }
+        };
+
+        //获取业务统计日志
+        var AccessLogStatistic = {
+            isFirstLoad: true,
+            accessLogVM: {},
+            init: function (interval) {
+                this.accessLogVM = new Vue({
+                    el: "#div_AccessLog",
+                    data: {
+                        StatisticCount: '',
+                        AvgTimeText: '',
+                        MinTimeText: '',
+                        MaxTimeText: '',
+                        PastDaysCount: []
+                    }
+                });
+                AccessLogStatistic.initData();
+                AccessLogStatistic.setLogInterval(interval);
+            },
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetHomePageAccessLogStatistic", "Home")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            AccessLogStatistic.initVue(data.Data);
+                            AccessLogStatistic.initUI();
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initVue: function (data) {
+                this.accessLogVM.StatisticCount = data.StatisticCount;
+                this.accessLogVM.AvgTimeText = data.AvgTimeText;
+                this.accessLogVM.MinTimeText = data.MinTimeText;
+                this.accessLogVM.MaxTimeText = data.MaxTimeText;
+                this.accessLogVM.PastDaysCount = data.PastDaysCount;
+            },
+            initUI: function () {
+                refreshData($("#accessLog_StatisticCount").text(), this.accessLogVM.$data.StatisticCount, "#accessLog_StatisticCount");
+                $("#accessLog_Sparkline").sparkline(this.accessLogVM.$data.PastDaysCount, {
+                    type: 'line',
+                    width: '100%',
+                    height: '50',
+                    lineColor: '#1ab394',
+                    fillColor: "transparent"
+                });
+                if (this.isFirstLoad) {
+                    refreshData(0.00, this.accessLogVM.$data.AvgTimeText, "#accessLog_AvgTime");
+                    refreshData(0.00, this.accessLogVM.$data.MinTimeText, "#accessLog_MinTime");
+                    refreshData(0.00, this.accessLogVM.$data.MaxTimeText, "#accessLog_MaxTime");
+                    this.isFirstLoad = false;
+                } else {
+                    $("#accessLog_AvgTime").html(this.accessLogVM.$data.AvgTimeText);
+                    $("#accessLog_MinTime").html(this.accessLogVM.$data.MinTimeText);
+                    $("#accessLog_MaxTime").html(this.accessLogVM.$data.MaxTimeText);
+                }
+            },
+            setLogInterval: function (interval) {
+                setInterval(AccessLogStatistic.initData, interval * 1000);
+            }
+        };
+
+        //获取接口统计日志
+        var InterfaceLogStatistic = {
+            isFirstLoad: true,
+            interfaceLogVM: {},
+            init: function (interval) {
+                this.interfaceLogVM = new Vue({
+                    el: "#div_InterfaceLog",
+                    data: {
+                        StatisticCount: '',
+                        AvgTimeText: '',
+                        MinTimeText: '',
+                        MaxTimeText: '',
+                        PastDaysCount: []
+                    }
+                });
+                InterfaceLogStatistic.initData();
+                InterfaceLogStatistic.setLogInterval(interval);
+            },
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetHomePageInterfaceLogStatistic", "Home")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            InterfaceLogStatistic.initVue(data.Data);
+                            InterfaceLogStatistic.initUI();
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initVue: function (data) {
+                this.interfaceLogVM.StatisticCount = data.StatisticCount;
+                this.interfaceLogVM.AvgTimeText = data.AvgTimeText;
+                this.interfaceLogVM.MinTimeText = data.MinTimeText;
+                this.interfaceLogVM.MaxTimeText = data.MaxTimeText;
+                this.interfaceLogVM.PastDaysCount = data.PastDaysCount;
+            },
+            initUI: function () {
+                refreshData($("#interfaceLog_StatisticCount").text(), this.interfaceLogVM.$data.StatisticCount, "#interfaceLog_StatisticCount");
+                $("#interfaceLog_Sparkline").sparkline(this.interfaceLogVM.$data.PastDaysCount, {
+                    type: 'line',
+                    width: '100%',
+                    height: '50',
+                    lineColor: '#1ab394',
+                    fillColor: "transparent"
+                });
+                if (this.isFirstLoad) {
+                    refreshData(0.00, this.interfaceLogVM.$data.AvgTimeText, "#interfaceLog_AvgTime");
+                    refreshData(0.00, this.interfaceLogVM.$data.MinTimeText, "#interfaceLog_MinTime");
+                    refreshData(0.00, this.interfaceLogVM.$data.MaxTimeText, "#interfaceLog_MaxTime");
+                    this.isFirstLoad = false;
+                } else {
+                    $("#interfaceLog_AvgTime").html(this.interfaceLogVM.$data.AvgTimeText);
+                    $("#interfaceLog_MinTime").html(this.interfaceLogVM.$data.MinTimeText);
+                    $("#interfaceLog_MaxTime").html(this.interfaceLogVM.$data.MaxTimeText);
+                }
+            },
+            setLogInterval: function (interval) {
+                setInterval(InterfaceLogStatistic.initData, interval * 1000);
+            }
+        };
+
+        //获取日志列表
+        var SummaryLog = {
+            summaryLogVM: {},
+            maxElapsedTimeLogVM: {},
+            maxFrequencyLogVM: {},
+            init: function (interval) {
+                this.summaryLogVM = new Vue({
+                    el: "#div_SummaryLog",
+                    data: { SummaryLogList: [] },
+                    methods: {
+                        onConditionChange: function () {
+                            SummaryLog.initData();
+                        },
+                        viewLogDetail: function (logType, sysId) {
+                            $("#div_LogDetail").load("@Url.Action("ViewLogDetail", "Home")" + "?sysId=" + sysId + "&logType=" + logType, function () {
+                                if (logType == 400) {
+                                    SummaryLog.initLogDetail("GetAccessLogViewDto", sysId);
+                                } else if (logType == 500) {
+                                    SummaryLog.initLogDetail("GetBusinessLogViewDto", sysId);
+                                } else if (logType == 600) {
+                                    SummaryLog.initLogDetail("GetInterfaceLogViewDto", sysId);
+                                }
+                            });
+                        }
+                    }
+                });
+                SummaryLog.initData();
+                SummaryLog.setLogInterval(interval);
+
+                this.maxElapsedTimeLogVM = new Vue({
+                    el: "#div_MaxElapsedTimeLog",
+                    data: { MaxElapsedTimeLogList: [] },
+                    methods: {
+                        viewLogDetail: function (logType, sysId) {
+                            $("#div_LogDetail").load("@Url.Action("ViewLogDetail", "Home")" + "?sysId=" + sysId + "&logType=" + logType, function () {
+                                if (logType == 400) {
+                                    SummaryLog.initLogDetail("GetAccessLogViewDto", sysId);
+                                } else if (logType == 500) {
+                                    SummaryLog.initLogDetail("GetBusinessLogViewDto", sysId);
+                                } else if (logType == 600) {
+                                    SummaryLog.initLogDetail("GetInterfaceLogViewDto", sysId);
+                                }
+                            });
+                        }
+                    }
+                });
+                SummaryLog.initMaxElapsedTimeData();
+
+                this.maxFrequencyLogVM = new Vue({
+                    el: "#div_MaxFrequencyLog",
+                    data: {},
+                    methods: {
+                        viewFrequencyDetail: function (descr) {
+                            $("#div_FrequencyDetail").load("@Url.Action("ViewFrequencyDetail", "Home")" + "?descr=" + descr, function () {
+                                SummaryLog.initFrequencyDetail(descr);
+                            });
+                        }
+                    }
+                });
+                SummaryLog.initMaxFrequencyData();
+            },
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetHomePageSummaryLog", "Home")",
+                    data: { LogType: $("#logType").val(), Flag: $("#flag").val() },
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            var flag = false;
+                            for (var i = 0; i < data.Data.length; i++) {
+                                if (!data.Data[0].IsSuccess) {
+                                    flag = true;
+                                }
+                            }
+                            if (flag) {
+                                PayError();
+                            }
+
+                            SummaryLog.initVue(data.Data);
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initVue: function (data) {
+                this.summaryLogVM.SummaryLogList = data;
+            },
+            setLogInterval: function (interval) {
+                setInterval(SummaryLog.initData, interval * 1000);
+            },
+            initLogDetail: function (actionName, sysId) {
+                $.ajax({
+                    url: "/Home/" + actionName + "?sysId=" + sysId,
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            var logDetailVM = new Vue({
+                                el: "#div_LogDetail",
+                                data: data.Data
+                            });
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initMaxElapsedTimeData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetHomePageMaxElapsedTimeLog", "Home")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            SummaryLog.initMaxElapsedTimeVue(data.Data);
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initMaxElapsedTimeVue: function (data) {
+                this.maxElapsedTimeLogVM.MaxElapsedTimeLogList = data;
+            },
+            initMaxFrequencyData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetHomePageMaxFrequencyLog", "Home")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            SummaryLog.initMaxFrequencyVue(data.Data);
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initMaxFrequencyVue: function (data) {
+                this.maxFrequencyLogVM.$data = data;
+            },
+            initFrequencyDetail: function (descr) {
+                $.ajax({
+                    url: "/Home/GetFrequencyDetailDto" + "?descr=" + descr,
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            var frequencyDetailVM = new Vue({
+                                el: "#div_FrequencyDetail",
+                                data: data.Data
+                            });
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            }
+        };
+
+        $(document).ready(function () {
+            var sparklineCharts = function () {
+                $("#accessLog_Sparkline").sparkline([0, 0, 0, 0, 0, 0, 0], {
+                    type: 'line',
+                    width: '100%',
+                    height: '50',
+                    lineColor: '#1ab394',
+                    fillColor: "transparent"
+                });
+
+                $("#interfaceLog_Sparkline").sparkline([0, 0, 0, 0, 0, 0, 0], {
+                    type: 'line',
+                    width: '100%',
+                    height: '50',
+                    lineColor: '#1ab394',
+                    fillColor: "transparent"
+                });
+            };
+
+            var sparkResize;
+
+            $(window).resize(function (e) {
+                clearTimeout(sparkResize);
+                sparkResize = setTimeout(sparklineCharts, 500);
+            });
+
+            sparklineCharts();
+
+            BussinessReport.init();
+
+            AccessLogStatistic.init(60);//参数interval，刷新间隔时间，单位秒
+
+            InterfaceLogStatistic.init(60);//参数interval，刷新间隔时间，单位秒
+
+            SummaryLog.init(60);//参数interval，刷新间隔时间，单位秒
+        });
+
+        function refreshData(oldNum, newNum, keyId) {
+            $({ numberValue: oldNum }).animate({ numberValue: newNum }, {
+                duration: 1000,
+                easing: 'linear',
+                step: function () {
+                    $(keyId).html(Math.floor(this.numberValue));
+                },
+                done: function () {
+                    if (newNum != null && $(keyId).html() != newNum.toString()) {
+                        $(keyId).html(newNum);
+                    }
+                }
+            });
+        }
+    </script>
+}

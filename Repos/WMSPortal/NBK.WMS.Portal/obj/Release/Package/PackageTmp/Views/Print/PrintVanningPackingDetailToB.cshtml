@@ -1,0 +1,79 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrintVanningDetailDto
+
+@{
+    Layout = null;
+}
+@* ------------------------装箱单模板---------------------- *@
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">装箱单</H1>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("订单号", Model.OutboundOrder)
+                @Html.PrintTitle("箱号", Model.VanningOrder + "-" + Model.ContainerNumber)
+                @Html.PrintTitle("重量", Model.Weight.ToString("F2"))
+
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("收货人", Model.ConsigneeName)
+                @Html.PrintTitle("收货地址", Model.DetailAddress)
+                @Html.PrintTitle("联系电话", Model.ConsigneePhone)
+            </div>
+
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("商品条码")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("商品描述")
+                            @Html.PrintTh("单位")
+                            @Html.PrintTh("数量")
+                        </tr>
+                        @{
+                            foreach (var info in Model.PrintVanningDetailSkuDtoList)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.UPC)
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.SkuDescr)
+                                    @Html.PrintTd(info.UOMCode)
+                                    @Html.PrintTd(info.Qty.ToString())
+                                </tr>
+                            }
+                        }
+                        <tr>
+                            @Html.PrintTd()
+                            @Html.PrintTd()
+                            @Html.PrintTd()
+                            @Html.PrintTd()
+                            @Html.PrintTd($"合计:{Model.TotalQty.ToString()}")
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class='col-xs-4'></div>
+                @Html.PrintTitle("打印时间", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                @Html.PrintTitle("打印人", this.ViewData["PrintUserName"].ToString())
+            </div>
+        </form>
+    </div>
+</div>
+

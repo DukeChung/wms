@@ -1,0 +1,219 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil;
+@{
+    ViewBag.Title = "交接标签管理";
+}
+@Html.Breadcrumb("三方交接", "交接标签管理")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("出库单号", "OutboundOrder")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("交接号", "TransferOrderNumber")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("服务综合体", "ServiceStationName")
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="Status">状态</label>
+                    <select class="form-control m-b" name="Status" id="Status">
+                        <option selected>全部</option>
+                        <option value="10">新建</option>
+                        <option value="20">进行中</option>
+                        <option value="30">完成</option>
+                        <option value="-999">作废</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="Status">箱型</label>
+                    <select class="form-control m-b" name="TransferType" id="TransferType">
+                        <option selected>全部</option>
+                        <option value="0">未标记</option>
+                        <option value="10">拼箱</option>
+                        <option value="20">整件</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="outboundTransferOrderTable" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="TransferOrder">交接号</th>
+                                <th data-data="OutboundOrder">出库单号</th>
+                                <th data-data="ServiceStationName">服务综合体</th>
+                                <th data-data="StatusName">状态</th>
+                                <th data-data="TransferTypeName">箱型</th>
+                                @*<th data-data="PreBulkPackOrder">来源容器</th>*@
+                                <th data-data="CreateDateDisplay">创建日期</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/print")
+    <script>
+        var outboundTransferOrderTable = {
+            table: {},
+            init: function () {
+                var _self = this;
+
+                _self.table = $('#outboundTransferOrderTable').DataTable({
+                    "sAjaxSource": "/OutboundTransferOrder/GetOutboundTransferOrderByPage",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "TransferOrderNumber", "value": $("#TransferOrderNumber").val() },
+                            { "name": "ServiceStationName", "value": $("#ServiceStationName").val() },
+                            { "name": "Status", "value": $("#Status").val() },
+                            { "name": "OutboundOrder", "value": $("#OutboundOrder").val() },
+                            { "name": "TransferType", "value": $("#TransferType").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'pageLength',
+                        @if (AuthorizeManager.HasFunction(AuthKeyConst.OrderManger_OutboundTransferOrder_Print, User.Identity.Name))
+                    {
+                            <text>
+                            {
+                                text: '打印',
+                                action: function (e, dt, node, config) {
+                                    var sysIds = GetGridMultiselectSysId();
+                                    if (sysIds != null) {
+                                        $.ajax({
+                                            url: "/OutboundTransferOrder/GetOutboundTransferBox?sysIds=" + sysIds,
+                                            type: "GET",
+                                            success: function (data) {
+                                                if (data.Success) {
+                                                    for (var i = 0; i < data.Data.length; i++) {
+                                                        var LODOP = getLodop();
+                                                        LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                                                        LODOP.SET_PRINTER_INDEX("@ViewBag.PrintSettingCase");
+                                                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                                                        LODOP.ADD_PRINT_HTM(10, 30, 320, 170, "<div style='font-size:20px;font-family:微软雅黑;'><span style='color:#f00'>国资商城</span> &nbsp;&nbsp;&nbsp;&nbsp;" + data.Data[i].ConsigneeArea + " " + data.Data[i].ConsigneeTown + "</div><div style='font-size:24px;width:290px;font-family:微软雅黑;font-weight: bold;padding:2px 0;'>" + data.Data[i].ServiceStationName + "-" + data.Data[i].BoxNumber + "<span style='padding-left:3px;font-size:14px;font-family:微软雅黑;font-weight: bold;'>(" + data.Data[i].OutboundChildType + ")</span></div>");
+                                                        LODOP.ADD_PRINT_BARCODE(160, 30, 272, 44, "128B", data.Data[i].TransferOrder);
+                                                        LODOP.PRINT();
+                                                    }
+                                                    msgAlert("打印成功");
+
+                                                }
+                                                else {
+                                                    msgErro('打印失败');
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            },
+                            </text>
+                        },
+                             @if (AuthorizeManager.HasFunction(AuthKeyConst.OrderManger_OutboundTransferOrder_Edit, User.Identity.Name))
+                    {
+                                <text>
+                              {
+                                  text: '编辑',
+                                  action: function (e, dt, node, config) {
+                                      var sysId = GetGridSysId();
+                                      if (sysId != null) {
+                                          var selectRow = _self.table.rows(':has(:checkbox:checked)');
+                                          if (selectRow.length == 1) {
+                                              if (selectRow.data()[0].Status != 20 || selectRow.data()[0].TransferType == 20) {
+                                                  msgAlert("只有拼箱进行中的才能编辑!");
+                                                  return;
+                                              }
+                                              window.location.href = "/OutboundTransferOrder/UpdateTransferOrder?sysId=" + sysId;
+                                          }
+                                      }
+                                  }
+                              },
+                              </text>
+                            }
+                    ],
+                    "columnDefs": [{
+                        "targets": 0,
+                        "width": "15px",
+                        render: function (data, type, full, meta) {
+                            return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                        }
+                    },
+                        {
+                            "targets": 1,
+                            "width": "10%",
+                            render: function (data, type, full, meta) {
+                                return '<a target="_blank" href="/OutboundTransferOrder/OutboundTransferOrderView?sysId=' + full.SysId + '">' + full.TransferOrder + '</a>';
+                            }
+                        }
+                    ],
+                    "iDisplayLength": 100,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        buttons: {
+                            pageLength: {
+                                _: "每页显示 %d 条记录"
+                            }
+                        },
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    _self.table.ajax.reload();
+                });
+            }
+        };
+
+        $(function () {
+            outboundTransferOrderTable.init();
+        });
+
+    </script>
+}

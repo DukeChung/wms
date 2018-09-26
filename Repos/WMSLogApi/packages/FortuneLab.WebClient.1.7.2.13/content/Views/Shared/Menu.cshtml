@@ -1,0 +1,39 @@
+﻿@{
+    SitemapHelper.CheckAndInitMenu();
+    bool hideAdminMenuItemsBasedOnPermissions = true;
+}
+
+@(Html.Kendo().Menu().Name("NavMenu")
+.HtmlAttributes(new { @class = "pull-left" })
+.BindTo("navmenu", (item, siteMapNode) =>
+{
+    item.LinkHtmlAttributes.Add("data-pjax", "1");
+    var imageUrl = siteMapNode.Attributes["ImageUrl"];
+    if (imageUrl != null && !string.IsNullOrEmpty(imageUrl.ToString()))
+    {
+        item.ImageUrl = imageUrl.ToString();
+    }
+
+    var target = siteMapNode.Attributes["target"];
+    if (target != null && !string.IsNullOrEmpty(target.ToString()))
+    {
+        item.LinkHtmlAttributes.Add("target", target.ToString());
+    }
+
+    if (ViewBag.SelectedMenuItem == item.Text)
+    {
+        item.Selected = true;
+    }
+
+    if (hideAdminMenuItemsBasedOnPermissions)
+    {
+        var permissionNames = siteMapNode.Attributes["PermissionNames"];
+        if (permissionNames != null && !string.IsNullOrEmpty(permissionNames.ToString()))
+        {
+            item.Visible = permissionNames.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Any(permissionName => FunctionAuthorize(permissionName.Trim()));
+        }
+    }
+
+    item.Url = item.GenerateUrl(this.ViewContext, NavUrlGenerator.Instance);
+})
+)

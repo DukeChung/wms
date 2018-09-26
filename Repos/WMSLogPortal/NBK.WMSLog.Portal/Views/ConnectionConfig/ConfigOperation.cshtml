@@ -1,0 +1,109 @@
+﻿@using NBK.ECService.WMSLog.Utility
+@using NBK.ECService.WMSLog.Utility.Enum
+@using NBK.ECService.WMSLog.DTO
+
+@{
+    ViewBag.Title = "数据库配置";
+}
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form id="cleanCacheFrm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">仓库名称:</label>
+                <div class="col-sm-8">
+                    <select class="form-control m-b" name="Warehouse" id="Warehouse" onchange="ConnectionConfig.SelectChange()">
+                        <option selected value="0">请选择</option>
+                        @foreach (var item in ViewData["operationList"] as List<ConnectionStringDto>)
+                        {
+                            <option value="@item.SysId">@item.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">写连接字符串:</label>
+                <div class="col-sm-8">
+                    <textarea type="text" rows="2" id="ConnectionString" name="ConnectionString" class="form-control" placeholder="请输入数据库连接字符串"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">读连接字符串:</label>
+                <div class="col-sm-8">
+                    <textarea type="text" rows="2" id="ConnectionStringRead" name="ConnectionStringRead" class="form-control" placeholder="请输入数据库连接字符串"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-8" > 
+                    <a style="float:right" class="btn btn-sm btn-primary" onclick="ConnectionConfig.Save()"><i class="fa fa-check-square-o"></i> 提交</a> 
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
+    <script type="text/javascript">
+        var ConnectionConfig = {
+
+            SelectChange: function () {
+                if ($("#Warehouse").val() == "" || $("#Warehouse").val() == "0") {
+                    $("#ConnectionString").val("");
+                    $("#ConnectionStringRead").val("");
+                    return;
+                }
+                $.ajax({
+                    url: "/ConnectionConfig/GetConfig",
+                    type: 'POST',
+                    data: "warehouseSysId=" + $("#Warehouse").val(),
+                    success: function (data) {
+                        if (data.Success) {
+                            $("#ConnectionString").val(data.ConnectionString);
+                            $("#ConnectionStringRead").val(data.ConnectionStringRead);
+                        }
+                        else {
+                            $("#ConnectionString").val("");
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+
+            },
+
+
+            Save: function () {
+                if ($("#Warehouse").val() == "" || $("#Warehouse").val() == "0") {
+                    msgErro("请选择需要更新数据库连接字符串的仓库！");
+                    return;
+                }
+
+                if ($("#ConnectionString").val() == "") {
+                    msgErro("请输入数据库连接字符串！");
+                    return;
+                }
+
+                saveLoading('show');
+                $.ajax({
+                    url: "/ConnectionConfig/SaveConfig",
+                    type: 'POST',
+                    data: "warehouseSysId=" + $("#Warehouse").val() + "&connectionString=" + $("#ConnectionString").val() + "&connectionStringRead=" + $("#ConnectionStringRead").val(),
+                    success: function (data) {
+                        saveLoading('hide');
+                        if (data.Success) {
+                            msgSuccess("更新成功!");
+                        }
+                        else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+
+
+        };
+    </script>
+} 

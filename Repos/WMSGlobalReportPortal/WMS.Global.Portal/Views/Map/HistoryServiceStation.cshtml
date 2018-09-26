@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "仓库业务分部";
+}
+<div id="content">
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa  fa-map-marker "></i> </span>
+                    <h2 class="title-font">仓库业务分部</h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_HistoryServiceStation" style="background-color:#e6e6e6"> </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </article>
+    </div>
+</div>
+<script src="~/Scripts/plugin/echarts/extension/china.js"></script>
+<script src="~/Scripts/plugin/echarts/echarts-gl.min.js"></script>
+@*<script src="~/Scripts/plugin/echarts/extension/bmap.min.js"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=T9j5mGKFQ57UgmsjtNfM9rr5AXvZvEIx"></script>*@
+<script>
+    var height = Math.ceil($(window).height()) - 150;
+    $("#div_HistoryServiceStation").height(height);
+
+
+    var myChart = echarts.init(document.getElementById("div_HistoryServiceStation"));
+    $(function () {
+        GetMapChart();
+        //  GetMapData();
+    })
+
+    function GetMapChart() {
+        myChart.setOption(option = {
+            backgroundColor: '#333333',
+            tooltip: {
+                show: true,
+                formatter: function (params) {
+                    var res = "发货量:" + params.value[2] + ' 单'
+                    return res;;
+                }
+            },
+            legend: {
+                left: 'left',
+                data: ['强', '中', '弱'],
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+            geo: {
+                map: 'china',
+                roam: true,
+                zoom: 1.25,
+                label: {
+                    emphasis: {
+                        show: false
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        areaColor: '#323c48',
+                        borderColor: '#111'
+                    },
+                    emphasis: {
+                        areaColor: '#2a333d'
+                    }
+                }
+            },
+            series: [{
+                name: '弱',
+                type: 'scatterGL',
+                coordinateSystem: 'geo',
+                symbolSize: 1,
+                label: {
+
+                },
+                itemStyle: {
+                    shadowBlur: 2,
+                    shadowColor: 'rgba(37, 140, 249, 0.8)',
+                    color: 'rgba(37, 140, 249, 0.8)'
+                },
+                data: []
+            }, {
+                name: '中',
+                type: 'scatterGL',
+                coordinateSystem: 'geo',
+                symbolSize: 1,
+                itemStyle: {
+                    shadowBlur: 2,
+                    shadowColor: 'rgba(14, 241, 242, 0.8)',
+                    color: 'rgba(14, 241, 242, 0.8)'
+                },
+                data: []
+            }, {
+                name: '强',
+                type: 'scatterGL',
+                coordinateSystem: 'geo',
+                symbolSize: 1,
+                itemStyle: {
+                    shadowBlur: 2,
+                    shadowColor: 'rgba(255, 255, 255, 0.8)',
+                    color: 'rgba(255, 255, 255, 0.8)'
+                },
+                data: []
+            }]
+        });
+    }
+
+
+    var pageNumber = 0;
+    var flag = true;
+    var timer = setInterval(function () {
+        var data0 = option.series[0].data;
+        var data1 = option.series[1].data;
+        var data2 = option.series[2].data;
+        $.ajax({
+            url: "/Map/GetHistoryServiceStationData?page=" + pageNumber,
+            type: "GET",
+            success: function (result) {
+                if (result.success) {
+                    if (result.data.length > 0) {
+                        for (var i = 0; i < result.data.length; i++) {
+                            if (result.data[0].TotalCount <= 5) {
+                                data0.push({
+                                    value: [result.data[i].Lng, result.data[i].Lat, result.data[i].TotalCount]
+                                });
+                            }
+                            else if (result.data[0].TotalCount > 5 && result.data[0].TotalCount <= 10) {
+                                data1.push({
+                                    value: [result.data[i].Lng, result.data[i].Lat, result.data[i].TotalCount]
+                                });
+                            }
+                            else {
+                                data2.push({
+                                    value: [result.data[i].Lng, result.data[i].Lat, result.data[i].TotalCount]
+                                });
+                            }
+                        }
+                        myChart.setOption(option);
+                        pageNumber++;
+                    } else {
+                        clearInterval(timer);
+                        flag = false;
+                    }
+                }
+            }
+        });
+    }, 3000);
+
+</script>

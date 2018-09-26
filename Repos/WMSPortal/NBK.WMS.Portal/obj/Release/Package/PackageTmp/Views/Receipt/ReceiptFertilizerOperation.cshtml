@@ -1,0 +1,1744 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "收货";
+}
+@Html.Breadcrumb("入库管理", "收货")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <div id="ReceiptForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-1">
+                    收货单号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {{ReceiptOrder}}
+                            <input type="hidden" v-model="SysId" />
+                        </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    交货期限:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">{{ExpectedReceiptDateText}}</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    单据状态:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">{{StatusText}}</div>
+                        <div class="col-sm-10 hr-line-dashed" style="margin-top: 5px">
+                            <div class="col-sm-2">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    供应商:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> {{VendorName}} </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    入库单号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> {{ExternalOrder}} </div>
+                        <div class="col-sm-10 hr-line-dashed" style="margin-top: 5px">
+                            <div class="col-sm-2">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    入库类型:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">农资入库 </div>
+                        <div class="col-sm-10 hr-line-dashed" style="margin-top: 5px">
+                            <div class="col-sm-2">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    入库备注:
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {{PurchaseDescr}}
+                        </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px;"> </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="wizard-big">
+                    <div class="ibox-content">
+                        <p class="text-warning">
+                            开始一个新的收货任务
+                        </p>
+                        <div id="divOperation">
+                            <h1>扫描收货单</h1>
+                            <div class="step-content">
+                                <form id="step1Form" onSubmit="return false" action="#">
+                                    <div class="text-center m-t-md">
+                                        <div class="col-sm-12">
+                                            <h3 class="font-italic text-danger">请扫描收货单号开始收货任务</h3>
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5">
+                                            <input id="txtReceiptOrder" placeholder="收货单号" class="form-control input-sm m-b required" v-on:change="ScanReceiptOrder" />
+                                        </div>
+                                        <div class="col-sm-3"></div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <h1>填写清点数量</h1>
+                            <div class="step-content">
+                                <form id="step2Form" onSubmit="return false" action="#" v-on:keyup.enter="PageEnter">
+                                    <div class="text-center m-t-md">
+                                        <div class="col-sm-10">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="5%" align="left">序号</th>
+                                                        <th width="25%" align="left">商品名称</th>
+                                                        <th width="35%" align="left">商品描述</th>
+                                                        <th width="10%" align="right">入库数量</th>
+                                                        <th width="10%" align="right">已收数量</th>
+                                                        <th width="10%" align="right">本次收数量</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="info in PurchaseDetailViewDto" v-on:click="ShowSkuImage(info.SkuSysId)">
+                                                        <td align="left">{{$index+1}}</td>
+                                                        <td align="left">{{info.SkuName}}</td>
+                                                        <td align="left">{{info.SkuDescr}}</td>
+                                                        <td align="right">{{info.Qty}}</td>
+                                                        <td align="right">{{info.ReceivedQty}}</td>
+                                                        <td align="right"><input v-model="info.CurrentQty" ReceivedQty="{{info.ReceivedQty}}" RejectedQty="{{info.RejectedQty}}" Qty="{{info.Qty}}" type="text" name="purchaseDetailViewCurrentQty" class="CurrentQty required" width="50%" onkeyup='this.value=this.value.replace(/\D/gi,"")' v-on:change="CheckReceivedQty(info)"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <div class="lightBoxGallery">
+                                                <a href="~/Images/notImage.jpg" title="Image from Unsplash" data-gallery=""><img src="~/Images/notImage.jpg" style="width: 180px;"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <h1>扫描商品</h1>
+                            <div class="step-content" style="width:100%">
+                                <div class="text-center m-t-md">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10%" align="left" class="font-normal">序号</th>
+                                                        <th width="20%" align="left" class="font-normal">UPC</th>
+                                                        <th width="20%" style="text-align:right" class="font-normal">包装系数</th>
+                                                        <th width="20%" style="text-align:right" class="font-normal">收货数量</th>
+                                                        @*<th width="20%" style="text-align:right" class="font-normal">赠品收货数量</th>*@
+                                                        <th width="20%" style="text-align:right" class="font-normal">已扫描数量</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="info in PurchaseDetailViewDto" v-if="info.CurrentQty != 0" v-on:click="ShowSkuImage(info.SkuSysId)">
+                                                        <td align="left">
+                                                            {{$index+1}}
+                                                        </td>
+                                                        <td align="left">{{info.SkuUPC}}</td>
+                                                        <td align="right">{{info.PackFactor}}</td>
+                                                        <td align="right">{{info.CurrentQty}}</td>
+                                                        @*<td align="right">{{info.CurrentGiftQty}}</td>*@
+                                                        <td align="right">{{info.ScanQty}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-sm-6 ">
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 ">商品名称:</div>
+                                                        <div class="col-sm-8">
+                                                            <div class="row">
+                                                                <div class="col-sm-12"> {{SkuName}} </div>
+                                                                <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4 ">商品描述:</div>
+                                                        <div class="col-sm-8">
+                                                            <div class="row">
+                                                                <div class="col-sm-12"> {{SkuDescr}} </div>
+                                                                <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">UPC:</div>
+                                                        <div class="col-sm-8">
+                                                            <div class="row">
+                                                                <div class="col-sm-12"> {{SkuUPC}} </div>
+                                                                <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="lightBoxGallery">
+                                                        <a href="~/Images/notImage.jpg" title="Image from Unsplash" data-gallery=""><img src="~/Images/notImage.jpg" style="width: 120px;"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-sm-2" style="padding-right: 0px; padding-left: 0px;">
+                                                            UPC
+                                                        </div>
+                                                        <div class="col-sm-1" style="margin-top: 5px; padding-right: 0px; padding-left: 0px;">
+                                                            <input type="number" id="UnitQty" name="UnitQty" style="width: 95%" v-model="UnitQty" onkeyup="value=value.replace(/[^0-9]/g,'')" onpaste="value=value.replace(/[^0-9]/g,'')">
+                                                        </div>
+                                                        <div class="col-sm-9" style="margin-top: 5px;">
+                                                            <div class="row">
+                                                                <div class="col-lg-1" style="padding-right: 0px; padding-left: 0px;"> 个</div>
+                                                                <div class="col-lg-10" style="padding-right: 0px; padding-left: 0px;">
+                                                                    <input type="text" id="ScanBarCode" style="width: 100%" v-on:change="ScanBarCodeChange">
+                                                                </div>
+                                                                <div class="col-lg-1" style="padding-right: 0px; padding-left: 0px;"> </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <form id="lotForm" action="#">
+                                                    <div id="lot09" style="display: none">
+                                                        <div class="col-sm-12">
+                                                            <div class="row">
+                                                                <div class="col-sm-1" style="margin-top: 5px; padding-right: 0px; padding-left: 0px;">
+                                                                    SN
+                                                                </div>
+                                                                <div class="col-sm-11" style="margin-top: 5px; padding-right: 45px; padding-left: 0px;">
+                                                                    <input type="text" id="LotValue09" name="LotValue09" style="width: 100%" v-on:change="ScanSN">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12" style="margin-top: 10px">
+                                                            <div class="row">
+                                                                <div class="col-sm-1" style="padding-right: 0px; padding-left: 0px;">
+                                                                    SN起
+                                                                </div>
+                                                                <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px;">
+                                                                    <input type="text" id="startSN" name="startSN" style="width: 100%" v-on:change="ScanBacth">
+                                                                </div>
+                                                                <div class="col-sm-1" style="padding-right: 0px; padding-left: 0px;">
+                                                                    SN止
+                                                                </div>
+                                                                <div class="col-sm-5" style="padding-right: 45px; padding-left: 0px;">
+                                                                    <input type="text" id="endSN" name="endSN" style="width: 100%" v-on:change="ScanBacth">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot10" style="display: none">
+                                                        <div class="col-sm-1" id="LotName10" name="LotName10" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            生产日期
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <div class="form-group" id="divLotValue10" style="width:85%;">
+                                                                <div class="input-group date" style="margin-left:15px;width:100%;">
+                                                                    <span class="input-group-addon" style="display:none;"><i class="fa fa-calendar"></i></span>
+                                                                    <input type="text" id="LotValue10" name="LotValue10" style="width: 100%" value="" placeholder="">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot11" style="display: none">
+                                                        <div class="col-sm-1" id="LotName11" name="LotName11" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            失效日期
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <div class="form-group" id="divLotValue11" style="width:85%;">
+                                                                <div class="input-group date" style="margin-left:15px;width:100%;">
+                                                                    <span class="input-group-addon" style="display:none;"><i class="fa fa-calendar"></i></span>
+                                                                    <input type="text" id="LotValue11" name="LotValue11" style="width: 100%" value="" placeholder="">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot01" style="display: none">
+                                                        <div class="col-sm-1" id="LotName01" name="LotName01" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue01" name="LotValue01" style="width: 85%">
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot02" style="display: none">
+                                                        <div class="col-sm-1" id="LotName02" name="LotName02" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue02" name="LotValue02" style="width: 85%">
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot03" style="display: none">
+                                                        <div class="col-sm-1" id="LotName03" name="LotName03" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue03" name="LotValue03" style="width: 85%">
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot04" style="display: none">
+                                                        <div class="col-sm-1" id="LotName04" name="LotName04" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue04" name="LotValue04" style="width: 85%">
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot05" style="display: none">
+                                                        <div class="col-sm-1" id="LotName05" name="LotName05" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue05" name="LotValue05" style="width: 85%">
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot06" style="display: none">
+                                                        <div class="col-sm-1" id="LotName06" name="LotName06" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue06" name="LotValue06" style="width: 85%">
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot07" style="display: none">
+                                                        <div class="col-sm-1" id="LotName07" name="LotName07" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue07" name="LotValue07" style="width: 85%">
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot08" style="display: none">
+                                                        <div class="col-sm-1" id="LotName08" name="LotName08" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue08" name="LotValue08" style="width: 85%">
+                                                        </div>
+                                                    </div>
+                                                    <div id="lot12" style="display: none">
+                                                        <div class="col-sm-1" id="LotName12" name="LotName12" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                                                        </div>
+                                                        <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                                            <input type="text" id="LotValue12" name="LotValue12" style="width: 85%">
+                                                        </div>
+                                                    </div>
+
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="10%" class="font-normal">序号</th>
+                                                            <th width="30%" class="font-normal">商品名称</th>
+                                                            <th width="30%" class="font-normal">商品描述</th>
+                                                            <th width="20%" class="font-normal">UPC/SN</th>
+                                                            <th width="10%" class="font-normal">已扫描数量</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="info in ReceiptDetailOperationDto">
+                                                            <td align="left">
+                                                                {{$index+1}}
+                                                            </td>
+                                                            <td align="left">{{info.SkuName}}</td>
+                                                            <td align="left">{{info.SkuDescr}}</td>
+                                                            <td align="right">{{info.SkuUPC}}</td>
+                                                            <td align="right"><input v-model="info.ReceivedQty" type="text" class="CurrentQty required" width="50%" v-on:change="CheckSaveReceivedQty(info,$event)" v-on:blur="ConvertReceivedQty(info,$event);" onkeyup="value=value.replace(/[^0-9]/g,'0')" onpaste="value=value.replace(/[^0-9]/g,'0')"></td>
+                                                        </tr>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h1>确认入库</h1>
+                            <div class="step-content" style="width:100%">
+                                <div class="text-center m-t-md">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10%">序号</th>
+                                                        <th width="20%">商品名称</th>
+                                                        <th width="17%">商品描述</th>
+                                                        <th width="10%">UPC</th>
+                                                        <th style="text-align:right" width="10%">入库数量</th>
+                                                        @*<th style="text-align:right" width="10%">入库赠品数量</th>*@
+                                                        <th style="text-align:right" width="13%">本次收货数量</th>
+                                                        <th style="text-align:center" width="10%">破损数量</th>
+                                                        <th style="text-align:center">备注</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="info in ReceiptDetailOperationDto">
+                                                        <td align="left">{{$index+1}}</td>
+                                                        <td align="left">{{info.SkuName}}</td>
+                                                        <td align="left">{{info.SkuDescr}}</td>
+                                                        <td align="left">{{info.SkuUPC}}</td>
+                                                        <td align="right">{{info.PurchaseQty}}</td>
+                                                        @*<td align="right">{{info.PurchaseGiftQty}}</td>*@
+                                                        <td align="right"><input v-model="info.ReceivedQty" type="text" class="CurrentQty required" width="50%" v-on:change="CheckSaveReceivedQty(info,$event)" v-on:blur="ConvertReceivedQty(info,$event);" onkeyup="value=value.replace(/[^0-9]/g,'0')" onpaste="value=value.replace(/[^0-9]/g,'0')"></td>
+                                                        <td align="right"><input v-model="info.AdjustmentQty" type="text" class="CurrentQty required" width="50%" v-on:change="CheckAdjustmentQty(info,$event)" v-on:blur="ConvertAdjustmentQty(info,$event);" onkeyup="value=value.replace(/[^0-9]/g,'0')" onpaste="value=value.replace(/[^0-9]/g,'0')"></td>
+                                                        <td align="right"><input v-model="info.Descr" type="text" class="CurrentQty required" width="50%"></td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divWindowSkuStyle" class="modal fade" aria-hidden="true">
+                <div class="ibox-content modal-dialog">
+                    <h4 class="m-t-none m-b">商品属性维护</h4>
+                    <div class="text-center m-t-md">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="25%">商品Code</th>
+                                    <th width="25%">商品名称</th>
+                                    <th width="50%">商品描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="info in PurchaseDetailSkuDto" v-on:click="SelectSkuStyle(info,$event)" style="cursor: pointer;">
+                                    <td>{{info.SkuCode}}</td>
+                                    <td>{{info.SkuName}}</td>
+                                    <td>{{info.SkuDescr}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <form id="formSkuStyle" onSubmit="return false">
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <div class="col-sm-4" style="margin-top: 5px;">保质期</div>
+                                    <div class="col-sm-6">
+                                        <input id="SkuSysId" name="SkuSysId" type="hidden" />
+                                        <input placeholder="请填写保质期" id="DaysToExpire" name="DaysToExpire" class="form-control input-sm m-b required" />
+                                    </div>
+                                    <div class="col-sm-2" style="margin-top: 5px;">天</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="col-sm-4" style="margin-top: 5px;">重量</div>
+                                    <div class="col-sm-6">
+                                        <input placeholder="请填写重量" id="NetWeight" name="NetWeight" class="form-control input-sm m-b required" />
+                                    </div>
+                                    <div class="col-sm-2" style="margin-top: 5px;">KG</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <div class="col-sm-5" style="margin-top: 5px;">长(米)</div>
+                                    <div class="col-sm-7">
+                                        <input placeholder="请填写长" id="Length" name="Length" class="form-control input-sm m-b required" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="col-sm-5" style="margin-top: 5px;">宽(米)</div>
+                                    <div class="col-sm-7">
+                                        <input placeholder="请填写宽" id="Width" name="Width" class="form-control input-sm m-b required" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="col-sm-5" style="margin-top: 5px;">高(米)</div>
+                                    <div class="col-sm-7">
+                                        <input placeholder="请填写高" id="Height" name="Height" class="form-control input-sm m-b required" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-2" style="margin-top: 5px;">UPC</div>
+                                    <div class="col-sm-6">
+                                        <input placeholder="请填写UPC" id="UPC" name="UPC" class="form-control input-sm m-b required" style="margin-left: 10px;" />
+                                    </div>
+                                    <div class="col-sm-4" style="margin-top: 5px;">
+                                        没有UPC<input type="checkbox" id="selectSkuCode" onclick="GetSkuCode();" style="margin-left:10px">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="ibox-footer text-right tooltip-demo">
+                        <a class="btn btn-sm btn-primary" id="btnSkuNext" onclick="btnSkuNext();"><i class="fa fa-check-square-o"></i> 保存</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="divWindowSkuBarCode" class="modal fade" aria-hidden="true" style="display: none;">
+                <div class="ibox-content modal-dialog">
+                    <h4 class="m-t-none m-b">条码打印</h4>
+                    <div class="text-center m-t-md">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="30%">商品Code</th>
+                                    <th width="30%">商品名称</th>
+                                    <th width="30%">UPC</th>
+                                    <th width="10%">数量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="info in PurchaseDetailViewDto" v-on:click="SelectBarCode(info,$event)">
+                                    <td>{{info.SkuCode}}</td>
+                                    <td>{{info.SkuName}}</td>
+                                    <td>{{info.SkuUPC}}</td>
+                                    <td>{{info.Qty}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>条码类型</td>
+                                    <td><input type="radio" name="radPrint" value="0" checked="checked" />商品Code</td>
+                                    <td><input type="radio" name="radPrint" value="1" />SN</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>打印数量</td>
+                                    <td><input id="printQty" class="form-control input-sm m-b required" placeholder="请输入打印数量" /></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ibox-footer text-right tooltip-demo">
+                        <a class="btn btn-sm btn-primary" id="btnPrintBarCode" onclick="PrintUPC();"><i class="fa fa-check-square-o"></i> 打印</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<embed src="~/Content/error.wav" autostart="true" hidden="true" loop="false">
+
+
+@section Styles {
+
+    @Styles.Render("~/Content/plugins/blueimp/css/")
+    @Styles.Render("~/plugins/wizardStepsStyles")
+    @*@Styles.Render("~/plugins/touchSpinStyles")*@
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    <link rel="stylesheet" type="text/css" href="~/Content/plugins/ui-dialog.css" />
+    <style>
+        .lightBoxGallery {
+            text-align: center;
+        }
+
+            .lightBoxGallery img {
+                margin: 5px;
+            }
+
+        .tr-bg {
+            background: #6fd1bd;
+        }
+    </style>
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/lightboxGallery")
+    @Scripts.Render("~/plugins/wizardSteps")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/print")
+    @Scripts.Render("~/plugins/dataPicker")
+    <script type="text/javascript" src="~/Scripts/plugins/artDialog/dialog-plus-min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divOperation").steps({
+                onStepChanging: function (event, currentIndex, newIndex) {
+                    if (currentIndex === 0) {
+                        var flag = $("#step1Form").valid();
+
+                        if (flag) {
+                            $("#divOperation [href='#next']").parent().show();
+                            $("#divOperation [href='#previous']").parent().show();
+                        }
+                        return flag;
+                    }
+
+                    if (currentIndex === 1) {
+                        return true;
+                    }
+                    if (currentIndex === 2) {
+                        if (receipt.receiptOperation.$data.LotTemplateValueDtos.length === 0) {
+                            PayError();
+                            msgAlert("操作错误");
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    if (currentIndex === 3) {
+                        return true;
+                    }
+
+                },
+                onStepChanged: function (event, currentIndex, priorIndex) {
+                    if (currentIndex === 2) {
+                        $("#ScanBarCode").focus();
+                        $("#btnbarCode").show();
+                        $("#btnSkuStyle").show();
+                        if (receipt.receiptOperation.$data.IsScanSNOrder == true) {
+                            $("#btnScanSN").show();
+                        }
+                        $("#btnbarCode").click(function () {
+                            CreateBarCode();
+                        });
+                        $("#btnSkuStyle").click(function () {
+                            UpdateSkuStyle();
+                        });
+                        //$("#btnScanSN").click(function () {
+                        //    SNOperation.OpenSNWindow();
+                        //});
+                    } else {
+                        $("#btnbarCode").unbind("click");
+                        $("#btnSkuStyle").unbind("click");
+                        $("#btnScanSN").unbind("click");
+                        $("#btnbarCode").hide();
+                        $("#btnSkuStyle").hide();
+                        $("#btnScanSN").hide();
+                    }
+                    if (currentIndex === 3) {
+                        $("#divOperation [href='#finish']").parent().show();
+                        $("#cbPrintReceipt").show();
+                    } else {
+                        $("#divOperation [href='#finish']").parent().hide();
+                        $("#cbPrintReceipt").hide();
+                    }
+                },
+                onFinishing: function (event, currentIndex) {
+                    saveLoading('show');
+                    if (receipt.receiptOperation.$data.UnitQty == "") {
+                        receipt.receiptOperation.$data.UnitQty = 1;
+                    }
+                    //if (receipt.receiptOperation.$data.IsScanSNOrder == true) {
+                    //    receipt.receiptOperation.$data.SNList = SNOperation.ReadySanSNArray;
+                    //}
+
+                    $.ajax({
+                        url: "/Receipt/SaveReceiptOperation",
+                        type: "post",
+                        data: { dataStr: JSON.stringify(receipt.receiptOperation.$data) },
+                        success: function (data) {
+                            if (data.success) {
+                                msgSuccess();
+                                if ($("#printReceipt").is(':checked')) {
+                                    PrintReceipt();
+                                }
+                                window.location.href = "/Receipt/ReceiptOperation";
+                            }
+                            else {
+                                PayError();
+                                msgErro(data.message);
+                            }
+                            saveLoading();
+                        },
+                        error: function () {
+                            msgErro();
+                            saveLoading();
+                        }
+                    });
+                },
+                onFinished: function (event, currentIndex) {
+
+                },
+                onCanceled: function (event, currentIndex) {
+                    receipt.InitVue();
+                    $("#divOperation").steps("1");
+                },
+
+                labels: {
+                    finish: '完成',
+                    next: '下一步',
+                    previous: '上一步',
+                    cancel: '取消'
+                }
+            });
+            $("#divOperation [href='#finish']").parent().hide();
+            $("#divOperation [href='#cancel']").parent().hide();
+            $("#divOperation [href='#next']").parent().hide();
+            $("#divOperation [href='#previous']").parent().hide();
+            $("ul[aria-label='Pagination']").prepend('<li id="btnbarCode" class="" style="display: none;" ><a>条码制作</a></li>');
+            $("ul[aria-label='Pagination']").prepend('<li id="btnSkuStyle" class="" style="display: none;" ><a>商品属性维护</a></li>');
+            $("ul[aria-label='Pagination']").prepend('<li id="btnScanSN" class="" style="display: none;" ><a>扫描SN</a></li>');
+            $("ul[aria-label='Pagination']").prepend('<li id="cbPrintReceipt" class="" style="display: none;" ><label><input id="printReceipt" type="checkbox" checked / >打印收货单</label></li>');
+
+
+            $("#txtReceiptOrder").focus();
+            receipt.InitVue();
+
+            purchaseSysId = receipt.receiptOperation.$data.PurchaseSysId;
+            $("#txtReceiptOrder").val(receipt.receiptOperation.$data.ReceiptOrder);
+            $("#divOperation").steps("next");
+            $("#divOperation").steps("next");
+
+            $('#divLotValue10 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#divLotValue11 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+        });
+
+
+        function PayError() {
+            $("embed").hide();
+            $("embed").show();
+        }
+
+        function CreateBarCode() {
+            $("#divWindowSkuBarCode").modal('show');
+        }
+
+        function UpdateSkuStyle() {
+            $("#divWindowSkuStyle").modal('show');
+        }
+
+        function GetSkuCode() {
+            var checked = $('#selectSkuCode').is(':checked');
+            if (checked) {
+                $("#UPC").val($('#selectSkuCode').attr("code"));
+            } else {
+                $("#UPC").val("");
+            }
+        }
+
+        function btnSkuNext() {
+            var skuSysId = $("#SkuSysId").val();
+            var skuUpc = $("#UPC").val();
+            var checked = $('#selectSkuCode').is(':checked');
+            if (skuUpc.length == 0 && !checked) {
+                msgAlert("UPC不能为空！");
+                return;
+            }
+            $.ajax({
+                url: "/Receipt/SavePurchaseDetailSkuStyle?purchaseSysId=" + purchaseSysId,
+                type: "post",
+                data: $("#formSkuStyle").serializeObject(),
+                success: function (data) {
+                    if (data.success) {
+                        msgSuccess("保存成功");
+                        $("#UPC").val("");
+                        var purchaseArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) {
+                            if (item.SkuSysId === skuSysId) {
+                                item.SkuUPC = skuUpc;
+                            }
+                        });
+                    } else {
+                        msgAlert(data.message);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        var lastScanCode;
+        var lastSkuSysId;
+        var purchaseSysId;
+        var barCodePrintInfo;
+        var receipt =
+        {
+            receiptOperation: {},
+            InitVue: function () {
+                receipt.receiptOperation = new Vue({
+                    el: '#ReceiptForm',
+                    data: JSON.parse('@Html.Raw(Json.Encode(Model))'),
+                    methods:
+                    {
+                        PageEnter: function () {
+                            $("#divOperation").steps('next');
+                        },
+                        ScanReceiptOrder: function () {
+                            var orderNumber = $("#txtReceiptOrder").val().trim();
+                            if (orderNumber.length === 0) {
+                                return false;
+                            }
+                            $.ajax({
+                                url: "/Receipt/GetReceiptOperationByOrderNumber?orderNumber=" + $("#txtReceiptOrder").val().trim(),
+                                type: "post",
+                                success: function (data) {
+                                    if (data.success) {
+                                        receipt.receiptOperation.$data = data.ReceiptOperationDto;
+                                        purchaseSysId = data.ReceiptOperationDto.PurchaseSysId;
+                                        $("#divOperation").steps('next');
+                                        $("#divOperation").steps('next');
+                                    } else {
+                                        $("#txtReceiptOrder").val("");
+                                        PayError();
+                                        msgErro(data.message);
+                                    }
+                                },
+                                error: function () {
+
+                                }
+                            });
+                            return false;
+                        },
+                        SelectBarCode: function (info, e) {
+                            barCodePrintInfo = info;
+                            $(e.target).parent().parent().find("tr").removeClass("tr-bg");
+                            $(e.target).parent().addClass("tr-bg");
+                        },
+                        SelectSkuStyle: function (info, e) {
+                            $("#DaysToExpire").val(info.DaysToExpire);
+                            $("#NetWeight").val(info.NetWeight);
+                            $("#Length").val(info.Length);
+                            $("#Width").val(info.Width);
+                            $("#Height").val(info.Height);
+                            $("#SkuSysId").val(info.SkuSysId);
+                            $("#UPC").val("");
+                            $("#selectSkuCode").attr("checked", false);
+                            $("#selectSkuCode").attr("code", info.SkuCode);
+                            $(e.target).parent().parent().find("tr").removeClass("tr-bg");
+                            $(e.target).parent().addClass("tr-bg");
+                        },
+                        ScanBarCodeChange: function () {
+                            lastSkuSysId = "";
+                            if ($("#ScanBarCode").val().length === 0) {
+                                $("#ScanBarCode").focus();
+                                return;
+                            }
+                            if ($("#UnitQty").val().trim() == "" || parseInt($("#UnitQty").val().trim()) <= 0) {
+                                $("#UnitQty").val(1);
+                                receipt.receiptOperation.$data.UnitQty = 1;
+                                $("#ScanBarCode").val('');
+                                msgAlert("收货数量小于等于0或不合法!");
+                                return;
+                            }
+
+                            var barCode = $("#ScanBarCode").val().trim();
+                            $("#ScanBarCode").val("");
+                            $("#ScanBarCode").focus();
+
+                            var skuPackUPCCount = 0; //统计明细商品所有包装码等于输入UPC的数量
+                            var skuSysIdList = new Array();
+                            var isUPC = false;
+                            $.each(receipt.receiptOperation.$data.PurchaseDetailViewDto, function (index, el) {
+                                isUPC = false;
+                                if (el.SkuUPC == barCode) {
+                                    isUPC = true;
+                                }
+
+                                if (el.UPC02 == barCode) {
+                                    skuPackUPCCount++;
+                                    isUPC = true;
+                                }
+                                if (el.UPC03 == barCode) {
+                                    skuPackUPCCount++;
+                                    isUPC = true;
+                                }
+                                if (el.UPC04 == barCode) {
+                                    skuPackUPCCount++;
+                                    isUPC = true;
+                                }
+                                if (el.UPC05 == barCode) {
+                                    skuPackUPCCount++;
+                                    isUPC = true;
+                                }
+
+                                if (isUPC) {
+                                    skuSysIdList.push(el.SkuSysId);  //记录当前单据的所有 skuSysId ，如果后续需要弹出选择UPC页面，那么这个集合会作为筛选条件
+                                }
+
+                            });
+
+                            var purchaseArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) {
+                                return item.SkuUPC === barCode;
+                            });
+                            if (purchaseArr.length === 0 && skuPackUPCCount == 0) {
+                                PayError();
+                                msgAlert("扫描的条码未找到对应的货品,请仔细核对!");
+                                return;
+                            }
+
+                            if (purchaseArr.length == 1 && skuPackUPCCount == 0) {
+                                //正常扫码
+                                receipt.ScanBarCode_Fun(purchaseArr, barCode);
+
+                            } else if (purchaseArr.length == 0 && skuPackUPCCount == 1) {
+
+                                var skuPackArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) {
+                                    return item.UPC02 == barCode || item.UPC03 == barCode ||
+                                        item.UPC04 == barCode || item.UPC05 == barCode;
+                                });
+
+                                //扫码 只存在一个匹配的包装码 并且没有匹配的商品UPC时，将包装码对应的商品信息带出
+                                //此处将UI当前qty * 包装qty，得到最终 qty，即 x 箱 *  y个（每箱数量） = 最终数量
+                                if (skuPackArr[0].UPC02 == barCode && !isNaN(skuPackArr[0].FieldValue02)) {
+                                    receipt.receiptOperation.$data.UnitQty = skuPackArr[0].FieldValue02 * receipt.receiptOperation.$data.UnitQty;
+                                }
+                                else if (skuPackArr[0].UPC03 == barCode && !isNaN(skuPackArr[0].FieldValue03)) {
+                                    receipt.receiptOperation.$data.UnitQty = skuPackArr[0].FieldValue03 * receipt.receiptOperation.$data.UnitQty;
+                                }
+                                else if (skuPackArr[0].UPC04 == barCode && !isNaN(skuPackArr[0].FieldValue04)) {
+                                    receipt.receiptOperation.$data.UnitQty = skuPackArr[0].FieldValue04 * receipt.receiptOperation.$data.UnitQty;
+                                }
+                                else if (skuPackArr[0].UPC05 == barCode && !isNaN(skuPackArr[0].FieldValue05)) {
+                                    receipt.receiptOperation.$data.UnitQty = skuPackArr[0].FieldValue05 * receipt.receiptOperation.$data.UnitQty;
+                                }
+
+                                barCode = skuPackArr[0].SkuUPC; //将sku upc 赋值给 barCode
+
+                                purchaseArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) {
+                                    return item.SkuSysId === skuPackArr[0].SkuSysId;
+                                });
+                                receipt.ScanBarCode_Fun(purchaseArr, barCode);
+
+                            } else {
+                                //出现重复UPC 商品，需要手动筛选
+                                ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                                ChooseSkuModel.showModal(barCode, function (chooseSku) {
+                                    purchaseArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) {
+                                        return item.SkuSysId === chooseSku.SkuSysId;
+                                    });
+
+                                    if (purchaseArr.length === 0) {
+                                        PayError();
+                                        msgAlert("扫描的条码未找到对应的货品,请仔细核对!");
+                                        return;
+                                    }
+                                    //此处将UI当前qty * 包装qty，得到最终 qty，即 x 箱 *  y个（每箱数量） = 最终数量
+                                    receipt.receiptOperation.$data.UnitQty = chooseSku.Qty * receipt.receiptOperation.$data.UnitQty;
+                                    barCode = chooseSku.UPC;
+                                    receipt.ScanBarCode_Fun(purchaseArr, barCode);
+
+                                });
+
+                            }
+
+                        },
+                        ScanSN: function () {
+
+                            lastScanCode = "";
+                            if ($("#LotValue09").val().length === 0) {
+                                $("#LotValue09").focus();
+                                return;
+                            }
+                            var barCode = $("#LotValue09").val().trim();
+                            var receiptSNArr = receipt.receiptOperation.$data.ReceiptSNDto.filter(function (item) {
+                                return item.SN === barCode;
+                            });
+
+                            if (receiptSNArr.length === 0) {
+                                PayError();
+                                msgAlert("扫描的SN条码未找到对应的货品,请仔细核对!");
+                                return;
+                            }
+
+                            if (receiptSNArr[0].IsAction === "Y") {
+                                PayError();
+                                msgAlert("扫描的SN条码已经被使用过,请仔细核对");
+                                return;
+                            }
+                            var unitQty = 1;
+                            var purchaseArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) {
+                                return item.SkuSysId === receiptSNArr[0].SkuSysId;
+                            });
+
+                            if (purchaseArr.length === 0) {
+                                PayError();
+                                msgAlert("扫描的SN条码未找到对应的货品,请仔细核对!");
+                                return;
+                            }
+                            if (purchaseArr[0].CurrentQty <= purchaseArr[0].ScanQty) {
+                                msgAlert("扫描的SN条码货品已全部收完无法继续收货,请仔细核对!");
+                                return;
+                            }
+
+                            if (parseInt(purchaseArr[0].CurrentQty) < parseInt(purchaseArr[0].ScanQty) + parseInt(unitQty)) {
+                                PayError();
+                                msgAlert("扫描的SN条码货品数量不能大于本次收货数量,请仔细核对!");
+                                return;
+                            }
+
+                            //判断上一次扫描条码
+                            if (lastSkuSysId !== receiptSNArr[0].SkuSysId) {
+                                lastSkuSysId = receiptSNArr[0].SkuSysId;
+                                //CreateLotTemp(purchaseArr[0].LotTemplateDto);
+                            }
+                            //var lotTemp = $("#lotForm").valid();
+                            //if (!lotTemp) {
+                            //    $("#LotValue09").val("");
+                            //    PayError();
+                            //    return;
+                            //}
+                            ShowSku(purchaseArr[0].SkuName, purchaseArr[0].SkuDescr, purchaseArr[0].SkuUPC);
+                            var receiptArr;
+
+                            if (receipt.receiptOperation.$data.ReceiptDetailOperationDto != null) {
+                                receiptArr = receipt.receiptOperation.$data.ReceiptDetailOperationDto.filter(function (item) {
+                                    if (item.SkuSysId === purchaseArr[0].SkuSysId) {
+                                        return item;
+                                    }
+                                });
+                            }
+
+
+                            if (receiptArr == null || receiptArr.length === 0) {
+                                receipt.receiptOperation.$data.ReceiptDetailOperationDto.push({
+                                    SkuSysId: purchaseArr[0].SkuSysId,
+                                    SkuName: purchaseArr[0].SkuName,
+                                    SkuDescr: purchaseArr[0].SkuDescr,
+                                    SkuUPC: purchaseArr[0].SkuUPC,
+                                    PurchaseQty: purchaseArr[0].Qty,
+                                    PurchaseGiftQty: purchaseArr[0].PurchaseGiftQty,
+                                    ReceivedQty: unitQty
+                                });
+                                receiptArr = receipt.receiptOperation.$data.ReceiptDetailOperationDto;
+                            } else {
+                                receiptArr[0].ReceivedQty = parseInt(receiptArr[0].ReceivedQty) + parseInt(unitQty);
+                                receiptArr[0].SkuName = purchaseArr[0].SkuName;
+                                receiptArr[0].SkuDescr = purchaseArr[0].SkuDescr;
+                                receiptArr[0].SkuUPC = purchaseArr[0].SkuUPC;
+                                receiptArr[0].PurchaseQty = purchaseArr[0].Qty;
+                                receiptArr[0].PurchaseGiftQty = purchaseArr[0].PurchaseGiftQty;
+
+                            }
+
+                            //查找相同批次的记录
+                            var lotValue = receipt.receiptOperation.$data.LotTemplateValueDtos.filter(function (item) {
+                                if (item.SkuSysId === receiptArr[0].SkuSysId &&
+                                    item.LotValue01 === $("#LotValue01").val() &&
+                                    item.LotValue02 === $("#LotValue02").val() &&
+                                    item.LotValue03 === $("#LotValue03").val() &&
+                                    item.LotValue04 === $("#LotValue04").val() &&
+                                    item.LotValue05 === $("#LotValue05").val() &&
+                                    item.LotValue06 === $("#LotValue06").val() &&
+                                    item.LotValue07 === $("#LotValue07").val() &&
+                                    item.LotValue08 === $("#LotValue08").val() &&
+                                    item.LotValue09 === $("#LotValue09").val() &&
+                                    item.ProduceDate === $("#LotValue10").val() &&
+                                    item.ExpiryDate === $("#LotValue11").val() &&
+                                    item.ExternalLot === $("#LotValue12").val()) {
+                                    return item;
+                                }
+                            });
+                            purchaseArr[0].ScanQty = parseInt(purchaseArr[0].ScanQty) + parseInt(unitQty);
+
+                            if (lotValue === null || lotValue.length === 0) {
+                                //写入新的批次属性
+                                receipt.receiptOperation.$data.LotTemplateValueDtos
+                                    .push({
+                                        SkuSysId: receiptArr[0].SkuSysId,
+                                        Qty: unitQty,
+                                        LotValue01: $("#LotValue01").val(),
+                                        LotValue02: $("#LotValue02").val(),
+                                        LotValue03: $("#LotValue03").val(),
+                                        LotValue04: $("#LotValue04").val(),
+                                        LotValue05: $("#LotValue05").val(),
+                                        LotValue06: $("#LotValue06").val(),
+                                        LotValue07: $("#LotValue07").val(),
+                                        LotValue08: $("#LotValue08").val(),
+                                        LotValue09: $("#LotValue09").val(),
+                                        ProduceDate: $("#LotValue10").val(),
+                                        ExpiryDate: $("#LotValue11").val(),
+                                        ExternalLot: $("#LotValue12").val()
+                                    });
+                            } else {
+                                lotValue[0].Qty = parseInt(lotValue[0].Qty) + parseInt(unitQty);
+                            }
+
+                            $("#LotValue09").val("");
+                            $("#LotValue09").focus();
+
+                            ///修改SN条码标志已经用过
+                            receiptSNArr[0].IsAction = "Y";
+
+                        },
+                        ScanBacth: function () {
+
+                            lastScanCode = "";
+                            lastSkuSysId = "";
+                            var startSN = $("#startSN").val();
+                            var endSN = $("#endSN").val();
+                            if (startSN.length === 0) {
+                                $("#startSN").focus();
+                                return;
+                            }
+                            if (endSN.length === 0) {
+                                $("#endSN").focus();
+                                return;
+                            }
+                            if (startSN.length !== endSN.length) {
+                                PayError();
+                                msgAlert("批量扫描的SN条码位数不一致,请仔细核对!");
+                            }
+                            var startSNCode = parseInt($("#startSN").val());
+                            var endSNCode = parseInt($("#endSN").val());
+                            prefix = "";
+                            if (startSN.length !== startSNCode.toString().length) {
+                                for (var i = startSNCode.toString().length; i < startSN.length; i++) {
+                                    prefix += "0";
+                                }
+                            }
+                            for (var i = startSNCode; i <= endSNCode; i++) {
+                                $("#LotValue09").val(prefix + i);
+                                BatchSn(prefix + i);
+                            }
+                            $("#startSN").val("");
+                            $("#endSN").val("");
+                            $("#LotValue09").val("");
+
+                        },
+                        ConvertReceivedQty: function (info, e) {
+                            if (e.target.value.trim() == "") {
+                                info.ReceivedQty = 0;
+                            }
+                            var receiptArr = receipt.receiptOperation.$data.ReceiptDetailOperationDto.filter(function (item) { return item.SkuSysId == info.SkuSysId; });
+                            receiptArr[0].ReceivedQty = info.ReceivedQty;
+
+                            var lotTemplate = receipt.receiptOperation.$data.LotTemplateValueDtos.filter(function (item) { return item.SkuSysId == info.SkuSysId; });
+                            lotTemplate[0].ReceivedQty = info.ReceivedQty;
+                            lotTemplate[0].Qty = info.ReceivedQty;
+
+                            var purchaseDetail = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) { return item.SkuSysId == info.SkuSysId; });
+                            purchaseDetail[0].ScanQty = info.ReceivedQty;
+                        },
+                        ConvertAdjustmentQty: function (info, e) {
+                            if (e.target.value.trim() == "") {
+                                var receiptArr = receipt.receiptOperation.$data.ReceiptDetailOperationDto.filter(function (item) {
+                                    return item.SkuSysId === info.SkuSysId;
+                                });
+                                receiptArr[0].AdjustmentQty = 0;
+                            }
+                        },
+                        CheckSaveReceivedQty: function (info, e) {
+                            if (e.target.value.trim() == "") {
+                                PayError();
+                                msgAlert("收货数量不能为空!");
+                                $(e.target).val(0);
+                                return;
+                            }
+                            var receivedQty = parseInt(e.target.value);
+                            if (receivedQty <= 0) {
+                                PayError();
+                                msgAlert("收货数量必须大于0!");
+                                $(e.target).val(0);
+                                return;
+                            }
+                            var purchaseArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) { return item.SkuSysId == info.SkuSysId; });
+                            if (parseInt(purchaseArr[0].CurrentQty) < receivedQty) {
+                                PayError();
+                                $(e.target).val(0);
+                                $(e.target).focus();
+                                msgAlert("当前货品数量不能大于剩余收货数量,请仔细核对!");
+                                return;
+                            }
+                        },
+                        CheckAdjustmentQty: function (info, e) {
+                            var purchaseArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) {
+                                return item.SkuSysId === info.SkuSysId;
+                            });
+                            if (parseInt(purchaseArr[0].ScanQty == undefined ? 0 : purchaseArr[0].ScanQty) < parseInt(e.target.value)) {
+                                PayError();
+                                msgAlert("破损数量不能大于本次收货数量!");
+                                $(e.target).val(0);
+                            }
+                        },
+                        ShowSkuImage: function (skuSysId) {
+
+                        },
+                        InitTouchSpin: function (obj) {
+                            $(obj).TouchSpin({
+                                verticalbuttons: true,
+                                buttondown_class: 'btn btn-white',
+                                buttonup_class: 'btn btn-white'
+                            });
+                        }
+
+                    }
+                });
+            },
+            ScanBarCode_Fun: function (purchaseArr, barCode) {
+                $("#UnitQty").focus();
+                var unitQty = receipt.receiptOperation.$data.UnitQty;
+
+                if (purchaseArr[0].CurrentQty <= purchaseArr[0].ScanQty) {
+                    PayError();
+                    msgAlert("当前货品已全部收完无法继续收货,请仔细核对!");
+                    return;
+                }
+
+                if (parseInt(purchaseArr[0].CurrentQty) < parseInt(purchaseArr[0].ScanQty) + parseInt(unitQty)) {
+                    PayError();
+                    msgAlert("当前货品数量不能大于本次收货数量,请仔细核对!");
+                    return;
+                }
+
+                //判断上一次扫描条码
+                if (lastScanCode !== barCode) {
+                    lastScanCode = barCode;
+                }
+                ShowSku(purchaseArr[0].SkuName, purchaseArr[0].SkuDescr, purchaseArr[0].SkuUPC);
+                var receiptArr;
+
+                if (receipt.receiptOperation.$data.ReceiptDetailOperationDto != null) {
+                    receiptArr = receipt.receiptOperation.$data.ReceiptDetailOperationDto.filter(function (item) {
+                        if (item.SkuSysId === purchaseArr[0].SkuSysId) {
+                            return item;
+                        }
+                    });
+                }
+
+
+                if (receiptArr == null || receiptArr.length === 0) {
+                    receipt.receiptOperation.$data.ReceiptDetailOperationDto.push({
+                        SkuSysId: purchaseArr[0].SkuSysId,
+                        SkuName: purchaseArr[0].SkuName,
+                        SkuDescr: purchaseArr[0].SkuDescr,
+                        SkuUPC: purchaseArr[0].SkuUPC,
+                        PurchaseQty: purchaseArr[0].Qty,
+                        PurchaseGiftQty: purchaseArr[0].PurchaseGiftQty,
+                        ReceivedQty: unitQty
+                    });
+
+                    receiptArr = receipt.receiptOperation.$data.ReceiptDetailOperationDto.filter(function (item) {
+                        if (item.SkuSysId === purchaseArr[0].SkuSysId) {
+                            return item;
+                        }
+                    });
+
+                } else {
+                    receiptArr[0].ReceivedQty = parseInt(receiptArr[0].ReceivedQty) + parseInt(unitQty);
+                    receiptArr[0].SkuName = purchaseArr[0].SkuName;
+                    receiptArr[0].SkuDescr = purchaseArr[0].SkuDescr;
+                    receiptArr[0].SkuUPC = purchaseArr[0].SkuUPC;
+                    receiptArr[0].PurchaseQty = purchaseArr[0].Qty;
+                    receiptArr[0].PurchaseGiftQty = purchaseArr[0].PurchaseGiftQty;
+                }
+
+                //查找相同批次的记录
+                var lotValue = receipt.receiptOperation.$data.LotTemplateValueDtos.filter(function (item) {
+                    if (item.SkuSysId === receiptArr[0].SkuSysId &&
+                        item.LotValue01 === $("#LotValue01").val() &&
+                        item.LotValue02 === $("#LotValue02").val() &&
+                        item.LotValue03 === $("#LotValue03").val() &&
+                        item.LotValue04 === $("#LotValue04").val() &&
+                        item.LotValue05 === $("#LotValue05").val() &&
+                        item.LotValue06 === $("#LotValue06").val() &&
+                        item.LotValue07 === $("#LotValue07").val() &&
+                        item.LotValue08 === $("#LotValue08").val() &&
+                        item.LotValue09 === $("#LotValue09").val() &&
+                        item.ProduceDate === $("#LotValue10").val() &&
+                        item.ExpiryDate === $("#LotValue11").val() &&
+                        item.ExternalLot === $("#LotValue12").val()) {
+                        return item;
+                    }
+                });
+                purchaseArr[0].ScanQty = parseInt(purchaseArr[0].ScanQty) + parseInt(unitQty);
+
+                if (lotValue === null || lotValue.length === 0) {
+                    //写入新的批次属性
+                    receipt.receiptOperation.$data.LotTemplateValueDtos
+                        .push({
+                            SkuSysId: receiptArr[0].SkuSysId,
+                            Qty: unitQty,
+                            LotValue01: $("#LotValue01").val(),
+                            LotValue02: $("#LotValue02").val(),
+                            LotValue03: $("#LotValue03").val(),
+                            LotValue04: $("#LotValue04").val(),
+                            LotValue05: $("#LotValue05").val(),
+                            LotValue06: $("#LotValue06").val(),
+                            LotValue07: $("#LotValue07").val(),
+                            LotValue08: $("#LotValue08").val(),
+                            LotValue09: $("#LotValue09").val(),
+                            ProduceDate: $("#LotValue10").val(),
+                            ExpiryDate: $("#LotValue11").val(),
+                            ExternalLot: $("#LotValue12").val()
+                        });
+                } else {
+                    lotValue[0].Qty = parseInt(lotValue[0].Qty) + parseInt(unitQty);
+                }
+            }
+
+        }
+
+        function PrintUPC() {
+            if (barCodePrintInfo == null || barCodePrintInfo == undefined) {
+                msgAlert("请选择一个商品");
+                return false;
+            }
+            if ($("#printQty").val().trim() == "") {
+                msgAlert("请输入打印数量");
+                return false;
+            }
+            var qty = parseInt($("#printQty").val());
+            var pt = $('input:radio[name="radPrint"]:checked').val();
+
+            if (pt == "0") {
+                var page = 0;
+                if (qty % 2 == 0) {
+                    page = qty / 2;
+                } else {
+                    page = parseInt(qty / 2) + 1;
+                }
+                for (var i = 0 ; i < page; i++) {
+                    var LODOP = getLodop();
+                    LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                    LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                    LODOP.SET_PRINT_PAGESIZE(0, 800, 140, "CreateCustomPage");
+                    LODOP.ADD_PRINT_BARCODE(10, 15, 140, 40, "128B", barCodePrintInfo.SkuUPC);
+                    if (qty % 2 != 0 && page != (i + 1)) {
+                        LODOP.ADD_PRINT_BARCODE(10, 175, 140, 40, "128B", barCodePrintInfo.SkuUPC);
+                    }
+                    if (qty % 2 == 0) {
+                        LODOP.ADD_PRINT_BARCODE(10, 175, 140, 40, "128B", barCodePrintInfo.SkuUPC);
+                    }
+                    LODOP.PRINT();
+
+                }
+                msgAlert("打印成功");
+
+            } else {
+
+                if (receipt.receiptOperation.$data.ReceiptSNDto != null) {
+                    var noPrintSnList = receipt.receiptOperation.$data.ReceiptSNDto.filter(function (item) {
+                        if (item.SkuSysId === barCodePrintInfo.SkuSysId && item.IsPrint != "Y") {
+                            return item;
+                        }
+                    });
+
+                    if (qty > noPrintSnList.length) {
+                        msgAlert("打印数量不能大于SN数量");
+                        return false;
+                    }
+
+                    for (var i = 0; i < qty; i++) {
+                        var LODOP = getLodop();
+                        LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                        LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                        LODOP.SET_PRINT_PAGESIZE(0, 800, 140, "CreateCustomPage");
+
+                        LODOP.ADD_PRINT_BARCODE(10, 15, 140, 40, "128B", noPrintSnList[i].SN);
+                        noPrintSnList[i].IsPrint = "Y";
+
+                        i = i + 1;
+                        if (i < qty) {
+                            LODOP.ADD_PRINT_BARCODE(10, 175, 140, 40, "128B", noPrintSnList[i].SN);
+                            noPrintSnList[i].IsPrint = "Y";
+                        }
+
+                        LODOP.PRINT();
+
+                    }
+                    msgAlert("打印成功");
+                }
+
+            }
+            //LODOP.PREVIEW();
+        }
+
+        //检测批次模板
+        function CreateLotTemp(lotTemplateDto) {
+
+            $("#lot01").hide();
+            $("#LotValue01").removeClass("required");
+            $("#LotValue01").val("");
+            if (lotTemplateDto.LotVisible01) {
+                $("#lot01").show();
+                $("#LotName01").html(lotTemplateDto.Lot01);
+                if (lotTemplateDto.LotMandatory01) {
+                    if ($("#LotValue01").val().length === 0) {
+                        $("#LotValue01").addClass("required");
+                        $("#LotValue01").val(lotTemplateDto.DefaultIN01);
+                    }
+                }
+            }
+
+            $("#lot02").hide();
+            $("#LotValue02").removeClass("required");
+            $("#LotValue02").val("");
+            if (lotTemplateDto.LotVisible02) {
+                $("#lot02").show();
+                $("#LotName02").html(lotTemplateDto.Lot02);
+                if (lotTemplateDto.LotMandatory02) {
+                    if ($("#LotValue02").val().length === 0) {
+                        $("#LotValue02").addClass("required");
+                        $("#LotValue02").val(lotTemplateDto.DefaultIN02);
+                    }
+                }
+            }
+
+
+            $("#lot03").hide();
+            $("#LotValue03").removeClass("required");
+            $("#LotValue03").val("");
+            if (lotTemplateDto.LotVisible03) {
+                $("#lot03").show();
+                $("#LotName03").html(lotTemplateDto.Lot03);
+                if (lotTemplateDto.LotMandatory03) {
+                    if ($("#LotValue03").val().length === 0) {
+                        $("#LotValue03").addClass("required");
+                        $("#LotValue03").val(lotTemplateDto.DefaultIN03);
+                    }
+                }
+            }
+
+
+            $("#lot04").hide();
+            $("#LotValue04").removeClass("required");
+            $("#LotValue04").val("");
+            if (lotTemplateDto.LotVisible04) {
+                $("#lot04").show();
+                $("#LotName04").html(lotTemplateDto.Lot04);
+                if (lotTemplateDto.LotMandatory04) {
+                    if ($("#LotValue04").val().length === 0) {
+                        $("#LotValue04").addClass("required");
+                        $("#LotValue04").val(lotTemplateDto.DefaultIN04);
+                    }
+                }
+            }
+
+            $("#lot05").hide();
+            $("#LotValue05").removeClass("required");
+            $("#LotValue05").val("");
+            if (lotTemplateDto.LotVisible05) {
+                $("#lot05").show();
+                $("#LotName05").html(lotTemplateDto.Lot05);
+                if (lotTemplateDto.LotMandatory05) {
+                    if ($("#LotValue05").val().length === 0) {
+                        $("#LotValue05").addClass("required");
+                        $("#LotValue05").val(lotTemplateDto.DefaultIN05);
+                    }
+                }
+            }
+
+            $("#lot06").hide();
+            $("#LotValue06").removeClass("required");
+            $("#LotValue06").val("");
+            if (lotTemplateDto.LotVisible06) {
+                $("#lot06").show();
+                $("#LotName06").html(lotTemplateDto.Lot06);
+                if (lotTemplateDto.LotMandatory06) {
+                    if ($("#LotValue06").val().length === 0) {
+                        $("#LotValue06").addClass("required");
+                        $("#LotValue06").val(lotTemplateDto.DefaultIN06);
+                    }
+                }
+            }
+
+            $("#lot07").hide();
+            $("#LotValue07").removeClass("required");
+            $("#LotValue07").val("");
+            if (lotTemplateDto.LotVisible07) {
+                $("#lot07").show();
+                $("#LotName07").html(lotTemplateDto.Lot07);
+                if (lotTemplateDto.LotMandatory07) {
+                    if ($("#LotValue07").val().length === 0) {
+                        $("#LotValue07").addClass("required");
+                        $("#LotValue07").val(lotTemplateDto.DefaultIN07);
+                    }
+                }
+            }
+
+            $("#lot08").hide();
+            $("#LotValue08").removeClass("required");
+            $("#LotValue08").val("");
+            if (lotTemplateDto.LotVisible08) {
+                $("#lot08").show();
+                $("#LotName08").html(lotTemplateDto.Lot08);
+                if (lotTemplateDto.LotMandatory08) {
+                    if ($("#LotValue08").val().length === 0) {
+                        $("#LotValue08").addClass("required");
+                        $("#LotValue08").val(lotTemplateDto.DefaultIN08);
+                    }
+                }
+            }
+
+            $("#lot09").hide();
+            $("#LotValue09").removeClass("required");
+            $("#LotValue09").val("");
+            if (lotTemplateDto.LotVisible09) {
+                $("#lot09").show();
+                $("#LotName09").html(lotTemplateDto.Lot09);
+                if (lotTemplateDto.LotMandatory09) {
+                    if ($("#LotValue09").val().length === 0) {
+                        $("#LotValue09").addClass("required");
+                        $("#LotValue09").val(lotTemplateDto.DefaultIN09);
+                        $("#LotValue09").focus();
+                    }
+                }
+            }
+
+            $("#lot10").hide();
+            $("#LotValue10").removeClass("required");
+            $("#LotValue10").val("");
+            if (lotTemplateDto.LotVisible10) {
+                $("#lot10").show();
+                $("#LotName10").html(lotTemplateDto.Lot10);
+                if (lotTemplateDto.LotMandatory10) {
+                    if ($("#LotValue10").val().length === 0) {
+                        $("#LotValue10").addClass("required");
+                        $("#LotValue10").val(lotTemplateDto.DefaultIN10);
+                    }
+                }
+            }
+
+            $("#lot11").hide();
+            $("#LotValue11").removeClass("required");
+            $("#LotValue11").val("");
+            if (lotTemplateDto.LotVisible11) {
+                $("#lot11").show();
+                $("#LotName11").html(lotTemplateDto.Lot11);
+                if (lotTemplateDto.LotMandatory11) {
+                    if ($("#LotValue11").val().length === 0) {
+                        $("#LotValue11").addClass("required");
+                        $("#LotValue11").val(lotTemplateDto.DefaultIN11);
+                    }
+                }
+            }
+
+            $("#lot12").hide();
+            $("#LotValue12").removeClass("required");
+            $("#LotValue12").val("");
+            if (lotTemplateDto.LotVisible12) {
+                $("#lot12").show();
+                $("#LotName12").html(lotTemplateDto.Lot12);
+                if (lotTemplateDto.LotMandatory12) {
+                    if ($("#LotValue12").val().length === 0) {
+                        $("#LotValue12").addClass("required");
+                        $("#LotValue12").val(lotTemplateDto.DefaultIN12);
+                    }
+                }
+            }
+        }
+
+        function BatchSn(barCode) {
+            var receiptSNArr = receipt.receiptOperation.$data.ReceiptSNDto.filter(function (item) {
+                return item.SN === barCode;
+            });
+
+            if (receiptSNArr == null || receiptSNArr.length === 0) {
+                PayError();
+                msgAlert("扫描的SN条码不存在,请仔细核对");
+                return;
+            }
+
+            if (receiptSNArr[0].IsAction === "Y") {
+                PayError();
+                msgAlert("扫描的SN条码已经被使用过,请仔细核对");
+                return;
+            }
+            var unitQty = 1;
+            var purchaseArr = receipt.receiptOperation.$data.PurchaseDetailViewDto.filter(function (item) {
+                return item.SkuSysId === receiptSNArr[0].SkuSysId;
+            });
+
+            if (purchaseArr.length === 0) {
+                PayError();
+                msgAlert("扫描的SN条码未找到对应的货品,请仔细核对!");
+                return;
+            }
+            if (purchaseArr[0].CurrentQty <= purchaseArr[0].ScanQty) {
+                PayError();
+                msgAlert("扫描的SN条码货品已全部收完无法继续收货,请仔细核对!");
+                return;
+            }
+
+            if (parseInt(purchaseArr[0].CurrentQty) < parseInt(purchaseArr[0].ScanQty) + parseInt(unitQty)) {
+                PayError();
+                msgAlert("扫描的SN条码货品数量不能大于本次收货数量,请仔细核对!");
+                return;
+            }
+
+            //判断上一次扫描条码
+            if (lastSkuSysId !== receiptSNArr[0].SkuSysId) {
+                lastSkuSysId = receiptSNArr[0].SkuSysId;
+                CreateLotTemp(purchaseArr[0].LotTemplateDto);
+            }
+            var lotTemp = $("#lotForm").valid();
+            if (!lotTemp) {
+                //提示音
+                return;
+            }
+
+            var receiptArr;
+
+            if (receipt.receiptOperation.$data.ReceiptDetailOperationDto != null) {
+                receiptArr = receipt.receiptOperation.$data.ReceiptDetailOperationDto.filter(function (item) {
+                    if (item.SkuSysId === purchaseArr[0].SkuSysId) {
+                        return item;
+                    }
+                });
+            }
+
+
+            if (receiptArr == null || receiptArr.length === 0) {
+                receipt.receiptOperation.$data.ReceiptDetailOperationDto.push({
+                    SkuSysId: purchaseArr[0].SkuSysId,
+                    SkuName: purchaseArr[0].SkuName,
+                    SkuDescr: purchaseArr[0].SkuDescr,
+                    SkuUPC: barCode,
+                    PurchaseQty: purchaseArr[0].Qty,
+                    PurchaseGiftQty: purchaseArr[0].PurchaseGiftQty,
+                    ReceivedQty: unitQty
+                });
+                receiptArr = receipt.receiptOperation.$data.ReceiptDetailOperationDto;
+            } else {
+                receiptArr[0].ReceivedQty = parseInt(receiptArr[0].ReceivedQty) + parseInt(unitQty);
+                receiptArr[0].SkuName = purchaseArr[0].SkuName;
+                receiptArr[0].SkuDescr = purchaseArr[0].SkuDescr;
+                receiptArr[0].SkuUPC = purchaseArr[0].SkuUPC;
+                receiptArr[0].PurchaseQty = purchaseArr[0].Qty;
+                receiptArr[0].PurchaseGiftQty = purchaseArr[0].PurchaseGiftQty;
+            }
+
+            //查找相同批次的记录
+            var lotValue = receipt.receiptOperation.$data.LotTemplateValueDtos.filter(function (item) {
+                if (item.SkuSysId === receiptArr[0].SkuSysId &&
+                    item.LotValue01 === $("#LotValue01").val() &&
+                    item.LotValue02 === $("#LotValue02").val() &&
+                    item.LotValue03 === $("#LotValue03").val() &&
+                    item.LotValue04 === $("#LotValue04").val() &&
+                    item.LotValue05 === $("#LotValue05").val() &&
+                    item.LotValue06 === $("#LotValue06").val() &&
+                    item.LotValue07 === $("#LotValue07").val() &&
+                    item.LotValue08 === $("#LotValue08").val() &&
+                    item.LotValue09 === $("#LotValue09").val() &&
+                    item.ProduceDate === $("#LotValue10").val() &&
+                    item.ExpiryDate === $("#LotValue11").val() &&
+                    item.ExternalLot === $("#LotValue12").val()) {
+                    return item;
+                }
+            });
+            purchaseArr[0].ScanQty = parseInt(purchaseArr[0].ScanQty) + parseInt(unitQty);
+
+            if (lotValue === null || lotValue.length === 0) {
+                //写入新的批次属性
+                receipt.receiptOperation.$data.LotTemplateValueDtos
+                    .push({
+                        SkuSysId: receiptArr[0].SkuSysId,
+                        Qty: unitQty,
+                        LotValue01: $("#LotValue01").val(),
+                        LotValue02: $("#LotValue02").val(),
+                        LotValue03: $("#LotValue03").val(),
+                        LotValue04: $("#LotValue04").val(),
+                        LotValue05: $("#LotValue05").val(),
+                        LotValue06: $("#LotValue06").val(),
+                        LotValue07: $("#LotValue07").val(),
+                        LotValue08: $("#LotValue08").val(),
+                        LotValue09: $("#LotValue09").val(),
+                        ProduceDate: $("#LotValue10").val(),
+                        ExpiryDate: $("#LotValue11").val(),
+                        ExternalLot: $("#LotValue12").val()
+                    });
+            } else {
+                lotValue[0].Qty = parseInt(lotValue[0].Qty) + parseInt(unitQty);
+            }
+        }
+
+        function ShowSku(skuName, skuDescr, skuUPC) {
+            receipt.receiptOperation.$data.SkuName = skuName;
+            receipt.receiptOperation.$data.SkuDescr = skuDescr;
+            receipt.receiptOperation.$data.SkuUPC = skuUPC;
+        }
+
+        function PrintReceipt() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintSettingZS");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintReceipt?receiptOrder=" + receipt.receiptOperation.$data.ReceiptOrder + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            //LODOP.ADD_PRINT_BARCODE(40, 350, 406, 58, "128B", receipt.receiptOperation.$data.ReceiptOrder);
+            LODOP.ADD_PRINT_BARCODE(40, 450, 206, 58, "128B", receipt.receiptOperation.$data.ReceiptOrder);
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            //LODOP.PREVIEW();
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+
+    </script>
+}
+

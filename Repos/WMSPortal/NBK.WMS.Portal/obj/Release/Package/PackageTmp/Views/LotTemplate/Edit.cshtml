@@ -1,0 +1,876 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.LotTemplateDto
+
+@{
+    ViewBag.Title = "批次模板编辑";
+}
+
+@Html.Breadcrumb("批次模板管理", "/LotTemplate/Index", "批次模板编辑")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="lotTemplateForm" class="form-horizontal" method="get">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">批次模板代码:</label>
+
+                <div class="col-sm-10">
+                    <input type="text"  class="form-control" value="@Model.LotCode" disabled>
+                    <input type="hidden" id="LotCode" name="LotCode" value="@Model.LotCode">
+                    <input type="hidden" id="SysId" name="SysId" value="@ViewBag.SysId">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">描述:</label>
+
+                <div class="col-sm-10">
+                    <input type="text" id="Descr" name="Descr" value="@Model.Descr" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-1">
+                        <label class="control-label">显示序号</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="control-label">显示名称</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3 ">
+                                <label class="control-label" title="PC可见">PC</label>
+                            </div>
+                            <div class="col-sm-3 ">
+                                <label class="control-label" title="RF可见">RF</label>
+                            </div>
+                            <div class="col-sm-3 ">
+                                <label class="control-label" title="入库必输">入库</label>
+                            </div>
+                            <div class="col-sm-3 ">
+                                <label class="control-label" title="出库必输">出库</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label class="control-label">类型</label>
+                            </div>
+                            <div class="col-sm-7 ">
+                                <label class="control-label">值</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 ">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">出库默认值</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label">入库默认值</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次01</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo01" name="SeqNo01" class="form-control input-sm"  value="@Model.SeqNo01">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot01" name="Lot01" class="form-control input-sm"  value="@Model.Lot01">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                   
+                                    <input type="checkbox" id="LotVisible01" name="LotVisible01" checked="@Model.LotVisible01.HasValue"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible01" name="LotRFVisible01" checked="@Model.LotRFVisible01.HasValue"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory01" name="LotMandatory01" checked="@Model.LotMandatory01.HasValue"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT01" name="LotMandatoryOT01" checked="@Model.LotMandatoryOT01.HasValue" ><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType01" class="form-control m-b" name="LotType01" >
+                                    <option value="Char">字符</option>
+                                    <option value="Number">数字</option>
+                                    <option value="Date">日期</option>
+                                    <option value="OptionList">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue01" name="LotValue01" style="width: 80%;" class="form-control input-sm"  value="@Model.LotValue01" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN01" name="DefaultIN01" style="width: 80%;"  value="@Model.DefaultIN01" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT01" name="DefaultOT01" style="width: 80%;" value="@Model.DefaultOT01"  class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次02</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo02" name="SeqNo02" class="form-control input-sm" value="@Model.SeqNo02" >
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot02" name="Lot02" class="form-control input-sm" value="@Model.Lot02"  >
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible02" name="LotVisible02"  checked="@Model.LotVisible02.HasValue" ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible02" name="LotRFVisible02" checked="@Model.LotRFVisible02.HasValue" ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory02" name="LotMandatory02" checked="@Model.LotMandatory02.HasValue" ><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT02" name="LotMandatoryOT02" checked="@Model.LotMandatoryOT02.HasValue"  ><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType02" class="form-control m-b" name="LotType02">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue02" name="LotValue02" style="width: 80%;" value="@Model.LotValue02" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN02" name="DefaultIN02" style="width: 80%;"  value="@Model.DefaultIN02" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT02" name="DefaultOT02" style="width: 80%;" value="@Model.DefaultIN02"  class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次03</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo03" name="SeqNo03" class="form-control input-sm" value="@Model.SeqNo03">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot03" name="Lot03" class="form-control input-sm"  value="@Model.Lot03" >
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible03" name="LotVisible03" checked="@Model.LotVisible03.HasValue"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible03" name="LotRFVisible03" checked="@Model.LotRFVisible03.HasValue" ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory03" name="LotMandatory03" checked="@Model.LotMandatory03.HasValue"  ><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT03" name="LotMandatoryOT03"  checked="@Model.LotMandatoryOT03.HasValue"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType03" class="form-control m-b" name="LotType03">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue03" name="LotValue03" style="width: 80%;" class="form-control input-sm" value="@Model.LotValue03" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN03" name="DefaultIN03" style="width: 80%;" class="form-control input-sm" value="@Model.DefaultIN03" >
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT03" name="DefaultOT03" style="width: 80%;" class="form-control input-sm" value="@Model.DefaultOT03"  >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次04</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo04" name="SeqNo04" class="form-control input-sm" value="@Model.SeqNo04" >
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot04" name="Lot04" class="form-control input-sm" value="@Model.Lot04"  >
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible04" name="LotVisible04" checked="@Model.LotVisible04.HasValue" ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible04" name="LotRFVisible04"  checked="@Model.LotRFVisible04.HasValue" ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory04" name="LotMandatory04" checked="@Model.LotMandatory04.HasValue" ><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT04" name="LotMandatoryOT04"  checked="@Model.LotMandatoryOT04.HasValue"  ><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType04" class="form-control m-b" name="LotType04">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue04" name="LotValue04" style="width: 80%;"  value="@Model.LotValue04" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN04" name="DefaultIN04" style="width: 80%;"  value="@Model.DefaultIN04"  class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT04" name="DefaultOT04" style="width: 80%;" value="@Model.DefaultOT04"  class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次05</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo05" name="SeqNo05" class="form-control input-sm"  value="@Model.SeqNo05"  >
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot05" name="Lot05" class="form-control input-sm" value="@Model.Lot05" >
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible05" name="LotVisible05" checked="@Model.LotVisible05.HasValue" ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible05" name="LotRFVisible05" checked="@Model.LotRFVisible05.HasValue" ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory05" name="LotMandatory05" checked="@Model.LotMandatory05.HasValue"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT05" name="LotMandatoryOT05" checked="@Model.LotMandatoryOT05.HasValue"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType05" class="form-control m-b" name="LotType05">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue05" name="LotValue05" style="width: 80%;"  value="@Model.LotValue05" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN05" name="DefaultIN05"   value="@Model.DefaultIN05" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT05" name="DefaultOT05"  value="@Model.DefaultOT05"  style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次06</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo06" name="SeqNo06" class="form-control input-sm" value="@Model.SeqNo06" >
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot06" name="Lot06" class="form-control input-sm"  value="@Model.Lot06">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible06" name="LotVisible06" checked="@Model.LotVisible06.HasValue"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible06" name="LotRFVisible06" checked="@Model.LotRFVisible06.HasValue"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory06" name="LotMandatory06" checked="@Model.LotMandatory06.HasValue"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT06" name="LotMandatoryOT06" checked="@Model.LotMandatoryOT06.HasValue"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType06" class="form-control m-b" name="LotType06">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue06" name="LotValue06" value="@Model.LotValue06" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN06" name="DefaultIN06" value="@Model.DefaultIN06" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT06" name="DefaultOT06" value="@Model.DefaultOT06"  style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次07</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo07" name="SeqNo07"   value="@Model.SeqNo07"   class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot07" name="Lot07"   value="@Model.Lot07" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible07"   checked="@Model.LotVisible07.HasValue" name="LotVisible07"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible07"  checked="@Model.LotRFVisible07.HasValue"  name="LotRFVisible07"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory07" checked="@Model.LotMandatory07.HasValue"  name="LotMandatory07"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT07"  checked="@Model.LotMandatoryOT07.HasValue"  name="LotMandatoryOT07"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType07" class="form-control m-b" name="LotType07">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue07" name="LotValue07"  value="@Model.LotValue07" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN07" name="DefaultIN07"   value="@Model.DefaultIN07" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT07" name="DefaultOT07"  value="@Model.DefaultOT07" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次08</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo08" name="SeqNo08" value="@Model.SeqNo08" class="form-control input-sm" disabled >
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot08" name="Lot08"  value="采购单价" class="form-control input-sm" disabled > 
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible08"  checked="@Model.LotVisible08.HasValue"  name="LotVisible08"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible08"  checked="@Model.LotRFVisible08.HasValue"  name="LotRFVisible08"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory08" checked="@Model.LotMandatory08.HasValue" name="LotMandatory08"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT08" checked="@Model.LotMandatoryOT08.HasValue"  name="LotMandatoryOT08"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType08" class="form-control m-b" name="LotType08">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue08" name="LotValue08" value="@Model.LotValue08"  style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN08" name="DefaultIN08" value="@Model.DefaultIN08"  style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT08" name="DefaultOT08" value="@Model.DefaultOT08" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px">批次09</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo09" name="SeqNo09" value="@Model.SeqNo09"  disabled class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot09" name="Lot09"  value="入库单号" class="form-control input-sm" disabled >
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible09" checked="@Model.LotVisible09.HasValue" name="LotVisible09" disabled ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible09" checked="@Model.LotRFVisible09.HasValue" name="LotRFVisible09" disabled ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory09" checked="@Model.LotMandatory09.HasValue"  name="LotMandatory09" disabled ><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT09"  checked="@Model.LotMandatoryOT09.HasValue"  name="LotMandatoryOT09" disabled ><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType09" class="form-control m-b" name="LotType09" disabled >
+                                    <option value="" selected="selected">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue09" name="LotValue09" value="@Model.LotValue09" style="width: 80%;" class="form-control input-sm" disabled >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN09" name="DefaultIN09"  value="@Model.DefaultIN09"  style="width: 80%;" class="form-control input-sm" disabled >
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT09" name="DefaultOT09"  value="@Model.DefaultOT09"  style="width: 80%;" class="form-control input-sm" disabled >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 8px">生产日期</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo10" name="SeqNo10"   value="@Model.SeqNo10" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot10" name="Lot10"  value="@Model.Lot10" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible10"  checked="@Model.LotVisible10.HasValue"  name="LotVisible10"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible10"   checked="@Model.LotRFVisible10.HasValue"  name="LotRFVisible10"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory10" checked="@Model.LotMandatory10.HasValue"  name="LotMandatory10"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT10"  checked="@Model.LotMandatoryOT10.HasValue"  name="LotMandatoryOT10"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        
+                    </div>
+
+                    <div class="col-sm-3">
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 8px">失效日期</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo11" name="SeqNo11"   value="@Model.SeqNo11" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot11" name="Lot11" value="@Model.Lot11"  class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible11" checked="@Model.LotVisible11.HasValue"  name="LotVisible11"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible11" checked="@Model.LotRFVisible11.HasValue" name="LotRFVisible11"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory11"  checked="@Model.LotMandatory11.HasValue" name="LotMandatory11"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT11"  checked="@Model.LotMandatoryOT11.HasValue" name="LotMandatoryOT11"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        
+                    </div>
+
+                    <div class="col-sm-3">
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 8px">外部批次</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo12" name="SeqNo12"  value="@Model.SeqNo12"  class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot12" name="Lot12" value="@Model.Lot12"  class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible12"  checked="@Model.LotVisible12.HasValue" name="LotVisible12"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible12" checked="@Model.LotRFVisible12.HasValue" name="LotRFVisible12"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory12" checked="@Model.LotMandatory12.HasValue" name="LotMandatory12"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT12" checked="@Model.LotMandatoryOT12.HasValue" name="LotMandatoryOT12"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        
+                    </div>
+
+                    <div class="col-sm-3">
+                        
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" onclick="LotTemplateSave();"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/iCheck")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $("#lotTemplateForm").validate({
+                ignore: [],
+                rules: {
+                    Descr: {
+                        required: true,
+                        maxlength: 64
+                    },
+                }
+            });
+        });
+
+        function LotTemplateSave()
+        {
+            if ($("#lotTemplateForm").valid()) {
+                $.ajax({
+                    url: "/LotTemplate/SaveLotTemplate",
+                    type: "POST",
+                    data: $("#lotTemplateForm").serializeObject(),
+                    success: function (data) {
+                        if (data.success) {
+
+                            window.location.href = "/LotTemplate/Index";
+                        }
+                        else {
+                            msgErro(data.message);
+                        }
+                    },
+                    error: function () {
+                        msgErro("操作失败");
+                    }
+                });
+            }
+        }
+    </script>
+}
+

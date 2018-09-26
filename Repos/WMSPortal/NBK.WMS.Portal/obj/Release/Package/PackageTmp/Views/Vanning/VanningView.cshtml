@@ -1,0 +1,262 @@
+﻿@using NBK.ECService.WMS.Utility.Enum
+@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+
+@{
+    ViewBag.Title = "装箱单明细";
+}
+
+@Html.Breadcrumb("装箱单管理", "/Vanning/Index", "装箱单明细")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-1 control-label">装箱单号:</label>
+                    <div class="col-sm-3"><input type="text" id="VanningOrder" name="VanningOrder" class="form-control" disabled></div>
+
+                    <label class="col-sm-1 control-label">单据类型:</label>
+                    <div class="col-sm-3"><input type="text" id="VanningTypeText" name="VanningTypeText" class="form-control" disabled></div>
+
+                    <label class="col-sm-1 control-label">单据状态:</label>
+                    <div class="col-sm-3"><input type="text" id="StatusText" name="StatusText" class="form-control" disabled></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-1 control-label">出库单号:</label>
+                    <div class="col-sm-3"><input type="text" id="OutboundOrder" name="OutboundOrder" class="form-control" disabled></div>
+
+                    <label class="col-sm-1 control-label">装箱时间:</label>
+                    <div class="col-sm-3"><input type="text" id="VanningDateText" name="VanningDateText" class="form-control" disabled></div>
+                </div>
+            </div>
+            <input type="hidden" id="Status" name="Status" value="" />
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content" style="overflow-x:auto">
+                    <label>装箱单明细</label>
+                    <table id="gvVanningDetails" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="ContainerNumber" style="width:100px">箱序号</th>
+                                <th data-data="CarrierNumber" style="width:100px">物流面单号</th>
+                                <th data-data="Weight" style="width:100px">重量</th>
+                                <th data-data="CarrierName" style="width:100px">快递公司</th>
+                                <th data-data="HandoverCreateDateText" style="width:100px">交接时间</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="ibox-footer text-right tooltip-demo">
+                    @if (AuthorizeManager.HasFunction(AuthKeyConst.Vanning_View_Cancel, HttpContext.Current.User.Identity.Name))
+                    {
+                        <a class="btn btn-sm btn-primary" id="btnCancelVanning" onclick="CancelVanning();"><i class="fa fa-check-square-o"></i>取消装箱</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/print")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+            table = $('#gvVanningDetails').DataTable({
+                "sAjaxSource": "GetVanningViewById",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "VanningSysIdSearch", "value": '@ViewBag.VanningSysId' }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: '箱贴打印',
+                        action: function (e, dt, node, config) {
+                            if ($("#Status").val() != "50") {
+                                msgErro("只能打印装箱完成的单据");
+                                return null;
+                            }
+
+                            var check = $("table tbody input:checked");
+
+                            if (check.length === 0) {
+                                msgErro("请在列表中勾选一项!");
+                                return null;
+                            }
+
+                            var msg = "确定要打印箱贴吗？";
+
+                            for (var i = 0; i < check.length; i++) {
+                                if ($(check[i]).attr("Marke") == undefined || $(check[i]).attr("Marke") == "") {
+                                    msg = "大头笔为空，" + msg;
+                                    break;
+                                }
+                            } 
+
+                            msgConfirm(msg, function (isConfirm) {
+                                if (isConfirm) {
+                                    for (var i = 0; i < check.length; i++) {
+                                        var vanningDetailDto = {
+                                            SysId: $(check[i]).val(),
+                                            ExternOrderId: $(check[i]).attr("ExternOrderId"),
+                                            ContainerNumber: $(check[i]).attr("VanningOrderNumber"),
+                                            ConsigneePhone: $(check[i]).attr("ConsigneePhone"),
+                                            VannginSkuCount: $(check[i]).attr("VannginSkuCount"),
+                                            MaxContainerNumber: $(check[i]).attr("MaxContainerNumber"),
+                                            OutboundType: $(check[i]).attr("OutboundType"),
+                                            CarrierNumber: $(check[i]).attr("CarrierNumber"),
+                                        };
+
+                                        var actionType = "";
+                                        var containerNumber = parseInt($(check[i]).attr("ContainerNumber"));
+                                        if (containerNumber == vanningDetailDto.MaxContainerNumber) {
+                                            actionType = "Finish";
+                                        }
+
+                                        //箱贴
+                                        if (vanningDetailDto.OutboundType == "20") {
+                                            //B2C
+                                            print.PrintBoxLable(vanningDetailDto, actionType, "@ViewBag.PrintNameBoxLable", "@ViewBag.WarehouseSysId");
+                                        } else {
+                                            //B2B
+                                            print.PrintBoxLableToB(vanningDetailDto, actionType, "@ViewBag.PrintNameBoxLable", "@ViewBag.WarehouseSysId");
+                                        }
+
+                                    }
+                                    msgAlert("打印成功");
+                                }
+                            });
+
+                        }
+                    },
+                    {
+                        text: '装箱单打印',
+                        action: function (e, dt, node, config) {
+                            if ($("#Status").val() != "50") {
+                                msgErro("只能打印装箱完成的单据");
+                                return null;
+                            }
+
+                            var check = $("table tbody input:checked");
+
+                            if (check.length === 0) {
+                                msgErro("请在列表中勾选一项!");
+                                return null;
+                            }
+                            msgConfirm("确定要打印装箱单吗？", function (isConfirm) {
+                                if (isConfirm) {
+                                    for (var i = 0; i < check.length; i++) {
+                                        var sysId = $(check[i]).val();
+
+                                        var actionType = "";
+                                        if ($(check[i]).attr("ContainerNumber") == $(check[i]).attr("MaxContainerNumber")) {
+                                            actionType = "Finish";
+                                        }
+                                        debugger;
+                                        var outboundType = $(check[i]).attr("OutboundType");
+                                        //装箱单
+                                        if (outboundType == "20") {
+                                            print.PrintVanningPackingDetail(sysId, "@ViewBag.PrintNamePackingDetail", "@ViewData["PrintUserName"]", actionType, "B2C", "@ViewBag.WarehouseSysId");
+                                        } else {
+                                            print.PrintVanningPackingDetail(sysId, "@ViewBag.PrintNamePackingDetail", "@ViewData["PrintUserName"]", actionType, "B2B", "@ViewBag.WarehouseSysId");
+                                        }
+
+                                    }
+                                    msgAlert("打印成功");
+                                }
+                            });
+
+                        }
+                    }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": 0,
+                        "width": "15px",
+                        render: function (data, type, full, meta) {
+                            return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" ExternOrderId="' + full.ExternOrderId + '" VanningOrderNumber="' + full.VanningOrderNumber + '" ConsigneePhone="' + full.ConsigneePhone + '" ContainerNumber="' + full.ContainerNumber + '" VannginSkuCount="' + full.VannginSkuCount + '" MaxContainerNumber="' + full.MaxContainerNumber + '" OutboundType="' + full.OutboundType + '"CarrierNumber="' + full.CarrierNumber + '"Marke="' + full.Marke + '"  />';
+                        }
+                    }
+                ],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            table.ajax.reload(function (data) {
+                $("#VanningOrder").val(data.VanningOrder);
+                $("#VanningTypeText").val(data.VanningTypeText);
+                $("#StatusText").val(data.StatusText);
+                $("#OutboundOrder").val(data.OutboundOrder);
+                $("#VanningDateText").val(data.VanningDateText);
+                $("#Status").val(data.Status);
+                if (data.Status != 50 && data.Status != 20) {
+                    $("#btnCancelVanning").attr('disabled', 'disabled');
+                    $("#btnCancelVanning").removeAttr('onclick');
+                }
+            });
+        });
+
+        function CancelVanning() {
+            msgConfirm("确定要取消装箱吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("CancelVanning", "Vanning")" + "?VanningSysId=" + '@ViewBag.VanningSysId',
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                saveLoading();
+                                if (data.success) {
+                                    msgSuccess(data.message);
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.message);
+                                }
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+    </script>
+}

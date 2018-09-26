@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+
+  "dependencies": {
+    "Schubert.Framework.Web.FluentValidation": "1.9.5",
+    "WMSBussinessApi.Utility": "1.0.0"
+  },
+
+  "frameworks": {
+    "net452": {}
+  }
+}

@@ -1,0 +1,1076 @@
+﻿<!-- MAIN CONTENT -->
+<div id="content">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> 全局汇总
+            </h1>
+        </div>
+
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+            <ul id="sparks" class="">
+                <li id="spark_PO" class="sparks-info">
+                    <h5>采购入库单 <span class="txt-color-blue"><i class="glyphicon glyphicon-log-in"></i> &nbsp;<label id="lb_Spark_PO">23333</label></span></h5>
+                    <div id="div_Spark_PO" class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm" style="padding-top: 8px">
+                        1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
+                    </div>
+                </li>
+                <li id="spark_B2BSO" class="sparks-info">
+                    <h5> B2B出库单 <span class="txt-color-purple"><i class="glyphicon glyphicon-log-out"></i>&nbsp;<label id="lb_Spark_B2BSO">33323</label></span></h5>
+                    <div id="div_Spark_B2BSO" class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm" style="padding-top: 8px">
+                        110,150,300,130,400,240,220,310,220,300, 270, 210
+                    </div>
+                </li>
+                <li id="spark_B2CSO" class="sparks-info">
+                    <h5> B2C出库单 <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;<label id="lb_Spark_B2CSO">55433</label></span></h5>
+                    <div id="div_Spark_B2CSO" class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm" style="padding-top: 8px">
+                        110,150,300,130,400,240,220,310,220,300, 270, 210
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 style="font-family: 等线;font-weight:100;">全局收发存</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="bar-chart" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <!-- WIDGET END -->
+
+    </div>
+
+    <div class="row">
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 style="font-family: 等线;font-weight:100;">收货分布</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divReceiptSummary" style="height: 350px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 style="font-family: 等线;font-weight:100;">出库分布</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divOutboundSummary" style="height: 350px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 style="font-family: 等线;font-weight:100;">库存分布</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divInvSummary" style="height: 350px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+<div class="row">
+    
+    <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+            <header>
+                <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                <h2 style="font-family: 等线; font-weight: 100;">库龄分析</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body no-padding">
+
+                    <div id="divInvAgeSummary" style="height: 350px" class="chart">
+
+                    </div>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+    </article>
+    <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+            <header>
+                <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                <h2 style="font-family: 等线; font-weight: 100;">滞销商品Top10</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body no-padding">
+
+                    <div id="divInvAgeTop" style="height: 350px" class="chart">
+                        <ul class="list-group no-margin">
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #DC0909">1</span> Photograph </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #ED213D">2</span> Photograph </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FD334F">3</span> Life style </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FF556D">4</span> Food </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FF7A75">5</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FF9E91">6</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FFA857">7</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FFCB61">8</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FFE143">9</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #F8ED39">10</span> Travel world </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+    </article>
+    <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+            <header>
+                <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                <h2 style="font-family: 等线; font-weight: 100;">滞销商品Top10</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body no-padding">
+
+                    <div id="divInvAgeTop" style="height: 350px" class="chart">
+                        <ul class="list-group no-margin">
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #DC0909">1</span> Photograph </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #ED213D" >2</span> Photograph </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FD334F" >3</span> Life style </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FF556D" >4</span> Food </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FF7A75" >5</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FF9E91" >6</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FFA857" >7</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FFCB61" >8</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #FFE143" >9</span> Travel world </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href=""> <span class="badge pull-right" style="background-color: #F8ED39" >10</span> Travel world </a>
+                            </li>
+                         
+                        </ul>
+
+                    </div>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+    </article>
+</div>
+
+
+<div class="row">
+    <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+            <header>
+                <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                <h2 style="font-family: 等线; font-weight: 100;">库存渠道占比</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body no-padding">
+
+                    <div id="divOutboundSummary" style="height: 350px" class="chart"></div>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+    </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 style="font-family: 等线; font-weight: 100;">服务站发货Top 10</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divInvAgeTop" style="height: 350px" class="chart">
+                            <ul class="list-group no-margin">
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #DC0909">1</span> Photograph </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #ED213D">2</span> Photograph </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FD334F">3</span> Life style </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FF556D">4</span> Food </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FF7A75">5</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FF9E91">6</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FFA857">7</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FFCB61">8</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FFE143">9</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #F8ED39">10</span> Travel world </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 style="font-family: 等线; font-weight: 100;">近期退货</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divInvAgeTop" style="height: 350px" class="chart">
+                            <ul class="list-group no-margin">
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #DC0909">1</span> Photograph </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #ED213D">2</span> Photograph </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FD334F">3</span> Life style </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FF556D">4</span> Food </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FF7A75">5</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FF9E91">6</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FFA857">7</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FFCB61">8</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #FFE143">9</span> Travel world </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href=""> <span class="badge pull-right" style="background-color: #F8ED39">10</span> Travel world </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        
+    </div>
+
+
+</div>
+<!-- END MAIN CONTENT -->
+@section pagespecific {
+    <script>
+
+        /* chart colors default */
+        var $chrt_border_color = "#efefef";
+        var $chrt_grid_color = "#DDD";
+        var $chrt_main = "#E24913";
+        /* red       */
+        var $chrt_second = "#6595b4";
+        /* blue      */
+        var $chrt_third = "#FF9F01";
+        /* orange    */
+        var $chrt_fourth = "#7e9d3a";
+        /* green     */
+        var $chrt_fifth = "#BD362F";
+        /* dark red  */
+        var $chrt_mono = "#000";
+
+        $(document).ready(function () { BarChartInit(); ReceiptSummary(); OutboundSummary(); InvSummary(); InvAgeSummary();});
+
+        function BarChartInit() {
+
+            var data1 = [];
+            for (var i = 0; i <= 12; i += 1)
+                data1.push([i, parseInt(Math.random() * 30)]);
+
+            var data2 = [];
+            for (var i = 0; i <= 12; i += 1)
+                data2.push([i, parseInt(Math.random() * 30)]);
+
+            var data3 = [];
+            for (var i = 0; i <= 12; i += 1)
+                data3.push([i, parseInt(Math.random() * 30)]);
+
+            var ds = new Array();
+
+            ds.push({
+                data: data1,
+                bars: {
+                    show: true,
+                    barWidth: 0.2,
+                    order: 1,
+                }
+            });
+            ds.push({
+                data: data2,
+                bars: {
+                    show: true,
+                    barWidth: 0.2,
+                    order: 2
+                }
+            });
+            ds.push({
+                data: data3,
+                bars: {
+                    show: true,
+                    barWidth: 0.2,
+                    order: 3
+                }
+            });
+
+            //Display graph
+            $.plot($("#bar-chart"), ds, {
+                colors: [$chrt_second, $chrt_fourth, "#666", "#BBB"],
+                grid: {
+                    show: true,
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: $chrt_border_color,
+                    borderWidth: 0,
+                    borderColor: $chrt_border_color,
+                },
+                legend: true,
+                tooltip: true,
+                tooltipOpts: {
+                    content: "<b>%x</b> = <span>%y</span>",
+                    defaultTheme: false
+                }
+
+            });
+        }
+
+        function ReceiptSummary() 
+        {
+            var wareReceiptChart = echarts.init(document.getElementById("divReceiptSummary"));
+            wareReceiptChart.setOption(
+                option = {
+                   // color: ['#3398DB'],
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor:'rgba(255,255,255,0.8)',
+                        extraCssText: 'box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);',
+                        textStyle:{
+                            color:'#6a717b'
+                        }
+                    }, 
+                    grid: {
+                        top:'1%',
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    yAxis: [{
+                        type: 'category',
+                        data: ['昆明仓', '邮政仓', '马关仓', '云县仓', '玉溪仓', '楚雄仓', '曲靖仓', '大理仓', '版纳仓', '红河仓', '宣威仓', '昌宁仓', '七甸仓'],
+        
+                        axisTick: {
+                            alignWithLabel: true,
+           
+          
+                        },
+                        axisLabel: {
+                            margin: 10,
+                            textStyle: {
+                                fontSize: 12,
+                                color:'#94999f'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#dbe0e6'
+                            }
+                        },
+         
+                    }],
+                    xAxis: [{
+                        type: 'value',
+                        axisLabel: {
+                            margin: 10,
+                            textStyle: {
+                                fontSize: 12,
+                                color:'#94999f'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#dbe0e6'
+                            }
+                        }
+         
+         
+        
+                    }],
+                    backgroundColor: '#ffffff',
+                    series: [{
+                        name: 'Top 10',
+                        type: 'bar',
+                        barWidth:20,
+                        data: [7700, 8800, 9900, 11100, 14200, 16000, 18400, 20500, 22600, 24700, 27700, 30600, 32600],
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'insideRight',
+                                textStyle: {
+                                    color: 'white' //color of value
+                                }
+                            }
+                        },
+        
+      
+                        itemStyle: {
+            
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                    offset: 0,
+                                    color: '#64bdc8' // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: '#00c484' // 100% 处的颜色
+                                }], false),
+                                barBorderRadius: [0, 15,15, 0],
+                                shadowColor: 'rgba(0,0,0,0.1)',
+                                shadowBlur: 3,
+                                shadowOffsetY: 3
+                            }
+                        }
+                    }]
+                }
+            );
+        }
+
+        function OutboundSummary() {
+            var wareOutboundChart = echarts.init(document.getElementById("divOutboundSummary"));
+            wareOutboundChart.setOption(
+                option = {
+                   // color: ['#3398DB'],
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(255,255,255,0.8)',
+                        extraCssText: 'box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);',
+                        textStyle: {
+                            color: '#6a717b'
+                        }
+                    },
+                    grid: {
+                        top: '1%',
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    yAxis: [{
+                        type: 'category',
+                        data: ['昆明仓', '邮政仓', '马关仓', '云县仓', '玉溪仓', '楚雄仓', '曲靖仓', '大理仓', '版纳仓', '红河仓', '宣威仓', '昌宁仓', '七甸仓'],
+
+                        axisTick: {
+                            alignWithLabel: true,
+
+
+                        },
+                        axisLabel: {
+                            margin: 10,
+                            textStyle: {
+                                fontSize: 12,
+                                color: '#94999f'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#dbe0e6'
+                            }
+                        },
+
+                    }],
+                    xAxis: [{
+                        type: 'value',
+                        axisLabel: {
+                            margin: 10,
+                            textStyle: {
+                                fontSize: 12,
+                                color: '#94999f'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#dbe0e6'
+                            }
+                        }
+
+
+
+                    }],
+                    backgroundColor: '#ffffff',
+                    series: [{
+                        name: 'Top 10',
+                        type: 'bar',
+                        barWidth: 20,
+                        data: [7700, 8800, 9900, 11100, 14200, 16000, 18400, 20500, 22600, 24700, 27700, 30600, 32600],
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'insideRight',
+                                textStyle: {
+                                    color: 'white' //color of value
+                                }
+                            }
+                        },
+
+
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                    offset: 0,
+                                    color: '#64bdc8' // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: '#00c484' // 100% 处的颜色
+                                }], false),
+                                barBorderRadius: [0, 15, 15, 0],
+                                shadowColor: 'rgba(0,0,0,0.1)',
+                                shadowBlur: 3,
+                                shadowOffsetY: 3
+                            }
+                        }
+                    }]
+                }
+            );
+        }
+
+        function InvSummary() {
+            var wareOutboundChart = echarts.init(document.getElementById("divInvSummary"));
+            wareOutboundChart.setOption(
+                option = {
+                    // color: ['#3398DB'],
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(255,255,255,0.8)',
+                        extraCssText: 'box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);',
+                        textStyle: {
+                            color: '#6a717b'
+                        }
+                    },
+                    grid: {
+                        top: '1%',
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    yAxis: [{
+                        type: 'category',
+                        data: ['昆明仓', '邮政仓', '马关仓', '云县仓', '玉溪仓', '楚雄仓', '曲靖仓', '大理仓', '版纳仓', '红河仓', '宣威仓', '昌宁仓', '七甸仓'],
+
+                        axisTick: {
+                            alignWithLabel: true,
+
+
+                        },
+                        axisLabel: {
+                            margin: 10,
+                            textStyle: {
+                                fontSize: 12,
+                                color: '#94999f'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#dbe0e6'
+                            }
+                        },
+
+                    }],
+                    xAxis: [{
+                        type: 'value',
+                        axisLabel: {
+                            margin: 10,
+                            textStyle: {
+                                fontSize: 12,
+                                color: '#94999f'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#dbe0e6'
+                            }
+                        }
+
+
+
+                    }],
+                    backgroundColor: '#ffffff',
+                    series: [{
+                        name: 'Top 10',
+                        type: 'bar',
+                        barWidth: 20,
+                        data: [7700, 8800, 9900, 11100, 14200, 16000, 18400, 20500, 22600, 24700, 27700, 30600, 32600],
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'insideRight',
+                                textStyle: {
+                                    color: 'white' //color of value
+                                }
+                            }
+                        },
+
+
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                    offset: 0,
+                                    color: '#64bdc8' // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: '#00c484' // 100% 处的颜色
+                                }], false),
+                                barBorderRadius: [0, 15, 15, 0],
+                                shadowColor: 'rgba(0,0,0,0.1)',
+                                shadowBlur: 3,
+                                shadowOffsetY: 3
+                            }
+                        }
+                    }]
+                }
+            );
+        }
+
+        function InvAgeSummary() {
+
+            var wareInvAgeChart = echarts.init(document.getElementById("divInvAgeSummary"));
+            wareInvAgeChart.setOption(
+                option = {
+                    title: {
+                        text: "",
+                        x: "center",
+                        show: false
+                    },
+                    tooltip: {
+                        trigger: "item",
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        x: "left",
+                        data: []
+                    },
+                    label: {
+                        normal: {
+                            formatter: "{b} ({d}%)",
+                            position: "insideTopRight"
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            smooth: .6
+                        }
+                    },
+                    toolbox: {
+                        show: !0,
+                        feature: {
+                            mark: {
+                                show: !0
+                            },
+                            dataView: {
+                                show: !0,
+                                readOnly: !1
+                            },
+                            magicType: {
+                                show: !0,
+                                type: ["pie", "funnel"]
+                            },
+                            restore: {
+                                show: !0
+                            },
+                            saveAsImage: {
+                                show: !0
+                            }
+                        }
+                    },
+                    calculable: !0,
+                    series: [{
+                        name: "库龄天数",
+                        type: "pie",
+                        roseType: "area",
+                        label: {
+                            normal: {
+                                show: !0
+                            },
+                            emphasis: {
+                                show: !0
+                            }
+                        },
+                        lableLine: {
+                            normal: {
+                                show: !0
+                            },
+                            emphasis: {
+                                show: !0
+                            }
+                        },
+                        data: [{
+                            value: 305,
+                            name: "0-5天"
+                        }, {
+                            value: 234,
+                            name: "6-15天"
+                        }, {
+                            value: 145,
+                            name: "16-30天"
+                        }, {
+                            value: 145,
+                            name: "31-50天"
+                        }, {
+                            value: 145,
+                            name: "50天以上"
+                        }]
+                    }]
+                }
+            );
+        }
+
+        function WorkStationSummary() {
+            
+            var wareInvAgeChart = echarts.init(document.getElementById("divWorkStationSummary"));
+            wareInvAgeChart.setOption(
+                option = {
+                    title: {
+                        text: "",
+                        x: "center",
+                        show: false
+                    },
+                    tooltip: {
+                        trigger: "item",
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        x: "left",
+                        data: []
+                    },
+                    label: {
+                        normal: {
+                            formatter: "{b} ({d}%)",
+                            position: "insideTopRight"
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            smooth: .6
+                        }
+                    },
+                    toolbox: {
+                        show: !0,
+                        feature: {
+                            mark: {
+                                show: !0
+                            },
+                            dataView: {
+                                show: !0,
+                                readOnly: !1
+                            },
+                            magicType: {
+                                show: !0,
+                                type: ["pie", "funnel"]
+                            },
+                            restore: {
+                                show: !0
+                            },
+                            saveAsImage: {
+                                show: !0
+                            }
+                        }
+                    },
+                    calculable: !0,
+                    series: [{
+                        name: "库龄天数",
+                        type: "pie",
+                        roseType: "area",
+                        label: {
+                            normal: {
+                                show: !0
+                            },
+                            emphasis: {
+                                show: !0
+                            }
+                        },
+                        lableLine: {
+                            normal: {
+                                show: !0
+                            },
+                            emphasis: {
+                                show: !0
+                            }
+                        },
+                        data: [{
+                            value: 305,
+                            name: "0-5天"
+                        }, {
+                            value: 234,
+                            name: "6-15天"
+                        }, {
+                            value: 145,
+                            name: "16-30天"
+                        }, {
+                            value: 145,
+                            name: "31-50天"
+                        }, {
+                            value: 145,
+                            name: "50天以上"
+                        }]
+                    }]
+                }
+            );
+            
+        }
+
+    </script>
+}

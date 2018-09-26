@@ -1,0 +1,260 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "日志统计";
+}
+
+
+<div class="p-w-md m-t-sm">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            @Html.DataPickerTextBox("开始时间", "CreateDateFrom")
+                        </div>
+                        <div class="col-sm-5">
+                            @Html.DataPickerTextBox("结束时间", "CreateDateTo")
+                        </div>
+                        <div class="col-sm-2 ">
+                            <button id="btnSearch" class="btn btn-primary" type="button" style="float: left;margin-top:23px">查询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    @*<div class="row" style="margin:15px 0 25px 0;display:none;">
+                            <div class="col-lg-6">
+                                <div id="pieChartsDiv" class="echartDivHeigth">
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="lineChartsDiv" class="echartDivHeigth">
+
+                                </div>
+
+                            </div>
+                        </div>*@
+
+
+                    <table id="gv_InterfaceLog" class="table table-striped table-bordered table-hover dataTables-example" style="font-size:13px;font-family:open sans,Helvetica Neue,Helvetica, Arial,sans-serif;">
+                        <thead>
+                            <tr>
+                                <th data-data="LogName" style="color: #676a6c;font-weight:bold;">日志类型</th>
+                                <th data-data="Descr" style="color: #676a6c;font-weight:bold;">描述</th>
+                                <th data-data="ElapsedTime" style="color: #676a6c;font-weight:bold;">耗时(s)</th>
+                                <th data-data="CreateDateText" style="color: #676a6c;font-weight:bold;">创建日期</th>
+                                <th data-data="IsSuccess" style="color: #676a6c;font-weight:bold;">是否成功</th>
+                                <th data-data="RequestLength" style="color: #676a6c;font-weight:bold;">请求大小</th>
+                                <th data-data="ResponseLength" style="color: #676a6c;font-weight:bold;">返回结果大小</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form class="form-horizontal">
+    <div class="modal inmodal fade" id="logDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div id="div_LogDetail" class="modal-content">
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Styles {
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dateRange")
+    @Scripts.Render("~/plugins/dataTables")
+
+    @Scripts.Render("~/Scripts/plugins/jedate/jquery.jedate.js")
+    <script>
+
+
+        var interfaceStatistic = {
+            table: {},
+            init: function () {
+                var _self = this;
+                // _self.initPieChart();
+                //  _self.initLineChart();
+
+                jeDate({
+                    dateCell: "#CreateDateFrom",
+                    format: "YYYY-MM-DD hh:mm:ss",
+                    isTime: true,
+                    isClear: false,
+                    isOk: false,
+                    minDate: "2016-01-01 00:00:00"
+                });
+                jeDate({
+                    dateCell: "#CreateDateTo",
+                    format: "YYYY-MM-DD hh:mm:ss",
+                    isTime: true,
+                    isClear: false,
+                    isOk: false,
+                    minDate: "2016-01-01 00:00:00"
+                })
+
+                _self.table = $('#gv_InterfaceLog').DataTable({
+                    "sAjaxSource": "GetInterfaceStatisticByPage",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "CreateDateFrom", "value": $("#CreateDateFrom").val() },
+                            { "name": "CreateDateTo", "value": $("#CreateDateTo").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    "columnDefs": [{
+                        "targets": 4,
+                        "width": "5%",
+                        render: function (data, type, full, meta) {
+                            if (full.IsSuccess) {
+                                return '<i style="cursor:pointer" onclick="viewLogDetail(' + "'" + full.SysId + "'" + ', ' + full.LogType + ')" data-toggle="modal" data-target="#logDetailModal" class="fa fa-check fa-2x text-navy"></i>';
+                            } else {
+                                return '<i style="cursor:pointer" onclick="viewLogDetail(' + "'" + full.SysId + "'" + ', ' + full.LogType + ')" data-toggle="modal" data-target="#logDetailModal" class="fa fa-times fa-2x text-danger"></i>';
+                            }
+                        }
+                    }],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "iDisplayLength": 100,
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    if (!commonCheckDateCompare($("#CreateDateFrom").val(), $("#CreateDateTo").val())) {
+                        msgAlert("结束时间应大于开始时间！");
+                        return false;
+                    }
+                    interfaceStatistic.table.ajax.reload();
+                });
+            },
+            initPieChart: function () {
+                //饼状图
+                var height = Math.ceil($(window).height()) * 0.5;
+                $(".echartDivHeigth").height(height);
+                echarts.init(document.getElementById("pieChartsDiv")).setOption(option = {
+                    title: {
+                        text: '南丁格尔玫瑰图',
+                        x: 'left'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        x: 'center',
+                        y: 'bottom',
+                        data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
+                    },
+                    toolbox: {
+                        right: 20,
+                        feature: {
+                            mark: { show: true },
+                            magicType: {
+                                show: true,
+                                type: ['pie', 'funnel']
+                            },
+                            restore: { show: true, title: '刷新' },
+                            saveAsImage: { show: true, title: '保存图片' }
+                        }
+                    },
+                    calculable: true,
+                    series: [
+                        {
+                            name: '面积模式',
+                            type: 'pie',
+                            radius: [80, 150],
+                            roseType: 'area',
+                            data: [
+                                { value: 10, name: 'rose1' },
+                                { value: 5, name: 'rose2' },
+                                { value: 15, name: 'rose3' },
+                                { value: 25, name: 'rose4' },
+                                { value: 20, name: 'rose5' },
+                                { value: 35, name: 'rose6' },
+                                { value: 30, name: 'rose7' },
+                                { value: 40, name: 'rose8' }
+                            ]
+                        }
+                    ]
+                });
+            },
+            initLineChart: function () {
+                //折线图
+            }
+        };
+
+
+
+        $(function () {
+            interfaceStatistic.init();
+        });
+        function viewLogDetail(sysId, logType) {
+            $("#div_LogDetail").load("@Url.Action("ViewLogDetail", "Home")" + "?sysId=" + sysId + "&logType=" + logType, function () {
+                if (logType == 400) {
+                    initLogDetail("GetAccessLogViewDto", sysId);
+                } else if (logType == 500) {
+                    initLogDetail("GetBusinessLogViewDto", sysId);
+                } else if (logType == 600) {
+                    initLogDetail("GetInterfaceLogViewDto", sysId);
+                }
+            })
+        }
+
+
+        function initLogDetail(actionName, sysId) {
+            $.ajax({
+                url: "/Home/" + actionName + "?sysId=" + sysId,
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var logDetailVM = new Vue({
+                            el: "#div_LogDetail",
+                            data: data.Data
+                        });
+                    } else {
+                        msgErro(data.Message);
+                    }
+                }
+            });
+        }
+    </script>
+}

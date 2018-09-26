@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+<form class="form-horizontal" style="padding-right:20px">
+    <div class="form-group" style="margin-top:20px">
+        <label class="col-sm-2 control-label">描述:</label>
+        <div class="col-sm-9">
+            <input class="form-control" readonly="readonly" v-model="Descr" />
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>区间</th>
+                                <th>区间内最后记录主键</th>
+                                <th>区间内记录数</th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="item in FrequencyDetails">
+                            <tr>
+                                <td>{{ item.Duration }}</td>
+                                <td>{{ item.SysId }}</td>
+                                <td>{{ item.CountInInteval }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

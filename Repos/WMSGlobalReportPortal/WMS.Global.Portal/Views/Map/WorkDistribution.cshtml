@@ -1,0 +1,510 @@
+﻿
+@using WMS.Global.Portal.Helpers
+@{
+    ViewBag.Title = "仓库作业时间分布";
+}
+@Html.Breadcrumb("仓库作业时间分布", "")
+<div id="content">
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="jarviswidget" id="wid-id-01" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa  fa-list-alt "></i> </span>
+                    <h2 class="title-font">仓库作业时间分布</h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_WorkDistribution"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="jarviswidget" id="wid-id-02" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa  fa-bullseye"></i> </span>
+                    <h2 class="title-font">仓库作业占比</h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_WorkDistributionPie"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    @*分仓各业务作业时间分布*@
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics1" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics2" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics3" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics4" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics5" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics6" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics7" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics8" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics9" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics10" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics11" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics12" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics13" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="jarviswidget" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-th-large"></i> </span>
+                    <h2 class="title-font"></h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_TypeOfTimeStatistics14" class="typeOfTimeClass"> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
+<script>
+    var height = Math.ceil($(window).height()) - 150;
+    $("#div_WorkDistribution").height(height);
+    $("#div_WorkDistributionPie").height(height);
+    $(".typeOfTimeClass").height(height / 2);
+    var pageInit = {
+        Init: function () {
+            pageInit.SetWorkDistributionData();
+            pageInit.SetPieChart();
+            pageInit.SetWareHouseTypeTiem();
+        },
+        SetWorkDistributionData: function () {
+            var myChart = echarts.init(document.getElementById("div_WorkDistribution"));
+            $.ajax({
+                url: "@Url.Action("GetWorkDistributionData", "Map")",
+                type: "GET",
+                success: function (data) {
+                    if (data.success) {
+                        var option = {
+                            legend: {
+                                itemGap: 10,
+                                itemHeight: 10,
+                                itemWidth: 10,
+                                data: pageInit.GetWareHouseName(data.data),
+                                left: 'left',
+                            },
+                            polar: {},
+                            tooltip: {
+                                formatter: function (params) {
+                                    return params.seriesName + "作业次数：<br/>时间：" + params.value[0] + '点<br/>次数： ' + params.value[1];
+                                }
+                            },
+                            angleAxis: {
+                                type: 'value',
+                                data: pageInit.GetHoursData(),
+                                boundaryGap: false,
+                                splitLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: '#ddd',
+                                        type: 'dashed'
+                                    }
+                                },
+                                axisLine: {
+                                    show: false
+                                }
+                            },
+                            dataZoom: [{
+                                type: 'slider',
+                                angleAxisIndex: 0,
+                                bottom: 10,
+                                start: 0,
+                                end: 25
+                            }],
+                            radiusAxis: {
+                                type: 'value',
+                                axisAngle: 0
+                            },
+                            series: pageInit.SetSeries(data.data)
+                        };
+                        myChart.setOption(option);
+                    }
+                }
+            });
+        },
+        GetWareHouseName: function (data) {
+            var ds = [];
+            for (var i = 0; i < data.length; i++) {
+                ds.push(data[i].Name);
+            }
+            return ds;
+        },
+        GetHoursData: function () {
+            var ds = [];
+            for (var i = 0; i < 24; i++) {
+                ds.push(i + "点");
+            }
+            return ds;
+        },
+        SetSeriesData: function (data) {
+            var da = [];
+            for (var i = 0; i < data.length; i++) {
+                da.push([data[i].Hours, data[i].Times]);
+            }
+            return da;
+        },
+        SetSeries: function (data) {
+            var ser = [];
+            for (var i = 0; i < data.length; i++) {
+                ser.push({
+                    name: data[i].Name,
+                    type: 'scatter',
+                    coordinateSystem: 'polar',
+                    symbolSize: function (val) {
+                        return 10;
+                    },
+                    data: pageInit.SetSeriesData(data[i].WorkDistributionDataDto)
+                })
+            }
+            return ser;
+        },
+        SetWareHouseTypeTiem: function (data) {
+            $.getJSON("/Content/json/warehouse.json?charset=UTF-8", function (data) {
+                for (var i = 1; i <= data.length; i++) {
+                    $("#div_TypeOfTimeStatistics" + i).parent().parent().parent().find(".title-font").html(data[i - 1].Name + '作业类型时间统计');
+                    $.ajax({
+                        url: "/Map/GetWorkDistributionByWarehouse?sysId=" + data[i - 1].SysId + "&index=" + i,
+                        type: "GET",
+                        success: function (result) {
+                            if (result.success) {
+                                var optionData = pageInit.SetTypeOption(result.data);
+                                echarts.init(document.getElementById("div_TypeOfTimeStatistics" + result.index)).setOption(optionData);
+                            }
+                        }
+                    });
+                }
+            });
+
+        },
+        SetTypeOption: function (data) {
+            var option = {
+                grid: {
+                    left: '1%',
+                    right: '5%',
+                    bottom: '2%',
+                    top: '7%',
+                    containLabel: true
+                },
+                tooltip: {
+                    formatter: function (params) {
+                        return params.seriesName + "作业次数：<br/>时间：" + params.value[1] + '点<br/>次数： ' + params.value[0];
+                    }
+                },
+                legend: {
+                    data: ['收货', '上架', '分配', '拣货', '复核', '出库', '装箱'],
+                    left: 'right',
+                    itemWidth: 10,
+                    textStyle: {
+                        fontSize: "10px"
+                    }
+                },
+                xAxis: [{
+                    type: 'value',
+                    scale: true,
+                    axisLabel: {
+                        formatter: '{value} 次'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+                    }
+                }],
+                yAxis: [{
+                    type: 'value',
+                    scale: true,
+                    axisLabel: {
+                        formatter: '{value} 点'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+                    },
+                    max: 23,
+                    interval: 3
+                }],
+                series: pageInit.SetSeriesType(data)
+            };
+            return option;
+        },
+        SetSeriesType: function (data) {
+            var sr = [];
+            for (var i = 0; i < data.length; i++) {
+                sr.push({
+                    name: data[i].BusinessType,
+                    type: 'scatter',
+                    data: pageInit.SetSeriesTypeData(data[i].WarehouseData)
+                });
+            }
+            return sr;
+        },
+        SetSeriesTypeData: function (data) {
+            var dt = [];
+            for (var i = 0; i < data.length; i++) {
+                dt.push([data[i].Times, data[i].Hours]);
+            }
+            return dt;
+        },
+        GetWareHouseData: function (data) {
+            var wda = [];
+            for (var i = 0; i < data.length; i++) {
+                wda.push({
+                    value: data[i].AllTims,
+                    name: data[i].Name
+                });
+            }
+            return wda;
+        },
+
+        GetWareHouseTypeData: function (data) {
+            var tda = [];
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].WorkPieData.length > 0) {
+                    for (var j = 0; j < data[i].WorkPieData.length; j++) {
+                        tda.push({
+                            value: data[i].WorkPieData[j].Times,
+                            name: data[i].WorkPieData[j].TypeName
+                        });
+                    }
+                }
+            }
+            return tda;
+        },
+        SetPieChartOption: function (data) {
+            var option = {
+                backgroundColor: '#fff',
+                legend: {
+                    itemGap: 10,
+                    itemWidth: 10,
+                    itemHeight: 10,
+                    data: pageInit.GetWareHouseName(data)
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}:{d}% "
+                },
+                series: [{
+                    name: '仓库占比',
+                    type: 'pie',
+                    radius: ['30%', '60%'],
+                    label: {
+                        normal: {
+                            position: 'inner'
+                        }
+                    },
+                    data: pageInit.GetWareHouseData(data)
+                }, {
+                    name: '业务占比',
+                    type: 'pie',
+                    clockWise: false,
+                    startAngle: 20,
+                    radius: ['65%', '75%'],
+                    label: {
+                        normal: {
+                            color: '#000',
+                            formatter: '{b|{b}：}{c}',
+                            rich: {
+                                b: {
+                                    fontSize: 12,
+                                    color: '#000'
+                                }
+                            }
+                        }
+                    },
+                    data: pageInit.GetWareHouseTypeData(data)
+                }]
+            };
+            return option;
+        },
+        SetPieChart: function () {
+            $.ajax({
+                url: "@Url.Action("GetWorkDistributionPieData", "Map")",
+                type: "GET",
+                success: function (result) {
+                    if (result.success) {
+                        var pieChart = echarts.init(document.getElementById("div_WorkDistributionPie"));
+                        pieChart.setOption(pageInit.SetPieChartOption(result.data));
+                    }
+                }
+            });
+        }
+    };
+
+    $(function () {
+        pageInit.Init();
+    });
+</script>

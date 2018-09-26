@@ -1,0 +1,622 @@
+﻿@using NBK.ECService.WMS.Utility.Enum
+@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+@model NBK.ECService.WMS.DTO.PurchaseReturnViewDto
+
+@{
+    ViewBag.Title = "退货入库单查看";
+}
+
+@Html.Breadcrumb("退货入库单管理", "/Purchase/PurchaseReturn", "退货入库单明细")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <input id="SysId" type="hidden" value="@Model.SysId" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">退货入库单</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.PurchaseOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed">
+                <div class="col-sm-12">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    退货单号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.PurchaseOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    平台订单号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.PlatformOrderId </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    顾客名称:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CustomerName</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    单据状态:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    商品总数:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.PurchaseDetailReturnViewDto.Sum(x => (x.Qty == null ? 0 : x.Qty)) </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    退货联系人:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ReturnContact </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    申请人发货地址:
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ShippingAddress</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    物流单号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ExpressNumber </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    物流公司:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ExpressCompany </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    退货类型:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> 客户退货</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    退货时间:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ReturnTimeText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    品控检验时间:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.QCTimeText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    收货时间:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.LastReceiptDateText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    交货期限:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.DeliveryDateText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    备注:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @Model.Descr
+                        </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px;"> </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @if (Model.OutboundSysId != null && !string.IsNullOrEmpty(Model.OutboundOrder))
+                {
+                    <div class="col-sm-1">
+                        出库单号:
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12">@Model.OutboundOrder</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        出库仓库:
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12">@Model.FromWareHouseName</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-sm-1">
+                    渠道:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.Channel</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    退货原因:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.ReturnReason</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group ">
+                <label class="col-sm-1 control-label">退货商品明细</label>
+
+                <div class="col-sm-10">
+                </div>
+                <label class="col-sm-1 control-label">SKU数:@Model.PurchaseDetailReturnViewDto.GroupBy(x => x.SkuSysId).Count()</label>
+
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>商品编码</th>
+                                <th>商品名称</th>
+                                <th>UPC</th>
+                                <th>商品描述</th>
+                                @*<th>包装</th>*@
+                                <th>包装单位</th>
+                                <th>包装系数</th>
+                                <th>退货数量</th>
+                                <th>已入库数量</th>
+                                <th>可二次销售数量</th>
+                                <th>异常数量</th>
+                                @*<th>拒收数量</th>
+                                    <th>赠品数量</th>*@
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var index = 0;
+                                foreach (var info in Model.PurchaseDetailReturnViewDto)
+                                {
+                                    index++;
+                                    <tr>
+                                        <td>@index</td>
+                                        <td>@info.SkuCode</td>
+                                        <td>@info.SkuName</td>
+                                        <td>@info.SkuUPC</td>
+                                        <td>@info.SkuDescr</td>
+                                        @*<td>@info.PackCode</td>*@
+                                        <td>@info.UomCode</td>
+                                        <td>@info.PackFactor</td>
+                                        @if (Model.Type == (int)PurchaseType.Material || info.IsMaterial == true)
+                                        {
+                                            <td>@info.DisplayQty</td>
+                                            <td>@info.DisplayReceivedQty</td>
+                                            @*<td>@info.DisplayRejectedQty</td>*@
+                                        }
+                                        else
+                                        {
+                                            <td>@info.Qty</td>
+                                            <td>@info.ReceivedQty</td>
+                                            @*<td>@info.RejectedQty</td>*@
+                                        }
+                                        @if (Model.QCTime == null)
+                                        {
+                                            <td></td>
+                                            <td></td>
+                                        }
+                                        else
+                                        {
+                                            <td>@info.CanSaleQtyText</td>
+                                            <td>@info.AbnormalQtyText</td>
+                                        }
+                                        @*<td>@info.GiftQty</td>*@
+                                        <td>@info.Remark</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-sm-1 control-label">收货记录</label>
+                <div class="col-sm-10">
+                </div>
+                <div class="col-sm-1">
+
+                </div>
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>收货单号</th>
+                                <th>收货时间</th>
+                                <th>收货单状态</th>
+                                <th>操作人</th>
+                                <th>收货备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                index = 0;
+                                if (Model.ReceiptPurchaseDto.Any())
+                                {
+                                    foreach (var info in Model.ReceiptPurchaseDto)
+                                    {
+                                        index++;
+                                        <tr>
+                                            <td>@index</td>
+                                            <td><a href="/Receipt/ReceiptView?sysId=@info.SysId" target="_blank">@info.ReceiptOrder</a></td>
+                                            <td>@info.ReceiptDateText</td>
+                                            <td>@info.StatusText</td>
+                                            <td>@info.UpdateUserName</td>
+                                            <td>@info.Descr</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6">暂无收货记录</td>
+                                    </tr>
+                                }
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Purchase_View_AutoShelves, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Type == (int)PurchaseType.Return && Model.Status == (int)PurchaseStatus.New)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnAutoShelves" onclick="PurchasebtnAutoShelves();">自动收货上架</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-primary" id="btnAutoShelves" disabled="disabled">自动收货上架</a>
+                }
+            }
+            @if (Model.Status == (int)PurchaseStatus.Finish || Model.Status == (int)PurchaseStatus.StopReceipt || Model.Status == (int)PurchaseStatus.Void || Model.Status == (int)PurchaseStatus.Close)
+            {
+                <a class="btn btn-sm btn-primary" id="btnSave" disabled="disabled"><i class="fa fa-check-square-o"></i> 收货</a>
+            }
+            else
+            {
+                <a class="btn btn-sm btn-primary" id="btnSave" onclick="Receipt();"><i class="fa fa-check-square-o"></i> 收货</a>
+            }
+
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Purchase_View_CancelReceipt, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status != (int)PurchaseStatus.New && Model.Status != (int)PurchaseStatus.Close && Model.Status != (int)PurchaseStatus.Void && Model.Status != (int)PurchaseStatus.StopReceipt)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnCancelReceipt" onclick="CancelReceipt();"><i class="fa fa-check-square-o"></i> 取消收货</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-primary" id="btnCancelReceipt" disabled="disabled"><i class="fa fa-check-square-o"></i> 取消收货</a>
+                }
+            }
+
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Purchase_View_QC, HttpContext.Current.User.Identity.Name))
+            {
+                if ((Model.Status == (int)PurchaseStatus.Finish || Model.Status == (int)PurchaseStatus.Close) && Model.Type == (int)PurchaseType.Return  )
+                {
+                    <a class="btn btn-sm btn-primary" id="btnQc" onclick="QualityInspection();"><i class="fa fa-check-square-o"></i> 质检</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-primary" id="btnQc" disabled="disabled"><i class="fa fa-check-square-o"></i> 质检</a>
+                }
+            }
+
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Purchase_View_Obsolete, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)PurchaseStatus.New)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnObsolete" onclick="PurchaseObsolete();">作废</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-primary" id="btnObsolete" disabled="disabled">作废</a>
+                }
+            }
+            @*@if (AuthorizeManager.HasFunction(AuthKeyConst.Purchase_View_Close, HttpContext.Current.User.Identity.Name))
+                {
+                    if (Model.Status == (int)PurchaseStatus.Void || Model.Status == (int)PurchaseStatus.Close || Model.Status == (int)PurchaseStatus.Finish)
+                    {
+                     <a class="btn btn-sm btn-primary" id="btnClose" disabled="disabled">关闭</a>
+                    }
+                    else
+                    {
+                     <a class="btn btn-sm btn-primary" id="btnClose" onclick="PurchaseClose();">关闭</a>
+                    }
+                }*@
+            <a class="btn btn-white btn-sm" id="btnPrint" onclick="print()"><i class="fa fa-print"></i> 打印入库单</a>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+        });
+
+        function Receipt() {
+            if ($("#btnSave").attr("disabled") === "disabled") {
+                return;
+            }
+            $("#btnSave").attr("disabled", "disabled");
+            window.location.href = "../Receipt/CreateReceipt?orderNumber=@Model.PurchaseOrder";
+        }
+
+        function print() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+            LODOP.SET_PRINT_PAGESIZE(2, "2100", "2970", "");
+            //LODOP.SET_PRINT_PAGESIZE(2, 2100, 2970, "CreateCustomPage");
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintPurchaseView?sysId=@Model.SysId" + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            LODOP.ADD_PRINT_BARCODE(40, 800, 206, 58, "128B", "@Model.PurchaseOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            //LODOP.PREVIEW();
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+
+        //作废
+        function PurchaseObsolete() {
+            msgConfirm("确定要作废吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("ObsoletePurchase", "Purchase")" + "?SysId=" + sysId,
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.Success) {
+                                    msgSuccess();
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                                saveLoading();
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+
+        //关闭
+        function PurchaseClose() {
+            msgConfirm("确定要关闭吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("ClosePurchase", "Purchase")" + "?SysId=" + sysId,
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.Success) {
+                                    msgSuccess();
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                                saveLoading();
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+
+        //质检
+        function QualityInspection() {
+            msgConfirm("确定要质检吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("GenerateQcOrderByPurchase", "Purchase")" + "?PurchaseSysId=" + sysId,
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.Success) {
+                                    msgSuccess();
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                                saveLoading();
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+
+        //取消收货
+        function CancelReceipt() {
+            msgConfirm("确定要取消收货吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("CancelReceiptByPurchase", "Purchase")" + "?PurchaseSysId=" + sysId,
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.success) {
+                                    msgSuccess();
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.message);
+                                }
+                                saveLoading();
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+
+        //自动收货上架
+        function PurchasebtnAutoShelves() {
+            msgConfirm("确定要自动收货上架吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("AutoShelves", "Purchase")" + "?SysId=" + sysId,
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.Success) {
+                                    msgSuccess();
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                                saveLoading();
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+    </script>
+}
+

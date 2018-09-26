@@ -1,0 +1,66 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrintPrebulkPackByBatchDto
+@{
+    ViewBag.Title = "";
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+@foreach (var item in Model.PrintPreBulkPackDtoList)
+{
+    <div id="PrintPrebulkPackView" class="ibox-content m-b-sm border-bottom">
+        <form id="PrePackForm" class="form-horizontal">
+            <div class="form-group">
+                @Html.PrintTitle("箱号", item.StorageCase)
+                @Html.PrintTitle("装箱人", item.CreateUserName)
+                @Html.PrintTitle("装箱时间", item.CreateDateDisplay)
+            </div>
+
+            <br />
+            <br />
+
+            <div class="form-group ">
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                @Html.PrintTh("商品编码")
+                                @Html.PrintTh("商品名称")
+                                @Html.PrintTh("UPC")
+                                @Html.PrintTh("数量")
+                                @Html.PrintTh("包装")
+                                @Html.PrintTh("单位")
+                                @Html.PrintTh("货位")
+                                @Html.PrintTh("批次")
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var preBulkPackDetail in item.PreBulkPackDetailList)
+                                {
+                                    <tr>
+                                        @Html.PrintTd(preBulkPackDetail.SkuCode)
+                                        @Html.PrintTd(preBulkPackDetail.SkuName)
+                                        @Html.PrintTd(preBulkPackDetail.UPC)
+                                        @Html.PrintTd(preBulkPackDetail.Qty.ToString())
+                                        @Html.PrintTd(preBulkPackDetail.PackCode)
+                                        @Html.PrintTd(preBulkPackDetail.UomCode)
+                                        @Html.PrintTd(preBulkPackDetail.Loc)
+                                        @Html.PrintTd(preBulkPackDetail.Lot)
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br />
+            <br />
+
+        </form>
+    </div>
+}

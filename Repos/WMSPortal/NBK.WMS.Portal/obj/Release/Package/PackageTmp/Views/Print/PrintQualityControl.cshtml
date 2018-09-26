@@ -1,0 +1,80 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrintQualityControlDto
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-12 control-label ">
+                    <H1 style="color: red;text-align:left">质检单</H1>
+                </label>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("质检单号", Model.QCOrder)
+                @Html.PrintTitle("单据状态", Model.StatusText)
+                @Html.PrintTitle("质检类型", Model.QCTypeText)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("相关单据", Model.DocOrder)
+                @Html.PrintTitle("质检人", Model.QCUserName)
+                @Html.PrintTitle("质检时间", Model.QCDateText)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("备注", Model.Descr)
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12" style="font-size:10px; padding:10px 0px 10px 0px;">
+                    <div class="col-xs-4" style="font-weight:500;">质检不合格明细</div>
+                    <div class="col-xs-8"></div>
+                </div>
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("序号")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("UPC")
+                            @Html.PrintTh("数量")
+                            @Html.PrintTh("包装单位")
+                            @Html.PrintTh("备注")
+                        </tr>
+                        @{
+                            int i = 1;
+                            foreach (var info in Model.PrintQualityControlDetails)
+                            {
+                                <tr>
+                                    @Html.PrintTd(i++.ToString())
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.UPC)
+                                    @Html.PrintTd(info.DisplayQty.GetValueOrDefault().ToString())
+                                    @Html.PrintTd(info.UOMCode)
+                                    @Html.PrintTd(info.Descr)
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+        $(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+        });
+    </script>
+}

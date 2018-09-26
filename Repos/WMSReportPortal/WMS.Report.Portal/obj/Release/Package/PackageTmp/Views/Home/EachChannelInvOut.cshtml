@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "近七天各渠道发货入库情况(数量）";
+    Layout = null;
+}
+
+<script>
+    var invOutChart = {
+        init: function (flag, typeFlag) {
+            var height = Math.ceil($(window).height()) * 0.5;
+            $(".eachChannelInvOut").height(height);
+            invOutChart.initChart(flag, typeFlag)
+        },
+        initChart: function (flag, typeFlag) {
+            var titleName = '';
+            var desc = '';
+            var colorStr = '';
+            var lineCol = '';
+            if (flag == "1") {
+                titleName = '近7日各个道发货量';
+                desc = '发货';
+                lineCol = "#ddd";
+                colorStr = "#F00";
+            }
+            else if (flag == "2") {
+                titleName = '近7日各个道入库量'
+                desc = '入库';
+                lineCol = "#F0F";
+                colorStr = "#18a689";
+            }
+            $.ajax({
+                url: "@Url.Action("GetEachChannelInvOut", "Home")",
+                data: { Flag: flag, Type: typeFlag },
+                type: "POST",
+                success: function (result) {
+                    if (result.Success) {
+                        echarts.init(document.getElementById("div_eachChannelInvOutChart" + flag + typeFlag)).setOption(option = {
+                            legend: {
+                                data: [titleName]
+                            },
+                            tooltip: {
+                                position: 'top',
+                                formatter: function (params) {
+                                    return params.value[2];
+                                }
+                            },
+                            toolbox: {
+                                right: 20,
+                                feature: {
+                                    restore: { show: true, title: '刷新' },
+                                    saveAsImage: { show: true, title: '保存图片' }
+                                }
+                            },
+                            xAxis: {
+                                name: '日期',
+                                type: 'category',
+                                data: result.Data.Dates,
+                                boundaryGap: false,
+                                splitLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: lineCol,
+                                        type: 'dashed'
+                                    }
+                                },
+                                axisLine: {
+                                    show: false
+                                }
+                            },
+                            yAxis: {
+                                name: '渠道',
+                                type: 'category',
+                                data: result.Data.LotAttr,
+                                axisLine: {
+                                    show: false
+                                }
+                            },
+                            series: [{
+                                name: titleName,
+                                type: 'scatter',
+                                symbolSize: function (val) {
+                                    if (val[2] <= 10) {
+                                        return 5;
+                                    }
+                                    else if (val[2] > 10 && val[2] <= 100) {
+                                        return 10;
+                                    }
+
+                                    else if (val[2] > 100 && val[2] <= 1000) {
+                                        return 15;
+                                    }
+                                    else if (val[2] > 1000 && val[2] <= 10000) {
+                                        return 20;
+                                    }
+                                    else if (val[2] > 10000) {
+                                        return 25;
+                                    }
+                                },
+                                itemStyle: {
+                                    normal: {
+                                        color: colorStr
+                                    }
+                                },
+                                data: invOutChart.formatSeriesData(result.Data),
+                                animationDelay: function (idx) {
+                                    return idx * 5;
+                                }
+                            }]
+                        });
+                    }
+                }
+            });
+        },
+        formatSeriesData: function (data) {
+            var xyData = [];
+            for (var i = 0; i < data.Dates.length; i++) {
+                for (var j = 0; j < data.EachChannelInvOutDataDto.length; j++) {
+                    if (data.Dates[i] == data.EachChannelInvOutDataDto[j].Date) {
+                        for (var k = 0; k < data.EachChannelInvOutDataDto[j].EachChannelInvOutDto.length; k++) {
+                            var name = data.EachChannelInvOutDataDto[j].EachChannelInvOutDto[k].LotAttr01;
+                            if (name == '') {
+                                name = '非渠道数量';
+                            }
+                            var index = data.LotAttr.indexOf(name);
+                            xyData.push([i, index, data.EachChannelInvOutDataDto[j].EachChannelInvOutDto[k].Qty])
+                        }
+                    }
+                }
+            }
+            return xyData;
+        }
+    }
+
+    $(function () {
+        invOutChart.init('@ViewBag.TypeFlag', '@ViewBag.Type');
+    });
+</script>

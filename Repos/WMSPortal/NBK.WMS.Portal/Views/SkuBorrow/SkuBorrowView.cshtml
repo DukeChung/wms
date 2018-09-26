@@ -1,0 +1,664 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.Utility.Enum
+@model NBK.ECService.WMS.DTO.SkuBorrowViewDto
+
+@{
+    ViewBag.Title = " 商品外借单明细";
+}
+
+@Html.Breadcrumb("商品外借", "/SkuBorrow/SkuBorrowMaintain", "商品外借单明细")
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/dropzone/dropZoneStyles")
+    @Styles.Render("~/plugins/jasnyBootstrapStyles")
+    @Styles.Render("~/plugins/codeEditorStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="AjustmentView" class="ibox-content m-b-sm border-bottom">
+
+        <form id="AjustmentForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">商品外借明细</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.SkuBorrowOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    外借单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.SkuBorrowOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    借出时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.BorrowStartTimeDisplay </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    归还时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.BorrowEndTimeDisplay</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    单据状态:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusName</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    创建时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CreateInfoDisplay</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    仓库:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.WareHouseName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    外借人:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.BorrowName</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    外借部门:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.LendingDepartment</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    渠道:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.Channel</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    备注:
+                </div>
+                <div class="col-sm-7">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.Remark</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <label class="col-sm-2 control-label" style="text-align:left;">商品明细</label>
+                <div class="col-sm-10"></div>
+                <div class="col-sm-12">
+
+                    <table id="skuborrowDetails" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="SkuCode">商品编号</th>
+                                <th data-data="SkuName">商品名称</th>
+                                <th data-data="SkuDescr">商品描述</th>
+                                <th data-data="UPC">商品条码</th>
+                                <th data-data="UOMCode">单位</th>
+                                <th data-data="Loc">货位</th>
+                                <th data-data="Lot">批次</th>
+                                <th data-data="Lpn">托盘</th>
+                                <th data-data="BorrowStartTime">借出时间</th>
+                                <th data-data="BorrowEndTime">归还时间</th>
+                                <th data-data="IsDamage">是否损坏</th>
+                                <th data-data="DisplayQty">借出数量</th>
+                                <th data-data="Remark">备注</th>
+                                <th>图片</th>
+                                @if ((int)ViewData["Status"] != (int)SkuBorrowStatus.New)
+                                {
+                                    <th data-data="DisplayReturnQty">归还数量</th>
+                                    <th data-data="DamageReason">损坏原因</th>
+                                }
+                            </tr>
+                        </thead>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="ibox-footer text-right tooltip-demo">
+
+                @if ((int)ViewData["Status"] == (int)SkuBorrowStatus.Audit)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnAudit"><i class="fa fa-check-square-o"></i> 归还</a>
+                }
+                @if (Model.Status == (int)SkuBorrowStatus.New)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnAudit"><i class="fa fa-check-square-o"></i> 借出</a>
+                }
+                <a class="btn btn-white btn-sm" id="btnReturn"><i class="fa fa-times"></i> 返回</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/print")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+            $("#btnReturn").click(function () {
+                backParentPage();
+            });
+        });
+
+        var backParentPage = function () {
+            window.location.href = '@Url.Action("SkuBorrowMaintain", "SkuBorrow")';
+        };
+
+    </script>
+
+    <script>
+        var UpdateSkuBorrowModel = {
+            skuborrowModel: {},
+            skuborrowDetailsTable: {},
+            skuborrowDetailsSource: {},
+            skuborrowLevelSource: {},
+            init: function () {
+                var _self = this;
+
+                _self.skuborrowDetailsTable = $('#skuborrowDetails').DataTable({
+                    data: _self.skuborrowDetailsSource,
+                    dom: 'Bfrtip',
+                    buttons: [
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        },
+                        {
+                            "targets": 9,
+                            render: function (data, type, full, meta) {
+                                return full.BorrowStartTimeDisplay;
+                            }
+                        },
+                        {
+                            "targets": 10,
+                            render: function (data, type, full, meta) {
+                                @if ((int)ViewData["Status"] == (int)SkuBorrowStatus.Audit)
+                                {
+                                    <text>
+                                return '<div style="width:150px"><div class="input-group date"><span class="input-group-addon"> <i class="fa fa-calendar"></i></span>  <input type="text" class="form-control"  name="BorrowEndTime" value="' + full.BorrowEndTimeDisplay + '" onchange="UpdateSkuBorrowModel.endTimeChange(this)"/></div></div>';
+                                </text>
+                                }
+                                return full.BorrowEndTimeDisplay;
+                            }
+                        },
+
+                        {
+                            "targets": 11,
+                            render: function (data, type, full, meta) {
+
+                                @if ((int)ViewData["Status"] == (int)SkuBorrowStatus.Audit)
+                                {
+                                        <text>
+                                var selection = '<select class="form-control" onchange="UpdateSkuBorrowModel.skuBorrowIsDamageChange(this)">';
+                                if (full.IsDamage == 1) {
+                                    selection += '<option value=0>否</option>';
+                                    selection += '<option value=1 selected>是</option>';
+                                }
+                                else {
+                                    selection += '<option value=0>否</option>';
+                                    selection += '<option value=1>是</option>';
+                                }
+                                selection += '</select>';
+                                return selection;
+                                </text>
+                                }
+                                @if ((int)ViewData["Status"] == (int)SkuBorrowStatus.New || (int)ViewData["Status"] == (int)SkuBorrowStatus.ReturnAudit || (int)ViewData["Status"] == (int)SkuBorrowStatus.Void)
+                                {
+                                        <text>
+                                if (full.IsDamage == 1) {
+                                    return "是";
+                                }
+                                else {
+                                    return "否";
+                                }
+                                </text>
+                                }
+                            }
+                        },
+
+                        {
+                            "targets": 12,
+                            render: function (data, type, full, meta) {
+                                return full.DisplayQty;
+                            }
+                        },
+                        {
+                            "targets": 13,
+                            render: function (data, type, full, meta) {
+                                return full.Remark;
+                            }
+                        },
+                        {
+                            "targets": 14,
+                            "width": "20%",
+                            render: function (data, type, full, meta) {
+                                if (full.PictureDtoList != null && full.PictureDtoList.length > 0) {
+                                    var spans = new Array();
+                                    for (var i in full.PictureDtoList) {
+                                        spans.push('<span style="margin-left:5px;" class="fileinput-filename" Name="' + full.PictureDtoList[i].Name + '" Url="' + full.PictureDtoList[i].Url + '" Size="' + full.PictureDtoList[i].Size + '" Suffix="' + full.PictureDtoList[i].Suffix + '"><a href="' + full.PictureDtoList[i].ShowUrl + '"  target="_blank">' + full.PictureDtoList[i].Name + '</a></span>');
+                                    }
+                                    return '<div class="fileinput fileinput-new" data-provides="fileinput"><div class="pictures">' + spans.join('') + '</div></div>';
+                                } else {
+                                    return '';
+                                }
+                            }
+                        },
+                        @if ((int)ViewData["Status"] == (int)SkuBorrowStatus.Audit)
+                        {
+                            <text>
+                            {
+                                "targets": 15,
+                                render: function (data, type, full, meta) {
+                                    return '<input name="txtReturn" class="form-control" type="number" style="width:80px;" value="' + full.DisplayReturnQty + '" onblur="UpdateSkuBorrowModel.returnQtyBlur(this)"/>';
+                                }
+                            },
+                            {
+                                "targets": 16,
+                                render: function (data, type, full, meta) {
+                                    return '<input class="form-control" type="text" style="width:120px;" value="' + (full.DamageReason == null ? "" : full.DamageReason )+ '" onblur="UpdateSkuBorrowModel.damageReasonBlur(this)"/>';
+                                }
+                            },
+                            </text>
+                        }
+                        @if ((int)ViewData["Status"] == (int)SkuBorrowStatus.ReturnAudit || (int)ViewData["Status"] == (int)SkuBorrowStatus.Void)
+                        {
+                            <text>
+                            {
+                                "targets": 15,
+                                render: function (data, type, full, meta) {
+                                    return full.DisplayReturnQty;
+                                }
+                            },
+                            {
+                                "targets": 16,
+                                render: function (data, type, full, meta) {
+                                    return full.DamageReason;
+                                }
+                            },
+                            </text>
+                        }
+                    ],
+                    
+                    "sScrollX": "100%",
+                    "sScrollXInner": "100%",
+                    "bScrollCollapse": true, 
+                    "bServerSide": false,
+                    "bProcessing": true,
+                    "bPaginate": false, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+
+                //初始化明细列表
+                _self.skuborrowModel = JSON.parse('@Html.Raw(Json.Encode(Model))');
+                UpdateSkuBorrowModel.skuborrowDetailsTable.rows.add(_self.skuborrowModel.SkuBorrowDetailList).draw();
+
+
+                var flag = false;
+                var positive = true;
+                $("#btnAudit").bind("click", function () {
+
+
+                    $("input[name='txtReturn']").each(function () {
+                        if (!isPositive($(this).val())) {
+                            msgAlert("归还数量必须大于0！");
+                            positive = false;
+                            return false;
+                        }
+                    });
+                    if (!positive) {
+                        positive = true;
+                        return;
+                    }
+
+                    saveLoading('show');
+                    if (flag) {
+                        return;
+                    }
+                    flag = true;
+                    var skuBorrowDetailList = UpdateSkuBorrowModel.getSkuBorrowDetailSource();
+
+                    var requestData = {
+                        SysId: UpdateSkuBorrowModel.skuborrowModel.SysId,
+                        WareHouseSysId: UpdateSkuBorrowModel.skuborrowModel.WareHouseSysId,
+                        Channel: UpdateSkuBorrowModel.skuborrowModel.Channel,
+                        SkuBorrowDetailList: skuBorrowDetailList
+                    };
+
+                    $.ajax({
+                        url: "@Url.Action("Audit", "SkuBorrow")",
+                        data: requestData,
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            flag = false;
+                            saveLoading();
+                            if (data.success) {
+                                 @if ((int)ViewData["Status"] == (int)SkuBorrowStatus.New)
+                                {
+                                    <text>
+                                    var skuborrowDetail = [];
+
+                                    var LODOP = getLodop();
+                                    LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                                    LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                                    LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                                    LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintSkuBorrowDetailByOrder?skuBorrowOrder=@ViewBag.BorrowOrder" + "&userName=@ViewBag.UserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+                                    LODOP.ADD_PRINT_BARCODE(40, 550, 206, 58, "128B", "@ViewBag.BorrowOrder");
+                                    LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+                                    LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+                                    //LODOP.PREVIEW();
+                                    LODOP.PRINT();
+                                    </text>
+                                } 
+                                msgSuccess("操作成功!", setTimeout(function () { UpdateSkuBorrowModel.backParentPage(); }, 300)); 
+                            }
+                            else {
+                                msgErro(data.message);
+                            }
+                        },
+                        error: function () {
+                            flag = false;
+                            saveLoading();
+                            msgErro("操作失败！");
+                        }
+                    });
+
+                });
+
+                $("#btnReturn").bind("click", function () {
+                    UpdateSkuBorrowModel.backParentPage();
+                });
+
+                $("#btnVoid").click(function () {
+                    var request = {
+                        SysId: '@Model.SysId'
+                    };
+
+                    $.ajax({
+                        url: "@Url.Action("Void", "SkuBorrow")",
+                        data: request,
+                        type: "post",
+                        success: function (data) {
+                            if (data.success) {
+                                msgSuccess("作废成功!");
+                                UpdateSkuBorrowModel.backParentPage();
+                            }
+                            else {
+                                msgErro(data.message);
+                            }
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+
+                });
+            },
+
+            startTimeChange: function (obj) {
+                var selectIndex = $(obj).parent().parent().parent().parent().index();
+
+                UpdateSkuBorrowModel.skuborrowDetailsTable.data()[selectIndex]["BorrowStartTime"] = $(obj).val();
+            },
+
+            endTimeChange: function (obj) {
+                var selectIndex = $(obj).parent().parent().parent().parent().index();
+
+                UpdateSkuBorrowModel.skuborrowDetailsTable.data()[selectIndex]["BorrowEndTime"] = $(obj).val();
+            },
+
+            returnQtyBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                UpdateSkuBorrowModel.skuborrowDetailsTable.data()[selectIndex]["DisplayReturnQty"] = $(obj).val();
+            },
+
+            damageReasonBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                UpdateSkuBorrowModel.skuborrowDetailsTable.data()[selectIndex]["DamageReason"] = $(obj).val();
+            },
+
+            skuBorrowIsDamageChange: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                UpdateSkuBorrowModel.skuborrowDetailsTable.data()[selectIndex]["IsDamage"] = $(obj).val();
+            },
+
+            remarkBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                UpdateSkuBorrowModel.skuborrowDetailsTable.data()[selectIndex]["Remark"] = $(obj).val();
+            },
+
+            getSkuBorrowDetailSource: function () {
+                var skuborrowDetailList = [];
+                var skuborrowDetaildata = UpdateSkuBorrowModel.skuborrowDetailsTable.data();
+
+                for (var i = 0; i < skuborrowDetaildata.length; i++) {
+                    var pictures = [];
+                    $("#file_" + skuborrowDetaildata[i].SysId).parent().parent().children(".pictures").children(".fileinput-filename").each(function () {
+                        var picture = {
+                            Name: $(this).attr("Name"),
+                            Url: $(this).attr("Url"),
+                            Size: $(this).attr("Size"),
+                            Suffix: $(this).attr("Suffix")
+                        };
+                        pictures.push(picture);
+                    });
+                    skuborrowDetaildata[i].PictureDtoList = pictures;
+                    skuborrowDetailList.push(skuborrowDetaildata[i]);
+                    skuborrowDetaildata[i]["BorrowStartTime"] = ConvertJSONDateToJSDateObject(skuborrowDetaildata[i]["BorrowStartTime"]);
+                    skuborrowDetaildata[i]["BorrowEndTime"] = ConvertJSONDateToJSDateObject(skuborrowDetaildata[i]["BorrowEndTime"]);
+                }
+
+                return skuborrowDetailList;
+            },
+            backParentPage: function () {
+                window.location.href = '@Url.Action("SkuBorrowMaintain", "SkuBorrow")'
+            }
+        }
+
+        $(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+            UpdateSkuBorrowModel.init();
+
+
+            $("input[name='BorrowStartTime']").each(function () {
+                $(this).datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+            })
+
+
+            $("input[name='BorrowEndTime']").each(function () {
+                $(this).datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+            })
+
+        })
+
+        function UploadImage(obj) {
+            var _this = $(obj);
+            var pictures = $(obj).parent().parent().children(".pictures");
+            if (pictures.children(".fileinput-filename").length >= 3) {
+                msgErro("最多上传3张图片！");
+                return false;
+            }
+            saveLoading('show');
+            var formData = new FormData();
+            formData.append("file", $(obj)[0].files[0]);
+            $.ajax({
+                url: "@Url.Action("UploadImage", "SkuBorrow")",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    saveLoading('hide');
+                    _this.val('');
+                    if (data.Success) {
+                        msgSuccess("上传成功！");
+                        pictures.append('<span style="margin-left:5px;max-width:100px" title="' + data.Name + '" class="fileinput-filename" Name="' + data.Name + '" Url="' + data.Url + '" Size="' + data.Size + '" Suffix="' + data.Suffix + '"><a href="' + data.ShowUrl + '"  target="_blank">' + data.Name + '</a></span><a class="close" data-dismiss="fileinput" style="float: none" onclick="RemovePiciture(this);">&times;</a>');
+                    }
+                    else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function (data) {
+                    saveLoading('hide');
+                    _this.val('');
+                    msgErro("上传失败！");
+                }
+            });
+        }
+
+        function RemovePiciture(obj) {
+            $(obj).prev().remove();
+            $(obj).remove();
+        }
+
+
+        function ConvertJSONDateToJSDateObject(jsondate) {
+            if (jsondate != null && jsondate != "" && jsondate.indexOf("Date") >= 0) {
+                var date = new Date(parseInt(jsondate.replace("/Date(", "").replace(")/", ""), 10));
+                return date.Format("yyyy-MM-dd");
+            }
+            return jsondate;
+        }
+
+        Date.prototype.Format = function (fmt) {
+            var o = {
+                "M+": this.getMonth() + 1,
+                "d+": this.getDate(),
+                "h+": this.getHours(),
+                "m+": this.getMinutes(),
+                "s+": this.getSeconds(),
+                "q+": Math.floor((this.getMonth() + 3) / 3),
+                "S": this.getMilliseconds()
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+
+        function isPositive(x) {
+            let num = parseFloat(x);
+            return (!isNaN(num)) && (isFinite(num)) && (num > 0);
+        }
+
+    </script>
+}

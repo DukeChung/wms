@@ -1,0 +1,293 @@
+﻿@{
+    ViewBag.Title = "访问日志列表";
+}
+
+<div class="p-w-md m-t-sm">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label" for="DescrSearch">描述</label>
+                                <input type="text" id="DescrSearch" name="DescrSearch" placeholder="请输入描述" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label" for="Flag">是否成功</label>
+                                <select id="FlagSearch" name="FlagSearch" class="form-control">
+                                    <option value="" selected>请选择</option>
+                                    <option value="true">是</option>
+                                    <option value="false">否</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label" for="CreateDateRange">日期</label>
+                                <input class="form-control" type="text" id="CreateDateRange" name="CreateDateRange" />
+                                <input class="form-control" type="hidden" id="CreateDateFromSearch" name="CreateDateFromSearch" />
+                                <input class="form-control" type="hidden" id="CreateDateToSearch" name="CreateDateToSearch" />
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label class="control-label" for="Flag">类型</label>
+                                <select id="InterfaceTypeSearch" name="InterfaceTypeSearch" class="form-control">
+                                    <option value="" selected>请选择</option>
+                                    <option value="调用">调用</option>
+                                    <option value="被调用">被调用</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button id="btnSearch" class="btn btn-primary" type="button" style="float: left;margin-top:23px">查询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gv_InterfaceLog" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th data-data="InterfaceType">类型</th>
+                                <th data-data="Descr">描述</th>
+                                <th data-data="ElapsedTime">耗时(s)</th>
+                                <th data-data="CreateDateText">创建日期</th>
+                                <th data-data="UserId">用户编号</th>
+                                <th data-data="UserName">用户名称</th>
+                                <th data-data="IsSuccess">是否成功</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form class="form-horizontal">
+        <div class="modal inmodal fade" id="logDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div id="div_LogDetail" class="modal-content">
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Styles {
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dateRange")
+    @Scripts.Render("~/plugins/dataTables")
+
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+            $("#CreateDateFromSearch").val(moment().subtract(6, 'days').format('MM/DD/YYYY'));
+            $("#CreateDateToSearch").val(moment().format('MM/DD/YYYY'));
+
+            table = $('#gv_InterfaceLog').DataTable({
+                "sAjaxSource": "GetInterfaceLogList",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "DescrSearch", "value": $("#DescrSearch").val() },
+                        { "name": "FlagSearch", "value": $("#FlagSearch").val() },
+                        { "name": "CreateDateFromSearch", "value": $("#CreateDateFromSearch").val() },
+                        { "name": "CreateDateToSearch", "value": $("#CreateDateToSearch").val() },
+                        { "name": "InterfaceTypeSearch", "value": $("#InterfaceTypeSearch").val() }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [],
+                "columnDefs": [
+                    {
+                        "targets": 6,
+                        "width": "5%",
+                        render: function (data, type, full, meta) {
+                            if (full.IsSuccess) {
+                                return '<i style="cursor:pointer" onclick="viewLogDetail(' + "'" + full.SysId + "'" + ', ' + full.LogType + ')" data-toggle="modal" data-target="#logDetailModal" class="fa fa-check fa-2x text-navy"></i>';
+                            } else {
+                                return '<i style="cursor:pointer" onclick="viewLogDetail(' + "'" + full.SysId + "'" + ', ' + full.LogType + ')" data-toggle="modal" data-target="#logDetailModal" class="fa fa-times fa-2x text-danger"></i>';
+                            }
+                        }
+                    }
+                ],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[1, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                table.ajax.reload();
+            });
+
+            $('#CreateDateRange').daterangepicker({
+                format: 'MM/DD/YYYY',
+                startDate: moment().subtract(6, 'days'),
+                endDate: moment(),
+                showWeekNumbers: true,
+                ranges: {
+                    '今天': [moment(), moment()],
+                    '昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    '最近7天': [moment().subtract(6, 'days'), moment()],
+                    '最近30天': [moment().subtract(29, 'days'), moment()],
+                    '本月': [moment().startOf('month'), moment().endOf('month')],
+                    '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                opens: 'right',
+                drops: 'down',
+                separator: ' 到 ',
+                locale: {
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '起',
+                    toLabel: '止',
+                    customRangeLabel: '自定义',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                }
+            }, function (start, end) {
+                $("#CreateDateFromSearch").val(start.format('MM/DD/YYYY'));
+                $("#CreateDateToSearch").val(end.format('MM/DD/YYYY'));
+            });
+        });
+
+        function viewLogDetail(sysId, logType) {
+            $("#div_LogDetail").load("@Url.Action("ViewLogDetail", "Home")" + "?sysId=" + sysId + "&logType=" + logType, function () {
+                if (logType == 400) {
+                    initLogDetail("GetAccessLogViewDto", sysId);
+                } else if (logType == 500) {
+                    initLogDetail("GetBusinessLogViewDto", sysId);
+                } else if (logType == 600) {
+                    initLogDetail("GetInterfaceLogViewDto", sysId);
+                }
+            })
+        }
+
+        function initLogDetail(actionName, sysId) {
+            $.ajax({
+                url: "/Home/" + actionName + "?sysId=" + sysId,
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var logDetailVM = new Vue({
+                            el: "#div_LogDetail",
+                            data: data.Data
+                        });
+
+                        if (!data.Data.flag && data.Data.interface_type == '调用') {
+                            $(".request_json").removeAttr('readonly');
+                            $(".hasbutton").show();
+
+                            var flag = false;
+                            //出现错误重新调用接口
+                            $("#btnInvokeButton").on('click', function () {
+                                var sysId = $('.apiLogSysId').val();
+                                var json = $('.request_json').val();
+                                if (json == '' || json == null) {
+                                    msgErro("重新调用request_json不能为空");
+                                    return false;
+                                }
+                                if (flag) {
+                                    return;
+                                } flag = true;
+                                $.ajax({
+                                    url: "/InterfaceLog/InvokeInterfaceLogApi",
+                                    type: "POST",
+                                    data: { "SysId": sysId, "RequestJson": json },
+                                    success: function (data) {
+                                        flag = false;
+                                        if (data.Success) {
+                                            msgSuccess("重调成功。");
+                                            $('#logDetailModal').modal("hide");
+                                            $("#btnSearch").click();
+
+                                        } else {
+                                            msgErro("重调失败，请确定数据是否正确。");
+                                            return false;
+                                        }
+                                    }
+                                });
+                            });
+                        }
+
+                        if (!data.Data.flag && data.Data.interface_name == '创建出库单') {
+                            $(".request_json").removeAttr('readonly');
+                            $(".hasbutton").show();
+                            var flag = false;
+                            //出库单创建失败，重新调用接口创建
+                            $("#btnInvokeButton").on('click', function () {
+                                var sysId = $('.apiLogSysId').val();
+                                var json = $('.request_json').val();
+                                if (json == '' || json == null) {
+                                    msgErro("重新调用request_json不能为空");
+                                    return false;
+                                }
+
+                                if (flag) {
+                                    return;
+                                } flag = true;
+                                $.ajax({
+                                    url: "/InterfaceLog/InsertOutbound",
+                                    type: "POST",
+                                    data: { "SysId": sysId, "RequestJson": json },
+                                    success: function (data) {
+                                        flag = false;
+                                        if (data.Success) {
+                                            msgSuccess("重调成功。");
+                                            $('#logDetailModal').modal("hide");
+                                            $("#btnSearch").click();
+
+                                        } else {
+                                            msgErro("重调失败，请确定数据是否正确。");
+                                            return false;
+                                        }
+                                    }
+                                });
+                            });
+                        }
+
+                    } else {
+                        msgErro(data.Message);
+                    }
+                }
+            });
+        }
+    </script>
+}
+

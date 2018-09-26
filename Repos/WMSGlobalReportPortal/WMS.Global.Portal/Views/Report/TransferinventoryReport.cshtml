@@ -1,0 +1,181 @@
+﻿@using NBK.AuthServiceUtil
+@using NBK.ECService.WMSReport.DTO.Base
+@using WMS.Global.Portal.Helpers
+
+@{
+    ViewBag.Title = "移仓单报表";
+}
+@Html.Breadcrumb("报表", "移仓单报表")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form method="post" id="exportForm">
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("移仓单号", "TransferInventoryOrder")
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">来源仓库:</label>
+                        <select id="FromWareHouseSysId" name="FromWareHouseSysId" class="form-control">
+                            @{
+                                foreach (var warehouse in (List<SelectItem>)ViewBag.WarehouseList)
+                                {
+                                    <option value="@warehouse.Value">@warehouse.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">目标仓库:</label>
+                        <select id="ToWareHouseSysId" name="ToWareHouseSysId" class="form-control">
+                            @{
+                                foreach (var warehouse in (List<SelectItem>)ViewBag.WarehouseList)
+                                {
+                                    <option value="@warehouse.Value">@warehouse.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("出库单号", "TransferOutboundOrder")
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("入库单号", "TransferPurchaseOrder")
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("外部单号", "ExternOrderId")
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="Status">状态</label>
+                        <select class="form-control m-b" name="Status" id="Status">
+                            <option selected>全部</option>
+                            <option value="10">新增</option>
+                            <option value="20">出库完成</option>
+                            <option value="25">部分收货</option>
+                            <option value="30">收货完成</option>
+                            <option value="-999">作废</option>
+                            <option value="-10">关闭</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvTransferInventoryReport" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th data-data="TransferInventoryOrder">移仓单号</th>
+                                <th data-data="FromWareHouseName">来源仓库</th>
+                                <th data-data="ToWareHouseName">目标仓库</th>
+                                <th data-data="TransferOutboundOrder">出库单号</th>
+                                <th data-data="TransferPurchaseOrder">入库单号</th>
+                                <th data-data="ExternOrderId">外部单号</th>
+                                <th data-data="StatusName">状态</th>
+                                <th data-data="RUpdateUserName">入库操作人</th>
+                                <th data-data="OUpdateUserName">出库操作人</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+
+    <script>
+        var TransferInventoryReport = {
+            table: {},
+            init: function () {
+                var _self = this;
+
+                _self.table = $('#gvTransferInventoryReport').DataTable({
+                    "sAjaxSource": "GetTransferinventoryReport",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "TransferInventoryOrder", "value": $("#TransferInventoryOrder").val() },
+                            { "name": "FromWareHouseSysId", "value": $("#FromWareHouseSysId").val() },
+                            { "name": "ToWareHouseSysId", "value": $("#ToWareHouseSysId").val() },
+                            { "name": "TransferPurchaseOrder", "value": $("#TransferPurchaseOrder").val() },
+                            { "name": "TransferOutboundOrder", "value": $("#TransferOutboundOrder").val() },
+                            { "name": "Status", "value": $("#Status").val() },
+                             { "name": "ExternOrderId", "value": $("#ExternOrderId").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'pageLength'
+                    ],
+                    "columnDefs": [],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "iDisplayLength": 50,
+                    "oLanguage": {
+                        buttons: {
+                            pageLength: {
+                                _: "每页显示 %d 条记录"
+                            }
+                        },
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                //按钮 触发table重新请求服务器
+                $("#btnSearch").bind("click", function () {
+                    TransferInventoryReport.table.ajax.reload();
+                });
+
+            }
+        }
+
+        $(function () {
+            TransferInventoryReport.init();
+        })
+
+    </script>
+}
+

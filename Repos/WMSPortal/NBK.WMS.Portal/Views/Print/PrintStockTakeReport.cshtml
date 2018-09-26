@@ -1,0 +1,63 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrintStockTakeReportDto
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-12 control-label ">
+                    <H1 style="color: red;text-align:left">盘点汇总报告</H1>
+                </label>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("序号")
+                            @Html.PrintTh("商品编号")
+                            @Html.PrintTh("UPC")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("商品描述")
+                            @Html.PrintTh("单位")
+                            @Html.PrintTh("状态")
+                            @Html.PrintTh("财务库存")
+                            @Html.PrintTh("初盘数量")
+                            @Html.PrintTh("复盘数量")
+                        </tr>
+                        @{
+                            int i = 1;
+                            foreach (var info in Model.PrintStockTakeReportDetails)
+                            {
+                                <tr>
+                                    @Html.PrintTd(i++.ToString())
+                                    @Html.PrintTd(info.SkuCode)
+                                    @Html.PrintTd(info.SkuUPC)
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.SkuDescr)
+                                    @Html.PrintTd(info.UOMCode)
+                                    @Html.PrintTd(info.StatusText)
+                                    @Html.PrintTd(info.DisplayQty.ToString())
+                                    @Html.PrintTd(info.DisplayStockTakeQty.ToString())
+                                    @Html.PrintTd(info.DisplayReplayQty.ToString())
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

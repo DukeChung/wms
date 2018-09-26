@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "渠道库存占比";
+    Layout = null;
+}
+
+<script>
+    var ChannelInventory = {
+        init: function (whflag) {
+            var height = Math.ceil($(window).height() * 0.4);
+            $("#div_ChannelInv" + whflag).height(height);
+            ChannelInventory.initChart(whflag)
+        },
+        initChart: function (whflag) {
+            $.ajax({
+                url: "@Url.Action("GetChannelInventoryData", "Home")",
+                data: { whflag: whflag },
+                type: "POST",
+                success: function (result) {
+                    echarts.init(document.getElementById("div_ChannelInv" + whflag)).setOption(option = {
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            x: 'center',
+                            y: 'bottom',
+                            data: ChannelInventory.getLegendData(result.Data)
+                        },
+                        toolbox: {
+                            show: true,
+                            right: 20,
+                            feature: {
+                                mark: {
+                                    show: true
+                                },
+                                //dataView: {
+                                //    show: true,
+                                //    readOnly: false
+                                //},
+                                magicType: {
+                                    show: true,
+                                    type: ['pie', 'funnel']
+                                },
+                                restore: {
+                                    show: true,
+                                    title: '刷新'
+                                },
+                                saveAsImage: {
+                                    show: true,
+                                    title: '保存图片'
+                                }
+                            }
+                        },
+                        calculable: true,
+                        series: [{
+                            name: '半径模式',
+                            type: 'pie',
+                            radius: [30, 90],
+                            roseType: 'radius',
+                            data: ChannelInventory.getSeriesData(result.Data)
+                        }]
+                    });
+                }
+            });
+        },
+        getLegendData: function (data) {
+            var dataArr = [];
+            for (var i = 0; i < data.length; i++) {
+                dataArr.push(data[i].Channel);
+            }
+            return dataArr;
+        },
+        getSeriesData: function (data) {
+            var dataArr = [];
+            for (var i = 0; i < data.length; i++) {
+                dataArr.push({ value: data[i].SumQty, name: data[i].Channel });
+            }
+            return dataArr;
+        }
+    }
+
+    $(function () {
+        ChannelInventory.init('@ViewBag.WHFlag');
+    });
+</script>

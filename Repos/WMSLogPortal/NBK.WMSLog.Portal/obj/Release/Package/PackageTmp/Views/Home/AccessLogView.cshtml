@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+
+<div id="div_AccessLogView">
+    <form class="form-horizontal" style="padding-right:20px">
+        <div class="form-group" style="margin-top:20px">
+            <label class="col-sm-2 control-label">sys_id:</label>
+            <div class="col-sm-9">
+                <input class="form-control" readonly="readonly" v-model="SysId" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">app_controller:</label>
+            <div class="col-sm-3">
+                <input class="form-control" readonly="readonly" v-model="app_controller" />
+            </div>
+            <div class="col-sm-1"></div>
+            <label class="col-sm-2 control-label">app_service:</label>
+            <div class="col-sm-3">
+                <input class="form-control" readonly="readonly" v-model="app_service" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">create_date:</label>
+            <div class="col-sm-3">
+                <input class="form-control" readonly="readonly" v-model="create_date_text" />
+            </div>
+            <div class="col-sm-1"></div>
+            <label class="col-sm-2 control-label">flag:</label>
+            <div class="col-sm-3">
+                <input class="form-control" readonly="readonly" v-model="flag" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">user_id:</label>
+            <div class="col-sm-3">
+                <input class="form-control" readonly="readonly" v-model="user_id" />
+            </div>
+            <div class="col-sm-1"></div>
+            <label class="col-sm-2 control-label">user_name:</label>
+            <div class="col-sm-3">
+                <input class="form-control" readonly="readonly" v-model="user_name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">request_json:</label>
+            <div class="col-sm-9">
+                <textarea style="height:160px" class="form-control" readonly="readonly" v-model="request_json"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">response_json:</label>
+            <div class="col-sm-9">
+                <textarea style="height:160px" class="form-control" readonly="readonly" v-model="response_json"></textarea>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+<body>
+    <div class="page-group">
+        <div id="page-review-outboundreviewdiff" class="page page-current">
+
+            <header class="bar bar-nav">
+                <a id="btnBack" class="button button-link button-nav pull-left">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">复核情况</h1>
+            </header>
+
+            <div class="content">
+                <div class="buttons-tab">
+                    <a href="#tab3" class="tab-link active button">复核差异</a>
+                    <a href="#tab1" class="tab-link button">已复核</a>
+                    <a href="#tab2" class="tab-link button">待复核</a>
+                </div>
+                <div class="tabs">
+                    <div id="tab3" class="tab active ibox float-e-margins">
+                        <table class="table" style="width:90%;margin-left:5%">
+                            <thead>
+                                <tr>
+                                    <th style="padding:0.1rem">NO</th>
+                                    <th style="padding:0.1rem 0.2rem">商品名称</th>
+                                    <!--<th>商品条码</th>-->
+                                    <th style="padding:0.1rem">出库</th>
+                                    <th style="padding:0.1rem">拣货</th>
+                                    <th style="padding:0.1rem">复核</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviewDiffList"></tbody>
+                        </table>
+                    </div>
+                    <div id="tab1" class="tab">
+                        <table class="table" style="width:90%;margin-left:5%">
+                            <thead>
+                                <tr>
+                                    <th style="padding:0.1rem">NO</th>
+                                    <th style="padding:0.1rem 0.2rem">商品名称</th>
+                                    <!--<th>商品条码</th>-->
+                                    <th style="padding:0.1rem">出库</th>
+                                    <th style="padding:0.1rem">拣货</th>
+                                    <th style="padding:0.1rem">复核</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviewedList"></tbody>
+                        </table>
+                    </div>
+                    <div id="tab2" class="tab">
+                        <table class="table" style="width:90%;margin-left:5%">
+                            <thead>
+                                <tr>
+                                    <th style="padding:0.1rem">NO</th>
+                                    <th style="padding:0.1rem 0.2rem">商品名称</th>
+                                    <!--<th>商品条码</th>-->
+                                    <th style="padding:0.1rem">出库</th>
+                                    <th style="padding:0.1rem">拣货</th>
+                                    <th style="padding:0.1rem">复核</th>
+                                </tr>
+                            </thead>
+                            <tbody id="toReviewList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

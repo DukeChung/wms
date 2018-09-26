@@ -1,0 +1,415 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil;
+@using NBK.ECService.WMS.Utility
+@model NBK.ECService.WMS.DTO.StockTransferDto
+
+
+@{
+    ViewBag.Title = "库存批次转移操作";
+}
+
+@Html.Breadcrumb("库存批次转移", "/StockTransfer/StockTransferRequest", "库存批次转移操作")
+@section Styles {
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="divStockTransferAdd" class="ibox-content m-b-sm border-bottom">
+        <form id="StockTransferForm" class="form-horizontal">
+            <div class="ibox-title">
+                <h5>商品库存基本信息</h5>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">商品名称</label>
+                    <div class="col-sm-8"><input id="SkuName" name="SkuName" v-model="SkuName" type="text" class="form-control" disabled></div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">UPC</label>
+                    <div class="col-sm-8"><input id="UPC" name="UPC" v-model="UPC" type="text" class="form-control" disabled></div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">批次号</label>
+                    <div class="col-sm-8"><input id="FromLot" name="FromLot" v-model="FromLot" type="text" class="form-control" disabled></div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">数量</label>
+                    <div class="col-sm-8"><input id="DisplayCurrentQty" name="DisplayCurrentQty" v-model="DisplayCurrentQty" type="number" class="form-control" disabled></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">来源货位</label>
+                    <div class="col-sm-8"><input id="FromLoc" name="FromLoc" v-model="FromLoc" type="text" class="form-control" disabled></div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">目标货位</label>
+                    <div class="col-sm-8">
+                        @*<input id="ToLoc" name="ToLoc" v-model="ToLoc" type="text" class="form-control">*@
+                        <select id="ToLoc" name="ToLoc" v-model="ToLoc" class="form-control chosen-select" data-placeholder="请选择">
+                            @{
+                                foreach (var location in (List<SelectListItem>)ViewBag.LocationList)
+                                {
+                                    <option value="@location.Text">@location.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">转移数量</label>
+                    <div class="col-sm-8"><input id="DisplayToQty" name="DisplayToQty" v-model="DisplayToQty" type="number" class="form-control"></div>
+                </div>
+                <div class="col-sm-3">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">来源生产日期</label>
+                    <div class="col-sm-8">
+                        <input id="FromProduceDateDisplay" name="FromProduceDateDisplay" v-model="FromProduceDateDisplay" type="text" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">目标生产日期</label>
+                    <div class="col-sm-8" id="divToProduceDate">
+                        <div class="input-group date">
+                            <span class="input-group-addon"> <i class="fa fa-calendar"></i></span>
+                            <input id="ToProduceDate" name="ToProduceDate" v-model="ToProduceDate" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">来源失效日期</label>
+                    <div class="col-sm-8">
+                        <input id="FromExpiryDateDisplay" name="FromExpiryDateDisplay" v-model="FromExpiryDateDisplay" type="text" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">目标失效日期</label>
+                    <div class="col-sm-8 form-group" id="divToExpiryDate">
+                        <div class="input-group date">
+                            <span class="input-group-addon"> <i class="fa fa-calendar"></i></span>
+                            <input id="ToExpiryDate" name="ToExpiryDate" v-model="ToExpiryDate" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label class="col-sm-2 control-label" style="margin-top:5px;">备注</label>
+                    <div class="col-sm-10"><input id="Descr" name="Descr" v-model="Descr" type="text" class="form-control"></div>
+                </div>
+            </div>
+
+            <div class="ibox-title">
+                <h5>批次信息</h5>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">来源外部批次</label>
+                    <div class="col-sm-8"><input id="FromExternalLot" name="FromExternalLot" v-model="FromExternalLot" type="text" class="form-control" disabled></div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">目标外部批次</label>
+                    <div class="col-sm-8"><input id="ToExternalLot" name="ToExternalLot" v-model="ToExternalLot" type="text" class="form-control"></div>
+                </div>
+            </div>
+
+            @{
+                if (Model.LotVisible01.HasValue && Model.LotVisible01 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName01 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr01" name="FromLotAttr01" v-model="FromLotAttr01" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName01</label>
+                            <div class="col-sm-8"><input id="ToLotAttr01" name="ToLotAttr01" v-model="ToLotAttr01" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible02.HasValue && Model.LotVisible02 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName02 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr02" name="FromLotAttr02" v-model="FromLotAttr02" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName02</label>
+                            <div class="col-sm-8"><input id="ToLotAttr02" name="ToLotAttr02" v-model="ToLotAttr02" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible03.HasValue && Model.LotVisible03 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName03 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr03" name="FromLotAttr03" v-model="FromLotAttr03" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName03</label>
+                            <div class="col-sm-8"><input id="ToLotAttr03" name="ToLotAttr03" v-model="ToLotAttr03" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible04.HasValue && Model.LotVisible04 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName04 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr04" name="FromLotAttr04" v-model="FromLotAttr04" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName04</label>
+                            <div class="col-sm-8"><input id="ToLotAttr04" name="ToLotAttr04" v-model="ToLotAttr04" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible05.HasValue && Model.LotVisible05 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName05 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr05" name="FromLotAttr05" v-model="FromLotAttr05" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName05</label>
+                            <div class="col-sm-8"><input id="ToLotAttr05" name="ToLotAttr05" v-model="ToLotAttr05" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible06.HasValue && Model.LotVisible06 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName06 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr06" name="FromLotAttr06" v-model="FromLotAttr06" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName06</label>
+                            <div class="col-sm-8"><input id="ToLotAttr06" name="ToLotAttr06" v-model="ToLotAttr06" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible07.HasValue && Model.LotVisible07 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName07 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr07" name="FromLotAttr07" v-model="FromLotAttr07" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName07</label>
+                            <div class="col-sm-8"><input id="ToLotAttr07" name="ToLotAttr07" v-model="ToLotAttr07" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible08.HasValue && Model.LotVisible08 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName08 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr08" name="FromLotAttr08" v-model="FromLotAttr08" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName08</label>
+                            <div class="col-sm-8"><input id="ToLotAttr08" name="ToLotAttr08" v-model="ToLotAttr08" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible09.HasValue && Model.LotVisible09 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">来源 @Model.LotAttrName09 </label>
+                            <div class="col-sm-8"><input id="FromLotAttr09" name="FromLotAttr09" v-model="FromLotAttr09" type="text" class="form-control" disabled></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-4 control-label" style="margin-top:5px;">目标 @Model.LotAttrName09</label>
+                            <div class="col-sm-8"><input id="ToLotAttr09" name="ToLotAttr09" v-model="ToLotAttr09" type="text" class="form-control"></div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-sm btn-primary" id="btnSave" v-on:click="SaveFun"><i class="fa fa-check-square-o"></i> 保存</a>
+                <a class="btn btn-white btn-sm" v-on:click="ReturnFun"><i class="fa fa-times"></i> 返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/chosen")
+    <script>
+        var StockTransferAddModel = {
+            data : {},
+            viewModel: {},
+            init: function () {
+                var _self = this;
+
+                _self.initControl();
+                _self.initValidate();
+               
+                _self.data = @Html.Raw(ExtendUtility.JsonString(Model));
+                _self.data.ToProduceDate = _self.data.FromProduceDateDisplay;
+                _self.data.ToExpiryDate = _self.data.FromExpiryDateDisplay;
+                //绑定Vue
+                _self.viewModel = new Vue({
+                    el: '#divStockTransferAdd',
+                    data: _self.data,
+                    methods: {
+                        SaveFun: function (event) {
+                            $("#btnSave").attr("disabled", true);
+                            if ($("#StockTransferForm").valid() && _self.submitValidate()) {
+                                saveLoading('show');
+                                var requestData = _self.getRequestData();
+                                $.ajax({
+                                    url: "@Url.Action("CreateStockTransfer", "StockTransfer")",
+                                    data: requestData,
+                                    type: "post",
+                                    success: function (data) {
+                                        saveLoading();
+                                        if (data.success) {
+                                            msgSuccess("操作成功!",StockTransferAddModel.backParentPage());
+                                            
+                                        }
+                                        else {
+                                            msgErro(data.message);
+                                        }
+                                        $("#btnSave").attr("disabled", false);
+                                    },
+                                    error: function () {
+                                        
+                                        msgErro("操作失败！");
+                                        saveLoading();
+                                        $("#btnSave").attr("disabled", false);
+                                    }
+                                });
+                            }
+                        },
+                        ReturnFun: function (event) {
+                            StockTransferAddModel.backParentPage();
+                        }
+                    }
+                });
+
+            },
+            initControl:function(){ //初始化各种控件
+                $('.chosen-select').chosen({ width: "100%" });
+
+                $('#divToExpiryDate  .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+
+                $('#divToProduceDate  .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+            },
+            initValidate:function(){
+                $("#StockTransferForm").validate({
+                    ignore: [],
+                    rules: {
+                        ToLoc: {
+                            required: true,
+                            maxlength: 32
+                        },
+                        ToQty: {
+                            required: true,
+                            maxlength: 10,
+                            min: 1,
+                        },
+                        Descr: {
+                            maxlength: 256
+                        },
+                        ToLotAttr01:{
+                            maxlength: 32
+                        },
+                        ToLotAttr02:{
+                            maxlength: 32
+                        },
+                        ToLotAttr03:{
+                            maxlength: 32
+                        },
+                        ToLotAttr04:{
+                            maxlength: 32
+                        },
+                        ToLotAttr05:{
+                            maxlength: 32
+                        },
+                        ToLotAttr06:{
+                            maxlength: 32
+                        },
+                        ToLotAttr07:{
+                            maxlength: 32
+                        },
+                        ToLotAttr08:{
+                            maxlength: 32
+                        },
+                        ToLotAttr09:{
+                            maxlength: 32
+                        },
+                    }
+                });
+            },
+            submitValidate: function(){
+                if (!commonCheckDateCompare($("#ToProduceDate").val(), $("#ToExpiryDate").val())) {
+                    msgAlert("目标生产日期不能大于目标失效日期！");
+                    return false;
+                }
+                return true;
+            },
+            getRequestData: function(){
+                var requestData = StockTransferAddModel.viewModel.$data;
+                requestData.FromProduceDate = StockTransferAddModel.data.FromProduceDateDisplay;
+                requestData.FromExpiryDate = StockTransferAddModel.data.FromExpiryDateDisplay;
+                requestData.ToLoc = $("#ToLoc").val();
+
+                return requestData;
+            },
+            backParentPage: function () {
+                window.location.href = '@Url.Action("StockTransferRequest", "StockTransfer")'
+            }
+        }
+
+        $(function () {
+            StockTransferAddModel.init();
+        })
+    </script>
+
+}

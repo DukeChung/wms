@@ -1,0 +1,234 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.ReceiptOperationDto
+
+@{
+    ViewBag.Title = "收货单打印预览";
+}
+
+
+@Html.Breadcrumb("入库管理", "/Purchase/Index", "收货单打印预览")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">收货单</H2>
+                </label>
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-3" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.ReceiptOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed">
+                <div class="col-sm-12">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    收货单号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ReceiptOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    入库单号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ExternalOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    交货期限:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ExpectedReceiptDateText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    供应商:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.VendorName</div>
+                        <div class="col-sm-10 hr-line-dashed" style="margin-top: 5px">
+                            <div class="col-sm-2">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    联系人:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.VendorContacts</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    联系电话:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.VendorPhone</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    @*作业人:*@
+                </div>
+                <div class="col-sm-2">
+                    @*<div class="row">
+                            <div class="col-sm-12">@Model.AppointUserNames</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                        </div>*@
+                </div>
+                <div class="col-sm-1">
+
+                </div>
+                <div class="col-sm-2">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    入库单备注:
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @Model.Descr
+                        </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px;"> </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-sm-1 control-label">收货清单</label>
+
+                <div class="col-sm-11">
+                </div>
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>商品编码</th>
+                                <th>商品名称</th>
+                                <th>UPC</th>
+                                <th>商品描述</th>
+                                <th>包装单位</th>
+                                <th>入库数量</th>
+                                <th>已入库数量</th>
+                                <th>赠品数量</th>
+                                <th>已入库赠品数量</th>
+                                <th>收货数量</th>
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model.PurchaseDetailViewDto != null)
+                                {
+                                    foreach (var info in Model.PurchaseDetailViewDto)
+                                    {
+                                        <tr>
+                                            <td>@info.SkuCode</td>
+                                            <td>@info.SkuName</td>
+                                            <td>@info.SkuUPC</td>
+                                            <td>@info.SkuDescr</td>
+                                            <td>@info.UomCode</td>
+                                            <td>@info.DisplayQty</td>
+                                            <td>@info.DisplayReceivedQty</td>
+                                            <td>@info.GiftQty</td>
+                                            <td>@info.ReceivedGiftQty</td>
+                                            <td></td>
+                                            <td>@info.Remark</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-white btn-sm" id="btnPrint" onclick="PrintReceipt();"><i class="fa fa-print"></i> 打印</a>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+        });
+
+        function PrintReceipt() {
+            //调用打印机
+            $.ajax({
+                url: "/Receipt/PrintReceipt?sysId=@Model.SysId&receiptOrder=@Model.ReceiptOrder",
+                type: "POST",
+                success: function (data) {
+                    if (data.Success) {
+                        // 消息提示
+                    }
+                    else {
+                        // 消息提示
+                    }
+                },
+                error: function (data) {
+
+                }
+            });
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintReceipt?receiptOrder=@Model.ReceiptOrder" + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            LODOP.ADD_PRINT_BARCODE(40, 350, 406, 58, "128B", "@Model.ReceiptOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            //LODOP.PREVIEW();
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+    </script>
+}
+

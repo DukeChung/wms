@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+
+  "dependencies": {
+    "WMSBussinessApi.Repository": "*",
+    "WMSBussinessApi.Service": "*",
+    "WMSBussinessApi.Utility": "*",
+    "Schubert.Framework": "1.9.5",
+    "NLog.Web.AspNetCore": "4.4.1"
+  },
+
+  "frameworks": {
+    "net452": {}
+  }
+}

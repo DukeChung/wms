@@ -1,0 +1,188 @@
+﻿
+@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrePackSkuDto
+@{
+    ViewBag.Title = "预包装单明细";
+}
+
+@Html.Breadcrumb("预包装管理", "/PrePack/Index", "预包装单明细")
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="PrePackView" class="ibox-content m-b-sm border-bottom">
+
+        <form id="PrePackForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <h2 style="color: red; text-align: left">预包装单</h2>
+                </label>
+                <div class="col-sm-7">
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divPrePackCode">
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align: right" id="divPrePackValue">@Model.PrePackOrder</div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    预包装单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.PrePackOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    订单状态:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    出库单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.OutboundOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    托盘货位:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StorageLoc </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    服务综合体:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ServiceStationName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    入库批号:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.BatchNumber </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    创建时间:
+                </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CreateDateDisplay </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <label class="col-sm-2 ">预包装清单</label>
+
+                <label class="col-sm-2 ">SKU数:@Model.PrePackSkuListDto.Select(p => p.SkuSysId).Distinct().Count()</label>
+                <label class="col-sm-4 ">汇总计划数量:@Model.PrePackSkuListDto.Sum(x => x.PreQty)</label>
+                <label class="col-sm-4 ">实际扫描数量:@Model.PrePackSkuListDto.Sum(x => x.Qty)</label>
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>外部编号</th>
+                                <th>商品名称</th>
+                                <th>商品描述</th>
+                                <th>UPC</th>
+                                <th>单位</th>
+                                <th>包装</th>
+                                @*<th>货位</th>
+                                    <th>批次</th>*@
+                                <th>计划数量</th>
+                                <th>实际数量</th>
+                                <th>差异数量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var info in Model.PrePackSkuListDto)
+                                {
+                                    <tr>
+                                        <td>@info.OtherId</td>
+                                        <td>@info.SkuName</td>
+                                        <td>@info.SkuDescr</td>
+                                        <td>@info.UPC</td>
+                                        <td>@info.UomCode</td>
+                                        <td>@info.PackCode</td>
+                                        @*<td>@info.Loc</td>
+                                            <td>@info.Lot</td>*@
+                                        <td>@info.PreQty</td>
+                                        <td>@info.Qty</td>
+                                        <td style="color: red">@info.DifferenceQty</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-white btn-sm" id="btnPrint" onclick="print()"><i class="fa fa-print"></i> 打印预包装单</a>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript">
+        $(function () {
+            $("#divPrePackCode").empty().barcode($("#divPrePackValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+        });
+
+        function print() {
+
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+            LODOP.SET_PRINT_PAGESIZE(1, "2100", "2970", "");
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintPrePack?sysId=@Model.SysId" + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            LODOP.ADD_PRINT_BARCODE(40, 500, 206, 58, "128B", "@Model.PrePackOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+    </script>
+}

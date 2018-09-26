@@ -1,0 +1,206 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using System.Security.Claims
+@using NBK.AuthServiceUtil
+@using NBK.ECService.WMS.Utility
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>WMS | @ViewBag.Title</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <!-- Add local styles, mostly for plugins css file -->
+    @if (IsSectionDefined("Styles"))
+    {@RenderSection("Styles", required: false)}
+
+    <!-- Add jQuery Style direct - used for jQGrid plugin -->
+    <link href="@Url.Content("~/Scripts/plugins/jquery-ui/jquery-ui.css")" rel="stylesheet" type="text/css" />
+
+    <!-- Primary Inspinia style -->
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/font-awesome/css")
+    @Scripts.Render("~/bundles/vue")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+
+    <script src="~/Scripts/Utility/Common.js?v=2.8.1.1"></script>
+</head>
+<body>
+
+    <!-- Skin configuration box -->
+    <!-- @Html.Partial("_SkinConfig") -->
+    <!-- Wrapper-->
+    <!-- PageClass give you ability to specify custom style for specific view based on action -->
+    <div id="wrapper" class="@Html.PageClass()">
+
+        <!-- Navigation -->
+        @Html.Partial("_Navigation")
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+
+            <!-- Top Navbar -->
+            @Html.Partial("_TopNavbar")
+
+            <!-- Main view  -->
+            @RenderBody()
+
+            <!-- Footer -->
+            @Html.Partial("_Footer")
+
+        </div>
+        <!-- End page wrapper-->
+        <!-- Right Sidebar -->
+        @Html.Partial("_RightSidebar")
+
+    </div>
+    <!-- End wrapper-->
+    <!-- Section for main scripts render -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/plugins/slimScroll")
+    @Scripts.Render("~/bundles/inspinia")
+    @Styles.Render("~/plugins/sweetAlertStyles")
+    @Scripts.Render("~/plugins/wizardSteps")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+
+    @Styles.Render("~/plugins/toastrStyles")
+    @Scripts.Render("~/plugins/toastr")
+    <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
+    <script type="text/javascript">
+
+        @*var socketMessage = {
+            ws: null,
+            sendObj: null,
+            loginUserId: null,
+            init: function () {
+                var _self = this;
+
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "timeOut": 3600000,
+                    closeButton: true,
+                    closeOnHover: false,
+                    onHidden: function () {
+
+                    }
+                }
+
+                _self.loginUserId = '@{
+                    var loginUser = (HttpContext.Current.User.Identity as ClaimsIdentity).Claims.FirstOrDefault(p => p.Type.Equals(SystemDataConst.SessionLoginUserID, StringComparison.OrdinalIgnoreCase));
+                    if (loginUser != null)
+                    {
+                        @loginUser.Value.ToString();
+                    }
+                }';
+
+                _self.sendObj = {
+                    ReceiveUserID: _self.loginUserId,
+                    Status: 10
+                };
+
+                if ("WebSocket" in window) {
+                    var wsApiHost = '@PublicConst.WmsLogApiUrl';
+                    wsApiHost = wsApiHost.replace("http", "ws");
+                    _self.ws = new WebSocket(wsApiHost + "api/Message/GetSystemMessageListByUser");
+
+                    _self.GetSystemMessageByUser();
+                }
+            },
+            GetSystemMessageByUser: function () {
+                if (!isNaN(socketMessage.loginUserId)) {
+
+                    socketMessage.ws.onopen = function () {
+                        // Web Socket 已连接上，使用 send() 方法发送数据
+                        var sendMessage = JSON.stringify(socketMessage.sendObj);
+
+                        setInterval(function () { socketMessage.ws.send(sendMessage); } , 5 * 1000); //5秒 请求一次系统消息
+                    };
+
+                    socketMessage.ws.onmessage = function (result) {
+                        var messages = JSON.parse(result.data);
+
+                        $.each(messages,function () {
+                            toastr.info(this.content, '系统通知 ！');
+
+                            //setTimeout(function () {
+                            //    toastr.clear();
+                            //}, 10000);
+                        });
+                    };
+                }
+            },
+        };*@
+
+        var signalRModel = {
+            loginUserId: null,
+            init: function () {
+                signalRModel.loginUserId = '@{
+                    var loginUser = (HttpContext.Current.User.Identity as ClaimsIdentity).Claims.FirstOrDefault(p => p.Type.Equals(SystemDataConst.SessionLoginUserID, StringComparison.OrdinalIgnoreCase));
+                    if (loginUser != null)
+                    {
+                        @loginUser.Value.ToString();
+                    }
+                }';
+
+                var connection = $.hubConnection('@PublicConst.WmsLogApiUrl');
+                var hub = connection.createHubProxy("ChatHub");
+                hub.on("NotifyMessage", signalRModel.GetMessage);
+                connection.start({ jsonp: true })
+                            .done(function () {
+                                //console.log('connected');
+                                //hub.say("success?");
+
+                                hub.invoke('Register', signalRModel.loginUserId);
+                            })
+                        .fail(function (a) {
+                            console.log('not connected' + a);
+                        });
+
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "timeOut": 3600000,
+                    closeButton: true,
+                    closeOnHover: false
+                }
+            },
+            GetMessage: function (clientInfo) {
+                var loginWarehouseSysId = '@{
+                    var loginWarehouse = (HttpContext.Current.User.Identity as ClaimsIdentity).Claims.FirstOrDefault(p => p.Type.Equals(SystemDataConst.SessionLoginWarehouseSysId, StringComparison.OrdinalIgnoreCase));
+                    if (loginWarehouse != null)
+                    {
+                        @loginWarehouse.Value.ToString();
+                    }
+                }';
+                //alert(messageFromHub);
+                if (clientInfo != undefined) {
+                    if (clientInfo.IsSuccess == true) {
+                        if ((clientInfo.WarehouseSysId == "" || clientInfo.WarehouseSysId == loginWarehouseSysId)) {
+                            toastr.info(clientInfo.Message, '系统通知 ！');
+                        }
+                    } else {
+                        toastr.error(clientInfo.Message, '系统通知 ！');
+                    }
+                }
+            }
+        };
+
+        $(function () {
+            // socketMessage.init();
+            signalRModel.init();
+        });
+    </script>
+
+    <!-- Skin config script - only for demo purpose-->
+    @Scripts.Render("~/bundles/skinConfig")
+    @Scripts.Render("~/plugins/sweetAlert")
+    <!-- Handler for local scripts -->
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

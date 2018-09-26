@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.DTO", "NBK.ECService.WMSLog.DTO\NBK.ECService.WMSLog.DTO.csproj", "{7E2A411A-D839-4938-B0D7-BF0171C0C4A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.Utility", "NBK.ECService.WMSLog.Utility\NBK.ECService.WMSLog.Utility.csproj", "{060DC2C5-FFE0-49A4-8405-A8C8357EB1A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.WMSLog.Portal", "NBK.WMSLog.Portal\NBK.WMSLog.Portal.csproj", "{19241076-D4C3-4B26-88F1-D34BA087F173}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E2A411A-D839-4938-B0D7-BF0171C0C4A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E2A411A-D839-4938-B0D7-BF0171C0C4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E2A411A-D839-4938-B0D7-BF0171C0C4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E2A411A-D839-4938-B0D7-BF0171C0C4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{060DC2C5-FFE0-49A4-8405-A8C8357EB1A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{060DC2C5-FFE0-49A4-8405-A8C8357EB1A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{060DC2C5-FFE0-49A4-8405-A8C8357EB1A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{060DC2C5-FFE0-49A4-8405-A8C8357EB1A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19241076-D4C3-4B26-88F1-D34BA087F173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19241076-D4C3-4B26-88F1-D34BA087F173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19241076-D4C3-4B26-88F1-D34BA087F173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19241076-D4C3-4B26-88F1-D34BA087F173}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://10.66.2.12:8080/tfs/product
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = NBK.ECService.WMSLog.DTO\\NBK.ECService.WMSLog.DTO.csproj
+		SccProjectName1 = NBK.ECService.WMSLog.DTO
+		SccLocalPath1 = NBK.ECService.WMSLog.DTO
+		SccProjectUniqueName2 = NBK.ECService.WMSLog.Utility\\NBK.ECService.WMSLog.Utility.csproj
+		SccProjectName2 = NBK.ECService.WMSLog.Utility
+		SccLocalPath2 = NBK.ECService.WMSLog.Utility
+		SccProjectUniqueName3 = NBK.WMSLog.Portal\\NBK.WMSLog.Portal.csproj
+		SccProjectName3 = NBK.WMSLog.Portal
+		SccLocalPath3 = NBK.WMSLog.Portal
+	EndGlobalSection
+EndGlobal

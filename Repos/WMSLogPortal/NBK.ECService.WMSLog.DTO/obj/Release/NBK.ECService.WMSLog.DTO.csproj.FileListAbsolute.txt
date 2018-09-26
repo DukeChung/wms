@@ -1,0 +1,17 @@
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\NBK.ECService.WMSLog.DTO.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\NBK.ECService.WMSLog.DTO.pdb
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\Abp.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\FortuneLab.Abp.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\FortuneLab.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\NBK.ECService.WMSLog.Utility.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\Newtonsoft.Json.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\AutoMapper.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\NBK.ECService.WMSLog.Utility.pdb
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\Abp.xml
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\FortuneLab.pdb
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\FortuneLab.Abp.pdb
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\Newtonsoft.Json.xml
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\bin\Release\AutoMapper.xml
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\obj\Release\NBK.ECService.WMSLog.DTO.csprojResolveAssemblyReference.cache
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\obj\Release\NBK.ECService.WMSLog.DTO.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.DTO\obj\Release\NBK.ECService.WMSLog.DTO.pdb

@@ -1,0 +1,215 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "库位管理";
+}
+
+@Html.Breadcrumb("基础资料管理", "库位管理")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("货位", "LocationSearch")
+            </div>
+            <div class="col-sm-3">
+                <label class="control-label">储区</label>
+                <select id="ZoneSysIdSearch" name="ZoneSysIdSearch" class="form-control">
+                    @{
+                        foreach (var zone in (List<SelectListItem>)ViewBag.ZoneList)
+                        {
+                            <option value="@zone.Value">@zone.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label class="control-label">是否启用</label>
+                <select id="IsActiveSearch" name="IsActiveSearch" class="form-control">
+                    @{
+                        foreach (var isActive in (List<SelectListItem>)ViewBag.IsActiveList)
+                        {
+                            if (Convert.ToBoolean(isActive.Value))
+                            {
+                                <option value="@isActive.Value" selected>@isActive.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@isActive.Value">@isActive.Text</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:23px;float: left; ">查询</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content" style="overflow-x:auto">
+                    <table id="gvLocation" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="Loc" style="width:100px">货位</th>
+                                <th data-data="LocUsageText" style="width:100px">货位用途</th>
+                                <th data-data="ZoneCode" style="width:100px">储区</th>
+                                <th data-data="LogicalLoc" style="width:100px">路线顺序</th>
+                                <th data-data="IsActiveText" style="width:100px">是否启用</th>
+                                <th data-data="StatusDisplay" style="width:100px">状态</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/print")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+            table = $('#gvLocation').DataTable({
+                "sAjaxSource": "GetLocationList",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "LocationSearch", "value": $("#LocationSearch").val() },
+                        { "name": "ZoneSysIdSearch", "value": $("#ZoneSysIdSearch").val() },
+                        { "name": "IsActiveSearch", "value": $("#IsActiveSearch").val() }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: '新增',
+                        action: function () {
+                            window.location.href = "/Location/AddLocation";
+                        }
+                    },
+                    {
+                        text: '编辑',
+                        action: function (e, dt, node, config) {
+                            var sysId = GetGridSysId();
+                            if (sysId != null) {
+                                window.location.href = "/Location/EditLocation?sysId=" + sysId;
+                            }
+                        }
+                    },
+                    {
+                        text: '删除',
+                        action: function (e, dt, node, config) {
+                            var sysIds = GetGridMultiselectSysId();
+                            if (sysIds != null) {
+                                msgConfirm("确定要删除所选记录吗？", function (isConfirm) {
+                                    if (isConfirm) {
+                                        $.ajax({
+                                            url: "/Location/DeleteLocation?sysIds=" + sysIds,
+                                            type: "GET",
+                                            success: function (data) {
+                                                if (data.Success) {
+                                                    msgSuccess(data.Message, setTimeout(function () { table.ajax.reload(); }, 100));
+                                                }
+                                                else {
+                                                    msgErro(data.Message);
+                                                }
+                                            },
+                                            error: function (data) {
+                                                msgErro(data.Message);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    {
+                        text: '打印条码',
+                        action: function (e, dt, node, config) {
+                            var check = $("table tbody input:checked");
+                            if (check.length === 0) {
+                                msgErro("请在列表中勾选一项!");
+                                return null;
+                            }
+                            msgConfirm("确定要打印条码吗？", function (isConfirm) {
+                                if (isConfirm) {
+                                    for (var i = 0; i < check.length; i++) {
+                                        var LODOP = getLodop();
+                                        LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                                        LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                                        //LODOP.SET_PRINT_PAGESIZE(0, 800, 140, "CreateCustomPage");
+                                        //LODOP.ADD_PRINT_BARCODE(10, 15, 140, 40, "128B", $(check[i]).attr("Loc"));
+
+                                        LODOP.ADD_PRINT_BARCODE(20, 30, 340, 80, "128B", $(check[i]).attr("Loc"));
+
+                                        if ($(check[i]).attr("Loc").length <= 6) {
+                                            LODOP.SET_PRINT_STYLE("FontSize", 60);
+                                        } else if ($(check[i]).attr("Loc").length <= 10) {
+                                            LODOP.SET_PRINT_STYLE("FontSize", 50);
+                                        } else {
+                                            LODOP.SET_PRINT_STYLE("FontSize", 40);
+                                        }
+                                        LODOP.SET_PRINT_STYLEA(0, "ShowBarText", 0);
+                                        LODOP.ADD_PRINT_TEXT(110, 30, 360, 100, $(check[i]).attr("Loc"))
+
+                                        //i = i + 1;
+                                        //if (i < check.length) {
+                                        //    LODOP.ADD_PRINT_BARCODE(10, 175, 140, 40, "128B", $(check[i]).attr("Loc"));
+                                        //}
+                                        //LODOP.PREVIEW();
+                                        LODOP.PRINT();
+                                    }
+                                    msgAlert("打印成功");
+                                }
+                            });
+
+                        }
+                    }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": 0,
+                        "width": "15px",
+                        render: function (data, type, full, meta) {
+                            return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" Loc="' + full.Loc + '" />';
+                        }
+                    }
+                ],
+                "iDisplayLength": 100,
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                table.ajax.reload();
+            });
+        });
+    </script>
+}

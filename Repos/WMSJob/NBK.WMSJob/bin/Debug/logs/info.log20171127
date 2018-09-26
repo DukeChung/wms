@@ -1,0 +1,2 @@
+2017-11-27 09:23:23,626 [1] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/27 9:23:23/更新报表缓存开始
+2017-11-27 09:23:23,808 [1] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/27 9:23:23 更新报表缓存报错：无法连接到远程服务器

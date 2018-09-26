@@ -1,0 +1,248 @@
+﻿@using NBK.ECService.WMS.Utility.Enum
+@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+@model NBK.ECService.WMS.DTO.TransferInventoryViewDto
+@{
+    ViewBag.Title = "移仓单明细";
+}
+
+@Html.Breadcrumb("移仓单管理", "/Transferinventory/Index", "移仓单明细")
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+
+    <div id="OutboundView" class="ibox-content m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <input id="SysId" type="hidden" value="@Model.SysId" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <h2 style="color: red; text-align: left">移仓单</h2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align: right" id="divBarCodeValue">@Model.TransferInventoryOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    移仓单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.TransferInventoryOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    订单状态:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    来源仓库:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.FromWareHouseName</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    目标仓库:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ToWareHouseName</div>
+                        <div class="col-sm-10 hr-line-dashed" style="margin-top: 5px">
+                            <div class="col-sm-2">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    出库时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.TransferOutboundDateDisplay </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    入库时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.TransferInboundDate </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    外部单据号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ExternOrderId</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    渠道:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.Channel</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    备注:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @Model.Remark
+                        </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px;"> </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <label class="col-sm-1 control-label">移仓清单</label>
+                <div class="col-sm-11">
+                </div>
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>商品编码</th>
+                                <th>商品名称</th>
+                                <th>UPC</th>
+                                <th>商品描述</th>
+                                <th>包装</th>
+                                <th>包装单位</th>
+                                <th>包装系数</th>
+                                <th>调拨数量</th>
+                                @*<th>出库数量</th>
+                                    <th>入库数量</th>
+                                    <th>拒收数量</th>*@
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var info in Model.TransferInventoryDetailDto)
+                                {
+                            <tr>
+                                <td>@info.SkuCode</td>
+                                <td>@info.SkuName</td>
+                                <td>@info.SkuUPC</td>
+                                <td>@info.SkuDescr</td>
+                                <td>@info.PackCode</td>
+                                <td>@info.UomCode</td>
+                                <td>@info.PackFactor</td>
+                                <td>@info.DisplayQty</td>
+                                @*<td>@info.DisplayShippedQty</td>
+                                    <td>@info.DisplayReceivedQty</td>
+                                    <td>@info.DisplayRejectedQty</td>*@
+                                <td>@info.Remark</td>
+                            </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="ibox-footer text-right tooltip-demo">
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.OrderManger_Transferinventory_Obsolete, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)TransferInventoryStatus.New)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnObsolete" onclick="TransferinventoryObsolete();">作废</a>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+        $(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+        });
+
+        function TransferinventoryObsolete() {
+            msgConfirm("确定要作废吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("ObsoleteTransferinventory", "Transferinventory")" + "?SysId=" + sysId,
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.Success) {
+                                    msgSuccess();
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                                saveLoading();
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+    </script>
+}

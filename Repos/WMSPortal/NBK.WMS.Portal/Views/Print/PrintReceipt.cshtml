@@ -1,0 +1,116 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.Utility.Enum
+@model NBK.ECService.WMS.DTO.PrintReceiptDto
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">收货单</H1>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("入库单号", Model.ExternalOrder)
+                @Html.PrintTitle("采购日期", Model.PurchaseDateDisplay)
+                @Html.PrintTitle("收货日期", Model.ReceipDateDisplay)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("供应商", Model.VendorName)
+                @Html.PrintTitle("联系人", Model.VendorContacts)
+                @Html.PrintTitle("联系方式", Model.VendorPhone)
+            </div>
+
+            @if (Model.ReceiptType == (int)ReceiptType.TransferInventory)
+            {
+                <div class="form-group">
+                    @Html.PrintTitle("移仓单号", Model.TransferInventoryOrder)
+                    @Html.PrintTitle("移出仓", Model.FromWareHouseName)
+                    @Html.PrintTitle("移入仓", Model.ToWareHouseName)
+                </div>
+            }
+            <div class="form-group">
+                @Html.PrintTitle("入库单备注", Model.PurchaseDescr)
+                @Html.PrintTitle("作业人", Model.AppointUserNames)
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("商品编号")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("UPC")
+                            @Html.PrintTh("商品描述")
+                            @Html.PrintTh("外部Id")
+                            @Html.PrintTh("包装系数")
+                            @Html.PrintTh("包装单位")
+                            @Html.PrintTh("入库数量")
+                            @Html.PrintTh("已入库数量")
+                            @Html.PrintTh("收货数量")
+                            @Html.PrintTh("赠品数量")
+                            @Html.PrintTh("破损数量")
+                        </tr>
+                        @{
+                            foreach (var info in Model.PrintReceiptDetailList)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.SkuCode)
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.UPC)
+                                    @Html.PrintTd(info.SkuDescr)
+                                    @Html.PrintTd(info.OtherId)
+                                    @Html.PrintTd(info.PackFactor)
+                                    @Html.PrintTd(info.UOMCode)
+                                    @Html.PrintTd(info.DisplayPurchaseQty.ToString())
+                                    @Html.PrintTd(info.DisplayReceivedQty.ToString())
+                                    @Html.PrintTd(info.DisplayCurrentReceivedQty.ToString())
+                                    @Html.PrintTd(info.GiftQty.ToString())
+                                    @Html.PrintTd(info.AdjustmentQty.ToString())
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group" style="min-height:120px;">
+                <div class='col-xs-4'>
+                    <div class='row'>
+                        <div class='col-xs-5 PrintTitle'> 备注说明 </div>
+                    </div>
+                </div>
+                <div class="form-group line-dashed">
+                    <div class="col-xs-12">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.PrintTitle("采购方", string.Empty)
+                @Html.PrintTitle("联系人", string.Empty)
+                @Html.PrintTitle("联系电话", string.Empty)
+
+            </div>
+
+            <div class="form-group">
+                @Html.PrintTitle("送货人(签字)", string.Empty, 5)
+                <div class='col-xs-2'></div>
+                @Html.PrintTitle("收货人(签字)", string.Empty, 5)
+
+            </div>
+
+        </form>
+    </div>
+</div> 

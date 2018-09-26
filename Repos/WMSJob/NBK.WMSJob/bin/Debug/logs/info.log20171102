@@ -1,0 +1,12 @@
+2017-11-02 09:19:30,042 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 9:19:30/更新报表缓存开始
+2017-11-02 09:20:09,722 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 9:20:09/更新报表缓存开始
+2017-11-02 09:23:42,117 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 9:23:42/更新报表缓存开始
+2017-11-02 09:54:05,586 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 9:54:05/更新报表缓存开始
+2017-11-02 09:56:34,015 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 9:56:34/更新报表缓存结束
+2017-11-02 10:19:48,319 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 10:19:48/更新出库单经纬度开始
+2017-11-02 10:21:41,268 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 10:21:41 更新出库单经纬度错误：操作超时
+2017-11-02 10:26:03,817 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 10:26:03/更新出库单经纬度开始
+2017-11-02 10:26:14,890 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 10:26:14 更新出库单经纬度错误：远程服务器返回错误: (500) 内部服务器错误。
+2017-11-02 10:26:39,618 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 10:26:39/更新出库单经纬度开始
+2017-11-02 10:27:59,427 [8] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 10:27:59/异步更新出库单经纬度开始
+2017-11-02 10:27:59,449 [8] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/2 10:27:59/更新出库单经纬度结束

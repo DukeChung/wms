@@ -1,0 +1,448 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NBK.ECService.WMSLog.ApiController</name>
+    </assembly>
+    <members>
+        <member name="M:NBK.ECService.WMSLog.ApiController.AsynBussinessProcessLogController.#ctor(NBK.ECService.WMSLog.Application.Interface.IAsynBussinessProcessLogAppService)">
+            <summary>
+            
+            </summary>
+            <param name="accessLogAppService"></param>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.CheckStockController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.#ctor(NBK.ECService.WMSLog.Application.Interface.ICheckStockAppService)">
+            <summary>
+            
+            </summary>
+            <param name="checkStockAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.CheckStockAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.GetStockDataSet(System.Int32)">
+            <summary>
+            查询有差异的库存(3张库存表差异)
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.GetStockAvailableQty(System.Int32)">
+            <summary>
+            3张库存表可用数量比较
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.GetStockAllocatedQty(System.Int32)">
+            <summary>
+            /查询有差异的库存分配数量(3张库存表差异)
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.GetStockPickedQty(System.Int32)">
+            <summary>
+            查询有差异的库存拣货数量(3张库存表差异)
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.GetStockSkuLotQty(System.Int32)">
+            <summary>
+            invLot和invLotLocLpn表商品相同批次数量差异
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.GetStockSkuLocQty(System.Int32)">
+            <summary>
+            invSkuLoc和invLotLocLpn表商品相同货位数量差异
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.GetDiffReceiptInvOut(System.Int32)">
+            <summary>
+            查询入库，库存，出库的差异
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.CheckStockController.GetDiffInvAndPickDetailAllocatedQty(System.Int32)">
+            <summary>
+            库存分配数量和拣货明细分配数量比较
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.ConnectionConfigController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.ConnectionConfigController.#ctor(NBK.ECService.WMSLog.Application.Interface.IConnectionConfigAppService)">
+            <summary>
+            
+            </summary>
+            <param name="iConnectionConfigAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.ConnectionConfigController.GetAllWarehouseInfo">
+            <summary>
+            查询所有有效仓库信息
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.ConnectionConfigController.GetConfig(System.String)">
+            <summary>
+            获取仓库的连接字符串明文
+            </summary>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.ConnectionConfigController.UpdateWarehouseConnectionString(System.String,System.String,System.String)">
+            <summary>
+            更新数据库连接
+            </summary>
+            <param name="warehouseSysId"></param>
+            <param name="connectionString"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.InterfaceLogController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.InterfaceLogController.#ctor(NBK.ECService.WMSLog.Application.Interface.IInterfaceLogAppService)">
+            <summary>
+            
+            </summary>
+            <param name="interfaceLogAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.InterfaceLogController.InterfaceLogApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.InterfaceLogController.WriteInterfaceLog(NBK.ECService.WMSLog.DTO.InterfaceLogDto)">
+            <summary>
+            记录接口日志
+            </summary>
+            <param name="interfaceLogDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.InterfaceLogController.GetHomePageInterfaceLogStatistic(System.Int32,System.Int32)">
+            <summary>
+            获取首页接口访问统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.InterfaceLogController.GetInterfaceLogViewDto(System.Guid)">
+            <summary>
+            获取接口日志详情
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.InterfaceLogController.GetInterfaceLogList(System.Int32,NBK.ECService.WMSLog.DTO.InterfaceLogQuery)">
+            <summary>
+            获取接口日志列表
+            </summary>
+            <param name="systemId"></param>
+            <param name="interfaceLogQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.InterfaceLogController.InvokeInterfaceLogApi(System.Int32,NBK.ECService.WMSLog.DTO.InterfaceLogQuery)">
+            <summary>
+            接口调用失败时候手动调用
+            </summary>
+            <param name="systemId"></param>
+            <param name="interfaceLogQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.InterfaceLogController.InsertOutbound(System.Int32,NBK.ECService.WMSLog.DTO.InterfaceLogQuery)">
+            <summary>
+            重新调用插入出库单
+            </summary>
+            <param name="systemId"></param>
+            <param name="interfaceLogQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.BusinessLogController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.#ctor(NBK.ECService.WMSLog.Application.Interface.IBusinessLogAppService)">
+            <summary>
+            
+            </summary>
+            <param name="businessLogAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.BusinessLogApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.WriteBusinessLog(NBK.ECService.WMSLog.DTO.BusinessLogDto)">
+            <summary>
+            记录业务日志
+            </summary>
+            <param name="businessLogDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.GetInboundBizLogByDays(System.Int32,System.Int32)">
+            <summary>
+            入库业务执行统计
+            </summary>
+            <param name="systemId"></param>
+            <param name="days"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.GetOutboundBizLogByDays(System.Int32,System.Int32)">
+            <summary>
+            出库业务执行统计
+            </summary>
+            <param name="systemId"></param>
+            <param name="days"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.GetApiProcessResult(System.Int32)">
+            <summary>
+            统计单位每分钟内接口调用次数
+            </summary>
+            <param name="systemId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.GetApiProcessResult(System.Int32,System.Int32)">
+            <summary>
+            统计单位x秒内接口调用次数
+            </summary>
+            <param name="systemId"></param>
+            <param name="secondInterval"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.GetBusinessLogViewDto(System.Guid)">
+            <summary>
+            获取业务日志详情
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.BusinessLogController.GetBusinessLogList(System.Int32,NBK.ECService.WMSLog.DTO.BusinessLogQuery)">
+            <summary>
+            获取业务日志列表
+            </summary>
+            <param name="systemId"></param>
+            <param name="businessLogQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.AccessLogController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.AccessLogController.#ctor(NBK.ECService.WMSLog.Application.Interface.IAccessLogAppService)">
+            <summary>
+            
+            </summary>
+            <param name="accessLogAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.AccessLogController.AccessLogApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.AccessLogController.WriteAccessLog(NBK.ECService.WMSLog.DTO.AccessLogDto)">
+            <summary>
+            记录访问日志
+            </summary>
+            <param name="accessLogDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.AccessLogController.GetHomePageAccessLogStatistic(System.Int32,System.Int32)">
+            <summary>
+            获取首页业务API访问统计
+            </summary>
+            <param name="systemId"></param>
+            <param name="latestDays"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.AccessLogController.GetAccessLogViewDto(System.Guid)">
+            <summary>
+            获取访问日志详情
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.AccessLogController.GetAccessLogList(System.Int32,NBK.ECService.WMSLog.DTO.AccessLogQuery)">
+            <summary>
+            获取访问日志列表
+            </summary>
+            <param name="systemId"></param>
+            <param name="accessLogQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.MessageController.#ctor(NBK.ECService.WMSLog.Application.Interface.IMessageAppService)">
+            <summary>
+            
+            </summary>
+            <param name="messageAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.MessageController.MessageApi">
+            <summary>
+            获取用户聊天记录
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.MessageController.GetSystemMessageListByUser">
+            <summary>
+            获取指定用户的系统消息,websocket
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.MessageController.TestGetSystemMessageListByUser(System.Int32,System.Int32)">
+            <summary>
+            获取指定用户的系统消息
+            </summary>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.MessageController.GetMessageListByPage(NBK.ECService.WMSLog.DTO.MessageQuery)">
+            <summary>
+            分页查询条件消息列表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.MessageController.SendSystemMessage(NBK.ECService.WMSLog.DTO.MessageDto)">
+            <summary>
+            推送WMS系统消息
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.PushMessageController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.PushMessageController.#ctor(NBK.ECService.WMSLog.Application.Interface.IPushMessageAppService)">
+            <summary>
+            
+            </summary>
+            <param name="pushMessageAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.PushMessageController.PushMessageAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.PushMessageController.PushMessage(NBK.ECService.WMSLog.DTO.PushMessageQuery)">
+            <summary>
+            友盟消息推送
+            </summary>
+            <param name="query"></param>
+        </member>
+        <member name="F:NBK.ECService.WMSLog.ApiController.ChatHub.CurrClients">
+            <summary>
+            紀錄目前已連結的 Client 識別資料
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.ChatHub.SendMessageToUser(NBK.ECService.WMSLog.ApiController.ClientInfo)">
+            <summary>
+            给指定登陆用户 发消息（根据userid）
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.ChatHub.SendMessageToAll(NBK.ECService.WMSLog.ApiController.ClientInfo)">
+            <summary>
+            全员推送 消息
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.ChatHub.Register(System.Int32)">
+            <summary>
+            提供 Client 端呼叫
+            功能:對 Server 進行身分註冊
+            </summary>
+            <param name="clientName">使用者稱謂</param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.ChatHub.OnDisconnected(System.Boolean)">
+            <summary>
+            Client 端離線時的動作
+            </summary>
+            <param name="stopCalled">true:為使用者正常關閉(離線); false: 使用者不正常關閉(離線)，如連線狀態逾時</param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.ClientInfo">
+            <summary>
+            保存Client識別資料的物件
+            </summary>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.SummaryLogController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.SummaryLogController.#ctor(NBK.ECService.WMSLog.Application.Interface.ISummaryLogAppService)">
+            <summary>
+            
+            </summary>
+            <param name="summaryLogAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.SummaryLogController.SummaryLogApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.SummaryLogController.GetHomePageSummaryLog(System.Int32,NBK.ECService.WMSLog.DTO.SummaryLogQuery)">
+            <summary>
+            获取首页日志列表
+            </summary>
+            <param name="systemId"></param>
+            <param name="summaryLogQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.SummaryLogController.GetHomePageMaxElapsedTimeLog(System.Int32)">
+            <summary>
+            获取首页最耗时接口列表
+            </summary>
+            <param name="systemId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.SummaryLogController.GetHomePageMaxFrequencyLog(System.Int32)">
+            <summary>
+            获取首页X时间内访问最多接口列表
+            </summary>
+            <param name="systemId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.SummaryLogController.GetFrequencyDetailDto(System.Int32,System.String)">
+            <summary>
+            获取首页X时间内访问最多接口明细
+            </summary>
+            <param name="systemId"></param>
+            <param name="descr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.SummaryLogController.GetInterfaceStatisticByPage(System.Int32,NBK.ECService.WMSLog.DTO.InterfaceStatisticQuery)">
+            <summary>
+            获取日志列表
+            </summary>
+            <param name="systemId"></param>
+            <param name="dtoQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSLog.ApiController.WMSLogApiControllerModule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSLog.ApiController.WMSLogApiControllerModule.Initialize">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

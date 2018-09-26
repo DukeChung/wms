@@ -1,0 +1,68 @@
+﻿
+@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.Utility.Enum
+@model List<NBK.ECService.WMS.DTO.PrintTMSPackNumberListDto>
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-12 control-label ">
+                    <H1 style="color: red;text-align:left">交接单列表</H1>
+                </label>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("交接单号")
+                            @Html.PrintTh("收货人地区")
+                            @Html.PrintTh("服务综合体名称")
+                            @Html.PrintTh("散货单号")
+                            @Html.PrintTh("散货箱号")
+                            @Html.PrintTh("商品数量")
+                            @Html.PrintTh("总数量")
+                            @Html.PrintTh("创建人")
+                        </tr>
+                        @{
+                            foreach (var info in Model)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.OutboundOrder + "-" + info.BoxNumber)
+                                    @Html.PrintTd(info.ConsigneeArea)
+                                    @Html.PrintTd(info.ServiceStationName)
+                                    @Html.PrintTd(info.PreBulkPackOrder)
+                                    @Html.PrintTd(info.StorageCase)
+                                    @Html.PrintTd(info.SkuQty != null ? info.SkuQty.ToString() : "")
+                                    @Html.PrintTd(info.Qty != null ? info.Qty.ToString() : "")
+                                    @Html.PrintTd(info.CreateUserName)
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+
+    </script>
+}

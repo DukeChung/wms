@@ -1,0 +1,412 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PreOrderRuleDto
+
+@{
+    ViewBag.Title = "预包装匹配规则";
+}
+
+@Html.Breadcrumb("订单管理", "预包装匹配规则")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <form id="preOrderRuleForm" class="form-horizontal" method="post">
+        <div class="ibox-content m-b-sm border-bottom">
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11" style="color: #a9a9a9; margin-bottom: 10px">
+                    当前页面设置主要是用于出库单与预包装单自动匹配的规则设置,请明确设置规则后在进行操作.
+                    <input type="hidden" id="SysId" name="SysId" value="@Model.SysId.GetValueOrDefault()" />
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-11">
+                <div class="form-group">
+                    <label class="control-label" for="">预包装匹配规则</label>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <select class="form-control m-b" name="Status" id="Status" style="width: 80%">
+                                @if (Model.Status.HasValue && Model.Status.Value)
+                                {
+                                    <option value="true" selected="selected">开启</option>
+                                    <option value="false">关闭</option>
+                                }
+                                else
+                                {
+                                    <option value="true">开启</option>
+                                    <option value="false" selected="selected">关闭</option>
+                                }
+
+
+
+                            </select>
+                        </div>
+                        <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                            开启:选择开启后,系统将根据下列规则设置对出库订单与预包装订单关联匹配.关闭:选择关闭后系统将不会对出库订单进行任何匹配.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">按服务综合体匹配 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="ServiceStation" id="ServiceStation" style="width: 80%">
+                                    @if (Model.ServiceStation.HasValue && Model.ServiceStation.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:预包装单与出库单匹配,按照服务综合体进行匹配,当达到匹配率预包装与出库单匹配成功.关闭:匹配时不考虑服务综合体名称.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">预包装最小匹配率</label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="MatchingRate" id="MatchingRate" style="width: 80%">
+
+                                    @{
+                                        if (Model.MatchingRate.HasValue && Model.MatchingRate.Value == 50)
+                                        {
+                                            <option value="50" selected="selected">50%</option>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.MatchingRate.HasValue)
+                                            {
+                                                <option value="50">50%</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="50" selected="selected">50%</option>
+                                            }
+                                        }
+                                        if (Model.MatchingRate.HasValue && Model.MatchingRate.Value == 60)
+                                        {
+                                            <option value="60" selected="selected">60%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="60">60%</option>
+                                        }
+                                        if (Model.MatchingRate.HasValue && Model.MatchingRate.Value == 70)
+                                        {
+                                            <option value="70" selected="selected">70%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="70">70%</option>
+                                        }
+                                        if (Model.MatchingRate.HasValue && Model.MatchingRate.Value == 80)
+                                        {
+                                            <option value="80" selected="selected">80%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="80">80%</option>
+                                        }
+
+                                        if (Model.MatchingRate.HasValue && Model.MatchingRate.Value == 90)
+                                        {
+                                            <option value="90" selected="selected">90%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="90">90%</option>
+                                        }
+                                        if (Model.MatchingRate.HasValue && Model.MatchingRate.Value == 100)
+                                        {
+                                            <option value="100" selected="selected">100%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="100">100%</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                预包装最小匹配率,表示在匹配过程中预包装单与出库单需商品与数量达到的一致的最小比例.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">预包装最大匹配率</label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="MatchingMaxRate" id="MatchingMaxRate" style="width: 80%">
+
+                                    @{
+                                        if (Model.MatchingMaxRate.HasValue && Model.MatchingMaxRate.Value == 110)
+                                        {
+                                            <option value="110" selected="selected">110%</option>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.MatchingMaxRate.HasValue)
+                                            {
+                                                <option value="110">110%</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="110" selected="selected">110%</option>
+                                            }
+                                        }
+                                        if (Model.MatchingMaxRate.HasValue && Model.MatchingMaxRate.Value == 120)
+                                        {
+                                            <option value="120" selected="selected">120%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="120">120%</option>
+                                        }
+                                        if (Model.MatchingMaxRate.HasValue && Model.MatchingMaxRate.Value == 130)
+                                        {
+                                            <option value="130" selected="selected">130%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="130">130%</option>
+                                        }
+                                        if (Model.MatchingMaxRate.HasValue && Model.MatchingMaxRate.Value == 140)
+                                        {
+                                            <option value="140" selected="selected">140%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="140">140%</option>
+                                        }
+
+                                        if (Model.MatchingMaxRate.HasValue && Model.MatchingMaxRate.Value == 150)
+                                        {
+                                            <option value="150" selected="selected">150%</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="150">150%</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                预包装最大匹配率,表示在匹配过程中预包装单与出库单需商品与数量达到的一致的最大比例.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">按商品匹配 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="MatchingSku" id="MatchingSku" style="width: 80%">
+                                    @if (Model.MatchingSku.HasValue && Model.MatchingSku.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:预包装单与出库单匹配,按照商品进行匹配,当达到匹配率预包装与出库单匹配成功.关闭:匹配时不考虑商品.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">按数量匹配 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="MatchingQty" id="MatchingQty" style="width: 80%">
+                                    @if (Model.MatchingQty.HasValue && Model.MatchingQty.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+
+
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:预包装单与出库单匹配,按照商品数量进行匹配,当达到匹配率预包装与出库单匹配成功.关闭:匹配时不考虑商品数量.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">超预包装数量 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="ExceedQty" id="ExceedQty" style="width: 80%">
+                                    @if (Model.ExceedQty.HasValue && Model.ExceedQty.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:实际预包装扫描数量,可以大于导入或者手动创建的预包装数量.关闭:实际预包装扫描数量,不可以大于导入或者手动创建的预包装数量.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">出库拦截 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="DeliveryIntercept" id="DeliveryIntercept" style="width: 80%">
+                                    @if (Model.DeliveryIntercept.HasValue && Model.DeliveryIntercept.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9;">
+                                开启:当预包装扫描数量不等于出库数量时,使用快速发货功能系统会进行拦截,并且提示错误信息.关闭:当预包装扫描数量不等于出库数量时.使用快速发货功能,系统不去做数量校验.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                </div>
+                <div class="col-sm-1">
+                    <button id="btnSave" class="btn btn-primary" type="button" style="margin-top: 23px; float: left;" onclick="SavePreOrderRule()">保存</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+
+
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        function SavePreOrderRule() {
+            if ($("#ServiceStation").val() === "false" && $("#MatchingSku").val() === "false" && $("#MatchingQty").val() === "false") {
+                msgErro("最少开启一个具体匹配规则,按服务综合体匹配或按商品匹配和按数量匹配.");
+                return;
+            }
+
+            $.ajax({
+                url: "/RuleSetting/SavePreOrderRule",
+                type: "POST",
+                data: $("#preOrderRuleForm").serializeObject(),
+                success: function (data) {
+                    if (data.Success) {
+                        msgSuccess(data.Message);
+                        window.location.href = "/RuleSetting/PreOrderRule";
+                    } else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                }
+            });
+        }
+
+        $("#ServiceStation").on('change', function () {
+            if ($("#ServiceStation").val()) {
+                @*按服务综合体匹配开启*@
+                document.getElementById("MatchingSku").options[1].selected = true;
+                document.getElementById("MatchingQty").options[1].selected = true;
+            }
+        });
+
+        $("#MatchingSku").on('change', function () {
+            if ($("#MatchingSku").val()) {
+                @*按商品匹配开启*@
+                document.getElementById("ServiceStation").options[1].selected = true;
+            }
+        });
+
+        $("#MatchingQty").on('change', function () {
+            console.log()
+            if ($("#MatchingQty").val()) {
+                @*按数量匹配开启*@
+                document.getElementById("ServiceStation").options[1].selected = true;
+            }
+        });
+
+    </script>
+}

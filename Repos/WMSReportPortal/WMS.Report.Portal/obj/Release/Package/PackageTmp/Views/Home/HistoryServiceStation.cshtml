@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "HistoryServiceStation";
+}
+
+<div id="content">
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="wid-id-12" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+                        <h2 style="width:100px;">仓库业务分布</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding">
+                            <div id="div_RealTimeProdutct">
+                                @Html.Partial("_HistoryRealTimeDelivery")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>

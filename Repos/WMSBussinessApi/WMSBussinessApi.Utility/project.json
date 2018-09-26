@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+
+  "dependencies": {
+    "AutoMapper": "6.0.2",
+    "BachLib": "1.0.6",
+    "RabbitMQ.Client": "4.1.3",
+    "ServiceStack.Redis": "4.5.12"
+  },
+
+  "frameworks": {
+    "net452": {}
+  }
+}

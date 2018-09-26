@@ -1,0 +1,233 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil;
+@using NBK.ECService.WMS.DTO;
+
+@{
+    ViewBag.Title = "冻结管理";
+}
+
+@Html.Breadcrumb("库存管理", "冻结管理")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3" id="divZone">
+                <div class="form-group">
+                    <label class="control-label" for="Zone">储区</label>
+                    <select class="form-control chosen-select" name="Zone" id="Zone">
+                        <option>全部</option>
+                        @{
+                            foreach (var zone in (List<SelectItem>)ViewBag.ZoneList)
+                            {
+                                <option value="@zone.Value">@zone.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="Type">类型</label>
+                    <select class="form-control m-b" name="Type" id="Type">
+                        <option selected>全部</option>
+                        <option value="10">储区</option>
+                        <option value="20">货位</option>
+                        <option value="30">商品</option>
+                        <option value="40">货位商品</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="Status">状态</label>
+                    <select class="form-control m-b" name="Status" id="Status">
+                        <option selected>全部</option>
+                        <option value="10">冻结</option>
+                        <option value="20">解冻</option>
+                    </select>
+                </div>
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品名称", "SkuName")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品UPC", "UPC")
+            </div>
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvFrozen" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th>查看明细商品</th>
+                                <th data-data="TypeDisplay">冻结类型</th>
+                                <th data-data="StatusDisplay">状态</th>
+                                <th data-data="FrozenSourceDisplay">冻结来源</th>
+                                <th data-data="ZoneName">储区</th>
+                                <th data-data="Loc">货位</th>
+                                <th data-data="UPC">UPC</th>
+                                <th data-data="SkuName">商品名称</th>
+                                <th data-data="Memo">备注</th>
+                                <th data-data="CreateUserName">创建人</th>
+                                <th data-data="CreateDateDisplay">创建时间</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/chosen")
+    <script>
+        var FrozenMaintain = {
+            table: {},
+            init: function () {
+                var _self = this;
+                $('.chosen-select').chosen({ no_results_text: "未找到此选项!", width: "100%" });
+
+                _self.table = $('#gvFrozen').DataTable({
+                    "sAjaxSource": "GetFrozenRequestList",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "Type", "value": $("#Type").val() },
+                            { "name": "Status", "value": $("#Status").val() },
+                            { "name": "ZoneSysId", "value": $("#Zone").val() },
+                            { "name": "SkuName", "value": $("#SkuName").val() },
+                            { "name": "UPC", "value": $("#UPC").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'pageLength',
+                        @if (AuthorizeManager.HasFunction(AuthKeyConst.Inventory_Frozen_FrozenRequest, User.Identity.Name))
+                        {
+                            <text>
+                                {
+                                    text: '冻结',
+                                    action: function (e, dt, node, config) {
+                                        window.location.href = "/Frozen/FrozenRequest";
+                                    },
+                                }
+                            
+                            , {
+                                text: '解冻',
+                                action: function (e, dt, node, config) {
+                                    var sysId = GetGridSysId();
+                                    if (sysId != null) {
+                                        msgConfirm("是否解冻所选记录？", function (isConfirm) {
+                                            if (isConfirm) {
+                                                var requestData = {
+                                                    SysId: sysId
+                                                };
+                                                saveLoading('show');
+                                                $.ajax({
+                                                    url: "/Frozen/UnFrozenRequest",
+                                                    data: requestData,
+                                                    dataType: "json",
+                                                    type: "POST",
+                                                    success: function (data) {
+                                                        saveLoading();
+                                                        if (data.success) {
+                                                            msgSuccess("解冻成功!");
+                                                            FrozenMaintain.table.ajax.reload();
+                                                        }
+                                                        else {
+                                                            msgErro(data.message);
+                                                        }
+                                                    },
+                                                    error: function () {
+                                                        saveLoading();
+                                                        msgErro("操作失败");
+                                                    }
+                                                });
+                                            }
+                                        },true);
+                                    }
+                                },
+                            </text>
+                            }
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        },
+                        {
+                            "targets": 1,
+                            "width": "100px",
+                            render: function (data, type, full, meta) {
+                                if (full.Type == 30 || full.Type == 40) {
+                                    return '';
+                                }
+                                else {
+                                    return '<a target="_blank" href="/Frozen/FrozenDetail?sysId=' + full.SysId + '">查看明细商品</a>';
+                                }
+                            }
+                        }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        buttons: {
+                            pageLength: {
+                                _: "每页显示 %d 条记录"
+                            }
+                        },
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    FrozenMaintain.table.ajax.reload();
+                });
+
+            }
+        }
+
+        $(function () {
+            FrozenMaintain.init();
+        })
+
+
+    </script>
+}

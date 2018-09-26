@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{060DC2C5-FFE0-49A4-8405-A8C8357EB1A7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBK.ECService.WMSLog.Utility</RootNamespace>
+    <AssemblyName>NBK.ECService.WMSLog.Utility</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\WMSApi\NBK.ECService.WMS.Utility\EmailHelper.cs">
+      <Link>EmailHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSApi\NBK.ECService.WMS.Utility\EnumHelper.cs">
+      <Link>EnumHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSApi\NBK.ECService.WMS.Utility\ExtendUtility.cs">
+      <Link>ExtendUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSApi\NBK.ECService.WMS.Utility\ParameterRebinder.cs">
+      <Link>ParameterRebinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSApi\NBK.ECService.WMS.Utility\QueryableExtensions.cs">
+      <Link>QueryableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSApi\NBK.ECService.WMS.Utility\StringHelper.cs">
+      <Link>StringHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSApi\NBK.ECService.WMS.Utility\Wheres.cs">
+      <Link>Wheres.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.Utility\Enum\SystemEnum.cs">
+      <Link>Enum\SystemEnum.cs</Link>
+    </Compile>
+    <Compile Include="Enum\SynEnum.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicConst.cs" />
+    <Compile Include="RedisSourceKey.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

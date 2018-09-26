@@ -1,0 +1,85 @@
+﻿
+
+@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrePackSkuDto
+@{
+    ViewBag.Title = "";
+    Layout = null;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+<div class="">
+    <div id="PrePackView" class="ibox-content m-b-sm border-bottom">
+        <form id="PrePackForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-12 control-label ">
+                    <H2 style="color: red;text-align:left">预包装单</H2>
+                </label>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("预包装单", Model.PrePackOrder)
+                @Html.PrintTitle("订单状态", Model.StatusName)
+                @Html.PrintTitle("出库单号", Model.OutboundOrder)
+            </div>
+
+            <div class="form-group">
+                @Html.PrintTitle("托盘库位", Model.StorageLoc)
+                @Html.PrintTitle("创建时间", Model.CreateDateDisplay)
+            </div>
+            <br />
+            <br />
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">封装清单</label>
+                <div class="col-sm-11"></div>
+            </div>
+
+            <div class="form-group ">
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                @Html.PrintTh("商品编码")
+                                @Html.PrintTh("商品名称")
+                                @Html.PrintTh("UPC")
+                                @Html.PrintTh("单位")
+                                @Html.PrintTh("包装")
+                                @Html.PrintTh("计划数量")
+                                @Html.PrintTh("实际数量")
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var info in Model.PrePackSkuListDto)
+                                {
+                                    <tr>
+                                        @Html.PrintTd(info.SkuCode)
+                                        @Html.PrintTd(info.SkuName)
+                                        @Html.PrintTd(info.UPC)
+                                        @Html.PrintTd(info.UomCode)
+                                        @Html.PrintTd(info.PackCode)
+                                        @Html.PrintTd(info.PreQty != null ? info.PreQty.ToString() : "")
+                                        @Html.PrintTd(info.Qty != null ? info.Qty.ToString() : "")
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+        $(function () {
+            $("#divPrePackCode").empty().barcode($("#divPrePackValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+        });
+    </script>
+}

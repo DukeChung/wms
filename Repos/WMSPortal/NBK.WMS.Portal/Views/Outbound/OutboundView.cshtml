@@ -1,0 +1,1881 @@
+﻿@using NBK.ECService.WMS.Utility.Enum
+@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+@model NBK.ECService.WMS.DTO.OutboundViewDto
+
+@{
+    ViewBag.Title = "出库单明细";
+}
+@if (Model.OutboundType == (int)OutboundType.Fertilizer)
+{
+    @Html.Breadcrumb("出库单管理", "/Outbound/OutboundFertilizer", "出库单明细")
+}
+else
+{
+    @Html.Breadcrumb("出库单管理", "/Outbound/OutboundMaintain", "出库单明细")
+}
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="OutboundView" class="ibox-content m-b-sm border-bottom">
+
+        <form id="PurchaseForm" class="form-horizontal">
+            <input id="SysId" type="hidden" value="@Model.SysId" />
+            <input id="PrePackOrderValue" type="hidden" value="@Model.PrePackOrder" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red; text-align: left">出库单</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align: right" id="divBarCodeValue">@Model.OutboundOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    出库单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.OutboundOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    订单状态:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    单据类型:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.OutboundTypeName</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    下单时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.OutboundDateDisplay</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    审核时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.AuditingDateDisplay </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    商品总数:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.DisplayTotalQty </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    收货人姓名:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ConsigneeName</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    收货人地址:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @{
+                                if (Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.Fertilizer)
+                                {
+                                    @Model.ConsigneeAddress
+                                }
+                                else
+                                {
+                                    @Model.DetailedAddress
+                                }
+                            }
+
+                        </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    外部单据号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ExternOrderId</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.OutboundType == (int)OutboundType.TransferInventory)
+            {
+                <div class="form-group">
+                    <div class="col-sm-1">
+                        移仓单号:
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.TransferInventoryOrder</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        移出仓:
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.FromWareHouseName</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        移入仓:
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.ToWareHouseName</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+
+                @if (Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.Fertilizer)
+                {
+                    <div class="col-sm-1">
+                        TMS运单号:
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.TMSOrder</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        TMS装车顺序:
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.SortNumber</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        TMS装车时间:
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.DepartureDateDisplay</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    服务综合体:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ServiceStationName</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    作业人:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.AppointUserNames</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    渠道:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.Channel</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.ReceiptSysId != null && !string.IsNullOrEmpty(Model.PurchaseOrder))
+            {
+                <div class="form-group">
+                    <div class="col-sm-1">
+                        入库单号:
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-12"><a href="/Purchase/PurchaseView?sysId=@Model.ReceiptSysId">@Model.PurchaseOrder</a></div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            <div class="form-group ">
+                <div class="col-sm-12">
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a id="a-details" data-toggle="tab" href="#tab-details">商品明细</a></li>
+                            @*<li class=""><a id="a-diff" data-toggle="tab" href="#tab-diff">预包装差异</a></li>*@
+                            <li class=""><a id="a-prebulkpackdiff" data-toggle="tab" href="#tab-prebulkpackdiff">箱差异</a></li>
+                            <li class=""><a id="a-box" data-toggle="tab" href="#tab-box">装箱信息</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-details" class="tab-pane active">
+                                <table class="table" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_PartReturn, HttpContext.Current.User.Identity.Name))
+                                            {
+                                                if (Model.Status == (int)OutboundStatus.Delivery && (Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.B2C || Model.OutboundType == (int)OutboundType.Fertilizer))
+                                                {
+                                                    <th width="5%"></th>
+                                                }
+                                            }
+                                            <th>序号</th>
+                                            <th>商品条码</th>
+                                            <th>商品名称</th>
+                                            <th>商品描述</th>
+                                            <th>数量</th>
+                                            <th>已发货数量</th>
+                                            <th>单位</th>
+                                            <th>包装系数</th>
+                                            <th>已退数量</th>
+                                            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_PartReturn, HttpContext.Current.User.Identity.Name))
+                                            {
+                                                if (Model.Status == (int)OutboundStatus.Delivery && (Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.B2C || Model.OutboundType == (int)OutboundType.Fertilizer))
+                                                {
+                                                    <th>退货数量</th>
+                                                }
+                                            }
+                                            @if (Model.Status == (int)OutboundStatus.Delivery)
+                                            {
+                                                <th style="width:15%">备注</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var index = 0;
+                                            foreach (var info in Model.OutboundDetailList)
+                                            {
+                                                index++;
+                                                <tr>
+                                                    @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_PartReturn, HttpContext.Current.User.Identity.Name))
+                                                    {
+                                                        if (Model.Status == (int)OutboundStatus.Delivery && (Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.B2C || Model.OutboundType == (int)OutboundType.Fertilizer))
+                                                        {
+                                                            <td><input type="checkbox" name="ckbRtn" /></td>
+                                                        }
+                                                    }
+                                                    <td>@index</td>
+                                                    <td>@info.UPC</td>
+                                                    <td>@info.SkuName</td>
+                                                    <td>@info.SkuDescr</td>
+                                                    <td>@info.DisplayQty</td>
+                                                    <td>@info.DisplayShippedQty</td>
+                                                    <td>@info.UOMCode</td>
+                                                    <td>@info.PackFactor</td>
+                                                    <td>@info.DisplayReturnQty</td>
+                                                    @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_PartReturn, HttpContext.Current.User.Identity.Name))
+                                                    {
+                                                        if (Model.Status == (int)OutboundStatus.Delivery && (Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.B2C || Model.OutboundType == (int)OutboundType.Fertilizer))
+                                                        {
+                                                            <td>
+                                                                <input type="number" style="width:80px;" name="txtRtn" onkeyup="value=value.replace(/[^0-9]/g,'')" onpaste="value=value.replace(/[^0-9]/g,'')">
+                                                                <input type="hidden" value="@info.SkuSysId">
+                                                            </td>
+                                                        }
+                                                    }
+                                                    @if (Model.Status == (int)OutboundStatus.Delivery)
+                                                    {
+                                                        <td style="width:15%">@info.Memo</td>
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            @*<div id="tab-diff" class="tab-pane">
+                                    <div>
+                                        <h4>预包装库位: {{ StorageLoc }}</h4>
+                                    </div>
+                                    <table id="table_diff" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>商品条码</th>
+                                                <th>商品名称</th>
+                                                <th>商品描述</th>
+                                                <th>单位</th>
+                                                <th>预包装数量</th>
+                                                <th>出库单数量</th>
+                                                <th>提示</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item in DetailDiffList">
+                                                <td>{{ item.UPC }}</td>
+                                                <td>{{ item.SkuName }}</td>
+                                                <td>{{ item.SkuDescr }}</td>
+                                                <td>{{ item.UOMCode }}</td>
+                                                <td>{{ item.PrePackDisplayQty }}</td>
+                                                <td>{{ item.OutboundDisplayQty }}</td>
+                                                <td v-if="item.MoreOrLess == true" style="color: blue">{{ item.Memo }}</td>
+                                                <td v-else style="color: red">{{ item.Memo }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>*@
+
+                            <div id="tab-prebulkpackdiff" class="tab-pane">
+                                <table id="table_prebulkpackdiff" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>商品条码</th>
+                                            <th>商品名称</th>
+                                            <th>商品描述</th>
+                                            <th>单位</th>
+                                            <th>箱数量</th>
+                                            <th>出库单数量</th>
+                                            <th>提示</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in DetailDiffList">
+                                            <td>{{ item.UPC }}</td>
+                                            <td>{{ item.SkuName }}</td>
+                                            <td>{{ item.SkuDescr }}</td>
+                                            <td>{{ item.UOMCode }}</td>
+                                            <td>{{ item.PrePackDisplayQty }}</td>
+                                            <td>{{ item.OutboundDisplayQty }}</td>
+                                            <td v-if="item.MoreOrLess == true" style="color: blue">{{ item.Memo }}</td>
+                                            <td v-else style="color: red">{{ item.Memo }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="tab-box" class="tab-pane">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <h4>整件/装箱数量: {{ CaseCount }}</h4>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <h4>未装箱数量: {{ Qty }}</h4>
+                                    </div>
+                                </div>
+                                <table id="table_box" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>箱号/商品名称</th>
+                                            <th>商品种类/件数</th>
+                                            <th>商品数量</th>
+                                            <th>类型</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in OutboundBoxDtoList">
+                                            <td v-if="item.BoxType == '散件装箱'"><a href="/OutboundTransferOrder/OutboundTransferOrderView?sysId={{item.BoxSysId}}" target="_blank">{{ item.BoxName }}</a></td>
+                                            <td v-else>{{ item.BoxName }}</td>
+                                            <td>{{ item.BoxSkuCount  }}</td>
+                                            <td>{{ item.BoxSkuQty }}</td>
+                                            <td>{{ item.BoxType }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <input type="hidden" id="status" name="status" value="@Model.Status" />
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_Exception, HttpContext.Current.User.Identity.Name))
+            {
+                if ((Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.Fertilizer) && Model.Status == (int)OutboundStatus.Delivery)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnExceptionRegister" onclick="ExceptionRegister();">异常登记</a>
+                }
+            }
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_CreateTMSPackNumber, HttpContext.Current.User.Identity.Name))
+            {
+                if ((Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.Fertilizer || Model.OutboundType == (int)OutboundType.TransferInventory) && Model.Status != (int)OutboundStatus.Cancel && Model.Status != (int)OutboundStatus.Close && Model.Status != (int)OutboundStatus.Delivery)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnCreateTMSPackNumber" onclick="CreateTMSPackNumber();">生成交接单号</a>
+
+                    <a class="btn btn-sm btn-primary" id="btnCreateTMSPackNumber" onclick="PrintTMSPackNumberList();">打印交接单列表</a>
+                }
+            }
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_CreatePrebulkPack, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status != (int)OutboundStatus.Delivery && Model.Status != (int)OutboundStatus.Cancel && Model.Status != (int)OutboundStatus.Close)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnCreatePrebulkPack" onclick="CreatePrebulkPack();">生成箱号</a>
+                    <a class="btn btn-sm btn-primary" id="btnPrintPrebulkPack" onclick="PrintPrebulkPack();">打印箱号</a>
+
+                }
+            }
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_Cancel, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)OutboundStatus.Delivery && Model.OutboundType != (int)OutboundType.TransferInventory)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnOutboundCancel" onclick="OutboundCancel();">取消发货</a>
+                }
+            }
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_Return, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)OutboundStatus.Delivery && (Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.B2C || Model.OutboundType == (int)OutboundType.Fertilizer))
+                {
+                    <a class="btn btn-sm btn-primary" id="btnReturn" onclick="ReturnOperation.OutboundReturn();">退货入库</a>
+                }
+            }
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_PartReturn, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)OutboundStatus.Delivery && (Model.OutboundType == (int)OutboundType.B2B || Model.OutboundType == (int)OutboundType.B2C || Model.OutboundType == (int)OutboundType.Fertilizer))
+                {
+                    <a class="btn btn-sm btn-primary" id="btnPartReturn" onclick="ReturnOperation.OutboundReturnWarehouseChoose('PART');">部分退货入库</a>
+                }
+            }
+            @*@if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_BindPreack_UnBind, User.Identity.Name))
+                    {
+                        if (Model.OutboundType == (int)OutboundType.B2B && Model.Status != (int)OutboundStatus.Delivery)
+                        {
+                            if (Model.PrePackOrder != null)
+                            {
+                                <a class="btn btn-primary btn-sm" onclick="unBindPrePack()"><i class="fa fa-circle-o"></i> 解绑</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#bindPrePackModal" onclick="upcFocus();"><i class="fa fa-circle"></i> 绑定</a>
+                            }
+                        }
+                    }
+
+                @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_QuickDelivery, HttpContext.Current.User.Identity.Name))
+                {
+                    if ((Model.OutboundType != (int)OutboundType.B2C) && Model.Status != (int)OutboundStatus.Cancel && Model.Status != (int)OutboundStatus.Close && Model.Status != (int)OutboundStatus.Delivery)
+                    {
+                        <a class="btn btn-sm btn-primary" id="btnQuickDelivery" onclick="QuickDelivery();"><i class="fa fa-check-square-o"></i>快速发货</a>
+                    }
+                }*@
+
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_AllocationShip, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status != (int)OutboundStatus.Cancel && Model.Status != (int)OutboundStatus.Close && Model.Status != (int)OutboundStatus.Delivery && Model.Status != (int)OutboundStatus.New)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnAllocationDelivery" onclick="AllocationDelivery();"><i class="fa fa-check-square-o"></i>分配发货</a>
+                }
+            }
+
+            @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_View_Obsolete, HttpContext.Current.User.Identity.Name))
+            {
+                if (Model.Status == (int)OutboundStatus.New && Model.OutboundType != (int)OutboundType.TransferInventory)
+                {
+                    <a class="btn btn-sm btn-primary" id="btnObsolete" onclick="OutboundObsolete();">作废</a>
+                }
+            }
+            <a class="btn btn-white btn-sm" id="btnPrint" onclick="PrintOutbound();"><i class="fa fa-print"></i> 打印</a>
+            <a class="btn btn-white btn-sm" id="btnPrintPreBulkPackDiff" onclick="PrintOutboundPreBulkPackDiff();"><i class="fa fa-print"></i> 打印箱差异</a>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="modal inmodal fade" id="bindPrePackModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="height: 90px;">
+                    <div class="form-group">
+                        <label class="col-sm-12">请输入预包装单号:</label>
+                        <div class="col-sm-12">
+                            <input type="text" id="prePackOrder" name="prePackOrder" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-sm btn-primary" id="btnSaveBind"><i class="fa fa-check-square-o"></i> <span id="saveBindText">绑定</span></a>
+                    <a class="btn btn-white btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form id="prePackForm" class="form-horizontal">
+    <div class="modal inmodal fade" id="generateCaseModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="max-height:600px;">
+                    <div class="form-group">
+                        <label class="col-sm-12">批号:</label>
+                        <div class="col-sm-12">
+                            <input id="prePackLot" name="prePackLot" class="form-control required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">箱号:</label>
+                        <div class="col-sm-12">
+                            <input id="prePackCase" name="prePackCase" class="form-control required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">起始值:</label>
+                        <div class="col-sm-12">
+                            <input type="number" id="prePackStart" name="prePackStart" class="form-control required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12">结束值:</label>
+                        <div class="col-sm-12">
+                            <input type="number" id="prePackEnd" name="prePackEnd" class="form-control required">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-sm btn-primary" id="btnSave" onclick="PrebulkPackGenerateCase();"><i class="fa fa-check-square-o"></i> 完成</a>
+                        <a class="btn btn-white btn-sm" id="btnClose" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+<form id="tmsPackNumberForm" class="form-horizontal">
+    <div class="modal inmodal fade" id="createTMSPackNumberModel" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div style="padding:5px;">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a id="a-details" data-toggle="tab" href="#tab-tmsBoxNumber">交接单号</a></li>
+                        <li><a id="a-details" data-toggle="tab" href="#tab-tmsBoxCount">出库箱数</a></li>
+                    </ul>
+                </div>
+                <div class="modal-body" style="max-height:600px;">
+
+                    <div class="tab-content">
+                        <div id="tab-tmsBoxNumber" class="tab-pane active">
+                            <div class="form-group">
+                                <label class="col-sm-12">序号起始值:</label>
+                                <div class="col-sm-12">
+                                    <input type="number" id="beginNumber" name="beginNumber" value="1" class="form-control required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-12">序号结束值:</label>
+                                <div class="col-sm-12">
+                                    <input type="number" id="endNumber" name="endNumber" class="form-control required">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-sm btn-primary" id="btnTMSSave" onclick="CreateTMSPackNumberModel();"><i class="fa fa-check-square-o"></i> 完成</a>
+                                <a class="btn btn-white btn-sm" id="btnTMSClose" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                            </div>
+                        </div>
+
+                        <div id="tab-tmsBoxCount" class="tab-pane">
+                            <div class="form-group">
+                                <label class="col-sm-12">出库总箱数:</label>
+                                <div class="col-sm-12">
+                                    <input type="number" id="tmsBoxCount" name="tmsBoxCount" value="" class="form-control required">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-sm btn-primary" id="btnTMSBoxSave" onclick="CreateTMSBoxCount();"><i class="fa fa-check-square-o"></i> 推送</a>
+                                <a class="btn btn-white btn-sm" id="btnTMSClose" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+<div id="divBoxTemp" style="display: none">
+    <div class="col-sm-2">
+        <div class="widget className p-lg text-center" id="divVanningOrder">
+            <div class="m-b-md">
+                <i class="fa fa-cube fa-4x"></i>
+                <div class="row">
+                    <div class="col-sm-12" style="font-size: smaller;">VanningOrder</div>
+                    <div class="col-sm-12" style="font-size: smaller;">快递:CarrierName</div>
+                    <div class="col-sm-12" style="font-size: smaller;">重量:Weightkg</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="showInsufficientStock" style="display:none" data-toggle="modal" data-target="#showInsufficientStockList">
+
+<div class="modal fade" id="showInsufficientStockList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:930px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">
+                    库存不足商品明细列表
+                </h4>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">商品名称</th>
+                        <th class="text-center">商品编号</th>
+                        <th class="text-center">UPC</th>
+                        <th class="text-center">发货数量</th>
+                        <th class="text-center">分配数量</th>
+                        <th class="text-center">拣货数量</th>
+                        <th class="text-center">冻结数量</th>
+                        <th class="text-center">可用库存</th>
+                        <th class="text-center">差异数量</th>
+                    </tr>
+                </thead>
+                <tbody id="InsufficientStockSkuList"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="divWindowReturn" class="modal fade" aria-hidden="true" style="display: none;">
+    <div class="ibox-content modal-dialog">
+        <h4 class="m-t-none m-b">选择仓库并退货</h4>
+        <div class="text-center m-t-md">
+
+            <div class="row">
+                <label class="col-sm-3 control-label" style="margin-top:7px;">选择退货仓库:</label>
+
+                <select id="selectReturnWarehouse" name="selectReturnWarehouse" class="col-sm-6 form-control" style="width:260px;"></select>
+
+                <a class="btn btn-sm btn-primary" style=" margin-top:3px;float:right; margin-right:60px;" id="btnChoosePartReturn" onclick="ReturnOperation.ReturnOperation();"><i class="fa fa-check-square-o"></i> 退货</a>
+            </div>
+            @*<div class="row">
+                    <a class="btn btn-sm btn-primary" style="margin-top:15px; float:right; margin-right:60px;" id="btnChoosePartReturn" onclick="OutboundPartReturn();"><i class="fa fa-check-square-o"></i> 退货</a>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+<div id="divWindowScanSN" class="modal fade" aria-hidden="true" style="display: none;">
+    <div class="ibox-content modal-dialog">
+        <h4 class="m-t-none m-b">扫描SN进度</h4>
+        <div class="text-center m-t-md">
+
+            @*<div class="row">
+                    <div class="col-sm-4" style="margin-top: 5px;">扫描或者回车录入SN:</div>
+                </div>*@
+
+            <div class="row">
+                <div class="col-sm-7">
+                    <textarea placeholder="扫描或者回车录入SN" rows="2" id="ScanSN" name="ScanSN" class="form-control input-sm m-b "></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div id="SNNoticeDiv" style="float:left">
+                    <p id="SNNoticeMessage" style="color:red" align="left"></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 control-label">扫描进度</label>
+                <div class="col-sm-9">
+                    <small id="smallProgressOrderCount"></small>
+                    <div class="progress progress-mini">
+                        <div id="divProgressOrderCount" style="width: 0%;" class="progress-bar"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <a class="btn btn-sm btn-primary" style="margin-top:15px; float:right; margin-right:60px;" id="btnSNDelivery" onclick="SNOperation.SNDelivery();"><i class="fa fa-check-square-o"></i> 发货</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="div_PartShipmentSku" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:930px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    部分发货商品列表
+                </h4>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">UPC</th>
+                        <th class="text-center">商品名称</th>
+                        <th class="text-center">订单数量</th>
+                        <th class="text-center">待发货数量</th>
+                        <th class="text-center">备注</th>
+                    </tr>
+                </thead>
+                <tbody id="partShipmentSkuList" style="width:100px"></tbody>
+            </table>
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-primary" onclick="SavePartShipmentMemo()">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+            //DiffTab.initData();
+            PreBulkPackDiffTab.initData();
+            boxTab.initData();
+
+            $("#btnSaveBind").on("click", function () {
+                bindPrePack();
+            });
+
+            //回车绑定
+            $("#prePackOrder").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    bindPrePack();
+                }
+            });
+
+            SNOperation.init();
+        });
+
+        var SNOperation = {
+            DeliveryType: "",
+            totalQty: 0,
+            DuplicateSNArray: [],  //保存重复的 SN，用于提示
+            CurrentScanSNArray: [],  //当前扫描正常SN
+            NotExistsSNArray: [],  //没有被录入到系统中的SN
+            OutboundSNArray: [],  //已经出库的SN，不能重复出库
+            ReadySanSNArray: [],  //保存待提交的正常SN
+            LongSNArray: [],    //长度超过DB SN长度（32位）
+            MoreSNArray: [],    // 扫描多余的SN
+            init: function () {
+                SNOperation.totalQty = parseInt('@Model.DisplayTotalQty');
+
+                $("#ScanSN").keydown(function (event) {
+                    if (event.keyCode == 13) {
+                        var scanArr = $.trim($("#ScanSN").val()).split(',');
+
+                        $("#ScanSN").val("");
+                        $("#SNNoticeMessage").text("");
+
+                        if (SNOperation.ReadySanSNArray.length >= SNOperation.totalQty) {
+                            $("#SNNoticeMessage").text("本次收货扫描SN数量已满，无法再录入，请检查");
+                            return;
+                        }
+
+                        SNOperation.NoticeMessage("扫描中，请稍后......");
+
+                        $.each(scanArr, function (index, element) {
+                            var inputSN = $.trim(element);
+                            if (inputSN.length > 0) {
+
+                                if (inputSN.length > 32) {
+                                    SNOperation.LongSNArray.push(inputSN);
+                                } else if ($.inArray(inputSN, SNOperation.ReadySanSNArray) >= 0) {
+                                    SNOperation.DuplicateSNArray.push(inputSN);
+                                } else if ($.inArray(inputSN, SNOperation.CurrentScanSNArray) >= 0) {
+                                    SNOperation.DuplicateSNArray.push(inputSN);
+                                } else {
+                                    if (SNOperation.ReadySanSNArray.length >= SNOperation.totalQty) {
+                                        SNOperation.MoreSNArray.push(inputSN);
+                                    } else {
+                                        SNOperation.CurrentScanSNArray.push(inputSN);
+                                    }
+                                }
+                            }
+                        });
+
+                        if (SNOperation.CurrentScanSNArray.length > 0) {
+                            //接下来需要去DB中验证 是否存在SN
+                            $.ajax({
+                                url: "/Outbound/CheckExistsSN",
+                                data: { snList: SNOperation.CurrentScanSNArray },
+                                dataType: "json",
+                                type: "POST",
+                                success: function (data) {
+
+                                    if (data.success) { //DB中没有一个扫描存在的SN
+                                        SNOperation.NotExistsSNArray = $.merge(SNOperation.NotExistsSNArray, data.NotExistsList);
+                                        SNOperation.OutboundSNArray = $.merge(SNOperation.OutboundSNArray, data.OutboundList);
+
+                                        $.each(data.NormalList, function (index, element) {
+                                            if (SNOperation.ReadySanSNArray.length < SNOperation.totalQty) {
+                                                SNOperation.ReadySanSNArray.push(element);  // 丢到验证通过队列中
+                                            } else {
+                                                SNOperation.MoreSNArray.push(element);  //扫描的数量超出了收货数量
+                                            }
+                                        });
+                                    }
+
+                                    SNOperation.NoticeResult();
+                                },
+                                error: function () {
+                                    SNOperation.NoticeMessage("扫描失败，请重新扫描!");
+                                    SNOperation.DuplicateSNArray = [];
+                                    SNOperation.MoreSNArray = [];
+                                    SNOperation.NotExistsSNArray = [];
+                                    SNOperation.OutboundSNArray = [];
+                                    SNOperation.CurrentScanSNArray = [];
+                                    SNOperation.LongSNArray = [];
+                                }
+                            });
+                        }
+                        else {
+                            SNOperation.NoticeResult();
+                        }
+                    }
+                });
+            },
+            NoticeMessage: function (message) { //提示出指定message
+                if (message == null || message == undefined) {
+                    $("#SNNoticeMessage").html();
+                } else {
+                    $("#SNNoticeMessage").html(message);
+                }
+            },
+            NoticeResult: function () {
+                var noticeMessage = "扫描完成!";
+
+                if (SNOperation.DuplicateSNArray.length > 0) {
+                    noticeMessage = noticeMessage + " <br /> 异常," + SNOperation.NoticeDuplicateSNMessage();
+                }
+
+                if (SNOperation.MoreSNArray.length > 0) {
+                    noticeMessage = noticeMessage + " <br /> 异常," + SNOperation.NoticeMoreSNMessage();
+                }
+
+                if (SNOperation.NotExistsSNArray.length > 0) {
+                    noticeMessage = noticeMessage + " <br /> 异常," + SNOperation.NoticeNotExistsSNMessage();
+                }
+
+                if (SNOperation.OutboundSNArray.length > 0) {
+                    noticeMessage = noticeMessage + " <br /> 异常," + SNOperation.NoticeOutboundSNMessage();
+                }
+
+                if (SNOperation.LongSNArray.length > 0) {
+                    noticeMessage = noticeMessage + " <br /> 异常," + SNOperation.NoticeLongSNMessage();
+                }
+
+                SNOperation.NoticeMessage(noticeMessage);
+
+                SNOperation.DisplayScanProcess();
+
+                //提示完重复校验结果之后，清空 临时 数组，等待下一次录入校验
+                SNOperation.DuplicateSNArray = [];
+                SNOperation.MoreSNArray = [];
+                SNOperation.NotExistsSNArray = [];
+                SNOperation.OutboundSNArray = [];
+                SNOperation.CurrentScanSNArray = [];
+                SNOperation.LongSNArray = [];
+            },
+            NoticeDuplicateSNMessage: function () {
+                if (SNOperation.DuplicateSNArray.length > 0) {
+                    var noticeMessage = "以下SN重复(" + SNOperation.DuplicateSNArray.length + "个): <br />";
+                    $.each(SNOperation.DuplicateSNArray, function (index, element) {
+                        noticeMessage = noticeMessage + element + ",";
+                    });
+                    noticeMessage = noticeMessage + "  请重新录入!";
+
+                    //SNOperation.NoticeMessage(noticeMessage);
+                    return noticeMessage;
+                }
+            },
+            NoticeMoreSNMessage: function () {
+                if (SNOperation.MoreSNArray.length > 0) {
+                    var noticeMessage = "以下SN已经超出本次收货数量,将不会被系统记录收货: <br />";
+                    $.each(SNOperation.MoreSNArray, function (index, element) {
+                        noticeMessage = noticeMessage + element + ",";
+                    });
+                    noticeMessage = noticeMessage + "  请检查!";
+
+                    //SNOperation.NoticeMessage(noticeMessage);
+                    return noticeMessage;
+                }
+            },
+            NoticeNotExistsSNMessage: function () {
+                if (SNOperation.NotExistsSNArray.length > 0) {
+                    var noticeMessage = "以下SN未被收货录入到系统中: <br />";
+                    $.each(SNOperation.NotExistsSNArray, function (index, element) {
+                        noticeMessage = noticeMessage + element + ",";
+                    });
+                    noticeMessage = noticeMessage + "  请检查!";
+
+                    //SNOperation.NoticeMessage(noticeMessage);
+                    return noticeMessage;
+                }
+            },
+            NoticeOutboundSNMessage: function () {
+                if (SNOperation.OutboundSNArray.length > 0) {
+                    var noticeMessage = "以下SN已经出库: <br />";
+                    $.each(SNOperation.OutboundSNArray, function (index, element) {
+                        noticeMessage = noticeMessage + element + ",";
+                    });
+                    noticeMessage = noticeMessage + "  请检查!";
+
+                    //SNOperation.NoticeMessage(noticeMessage);
+                    return noticeMessage;
+                }
+            },
+            NoticeLongSNMessage: function () {
+                if (SNOperation.LongSNArray.length > 0) {
+                    var noticeMessage = "以下SN长度超过32位: <br />";
+                    $.each(SNOperation.LongSNArray, function (index, element) {
+                        noticeMessage = noticeMessage + element + ",";
+                    });
+                    noticeMessage = noticeMessage + "  请重新录入!";
+
+                    //SNOperation.NoticeMessage(noticeMessage);
+                    return noticeMessage;
+                }
+            },
+
+            // 扫描完成后，更新扫描进度
+            DisplayScanProcess: function () {
+                var scanSNQty = SNOperation.ReadySanSNArray.length;
+
+                $("#smallProgressOrderCount").text("已扫描数量/总数量 : " + scanSNQty + "/" + SNOperation.totalQty);
+
+                var orderProgress = parseInt(scanSNQty) / parseInt(SNOperation.totalQty) * 100;
+                $("#divProgressOrderCount").attr("style", "width: " + orderProgress + "%;");
+
+            },
+
+            OpenSNWindow: function (type) {
+
+                $("#divWindowScanSN").modal('show');
+                SNOperation.DeliveryType = type;
+                SNOperation.DisplayScanProcess();
+            },
+
+            //扫描SN 发货
+            SNDelivery: function () {
+                if (SNOperation.ReadySanSNArray.length == SNOperation.totalQty) {
+                    // SN数量匹配, 可以发货
+                    $("#divWindowScanSN").modal('hide');
+
+                    if (SNOperation.DeliveryType == "QuickDelivery") {
+                        QuickDeliveryOperation();
+                    }
+                    else if (SNOperation.DeliveryType == "AllocationDelivery") {
+                        AllocationDeliveryCheckOperation();
+                    }
+                }
+                else {
+                    SNOperation.NoticeMessage("扫描数量不足，请全部扫描完成后再发货!");
+                }
+            }
+        };
+
+        //绑定
+        function bindPrePack() {
+            var prepack = $("#prePackOrder").val();
+            if (prepack.trim() == "") {
+                msgAlert("预包装单号不能为空", $("#prePackOrder").focus());
+                return false;
+            }
+            $("#saveBindText").html("绑定中...");
+            $.ajax({
+                url: "/Outbound/BindPrePack",
+                type: "POST",
+                data: {
+                    PrePackOrder: prepack.trim(),
+                    OutboundOrder: $("#divBarCodeValue").html().trim(),
+                    OutboundSysId: $("#SysId").val()
+                },
+                success: function (data) {
+                    $("#saveBindText").html("绑定");
+                    if (data.Success) {
+                        msgAlert(data.Message, window.location.reload());
+                    } else {
+                        $("#prePackOrder").val('')
+                        msgErro(data.Message, $("#prePackOrder").focus());
+                        return false;
+                    }
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                    return false;
+                }
+            });
+        }
+
+        //解绑
+        function unBindPrePack() {
+            $.ajax({
+                url: "/Outbound/UnBindPrePack",
+                type: "POST",
+                data: {
+                    PrePackOrder: $("#PrePackOrderValue").val(),
+                    OutboundOrder: $("#divBarCodeValue").html().trim(),
+                    OutboundSysId: $("#SysId").val()
+                },
+                success: function (data) {
+                    if (data.Success) {
+                        msgAlert(data.Message);
+                        window.location.reload()
+                    } else {
+                        $("#prePackOrder").val('')
+                        msgErro(data.Message);
+                        return false;
+                    }
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                    return false;
+                }
+            });
+        }
+
+        function upcFocus() {
+            setTimeout(function () {
+                $("#prePackOrder").focus();
+                $("#prePackOrder").val("");
+            }, 500);
+        }
+
+
+        function PrebulkPackGenerateCase() {
+            //生成箱号
+            if ($("#prePackForm").valid()) {
+                var prePackLot = $("#prePackLot").val();
+                var prePackCase = $("#prePackCase").val();
+                var prePackStart = parseInt($("#prePackStart").val());
+                var prePackEnd = parseInt($("#prePackEnd").val());
+
+                if (prePackStart < 0) {
+                    msgErro("起始值不能小于0");
+                    return false;
+                }
+                if (prePackEnd < prePackStart) {
+                    msgErro("起始值不能大于结束值");
+                    return false;
+                }
+
+                var bulkPackDtos = [];
+                for (var i = prePackStart; i <= prePackEnd; i++) {
+                    var bulkPack = {
+                        StorageCase: prePackLot + "-" + prePackCase + "-" + i
+                    };
+                    bulkPackDtos.push(bulkPack);
+                }
+
+                var request = {
+                    PreBulkPackDtos: bulkPackDtos,
+                    OutboundSysId: $("#SysId").val(),
+                    OutboundOrder: $("#divBarCodeValue").html().trim()
+                };
+
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("AddPreBulkPack", "PrebulkPack")",
+                    data: request,
+                    type: "post",
+                    success: function (data) {
+                        saveLoading('hide');
+                        $('#generateCaseModal').modal('hide');
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                        }
+                        else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function () {
+                        saveLoading('hide');
+                        msgErro("操作失败！");
+                    }
+                });
+            }
+        }
+
+
+        //生成箱号
+        function CreatePrebulkPack() {
+            $('#generateCaseModal').modal('show');
+            $("#prePackLot").val("");
+            $("#prePackCase").val("");
+            $("#prePackStart").val("");
+            $("#prePackEnd").val("");
+        }
+
+        //打印交接单号
+        function CreateTMSPackNumber() {
+            $('#createTMSPackNumberModel').modal('show');
+            $("#beginNumber").val('');
+            $("#endNumber").val('');
+        }
+
+        //异常登记
+        function ExceptionRegister() {
+            window.location.href = "/Outbound/ExceptionView?sysId=@Model.SysId";
+        }
+
+        function CreateTMSPackNumberModel() {
+            if ($("#tmsPackNumberForm").valid()) {
+                var beginNumber = parseInt($("#beginNumber").val());
+                var endNumber = parseInt($("#endNumber").val());
+                if (beginNumber < 0) {
+                    msgErro("起始值不能小于0");
+                    return false;
+                }
+                if (endNumber < beginNumber) {
+                    msgErro("起始值不能大于结束值");
+                    return false;
+                }
+                var numberDtos = [];
+                for (var i = beginNumber; i <= endNumber; i++) {
+                    numberDtos.push(i);
+                }
+                var request = {
+                    BoxNumberList: numberDtos,
+                    OutboundSysId: $("#SysId").val(),
+                    OutboundOrder: $("#divBarCodeValue").html().trim()
+                };
+
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("CreateBoxNumber", "Outbound")",
+                    data: request,
+                    type: "post",
+                    success: function (data) {
+                        saveLoading('hide');
+                        $('#createTMSPackNumberModel').modal('hide');
+                        if (data.Success) {
+                            for (var i = 0; i < data.Data.OutboundPreBulkPackDto.length; i++) {
+                                var LODOP = getLodop();
+                                LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                                LODOP.SET_PRINTER_INDEX("@ViewBag.PrintSettingCase");
+                                LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                                LODOP.ADD_PRINT_HTM(10, 30, 320, 170, "<div style='font-size:20px;font-family:微软雅黑;'><span style='color:#f00'>国资商城</span> &nbsp;&nbsp;&nbsp;&nbsp;" + data.Data.ConsigneeArea + " " + data.Data.ConsigneeTown + "</div><div style='font-size:24px;width:290px;font-family:微软雅黑;font-weight: bold;padding:2px 0;'>" + data.Data.ServiceStationName + "-" + data.Data.OutboundPreBulkPackDto[i].BoxNumber + "<span style='padding-left:3px;font-size:14px;font-family:微软雅黑;font-weight: bold;'>(" + data.Data.OutboundChildType + ")</span></div>");
+                                LODOP.ADD_PRINT_BARCODE(160, 30, 272, 44, "128B", $("#divBarCodeValue").html().trim() + '-' + data.Data.OutboundPreBulkPackDto[i].BoxNumber);
+                                LODOP.PRINT();
+                            }
+                            msgAlert("打印成功");
+
+                        }
+                        else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function () {
+                        saveLoading('hide');
+                        msgErro("操作失败！");
+                    }
+                });
+            }
+        }
+
+        //给TMS推送总箱数
+        function CreateTMSBoxCount() {
+            if ($("#tmsPackNumberForm").valid()) {
+                var boxCount = parseInt($("#tmsBoxCount").val());
+                if (boxCount < 0) {
+                    msgErro("总出库箱数不能小于0");
+                    $("#tmsBoxCount").val('');
+                    return false;
+                }
+                var request = {
+                    BoxCount: $("#tmsBoxCount").val(),
+                    OutboundSysId: $("#SysId").val(),
+                    OutboundOrder: $("#divBarCodeValue").html().trim()
+                };
+
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("CreateTMSBoxCount", "Outbound")",
+                    data: request,
+                    type: "post",
+                    success: function (data) {
+                        saveLoading('hide');
+                        if (data.Success) {
+                            $('#createTMSPackNumberModel').modal('hide');
+                            $("#tmsBoxCount").val('');
+                            msgAlert("推送成功");
+                        }
+                        else {
+                            var obj = eval('(' + data.Message + ')');
+                            msgErro(obj.message);
+                        }
+                    }
+                });
+            }
+        }
+
+        function PrintTMSPackNumberList() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+            LODOP.SET_PRINT_PAGESIZE(1, "2100", "2970", "");
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintTMSPackNumberList?outboundSysId=@Model.SysId" + "&userName=@ViewBag.CurrentUserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+            LODOP.ADD_PRINT_BARCODE(40, 500, 206, 58, "128B", "@Model.OutboundOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+
+
+        $("input[name='ckbRtn']").click(function () {
+            if ($(this).get(0).checked) {
+                var qty = $(this).parent().parent().children("td").eq(6).html();
+                var readyReturnQty = $(this).parent().parent().children("td").eq(9).html();
+                $(this).parent().parent().children("td").children("input").eq(1).val(qty - readyReturnQty);
+            }
+            else {
+                $(this).parent().parent().children("td").children("input").eq(1).val("");
+            }
+        });
+
+        var ReturnOperation = {
+            isFirstOpenPartReturn: true,
+            returnType: '',
+            OutboundReturnWarehouseChoose: function (type) {
+                ReturnOperation.returnType = type;
+                $("#divWindowReturn").modal('show');
+                if (ReturnOperation.isFirstOpenPartReturn == true) {
+                    ReturnOperation.isFirstOpenPartReturn = false;
+
+                    $.ajax({
+                        url: "@Url.Action("GetWarehouseList", "Warehouse")",
+                        type: "get",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.success) {
+                                    var currentWarehouse = '@ViewBag.WarehouseSysId';
+                                    $.each(data.warehouseList, function (index, element) {
+                                        $("#selectReturnWarehouse").append("<option value='" + element.Value + "'>" + element.Text + "</option>");
+                                    });
+                                    $("#selectReturnWarehouse").val(currentWarehouse);
+                                } else {
+                                    msgErro("获取仓库列表失败，请刷新页面重新操作！");
+                                }
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("获取仓库列表失败，请刷新页面重新操作！");
+                        }
+                    });
+                }
+            },
+            ReturnOperation: function () {
+                if (ReturnOperation.returnType == "ALL") {
+                    ReturnOperation.OutboundReturn();
+                } else if (ReturnOperation.returnType == "PART") {
+                    ReturnOperation.OutboundPartReturn();
+                }
+            },
+            //部分退货入库
+            OutboundPartReturn: function () {
+                var outboundDetailList = [];
+                $("input[name='ckbRtn']").each(function () {
+                    if ($(this).get(0).checked) {
+                        var detailItem = {
+                            SkuSysId: $(this).parent().parent().children("td").children("input").eq(2).val(),
+                            ReturnQty: $(this).parent().parent().children("td").children("input").eq(1).val(),
+                            Qty: $(this).parent().parent().children("td").eq(5).html(),
+                            ShippedQty: $(this).parent().parent().children("td").eq(6).html(),
+                            ReadyReturnQty: $(this).parent().parent().children("td").eq(9).html()
+                        };
+                        outboundDetailList.push(detailItem);
+                    }
+                })
+
+                if (outboundDetailList.length <= 0) {
+                    msgAlert("请至少选择一条商品记录");
+                    return;
+                }
+
+
+                try {
+                    for (var i = 0; i < outboundDetailList.length; i++) {
+                        if (outboundDetailList[i].ReturnQty.trim() == "" || parseFloat(outboundDetailList[i].ReturnQty) <= 0) {
+                            msgAlert("退货数量小于0或不合法");
+                            return;
+                        }
+                        if (parseFloat(outboundDetailList[i].ReturnQty) > parseFloat(outboundDetailList[i].ShippedQty - outboundDetailList[i].ReadyReturnQty)) {
+                            msgAlert("退货数量必须小于可发货数量");
+                            return;
+                        }
+                    }
+                }
+                catch (err) {
+                    msgAlert("退货数量不合法");
+                    return;
+                }
+
+                var requestData = {
+                    SysId: '@Model.SysId',
+                    SelectWarehouseSysId: $('#selectReturnWarehouse').val(),
+                    OutboundPartDetailList: outboundDetailList
+                };
+                msgConfirm("确定要部分退货入库吗?", function (isConfirm) {
+                    if (isConfirm) {
+                        saveLoading('show');
+                        $("#divWindowReturn").modal('hide');
+                        $.ajax({
+                            url: "@Url.Action("OutboundPartReturn", "Outbound")",
+                            data: requestData,
+                            dataType: "json",
+                            type: "post",
+                            success: function (data) {
+                                setTimeout(function () {
+                                    if (data.Success) {
+                                        msgSuccess();
+                                        window.location.reload();
+                                    } else {
+                                        msgErro(data.Message);
+                                    }
+                                    saveLoading();
+                                }, 100);
+                            },
+                            error: function () {
+                                msgErro("操作失败！");
+                            }
+                        });
+                    }
+                }, true);
+            },
+            //退货入库
+            OutboundReturn: function () {
+                msgConfirm("确定要退货入库吗?", function (isConfirm) {
+                    if (isConfirm) {
+                        var sysId = $("#SysId").val();
+                        saveLoading('show');
+                        $.ajax({
+                            url: "@Url.Action("OutboundReturn", "Outbound")" + "?SysId=" + sysId + "&SelectWarehouseSysId=" + $('#selectReturnWarehouse').val(),
+                            data: [],
+                            dataType: "json",
+                            type: "post",
+                            success: function (data) {
+                                setTimeout(function () {
+                                    if (data.Success) {
+                                        msgSuccess();
+                                        window.location.reload();
+                                    } else {
+                                        msgErro(data.Message);
+                                    }
+                                    saveLoading();
+                                }, 100);
+                            },
+                            error: function () {
+                                msgErro("操作失败！");
+                            }
+                        });
+                    }
+                }, true);
+            }
+
+        };
+
+        var DiffTab = {
+            diffVM: {},
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetOutboundPrePackDiff", "Outbound")" + "?outboundSysId=" + '@Model.SysId',
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            DiffTab.initVue(data.Data);
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initVue: function (data) {
+                this.diffVM = new Vue({
+                    el: "#tab-diff",
+                    data: data,
+                });
+            }
+        };
+
+        var PreBulkPackDiffTab = {
+            diffVM: {},
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetOutboundPreBulkPackDiff", "Outbound")" + "?outboundSysId=" + '@Model.SysId',
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            PreBulkPackDiffTab.initVue(data.Data);
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initVue: function (data) {
+                this.diffVM = new Vue({
+                    el: "#tab-prebulkpackdiff",
+                    data: data,
+                });
+            }
+        };
+
+        //箱数据
+        var boxTab = {
+            boxVM: {},
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetOutboundBox", "Outbound")" + "?outboundSysId=" + '@Model.SysId',
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            boxTab.initVue(data.Data);
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+            initVue: function (data) {
+                this.boxVM = new Vue({
+                    el: "#tab-box",
+                    data: data,
+                });
+            }
+        };
+
+        function PrintOutbound(type) {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+            LODOP.SET_PRINT_PAGESIZE(1, "2100", "2970", "");
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintOutbound?outboundSysId=@Model.SysId" + "&userName=@ViewBag.CurrentUserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+            LODOP.ADD_PRINT_BARCODE(40, 500, 206, 58, "128B", "@Model.OutboundOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            LODOP.PRINT();
+            if (type != "1") {
+                msgAlert("打印成功");
+            }
+        }
+
+        function PrintOutboundPrePackDiff() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintOutboundPrePackDiff?outboundSysId=@Model.SysId" + "&userName=@ViewBag.CurrentUserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            //LODOP.PREVIEW();
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+
+        function PrintOutboundPreBulkPackDiff() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintOutboundPreBulkPackDiff?outboundSysId=@Model.SysId" + "&userName=@ViewBag.CurrentUserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            //LODOP.PREVIEW();
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+
+        function QuickDelivery() {
+            msgConfirm("确定要进行快速发货?", function (isConfirm) {
+                if (isConfirm) {
+                    //此处植入 SN扫描逻辑
+                    if ('@Model.IsScanSNOrder' == 'True') {
+                        SNOperation.OpenSNWindow("QuickDelivery");
+                    }
+                    else {
+                        QuickDeliveryOperation();
+                    }
+                }
+            }, true);
+        }
+
+        function QuickDeliveryOperation() {
+            var sysId = $("#SysId").val();
+            saveLoading('show');
+            $.ajax({
+                url: "@Url.Action("OutboundQuickDelivery", "Outbound")",
+                data: { SysId: sysId, SNList: SNOperation.ReadySanSNArray },
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    setTimeout(function () {
+                        saveLoading();
+                        if (data.success) {
+                            if (data.isasyn) {
+                                msgSuccess(data.message);
+                            } else {
+                                msgSuccess("出库完成!");
+                                PrintOutbound('1');        //发货完成立即打印
+                                window.location.reload();
+                            }
+                        } else {
+                            if (data.message.indexOf('库存不足') >= 0) {//库存不足，弹出不足明细
+                                msgErroConfirm(data.message, function (isConfirm) {
+                                    if (isConfirm) {
+                                        $.ajax({
+                                            url: "@Url.Action("GetInsufficientStockSkuList", "Outbound")" + "?sysId=" + sysId,
+                                            data: [],
+                                            dataType: "json",
+                                            type: "post",
+                                            success: function (data) {
+                                                if (data.success) {
+                                                    var trList = new Array();
+                                                    for (var i = 0; i < data.data.length; i++) {
+                                                        trList.push('<tr style="padding:10px;">');
+                                                        trList.push('<td class="text-center">' + data.data[i].SkuName + '</td>')
+                                                        trList.push('<td class="text-center">' + data.data[i].SkuCode + '</td>');
+                                                        trList.push('<td class="text-center">' + data.data[i].UPC + '</td>');
+                                                        trList.push('<td class="text-center">' + data.data[i].OutboundQty + '</td>');
+
+                                                        trList.push('<td class="text-center">' + data.data[i].AllocatedQty + '</td>');
+                                                        trList.push('<td class="text-center">' + data.data[i].PickedQty + '</td>');
+                                                        trList.push('<td class="text-center">' + data.data[i].FrozenQty + '</td>');
+
+                                                        trList.push('<td class="text-center">' + data.data[i].StockQty + '</td>');
+                                                        trList.push('<td class="text-center">' + data.data[i].DiffQty + '</td>');
+                                                        trList.push('</tr>');
+                                                    }
+                                                    $("#InsufficientStockSkuList").html(trList.join(''));
+                                                }
+                                                else {
+                                                    $("#InsufficientStockSkuList").html('<td colspan="6" style="padding:15px 10px;text-align: center;">获取库存不足商品异常</td>')
+                                                }
+                                                $("#showInsufficientStock").click();
+                                            }
+                                        });
+
+                                    }
+                                }, true);
+                            } else { msgErro(data.message); }
+                        }
+                    }, 100);
+                },
+                error: function () {
+                    msgErro("操作失败！");
+                }
+            });
+        }
+
+        //分配发货
+        function AllocationDelivery() {
+            msgConfirm("确定要进行分配发货吗?", function (isConfirm) {
+                if (isConfirm) {
+
+                    //此处植入 SN扫描逻辑
+                    if ('@Model.IsScanSNOrder' == 'True') {
+                        SNOperation.OpenSNWindow("AllocationDelivery");
+                    }
+                    else {
+                        AllocationDeliveryCheckOperation();
+                    }
+                }
+            }, true);
+        }
+
+        function AllocationDeliveryCheckOperation() {
+            var sysId = $("#SysId").val();
+            setTimeout(function () {
+                $.ajax({
+                    url: "@Url.Action("CheckOutboundAllocationDelivery", "Outbound")",
+                    data: { SysId: sysId },
+                    dataType: "json",
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success) {
+                            AllocationDeliveryOperation();
+                        } else {
+                            if (data.ErrorMessage != null) {
+                                msgErro(data.ErrorMessage);
+                            } else {
+                                PartShipmentMemo();
+                            }
+                        }
+                    },
+                    error: function () {
+                        msgErro("操作失败！");
+                    }
+                });
+            }, 100);
+        }
+
+        function PartShipmentMemo() {
+            var sysId = $("#SysId").val();
+            saveLoading('show');
+            $.ajax({
+                url: "@Url.Action("GetPartShipmentSkuList", "Outbound")",
+                data: { SysId: sysId },
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    saveLoading();
+                    if (data.Success && data.Data.length > 0) {
+                        var trs = new Array();
+                        for (var i = 0; i < data.Data.length; i++) {
+                            trs.push('<tr style="padding:10px;">');
+                            trs.push('<td class="text-center" style="width:15%">' + data.Data[i].SkuUPC + '</td>')
+                            trs.push('<td class="text-center" style="width:25%">' + data.Data[i].SkuName + '</td>');
+                            trs.push('<td class="text-center" style="width:10%">' + data.Data[i].Qty + '</td>');
+                            trs.push('<td class="text-center" style="width:10%">' + data.Data[i].PickedQty + '</td>');
+                            trs.push('<td class="text-center" style="width:40%"><input type="hidden" value="' + data.Data[i].SysId + '"><input type="text" style="width:100%" /></td>');
+                            trs.push('</tr>');
+                        }
+                        $("#partShipmentSkuList").html(trs.join(''));
+                    } else {
+                        $("#partShipmentSkuList").html('<td colspan="5" style="padding:15px 10px;text-align: center;">获取部分发货商品明细异常</td>')
+                    }
+                    $("#div_PartShipmentSku").modal("show");
+                },
+                error: function () {
+                    msgErro("操作失败！");
+                }
+            });
+        }
+
+        function SavePartShipmentMemo() {
+            var partShipmentDetails = [];
+            $("#partShipmentSkuList").children("tr").each(function () {
+                var sysId = $(this).children("td").children("input").eq(0).val();
+                var memo = $(this).children("td").children("input").eq(1).val();
+                if (memo != undefined && memo.trim() != "") {
+                    var partShipmentDetail = { SysId: sysId, Memo: memo };
+                    partShipmentDetails.push(partShipmentDetail);
+                }
+            });
+
+            if (partShipmentDetails.length > 0) {
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("SavePartShipmentMemo", "Outbound")",
+                    data: { PartShipmentDetailMemoList: partShipmentDetails },
+                    dataType: "json",
+                    type: "post",
+                    success: function (data) {
+                        saveLoading();
+                        if (data.Success) {
+                            AllocationDeliveryOperation();
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function () {
+                        msgErro("操作失败！");
+                    }
+                });
+            } else {
+                AllocationDeliveryOperation();
+            }
+        }
+
+        function AllocationDeliveryOperation() {
+            var sysId = $("#SysId").val();
+            saveLoading('show');
+            $.ajax({
+                url: "@Url.Action("OutboundAllocationDelivery", "Outbound")",
+                data: { SysId: sysId, SNList: SNOperation.ReadySanSNArray },
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    setTimeout(function () {
+                        saveLoading();
+                        if (data.success) {
+                            if (data.isasyn) {
+                                msgSuccess(data.message);
+                            } else {
+                                msgSuccess("出库完成!");
+                                PrintOutbound('1');        //发货完成立即打印
+                                window.location.reload();
+                            }
+                        } else {
+                            msgErro(data.message);
+                        }
+                    }, 100);
+                },
+                error: function () {
+                    msgErro("操作失败！");
+                }
+            });
+        }
+
+        //作废
+        function OutboundObsolete() {
+            msgConfirm("确定要作废吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("ObsoleteOutbound", "Outbound")" + "?SysId=" + sysId,
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.Success) {
+                                    msgSuccess();
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                                saveLoading();
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+
+        //取消发货
+        function OutboundCancel() {
+            msgConfirm("确定要取消发货吗?", function (isConfirm) {
+                if (isConfirm) {
+                    var sysId = $("#SysId").val();
+                    saveLoading('show');
+                    $.ajax({
+                        url: "@Url.Action("OutboundCancel", "Outbound")" + "?SysId=" + sysId,
+                        data: [],
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            setTimeout(function () {
+                                if (data.Success) {
+                                    msgSuccess();
+                                    window.location.reload();
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                                saveLoading();
+                            }, 100);
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            }, true);
+        }
+
+        //打印箱号
+        function PrintPrebulkPack() {
+            var request = {
+                outboundSysId: $("#SysId").val()
+            };
+            saveLoading('show');
+            $.ajax({
+                url: "@Url.Action("GetPrebulkPackStorageCase", "PrebulkPack")",
+                data: request,
+                type: "post",
+                success: function (data) {
+                    saveLoading('hide');
+                    if (data.Success) {
+                        for (var i = 0; i < data.Data.length; i++) {
+                            var LODOP = getLodop();
+                            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintSettingCase");
+                            LODOP.ADD_PRINT_BARCODE(20, 30, 340, 80, "128B", data.Data[i]);
+                            LODOP.SET_PRINT_STYLE("FontSize", 40);
+                            LODOP.SET_PRINT_STYLEA(0, "ShowBarText", 0);
+                            LODOP.ADD_PRINT_HTM(100, 30, 360, 100, "<div style='font-size:24px;text-align: center;padding:5px 0;'>" + data.Data[i] + "</div><div style='font-size:20px;text-align: left;padding:5px 0;'><span>出库单号：</span><span>" + $("#divBarCodeValue").html().trim() + "</span></div>");
+                            //LODOP.PREVIEW();
+                            LODOP.PRINT();
+                        }
+                        msgAlert("打印成功");
+                    }
+                    else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function () {
+                    saveLoading('hide');
+                    msgErro("操作失败！");
+                }
+            });
+        }
+
+    </script>
+}

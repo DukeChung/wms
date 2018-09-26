@@ -1,0 +1,152 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "库位变更";
+}
+
+@Html.Breadcrumb("库存管理", "库位变更")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="stockMovement" class="ibox-content  m-b-sm border-bottom">
+        <form id="stockMovementForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">商品名称:</label>
+                <div class="col-sm-2"><input type="text" id="SkuName" name="SkuName" class="form-control" v-model="SkuName" readonly="readonly"></div>
+
+                <label class="col-sm-1 control-label">UPC:</label>
+                <div class="col-sm-2"><input type="text" id="UPC" name="UPC" class="form-control" v-model="UPC" readonly="readonly"></div>
+
+                <label class="col-sm-1 control-label">批次编号:</label>
+                <div class="col-sm-2"><input type="text" id="Lot" name="Lot" class="form-control" v-model="Lot" readonly="readonly"></div>
+
+                <label class="col-sm-1 control-label">数量:</label>
+                <div class="col-sm-2"><input type="text" id="DisplayQty" name="DisplayQty" class="form-control" v-model="DisplayQty" readonly="readonly"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">来源货位:</label>
+                <div class="col-sm-2"><input type="text" id="FromLoc" name="FromLoc" class="form-control" v-model="FromLoc" readonly="readonly"></div>
+
+                <label class="col-sm-1 control-label">目标货位:</label>
+                <div class="col-sm-2">
+                    <select id="ToLoc" name="ToLoc" class="form-control chosen-select" data-placeholder="请选择">
+                        @{
+                            foreach (var location in (List<SelectListItem>)ViewBag.LocationList)
+                            {
+                                <option value="@location.Text">@location.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <label class="col-sm-1 control-label">变更数量:</label>
+                <div class="col-sm-2"><input type="number" id="FromQty" name="FromQty" class="form-control required" v-model="FromQty" v-on:change="change()"></div>
+
+                <label class="col-sm-1 control-label">备注:</label>
+                <div class="col-sm-2"><input type="text" id="Descr" name="Descr" class="form-control" v-model="Descr"></div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" v-on:click="save"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" v-on:click="back"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    <script>
+        var StockMovement = {
+            viewModel: {},
+            init: function () {
+                var _self = this;
+                $('.chosen-select').chosen({ width: "100%" });
+                $("#stockMovementForm").validate({
+                    ignore: [],
+                    rules: {
+                        //FromQty: {
+                        //    digits: true,
+                        //    min: 1
+                        //},
+                        ToLoc: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        ToLoc: {
+                            required: "请选择"
+                        }
+                    }
+                });
+
+
+                $.ajax({
+                    url: "@Url.Action("GetStockMovement", "StockMovement")",
+                    data:
+                    {
+                        "skuSysId": "@ViewBag.SkuSysId",
+                        "loc": "@ViewBag.Loc",
+                        "lot": "@ViewBag.Lot"
+                    },
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            StockMovement.initVue(data.ViewModel);
+                        }
+                    }
+                })
+            },
+            initVue: function (data) {
+                StockMovement.viewModel = new Vue({
+                    el: "#stockMovement",
+                    data: data,
+                    methods: {
+                        save: function (event) {
+                            if ($("#stockMovementForm").valid()) {
+                                $.ajax({
+                                    url: "@Url.Action("SaveStockMovement", "StockMovement")",
+                                    data: StockMovement.getData(),
+                                    type: "post",
+                                    success: function (data) {
+                                        if (data.Success) {
+                                            msgSuccess(data.Message);
+                                            window.location.href = "/StockMovement/StockMovement";
+                                        }
+                                        else {
+                                            msgErro(data.Message);
+                                        }
+                                    },
+                                    error: function (data) {
+                                        msgErro(data.Message);
+                                    }
+                                });
+                            }
+                        },
+                        back: function (event) {
+                            goBack();
+                        },
+                        change: function () {
+                            if ($("#FromQty").val() < 0) {
+                                $("#FromQty").val('');
+                                StockMovement.viewModel.$data.FromQty = '';
+                                return;
+                            }
+                        }
+                    }
+                });
+            },
+            getData: function () {
+                StockMovement.viewModel.$data.ToLoc = $("#ToLoc").val();
+                return StockMovement.viewModel.$data;
+            }
+        }
+
+        $(function () {
+            StockMovement.init();
+        })
+    </script>
+}

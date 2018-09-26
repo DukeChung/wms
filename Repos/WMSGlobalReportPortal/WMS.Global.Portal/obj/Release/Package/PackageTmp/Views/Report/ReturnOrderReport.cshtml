@@ -1,0 +1,186 @@
+﻿@using NBK.AuthServiceUtil
+@using NBK.ECService.WMSReport.DTO.Base
+@using WMS.Global.Portal.Helpers
+
+@{
+    ViewBag.Title = "退货单报表";
+}
+@Html.Breadcrumb("报表", "退货单报表")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form method="post" id="exportForm">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label">退货入库仓库</label>
+                        <select id="SearchWarehouseSysId" name="SearchWarehouseSysId" class="form-control">
+                            @{
+                                foreach (var warehouse in (List<SelectItem>)ViewBag.WarehouseList)
+                                {
+                                    <option value="@warehouse.Value">@warehouse.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="OutboundType">源出库类型</label>
+                        <select class="form-control m-b" name="OutboundType" id="OutboundType">
+                            <option selected>全部</option>
+                            <option value="20">B2C</option>
+                            <option value="30">B2B</option>
+                            <option value="40">退货出库</option>
+                            <option value="50">快进快出</option>
+                            <option value="80">农资出库</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("入库单号", "PurchaseOrder")
+                </div>
+                <div class="col-sm-2">
+                    @Html.SearchTextBox("源出库单号", "OutboundOrder")
+                </div>
+                <div class="col-sm-1">
+                    <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvReturnOrderReport" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th data-data="PurchaseOrder">入库单号</th>
+                                <th data-data="PurchaseWarehouse">退货入库仓库</th>
+                                <th data-data="skuGroupCount">商品种数</th>
+                                <th data-data="skuTotalCount">商品个数</th>
+                                <th data-data="CreateUserName">创建人</th>
+                                <th data-data="CreateDateDisplay">创建时间</th>
+                                <th data-data="OutboundOrder">源出库单号</th>
+                                <th data-data="OutboundTypeDisplay">源出库类型</th>
+                                <th data-data="OutboundWarehouse">源出库仓库</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+
+    <script>
+        var ReturnOrderReportModel = {
+            table: {},
+            init: function () {
+                ReturnOrderReportModel.table = $('#gvReturnOrderReport').DataTable({
+                    "sAjaxSource": "GetReturnOrderReport",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "SearchWarehouseSysId", "value": $("#SearchWarehouseSysId").val() },
+                            { "name": "PurchaseOrder", "value": $("#PurchaseOrder").val() },
+                            { "name": "OutboundOrder", "value": $("#OutboundOrder").val() },
+                            { "name": "OutboundType", "value": $("#OutboundType").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'pageLength',
+                        @if (AuthorizeManager.HasFunction(AuthKeyConst.Report_ReturnOrderReport_Export, User.Identity.Name))
+                        {
+                            <text>
+                            {
+                                text: '导出(07版excel)',
+                                action: function (e, dt, node, config) {
+                                    var request = {
+                                        SearchWarehouseSysId: $("#SearchWarehouseSysId").val(),
+                                        OutboundType: $("#OutboundType").val(),
+                                        PurchaseOrder: $("#PurchaseOrder").val(),
+                                        OutboundOrder: $("#OutboundOrder").val()
+                                    };
+                                    saveLoading('show');
+                                    $.ajax({
+                                        url: "@Url.Action("ReturnOrderReportExportByFile", "Report")",
+                                        data: request,
+                                        dataType: "json",
+                                        type: "post",
+                                        success: function (data) {
+                                            saveLoading();
+                                            if (data.success) {
+                                                window.open(data.filePath);
+                                            }
+                                            else {
+                                                msgErro(data.message);
+                                            }
+                                        },
+                                        error: function () {
+                                            saveLoading();
+                                            msgErro("导出失败！");
+                                        }
+                                    });
+                                }
+                            }
+                            </text>
+                        }
+                    ],
+                    "columnDefs": [],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "iDisplayLength": 50,
+                    "oLanguage": {
+                        buttons: {
+                            pageLength: {
+                                _: "每页显示 %d 条记录"
+                            }
+                        },
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    ReturnOrderReportModel.table.ajax.reload();
+                });
+
+            }
+        }
+
+        $(function () {
+            ReturnOrderReportModel.init();
+        })
+
+
+    </script>
+}

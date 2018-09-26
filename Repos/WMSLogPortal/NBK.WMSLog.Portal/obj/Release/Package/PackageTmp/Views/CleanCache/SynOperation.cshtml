@@ -1,0 +1,122 @@
+﻿@using NBK.ECService.WMSLog.Utility
+@using NBK.ECService.WMSLog.Utility.Enum
+
+@{
+    ViewBag.Title = "清理缓存";
+}
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form id="cleanCacheFrm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">同步信息:</label>
+                <div class="col-sm-5">
+                    <select class="form-control" name="SysType" id="SysType" onchange="CleanCache.SelectChange()">
+                        <option selected value="0">请选择</option>
+                        @foreach (var item in ViewData["operationDic"] as Dictionary<int, string>)
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-1">
+                    <a style="float:right" class="btn btn-sm btn-primary" onclick="CleanCache.CleanCache()"><i class="fa fa-check-square-o"></i> 提交</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">同步前缓存:</label>
+                <div class="col-sm-10 table-responsive" style="height:700px">
+                    <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer">
+                        <thead id="headTr">
+                        </thead>
+                        <tbody id="bodyTr"></tbody>
+                    </table>
+                </div>
+            </div> 
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
+    <script type="text/javascript">
+        var CleanCache = {
+
+            SelectChange: function () {
+                if ($("#SysType").val() == "" || $("#SysType").val() == "0") {
+                    $("#RedisInfo").val("");
+                    return;
+                }
+                $.ajax({
+                    url: "/CleanCache/GetRedis",
+                    type: 'POST',
+                    data: "SynType=" + $("#SysType").val(),
+                    success: function (data) {
+                        if (data.Success) {
+                            $("#RedisInfo").val(data.RedisInfo);
+
+                            var o = eval(data.RedisInfo);
+                            var headArray = new Array();
+                            var headHtml = "<tr>";
+                            for (var i in o) {
+                                for (var key in o[i]) {
+                                    if ($.inArray(key, headArray) < 0) {
+                                        headArray.push(key);
+                                        headHtml += "<td>" + key + "</td>";
+                                    }
+                                }
+                            }
+                            headHtml += "</tr>";
+                            $("#headTr").html(headHtml);
+
+                            var bodyHtml = "";
+
+                            for (var i in o) {
+                                bodyHtml += "<tr>";
+                                for (var key in headArray) {
+                                    var content = "";
+                                    if (o[i][headArray[key]] != undefined) {
+                                        content = o[i][headArray[key]];
+                                    } 
+                                    bodyHtml += "<td>" + content + "</td>";
+                                }
+                                bodyHtml += "</tr>";
+                            }
+                            $("#bodyTr").html(bodyHtml); 
+                        }
+                        else {
+                            $("#RedisInfo").val("");
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+
+            },
+
+
+            CleanCache: function () {
+                if ($("#SysType").val() == "" || $("#SysType").val() == "0") {
+                    msgErro("请选择需要同步的信息！");
+                    return;
+                }
+
+                saveLoading('show');
+                $.ajax({
+                    url: "/CleanCache/CallSynInterface",
+                    type: 'POST',
+                    data: "SynType=" + $("#SysType").val(),
+                    success: function (data) {
+                        saveLoading('hide');
+                        if (data.Success) {
+                            msgSuccess("清理成功!");
+                        }
+                        else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+            },
+        };
+    </script>
+} 

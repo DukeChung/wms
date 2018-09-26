@@ -1,0 +1,116 @@
+﻿@using NBK.ECService.WMSLog.Utility
+
+@{
+    ViewBag.Title = "发送消息";
+}
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form id="sysCodeForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">选择接收仓库:</label>
+                <div class="col-sm-3">
+                    <select class="form-control m-b" name="Warehouse" id="Warehouse">
+                        <option selected value="">全部</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">发送系统消息:</label>
+
+                <div class="col-sm-9">
+                    <input type="text" id="SystemMessage" name="SystemMessage" class="form-control">
+                </div>
+
+                <div class="col-sm-1">
+                    <a class="btn btn-sm btn-primary" id="btnUpdateContainer" onclick="SendMessage.SendRealMessage()"><i class="fa fa-check-square-o"></i> 发送</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
+    <script type="text/javascript">
+        var SendMessage = {
+            connection: {},
+            hub: {},
+            init: function () {
+
+                //初始化仓库列表
+                SendMessage.initWarehouse();
+
+                //初始化消息推送通道
+                SendMessage.connection = $.hubConnection('@PublicConst.WmsLogApiUrl');
+                SendMessage.hub = SendMessage.connection.createHubProxy("ChatHub");
+                SendMessage.hub.on("NotifyMessage", SendMessage.GetMessage);
+                SendMessage.connection.start({ jsonp: true })
+                            .done(function () {
+                                //console.log('connected');
+                                //hub.say("success?");
+
+                                //hub.invoke('SendMessage', 'success?');
+                            })
+                        .fail(function (a) {
+                            console.log('not connected' + a);
+                        });
+            },
+            initWarehouse: function () {
+                $.ajax({
+                    url: "@Url.Action("GetWarehouseList", "Message")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            $.each(data.Data, function (index, el) {
+                                $('#Warehouse').append("<option value='" + el.SysId + "'>" + el.Name + "</option>");
+                            });
+                        } else {
+                            alert('仓库信息获取失败，请联系support');
+                        }
+                    }
+                });
+            },
+            @*SendSystemMessage: function () {
+                var apiUrl = '@PublicConst.WmsLogApiUrl' + "api/Message/SendSystemMessage";
+
+                var sendObj = {
+                    content: $("#SystemMessage").val()
+                };
+
+                $.ajax({
+                    url: apiUrl,
+                    data: sendObj,
+                    type: "post",
+                    success: function (data) {
+                        msgSuccess("发送成功!");
+                        $("#SystemMessage").val('');
+                    }
+                });
+            },*@
+            SendRealMessage: function () {
+                if ($.trim($("#SystemMessage").val()) == "") {
+                    alert("请输入有效的消息内容！");
+                    return;
+                }
+
+                var request = {
+                    Message: $("#SystemMessage").val(),
+                    IsSuccess: 1,
+                    WarehouseSysId: $('#Warehouse').val()
+                };
+                SendMessage.hub.invoke('SendMessageToAll', request);
+            },
+            GetMessage: function (messageFromHub) {
+                $("#SystemMessage").val('');
+                //alert("发送成功!");
+                //toastr.info(messageFromHub, '系统通知 ！');
+            }
+        };
+
+        $(function () {
+            SendMessage.init();
+        });
+    </script>
+}

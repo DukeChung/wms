@@ -1,0 +1,19 @@
+﻿@using NBK.AuthServiceUtil
+@using System.Security.Claims
+<div class="login-info">
+    <span>
+        <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+            <img src="~/content/img/avatars/sunny.png" alt="me" class="online" />
+            <span>
+                @{
+                    var loginUser = (HttpContext.Current.User.Identity as ClaimsIdentity).Claims.FirstOrDefault(p => p.Type.Equals(SystemDataConst.SessionLoginDisplayUserName, StringComparison.OrdinalIgnoreCase));
+                    if (loginUser != null)
+                    {
+                        @loginUser.Value.ToString();
+                    }
+                } 
+            </span>
+            <i class="fa fa-angle-down"></i>
+        </a>
+    </span>
+</div>

@@ -1,0 +1,107 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "新增储区";
+}
+
+@Html.Breadcrumb("储区管理", "/Zone/ZoneList", "新增储区")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="addZoneForm" class="form-horizontal" method="get">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">储区:</label>
+                <div class="col-sm-4"><input type="text" id="ZoneCode" name="ZoneCode" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">默认拣货到货位:</label>
+                <div class="col-sm-4"><input type="text" id="DefaultPickToLoc" name="DefaultPickToLoc" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">入库过渡货位:</label>
+                <div class="col-sm-4"><input type="text" id="InLoc" name="InLoc" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">出库过渡货位:</label>
+                <div class="col-sm-4"><input type="text" id="OutLoc" name="OutLoc" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注:</label>
+                <div class="col-sm-4"><input type="text" id="Descr" name="Descr" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">启用:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="IsActive" name="IsActive" checked><i></i>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" onclick="addZone();"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables", "~/plugins/validate")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $("#addZoneForm").validate({
+                rules: {
+                    ZoneCode: {
+                        required: true,
+                        maxlength: 32
+                    },
+                    DefaultPickToLoc: {
+                        maxlength: 32
+                    },
+                    InLoc: {
+                        maxlength: 32
+                    },
+                    OutLoc: {
+                        maxlength: 32
+                    },
+                    Descr: {
+                        maxlength: 128
+                    }
+                }
+            });
+        });
+
+        function addZone() {
+            if ($("#addZoneForm").valid()) {
+                $.ajax({
+                    url: "/Zone/SaveAddZone",
+                    type: "POST",
+                    data: $("#addZoneForm").serializeObject(),
+                    success: function (data) {
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            window.location.href = "/Zone/ZoneList";
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            }
+        }
+    </script>
+}
+

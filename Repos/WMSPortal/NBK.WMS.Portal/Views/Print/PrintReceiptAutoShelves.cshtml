@@ -1,0 +1,66 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrintAutoShelvesDto
+@{
+    Layout = null;
+    ViewBag.Title = "PrintReceiptAutoShelves";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">上架单</H1>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("入库单号", Model.ReceiptOrder)
+                @Html.PrintTitle("收货日期", Model.ReceipDateDisplay)
+                <div class="col-xs-8">
+            
+                </div>
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("商品编号")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("UPC")
+                            @Html.PrintTh("商品描述")
+                            @Html.PrintTh("包装单位")
+                            @Html.PrintTh("上架数量")
+                            @Html.PrintTh("上架货位")
+                            @Html.PrintTh("批次")
+                        </tr>
+                        @{
+                            foreach (var info in Model.PrintReceiptDetailDtos)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.SkuCode)
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.UPC)
+                                    @Html.PrintTd(info.SkuDescr)
+                                    @Html.PrintTd(info.UOMCode)
+                                    @Html.PrintTd(info.DisplayShelveQty.ToString())
+                                    @Html.PrintTd(info.ToLoc)
+                                    @Html.PrintTd(info.Lot)
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div> 
+

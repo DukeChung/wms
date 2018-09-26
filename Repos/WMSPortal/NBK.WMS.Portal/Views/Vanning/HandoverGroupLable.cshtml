@@ -1,0 +1,69 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "交接标签打印";
+
+}
+
+@Html.Breadcrumb("三方交接", "自定义标签打印")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-1 control-label">自定义内容:</label>
+                <div class="col-sm-8">
+                    <input type="text" id="content" name="content" class="form-control">
+                </div>
+                <div class="col-sm-2">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row" styl>
+                <label class="col-sm-1 control-label">序号:</label>
+                <div class="col-sm-2">
+                    <label class="control-label">从</label>
+                    <input type="text" id="begin" name="begin" class="form-control">
+                </div>
+                <div class="col-sm-2">
+                    <label class="control-label">到</label>
+                    <input type="text" id="end" name="end" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-white btn-sm" id="btnPrint" onclick="Print();"><i class="fa fa-print"></i> 打印</a>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+<script src="~/Scripts/plugins/print/LodopFuncs.js"></script>
+
+<script type="text/javascript">
+    function Print() {
+        if (confirm("确定要打印吗？")) {
+            var strContent = $("#content").val();
+            var begin = parseInt($("#begin").val());
+            var end = parseInt($("#end").val());
+            for (var i = begin; i <= end; i++) {
+                var LODOP = getLodop();
+                LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                LODOP.SET_PRINTER_INDEX("打印机名称");
+                LODOP.SET_PRINT_PAGESIZE(0, 1000, 700, "CustomizePrint");
+                LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                LODOP.ADD_PRINT_HTM(30, 30, 320, 220, "<div style='font-size:16px;font-family:微软雅黑;'>" + (strContent + "-" + i) + "</div>");
+                //LODOP.PREVIEW();
+                LODOP.PRINT();
+            }
+
+            alert("打印成功");
+        }
+    }
+</script>
+

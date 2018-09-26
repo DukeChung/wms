@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+<body>
+    <div class="page-group">
+        <div id="page-ScanVanning-listing" class="page page-current">
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back" href="ScanIndex.html">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">扫描箱号发货</h1>
+            </header>
+
+            <div class="row page-content content">
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="panel-body col-sm-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">箱号:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" id="VanningOrder" name="VanningOrder" class="form-control">
+                                </div>
+                                <div class="col-sm-2">
+
+                                </div>
+                            </div>
+                            <div class="form-group" id="divMessage">
+
+                            </div>
+                            <div class="form-group" id="divVanningBox">
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2">
+
+                                </div>
+                                <div class="col-sm-8">
+                                    <a class="btn btn-lg btn-primary" id="btnDelivery" style="margin-top: 10px" disabled="disabled">发货</a>
+                                    <h4 id="msg" name="msg" class="msg-error"></h4>
+                                </div>
+                                <div class="col-sm-2">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <input type="hidden" id="VanningSysId" name="VanningSysId">
+            <div id="divBoxTemp" style="display: none">
+                <div class="col-sm-2">
+                    <div class="widget className p-lg text-center" id="divVanningOrder">
+                        <div class="m-b-md">
+                            <div class="row">
+                                <div class="col-sm-12" style="font-size: smaller;">VanningOrder</div>
+                                <div class="col-sm-12" style="font-size: smaller;">快递:CarrierName</div>
+                                <div class="col-sm-12" style="font-size: smaller;">重量:Weightkg</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

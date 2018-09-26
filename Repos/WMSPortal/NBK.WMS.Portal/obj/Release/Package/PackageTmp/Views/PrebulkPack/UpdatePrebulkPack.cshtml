@@ -1,0 +1,267 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PreBulkPackDto
+@{
+    ViewBag.Title = "散货封装编辑";
+}
+
+@Html.Breadcrumb("散货封箱管理", "/PrebulkPack/Index", "散货封装编辑")
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="UpdatePrebulkPack" class="ibox-content m-b-sm border-bottom">
+        <form id="AjustmentForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">散货封装明细</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.PreBulkPackOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    散货封装单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.PreBulkPackOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    单据状态:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    箱号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StorageCase </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    创建时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CreateDateDisplay </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <label class="col-sm-2 control-label" style="text-align:left;">商品明细</label>
+                <div class="col-sm-10"></div>
+                <div class="col-sm-12">
+                    <table id="prebulkPackDetails" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="SkuCode">商品编号</th>
+                                <th data-data="SkuName">商品名称</th>
+                                <th data-data="UPC">商品条码</th>
+                                @*<th data-data="Loc">货位</th>
+                                    <th data-data="Lot">批次</th>*@
+                                <th data-data="PackCode">包装</th>
+                                <th data-data="UomCode">单位</th>
+                                <th data-data="PreQty">计划数量</th>
+                                <th data-data="Qty">数量</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-sm btn-primary" id="btnSave"><i class="fa fa-check-square-o"></i> 保存</a>
+                <a class="btn btn-white btn-sm" id="btnReturn"><i class="fa fa-times"></i> 返回</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/barcode")
+    <script>
+        var UpdatePrebulkPackModel = {
+            prebulkPackModel: {},
+            prebulkPackSource: {},
+            prebulkPackTable: {},
+            init: function () {
+                var _self = this;
+                _self.prebulkPackModel = JSON.parse('@Html.Raw(Json.Encode(Model))');
+
+                _self.prebulkPackTable = $('#prebulkPackDetails').DataTable({
+                    data: _self.ajustmentDetailsSource,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '删除',
+                            action: function (e, dt, node, config) {
+                                var sysIdList = GetGridMultiselectSysId();
+                                if (sysIdList != null) {
+
+                                    msgConfirm("确定要删除所选的记录吗？", function (isConfirm) {
+                                        if (isConfirm) {
+                                            $.ajax({
+                                                url: "/PrebulkPack/DeletePrebulkPackSkus?sysIdList=" + sysIdList,
+                                                type: "GET",
+                                                success: function (data) {
+                                                    if (data.Success) {
+                                                        msgSuccess("删除成功!");
+                                                        location.reload();
+                                                    }
+                                                    else {
+                                                        msgErro(data.Message);
+                                                    }
+                                                },
+                                                error: function () {
+                                                    msgErro("操作失败");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        },
+                        {
+                            "targets": 7,
+                            //"width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="number" style="width:100px;" min="1" value="' + full.Qty + '" onblur="UpdatePrebulkPackModel.qtyBlur(this)"/>';
+                            }
+                        }
+                    ],
+                    "bServerSide": false,
+                    "bProcessing": true,
+                    "bPaginate": false, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                _self.prebulkPackTable.rows.add(_self.prebulkPackModel.PreBulkPackDetailList).draw();
+
+                $("#btnSave").bind("click", function () {
+                    var prebulkPackDetailList = UpdatePrebulkPackModel.getPrebulkPackSource();
+                    var requestData = {
+                        SysId: UpdatePrebulkPackModel.prebulkPackModel.SysId,
+                        PreBulkPackDetailList: prebulkPackDetailList
+                    };
+
+                    $.ajax({
+                        url: "@Url.Action("UpdatePrebulkPack", "PrebulkPack")",
+                        data: requestData,
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            if (data.Success) {
+                                msgSuccess("保存成功!");
+                                _self.backParentPage();
+                            }
+                            else {
+                                msgErro(data.Message);
+                            }
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+
+                });
+
+                $("#btnReturn").bind("click", function () {
+                    UpdatePrebulkPackModel.backParentPage();
+                });
+            },
+            qtyBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                UpdatePrebulkPackModel.prebulkPackTable.data()[selectIndex]["Qty"] = $(obj).val();
+            },
+            getPrebulkPackSource: function () {
+                var prebulkPackDetailList = [];
+                var prebulkPackDetaildata = UpdatePrebulkPackModel.prebulkPackTable.data();
+
+                for (var i = 0; i < prebulkPackDetaildata.length; i++) {
+                    prebulkPackDetailList.push(prebulkPackDetaildata[i]);
+                }
+
+                return prebulkPackDetailList;
+            },
+            backParentPage: function () {
+                window.location.href = '@Url.Action("Index", "PrebulkPack")'
+            }
+        };
+
+        $(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+            UpdatePrebulkPackModel.init();
+        });
+
+    </script>
+}

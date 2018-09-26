@@ -1,0 +1,32 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+<link rel="stylesheet" type="text/css" href="~/Content/plugins/ui-dialog.css" />
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("UPC", "UPC")
+            </div>
+            <div class="col-sm-2">
+                <button id="btnChooseSku" onclick="chooseSku()" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">选择商品</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("ChooseUPC", "ChooseUPC")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/plugins/artDialog/dialog-plus-min.js"></script>
+    <script>
+        function chooseSku() {
+            ChooseSkuModel.showModal($("#UPC").val(), function (chooseSkuSysId) {
+                $("#ChooseUPC").val(chooseSkuSysId)
+            });
+        };
+
+    </script>
+}

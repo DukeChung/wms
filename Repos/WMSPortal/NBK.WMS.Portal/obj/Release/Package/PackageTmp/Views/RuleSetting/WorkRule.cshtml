@@ -1,0 +1,178 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.WorkRuleDto
+
+@{
+    ViewBag.Title = "工单规则匹配";
+}
+
+@Html.Breadcrumb("增值服务", "工单规则设置")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <form id="WorkRuleForm" class="form-horizontal" method="post">
+        <div class="ibox-content m-b-sm border-bottom">
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11" style="color: #a9a9a9; margin-bottom: 10px">
+                    当前页面设置主要是用于工单规则设置,请明确设置规则后在进行操作.
+                    <input type="hidden" id="SysId" name="SysId" value="@Model.SysId.GetValueOrDefault()" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">工单规则设置</label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="Status" id="Status" style="width: 80%">
+                                    @if (Model.Status.HasValue && Model.Status.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+
+
+
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:选择开启后,系统将根据下列规则设置创建作业工单.关闭:选择关闭后系统将不会创建作业工单.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">收货工单创建 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="ReceiptWork" id="ReceiptWork" style="width: 80%">
+                                    @if (Model.ReceiptWork.HasValue && Model.ReceiptWork.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:点击收货后系统自动指定业务执行人员.关闭:点击收货后系统将不会创建作业工单.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">上架工单创建 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="ShelvesWork" id="ShelvesWork" style="width: 80%">
+                                    @if (Model.ShelvesWork.HasValue && Model.ShelvesWork.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+</div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:收货完成后系统自动指定上架业务执行人员.关闭:收货完成后系统将不会创建作业工单.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">拣货工单创建 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="PickWork" id="PickWork" style="width: 80%">
+                                    @if (Model.PickWork.HasValue && Model.PickWork.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:出库单分配后指定用户进行具体业务操作，消息会稍后返回.关闭:出库单分配后不会创建作业工单.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-11">
+                </div>
+                <div class="col-sm-1">
+                    <button id="btnSave" class="btn btn-primary" type="button" style="margin-top: 23px; float: left;" onclick="SaveWorkRule()">保存</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+
+
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        function SaveWorkRule() {
+
+            $.ajax({
+                url: "/RuleSetting/SaveWorkRule",
+                type: "POST",
+                data: $("#WorkRuleForm").serializeObject(),
+                success: function(data) {
+                    if (data.Success) {
+                        msgSuccess(data.Message);
+                        window.location.href = "/RuleSetting/WorkRule";
+                    } else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function(data) {
+                    msgErro(data.Message);
+                }
+            });
+        }
+
+    </script>
+}

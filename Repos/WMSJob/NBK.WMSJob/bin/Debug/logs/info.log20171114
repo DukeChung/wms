@@ -1,0 +1,5 @@
+2017-11-14 11:12:52,325 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/14 11:12:52/更新报表缓存开始
+2017-11-14 11:13:59,652 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/14 11:13:59/更新报表缓存开始
+2017-11-14 11:15:10,332 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/14 11:15:10/更新报表缓存结束
+2017-11-14 11:15:29,961 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/14 11:15:29/更新报表缓存开始
+2017-11-14 11:16:22,649 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/14 11:16:22/更新报表缓存结束

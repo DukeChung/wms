@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+
+  "dependencies": {
+    "WMSBussinessApi.Dto": "*",
+    "WMSBussinessApi.Model": "*",
+    "Schubert.Framework": "1.9.5"
+  },
+
+  "frameworks": {
+    "net452": {}
+  }
+}

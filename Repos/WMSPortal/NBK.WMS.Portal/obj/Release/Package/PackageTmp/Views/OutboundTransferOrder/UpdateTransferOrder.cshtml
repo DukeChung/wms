@@ -1,0 +1,268 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.OutboundTransferOrderDto
+@{
+    ViewBag.Title = "交接箱明细编辑";
+}
+
+@Html.Breadcrumb("交接箱管理", "/OutboundTransferOrder/Index", "交接箱明细编辑")
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="divOutboundTransferOrderView" class="ibox-content m-b-sm border-bottom">
+        <form id="OutboundTransferOrderForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <h2 style="color: red; text-align: left">交接箱明细编辑</h2>
+                </label>
+                <div class="col-sm-7">
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divTransferOrderNumberCode">
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align: right" id="divTransferOrderNumberValue">@Model.TransferOrder</div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    交接单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.TransferOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    出库单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.OutboundOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    状态:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+
+            <div class="form-group">
+
+                <div class="col-sm-1">
+                    服务综合体:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ServiceStationName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    创建时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CreateDateDisplay </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <div class="row">
+                    <label class="col-sm-1 control-label">交接清单</label>
+                    <div class="col-sm-11"></div>
+                </div>
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>商品编码</th>
+                                <th>商品名称</th>
+                                <th>UPC</th>
+                                <th>数量</th>
+                                <th>包装</th>
+                                <th>单位</th>
+                                <th>货位</th>
+                                <th>批次</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var info in Model.OutboundTransferOrderDetailDto)
+                                {
+                                    <tr>
+                                        <td>@info.SkuCode</td>
+                                        <td>@info.SkuName</td>
+                                        <td>@info.UPC</td>
+                                        <td>@info.Qty</td>
+                                        <td>@info.PackCode</td>
+                                        <td>@info.UomCode</td>
+                                        <td>@info.Loc</td>
+                                        <td>@info.Lot</td>
+                                        <td><a class="btn btn-sm btn-primary" onclick="MoveSkuCount('@info.SysId','@info.Qty','@info.SkuSysId');" data-toggle="modal" data-target="#moveSkuNumberModel">移动</a></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<form class="form-group" id="moveSkuNumberForm">
+    <div class="modal inmodal fade" id="moveSkuNumberModel" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" style="width:400px;">
+                <div class="modal-body">
+                    <div class="form-group clearfix">
+                        <label class="col-sm-4" style="padding-top:7px">交接单号:</label>
+                        <div class="col-sm-8">
+                            <select id="transferOrder" name="transferOrder" class="form-control required">
+                                <option value="0">请选择</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="col-sm-4" style="padding-top:7px">移动数量:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="skuQty" name="skuQty" class="form-control required">
+                        </div>
+                    </div>
+                    <input type="hidden" value="" id="moveMaxQty" />
+                    <input type="hidden" value="" id="SkuSysId" />
+                    <input type="hidden" value="" id="TransferOrderDetailSyId" />
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-sm btn-primary" id="saveMoveText">
+                        <i class="fa fa-check-square-o"></i>
+                        确定
+                    </a>
+                    <a class="btn btn-white btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+        $(function () {
+            $("#divTransferOrderNumberCode").empty().barcode($("#divTransferOrderNumberValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+
+            //获取交接单号列表
+            $.ajax({
+                url: "/OutboundTransferOrder/GetOutboundTransferOrder",
+                data: { OutboundOrder: '@Model.OutboundOrder' },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    if (data.Success) {
+                        var array = new Array;
+                        for (var i = 0; i < data.Data.length; i++) {
+                            if (data.Data[i].TransferOrder != $("#divTransferOrderNumberValue").html().trim()) {
+                                array.push('<option value="' + data.Data[i].SysId + '">' + data.Data[i].TransferOrder + '</option>');
+                            }
+                        }
+                        $("#transferOrder").append(array.join(''));
+                    }
+                }
+            });
+
+            var flag = false;
+            $("#saveMoveText").on('click', function () {
+                if ($("#moveSkuNumberForm").valid()) {
+                    var transferOrder = $("#transferOrder").val();
+                    if (transferOrder == "0" || transferOrder == '') {
+                        msgErro("请选择交接单号");
+                        return false;
+                    }
+
+                    var skuQty = parseInt($("#skuQty").val());
+                    if (skuQty <= 0) {
+                        msgErro("转移数量必须大于0");
+                        $("#skuQty").val('');
+                        return false;
+                    }
+
+                    if (skuQty > parseInt($("#moveMaxQty").val())) {
+                        msgErro("转移数量不能大于最大数量：" + $("#moveMaxQty").val());
+                        $("#skuQty").val('');
+                        return false;
+                    }
+
+                    var datas = {
+                        OutboundTransferOrderDetailSyId: $("#TransferOrderDetailSyId").val(),
+                        ToOutboundTransferOrderSysId: transferOrder,
+                        MoveSkuQty: skuQty,
+                        SkuSysId: $("#SkuSysId").val()
+                    };
+
+
+                    if (flag) {
+                        return false;
+                    }
+                    flag = true;
+                    $.ajax({
+                        url: "/OutboundTransferOrder/UpdateTransferOrderSku",
+                        data: datas,
+                        dataType: "json",
+                        type: "POST",
+                        success: function (data) {
+                            flag = false;
+                            if (data.Success) {
+                                $('#moveSkuNumberModel').modal('hide');
+                                $("#transferOrder").find("option[text='请选择']").attr("selected", true);
+                                $("#skuQty").val('');
+                                $("#moveMaxQty").val('');
+                                $("#TransferOrderDetailSyId").val('');
+                                $("#SkuSysId").val('');
+                                msgSuccess("移动成功", window.location.reload());
+                            }
+                            else {
+                                msgErro(data.Message);
+                            }
+                        }
+                    });
+
+                }
+            });
+
+        });
+
+
+        function MoveSkuCount(sysId, qty, skuSysId) {
+            $("#moveMaxQty").val(qty);
+            $("#TransferOrderDetailSyId").val(sysId);
+            $("#SkuSysId").val(skuSysId);
+        }
+
+
+    </script>
+}

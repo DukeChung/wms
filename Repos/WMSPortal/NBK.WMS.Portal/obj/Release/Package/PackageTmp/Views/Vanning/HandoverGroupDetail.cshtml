@@ -1,0 +1,173 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.HandoverGroupDto
+
+@{
+    ViewBag.Title = "交接单明细";
+}
+
+@Html.Breadcrumb("交接单", "/Vanning/HandoverGroupList", "交接单明细")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="AjustmentView" class="ibox-content m-b-sm border-bottom">
+
+        <form id="AjustmentForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">交接单明细</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.HandoverGroupOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    交接单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.HandoverGroupOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    交接物流:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CarrierName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    创建时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.HandoverCreateDateDisplay</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">
+                    合计件数:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.TotalCount </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    合计重量:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.TotalWeight </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <label class="col-sm-1 control-label">交接清单</label>
+
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>订单编号</th>
+                                <th>包裹单号</th>
+                                <th>物流面单号</th>
+                                <th>重量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var index = 0;
+                                foreach (var info in Model.HandoverGroupDetailList)
+                                {
+                                    index++;
+                                    <tr>
+                                        <td>@index</td>
+                                        <td>@info.ExternOrderId</td>
+                                        <td>@info.VanningOrderDisplay</td>
+                                        <td>@info.CarrierNumber</td>
+                                        <td>@info.Weight</td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-white btn-sm" id="btnPrint" onclick="print()"><i class="fa fa-print"></i> 打印交接单</a>
+                <a class="btn btn-white btn-sm" id="btnReturn"><i class="fa fa-times"></i> 返回</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+@Scripts.Render("~/plugins/print")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+            $("#btnReturn").click(function () {
+                backParentPage();
+            });
+        });
+
+        function print() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintHandoverGroup?handoverGroupOrder=@Model.HandoverGroupOrder" + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            LODOP.ADD_PRINT_BARCODE(40, 350, 406, 58, "128B", "@Model.HandoverGroupOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            LODOP.PRINT();
+            //LODOP.PREVIEW();
+            msgAlert("打印成功");
+        }
+
+        var backParentPage = function () {
+            window.location.href = '@Url.Action("HandoverGroupList", "Vanning")';
+        };
+
+    </script>
+}

@@ -1,0 +1,449 @@
+﻿@using NBK.ECService.WMS.DTO
+@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+
+@{
+    ViewBag.Title = "退货入库单管理";
+}
+
+@Html.Breadcrumb("入库管理", "退货入库单管理")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("退货单号", "PurchaseOrderSearch")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("供应商名称", "VendorNameSearch")
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="StatusSearch">单据状态</label>
+                    <select class="form-control m-b" name="account" id="StatusSearch">
+                        @{
+                            foreach (var status in (List<SelectListItem>)ViewBag.StatusList)
+                            {
+                                <option value="@status.Value">@status.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="StatusSearch">单据类型</label>
+                    <select class="form-control m-b" name="account" id="TypeSearch">
+                        @{
+                            foreach (var status in (List<SelectListItem>)ViewBag.TypeList)
+                            {
+                                <option value="@status.Value">@status.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="ibox" style="margin-bottom: 0px">
+            <a class="collapse-link">
+                <i class="fa fa-chevron-down">更多查询条件</i>
+            </a>
+            <div class="ibox-content" style="display: none; padding: 10px 0px 0px 0px">
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("商品条码", "UpcCodeSearch")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("商品Code", "SkuCodeSearch")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("商品名称", "SkuNameSearch")
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">移出仓:</label>
+                            <select id="ToWareHouseSysId" name="ToWareHouseSysId" class="form-control">
+                                <option value="">全部仓库</option>
+                                @{
+                                    foreach (var warehouse in (List<SelectItem>)ViewBag.WarehouseList)
+                                    {
+                                        <option value="@warehouse.Value">@warehouse.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("收货单号", "ReceiptOrderSearch")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("移仓单号", "TransferInventoryOrderSearch")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DataPickerTextBox("入库时间起", "ReceiptStartDateSearch")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DataPickerTextBox("入库时间止", "ReceiptEndDateSearch")
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("外部单据号", "ExternalOrderSearch")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DataPickerTextBox("审核时间从", "AuditingDateFrom")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DataPickerTextBox("审核时间到", "AuditingDateTo")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("出库单号", "OutboundOrderSearch")
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("入库批号", "BatchNumber")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("物流单号", "ExpressNumber")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("渠道", "Channel")
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.SearchTextBox("服务综合体名称", "ServiceStationName")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top: 25px; float: left;">查询</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvPurchase" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="PurchaseOrder">入库单编号</th>
+                                <th data-data="VendorName">供应商</th>
+                                <th data-data="TypeText" >入库单类型</th>
+                                <th data-data="StatusText" >单据状态</th>
+                                <th data-data="LastReceiptDateText" >入库时间</th>
+                                <th data-data="AuditingDateText" >审核时间</th>
+                                <th data-data="ExternalOrder" >外部单据号</th>
+                                <th data-data="BatchNumber" >入库批号</th>
+                                <th data-data="BusinessType" >上下行</th>
+                                <th data-data="ExpressNumber" >物流单号</th>
+                                <th data-data="Channel">渠道</th>
+                                <th data-data="ServiceStationName" >服务综合体名称</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <div class="modal inmodal fade" id="div_PurchaseBatchNumber" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width:420px;">
+            <div class="modal-content">
+                <div class="modal-body" style="height:85px;">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" style="padding-top: 7px;">入库批号:</label>
+                        <div class="col-sm-9">
+                            <input id="txtBatchNumber" class="form-control" type="text" value="" style="width:100%" placeholder="请输入入库批号" onblur='var re = new RegExp("^[0-9]+(\.[0-9]+)?$", "g"); this.value = re.test(this.value) ? this.value : "";' />
+                            <div id="errorCopyMsg" style="padding-top:7px;color:#F00;display:none">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align:center  ">
+                    <a class="btn btn-sm btn-primary" id="btnSaveBatchNumber"><i class="fa fa-check-square-o"></i> 保存</a>
+                    <a class="btn btn-white btn-sm" id="btnCloseBatchNumber" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="modal inmodal fade" id="div_PurchaseBusinessType" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width:420px;">
+            <div class="modal-content">
+                <div class="modal-body" style="height:85px;">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" style="padding-top: 7px;">请输入:</label>
+                        <div class="col-sm-9">
+                            <input id="txtBusinessType" class="form-control" value="" maxlength="16" style="width:100%" placeholder="请输入" />
+                            <div id="errorCopyMsg" style="padding-top:7px;color:#F00;display:none">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align:center  ">
+                    <a class="btn btn-sm btn-primary" id="btnSaveBusinessType"><i class="fa fa-check-square-o"></i> 保存</a>
+                    <a class="btn btn-white btn-sm" id="btnCloseBusinessType" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+            $("#AuditingDateTo").val("@ViewBag.AuditingDateTo");
+
+            $("#btnSaveBatchNumber").on('click', function () {
+                var sysIds = GetGridMultiselectSysId();
+                if (sysIds != null) {
+                    var selectRow = table.rows(':has(:checkbox:checked)');
+                    for (var i = 0; selectRow.data().length > i; i++) {
+                        if (selectRow.data()[i].Status != 0) {
+                            msgAlert(selectRow.data()[i].PurchaseOrder + "状态不等于待入库,无法指定入库批号!");
+                            return;
+                        }
+                    }
+                }
+
+                if ($("#txtBatchNumber").val().length == 0) {
+                    $("#errorCopyMsg").html("请输入入库批号");
+                    $("#errorCopyMsg").show();
+                    return;
+                }
+
+                $.ajax({
+                    url: "/Purchase/AppointBatchNumber?sysIds=" + sysIds + "&batchNumber=" + $("#txtBatchNumber").val(),
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            $('#div_PurchaseBatchNumber').modal("hide");
+                            table.ajax.reload();
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+
+            });
+
+            $("#btnSaveBusinessType").on('click', function () {
+                var sysIds = GetGridMultiselectSysId();
+                if (sysIds != null) {
+                    var selectRow = table.rows(':has(:checkbox:checked)');
+                    for (var i = 0; selectRow.data().length > i; i++) {
+                        if (selectRow.data()[i].Status != 0) {
+                            msgAlert(selectRow.data()[i].PurchaseOrder + "状态不等于待入库，无法指定上下行!");
+                            return;
+                        }
+                    }
+                }
+
+                if ($("#txtBusinessType").val().length == 0) {
+                    $("#errorCopyMsg").html("请输入上下行");
+                    $("#errorCopyMsg").show();
+                    return;
+                }
+
+                $.ajax({
+                    url: "/Purchase/UpdatePurchaseBusinessTypeBySysId?sysIds=" + sysIds + "&businessType=" + $("#txtBusinessType").val(),
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            $('#div_PurchaseBusinessType').modal("hide");
+                            table.ajax.reload();
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            });
+
+            $('#divReceiptStartDateSearch .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+            $('#divReceiptEndDateSearch .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#divAuditingDateFrom .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#divAuditingDateTo .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+
+            table = $('#gvPurchase').DataTable({
+                "sAjaxSource": "/Purchase/GetPurchaseDtoReturnList",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "PurchaseOrderSearch", "value": $("#PurchaseOrderSearch").val() },
+                        { "name": "VendorNameSearch", "value": $("#VendorNameSearch").val() },
+                        { "name": "StatusSearch", "value": $("#StatusSearch").val() },
+                        { "name": "UpcCodeSearch", "value": $("#UpcCodeSearch").val() },
+                        { "name": "SkuCodeSearch", "value": $("#SkuCodeSearch").val() },
+                        { "name": "SkuNameSearch", "value": $("#SkuNameSearch").val() },
+                        { "name": "ReceiptOrderSearch", "value": $("#ReceiptOrderSearch").val() },
+                        { "name": "ReceiptStartDateSearch", "value": $("#ReceiptStartDateSearch").val() },
+                        { "name": "ReceiptEndDateSearch", "value": $("#ReceiptEndDateSearch").val() },
+                        { "name": "TypeSearch", "value": $("#TypeSearch").val() },
+                        { "name": "TransferInventoryOrderSearch", "value": $("#TransferInventoryOrderSearch").val() },
+                        { "name": "ToWareHouseSysId", "value": $("#ToWareHouseSysId").val() },
+                        { "name": "ExternalOrderSearch", "value": $("#ExternalOrderSearch").val() },
+                        { "name": "AuditingDateFrom", "value": $("#AuditingDateFrom").val() },
+                        { "name": "AuditingDateTo", "value": $("#AuditingDateTo").val() },
+                        { "name": "BatchNumber", "value": $("#BatchNumber").val() },
+                        { "name": "ExpressNumber", "value": $("#ExpressNumber").val() },
+                        { "name": "OutboundOrderSearch", "value": $("#OutboundOrderSearch").val() },
+                        { "name": "Channel", "value": $("#Channel").val() },
+                        { "name": "ServiceStationName", "value": $("#ServiceStationName").val() },
+                        { "name": "IsPurchaseReturn", "value": true }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    @if (AuthorizeManager.HasFunction(AuthKeyConst.Purchase_View_AppointBatchNumber, User.Identity.Name))
+                    {
+                        <text>
+                        {
+                            text: '指定入库批号',
+                            action: function (e, dt, node, config) {
+                                var sysIds = GetGridMultiselectSysId();
+                                if (sysIds != null && sysIds.length > 0) {
+                                    $('#div_PurchaseBatchNumber').modal({ backdrop: 'static' });
+                                } else {
+                                    msgAlert("请至少勾选一项");
+                                    return false;
+                                }
+                            }
+                        },
+                        </text>
+                    }
+                    @if (AuthorizeManager.HasFunction(AuthKeyConst.Purchase_View_BusinessType, User.Identity.Name))
+                    {
+                        <text>
+                        {
+                            text: '指定上下行',
+                            action: function (e, dt, node, config) {
+                                var sysIds = GetGridMultiselectSysId();
+                                if (sysIds != null && sysIds.length > 0) {
+                                    $('#div_PurchaseBusinessType').modal({ backdrop: 'static' });
+                                } else {
+                                    msgAlert("请至少勾选一项");
+                                    return false;
+                                }
+                            }
+                        }
+                        </text>
+                    }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": 1,
+                        "width": "10%",
+                        render: function (data, type, full, meta) {
+                            return '<a target="_blank" href="/Purchase/PurchaseReturnView?sysId=' + full.SysId + '">' + full.PurchaseOrder + '</a>';
+                        }
+                    },
+                    {
+                        "targets": 0,
+                        "width": "15px",
+                        render: function (data, type, full, meta) {
+                            return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                        }
+                    }
+                ],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                if (!commonCheckDateCompare($("#ReceiptStartDateSearch").val(), $("#ReceiptEndDateSearch").val())) {
+                    msgAlert("入库终止日期应大于入库起始日期！");
+                    return false;
+                }
+
+                if (!commonCheckDateCompare($("#AuditingDateFrom").val(), $("#AuditingDateTo").val())) {
+                    msgAlert("审核终止日期应大于审核起始日期！");
+                    return false;
+                }
+                table.ajax.reload();
+            });
+        });
+    </script>
+}

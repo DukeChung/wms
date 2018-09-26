@@ -1,0 +1,468 @@
+﻿/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background: url(/content/img/mybg.png) #fff;
+    direction: ltr;
+}
+
+.text-c {
+    text-align: center;
+}
+
+.padding-top-0 {
+    padding-top: 0 !important;
+}
+
+.padding-top-5 {
+    padding-top: 5px !important;
+}
+
+.padding-bottom-0 {
+    padding-bottom: 0 !important;
+}
+
+.padding-t-10 {
+    padding: 7px 15px;
+}
+
+.padding-bottom-5 {
+    padding-bottom: 5px !important;
+}
+
+.padding-left-5 {
+    padding-left: 5px !important;
+}
+
+.padding-left-10 {
+    padding-left: 10px !important;
+}
+
+.padding-right-5 {
+    padding-right: 5px !important;
+}
+
+.padding-right-10 {
+    padding-right: 10px !important;
+}
+
+.margin-top-0 {
+    margin-top: 0 !important;
+}
+
+.margin-top-5 {
+    margin-top: 5px !important;
+}
+
+.margin-top-10 {
+    margin-top: 10px !important;
+}
+
+.margin-bottom-0 {
+    margin-bottom: 0 !important;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px !important;
+}
+
+.margin-left-5 {
+    margin-left: 5px !important;
+}
+
+.margin-left-10 {
+    margin-left: 10px !important;
+}
+
+.margin-right-5 {
+    margin-right: 5px !important;
+}
+
+.margin-right-10 {
+    margin-right: 10px !important;
+}
+
+.margin-right-15 {
+    margin-right: 15px !important;
+}
+/*.smart-form {
+    .input {
+        input {
+            padding: 4px 10px !important;
+        }
+    }
+}*/
+/* SmartForm Bootstrap Validation */
+#extr-page h4.paragraph-header {
+    width: auto;
+}
+
+#extr-page .smart-form .alert {
+    margin: 4px;
+}
+
+    #extr-page .smart-form .alert li {
+        margin-left: 14px;
+        list-style: none;
+    }
+
+        #extr-page .smart-form .alert li:before {
+            content: "\f071";
+            font-family: FontAwesome;
+            position: absolute;
+            left: 14px;
+        }
+
+#extr-page .smart-form div + fieldset {
+    padding-top: 15px;
+}
+
+
+/*修改默认浏览器样式开始*/
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+    background-color: #F5F5F5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+    /*border-radius: 5px;*/
+    background-color: #f5f7f9;
+}
+
+::-webkit-scrollbar-thumb {
+    /*border-radius: 5px;*/
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*/
+    background-color: #474544;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+}
+/*修改默认浏览器样式结束*/
+
+.wrapper {
+    padding: 20px 20px 20px 20px;
+}
+
+
+#header #logo-group #logo {
+    clear: both;
+    width: 500px;
+}
+
+
+    #header #logo-group #logo .pname {
+        float: left;
+        font-size: x-large;
+        color: #bd1616;
+    }
+
+    #header #logo-group #logo .pdesc {
+        float: left;
+        font-size: x-large;
+        color: #100c0c;
+        padding-left: 10px;
+    }
+
+.top-page-title {
+    margin: 15px 0 10px;
+}
+
+.topsparks {
+    margin: 25px 0 0 !important;
+}
+
+
+.txt-color-orangeDark-f3 {
+    color: #F36880 !important;
+}
+
+.txt-color-orangeDark-ed {
+    color: #EDA7F1 !important;
+}
+
+.txt-color-orangeDark-fc {
+    color: #FCB7AF !important;
+}
+
+.txt-color-orangeDark-ff {
+    color: #FFBEE0 !important;
+}
+
+.txt-color-orangeDark-f9 {
+    color: #FF94A1 !important;
+}
+
+
+.txt-color-orangeDark-fb {
+    color: #FFB252 !important;
+}
+
+.txt-color-orangeDark-b8 {
+    color: #B8BCFE !important;
+}
+
+.txt-color-orangeDark-8b {
+    color: #8BDFDD !important;
+}
+
+.txt-color-orangeDark-86 {
+    color: #86F2BF !important;
+}
+
+.txt-color-orangeDark-a2 {
+    color: #A2E999 !important;
+}
+
+
+.title-font {
+    font-family: 等线 !important;
+    font-weight: 100 !important;
+}
+
+.chart {
+    margin: 10px 10px 10px 10px !important;
+}
+
+
+.list-group .trcss {
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.trcss .titlColor {
+    color: #000 !important;
+}
+
+.trcss .firstTd {
+    width: 60%;
+    text-align: left;
+    padding: 7px 15px;
+    color: #94999f;
+    font-family: "Microsoft YaHei";
+}
+
+.trcss .secondTd {
+    width: 30%;
+    color: #94999f;
+    text-align: center;
+}
+
+.trcss .ssoFirstTdTd {
+    width: 65%;
+    text-align: left;
+    padding: 7px 15px;
+    color: #94999f;
+    font-family: "Microsoft YaHei";
+}
+
+.trcss .ssoSecondTd {
+    width: 10%;
+    color: #94999f;
+    text-align: center;
+}
+
+.trcss .ssoThirdTd {
+    width: 15%;
+    color: #94999f;
+    text-align: center;
+}
+
+#logo {
+    margin-top: 7px !important;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.trcss .firTd {
+    width: 30%;
+    text-align: left;
+    padding: 7px 15px;
+    color: #94999f;
+    font-family: "Microsoft YaHei";
+}
+
+.trcss .secTd {
+    width: 30%;
+    color: #94999f;
+    text-align: center;
+}
+
+#extr-page #main {
+    background: none;
+    padding: 100px 0 50px 0 !important;
+}
+
+#btnLogin {
+    font-size: 14px;
+}
+
+
+/*
+ *  Usage:
+ *
+ *    <div class="sk-spinner sk-spinner-wave">
+ *      <div class="sk-rect1"></div>
+ *      <div class="sk-rect2"></div>
+ *      <div class="sk-rect3"></div>
+ *      <div class="sk-rect4"></div>
+ *      <div class="sk-rect5"></div>
+ *    </div>
+ *
+ */
+.sk-spinner-wave.sk-spinner {
+    margin: 0 auto;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    font-size: 10px;
+}
+
+.sk-spinner-wave div {
+    background-color: #1ab394;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+    -webkit-animation: sk-waveStretchDelay 1.2s infinite ease-in-out;
+    animation: sk-waveStretchDelay 1.2s infinite ease-in-out;
+}
+
+.sk-spinner-wave .sk-rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+}
+
+.sk-spinner-wave .sk-rect3 {
+    -webkit-animation-delay: -1s;
+    animation-delay: -1s;
+}
+
+.sk-spinner-wave .sk-rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+}
+
+.sk-spinner-wave .sk-rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-waveStretchDelay {
+    0%, 40%, 100% {
+        -webkit-transform: scaleY(0.4);
+        transform: scaleY(0.4);
+    }
+
+    20% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
+    }
+}
+
+@keyframes sk-waveStretchDelay {
+    0%, 40%, 100% {
+        -webkit-transform: scaleY(0.4);
+        transform: scaleY(0.4);
+    }
+
+    20% {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
+    }
+}
+
+
+/*面包屑样式开始*/
+
+#ribbon1 {
+    min-height: 40px;
+    background: #474544;
+    padding: 0 13px;
+    position: relative;
+}
+
+    #ribbon1 .breadcrumb {
+        display: inline-block;
+        margin: 0;
+        padding: 11px 34px 11px 0 !important;
+        background: 0 0;
+        vertical-align: top;
+    }
+
+        #ribbon1 .breadcrumb, #ribbon1 .breadcrumb a {
+            color: #BBB !important;
+            text-decoration: none !Important;
+        }
+
+            #ribbon1 .breadcrumb li:last-child, #ribbon1 .breadcrumb > .active {
+                color: #E4E4E4;
+            }
+
+.fixed-ribbon #ribbon1 {
+    position: fixed;
+    right: 0;
+    left: 220px;
+    top: 49px;
+    z-index: 901;
+}
+
+.container.fixed-ribbon #ribbon1 {
+    width: 944px;
+    left: 590px;
+}
+
+.fixed-ribbon #content {
+    padding-top: 50px;
+}
+
+.minified.fixed-ribbon #ribbon1 {
+    left: 45px;
+}
+
+.hidden-menu.fixed-ribbon #ribbon1 {
+    left: 10px;
+}
+
+.fixed-navigation #left-panel {
+    height: 100%;
+    position: fixed;
+}
+
+.fixed-navigation nav {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    height: 100%;
+    padding-bottom: 49px;
+}
+
+    .fixed-navigation nav > ul {
+        padding-right: 15px;
+        position: relative;
+        height: 100%;
+        width: 114%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+
+/*面包屑样式结束*/

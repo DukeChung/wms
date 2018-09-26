@@ -1,0 +1,311 @@
+﻿
+@{
+    ViewBag.Title = "RealTimeDelivery";
+    Layout = null;
+}
+<style>
+    .maptitle {
+        position: absolute;
+        right: 0;
+        width: 170px;
+        z-index: 10;
+        font-size: 10px;
+        background-color: #000;
+        opacity: .9;
+        color: #FFF;
+    }
+
+        .maptitle div {
+            padding: 3px 0 3px 5px;
+        }
+</style>
+<div class="maptitle">
+    <div><span style="padding:0 8px; background-color: #F0F; "></span>&nbsp;&nbsp;仓库颜色</div>
+    <div><span style="padding:0 8px; background-color: #F00; "></span>&nbsp;&nbsp;最新发货目的地</div>
+</div>
+<div id="AllScore" style="width:100%;">
+
+</div>
+
+<script src="~/Scripts/plugin/echarts/extension/china.js"></script>
+<script src="~/Scripts/plugin/echarts/extension/bmap.min.js"></script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=T9j5mGKFQ57UgmsjtNfM9rr5AXvZvEIx"></script>
+<script>
+    var height = Math.ceil($(window).height()) - 150;
+    $("#AllScore").height(height);
+    @*当天发货路线格式化
+    data：组织线路数据源list
+    wareHouse:仓库list
+    srcNam：目标藏名称，
+    flag：标志由内向外还是由外向内路线，true：内向外，false：外向内
+    *@
+    function formtGCData(data, wareHouseList, flag) {
+        var length = data != null ? data.length : 0;
+        var wLength = wareHouseList != null ? wareHouseList.length : 0;
+        var tGeoDt = [];
+        if (flag) {
+            for (var j = 0; j < wLength; j++) {
+                for (var i = 0, len = length; i < len; i++) {
+                    if (wareHouseList[j].Id == data[i].WareHouseSysId) {
+                        tGeoDt.push({
+                            coords: [[wareHouseList[j].Lng, wareHouseList[j].Lat], [data[i].Lng, data[i].Lat]]
+                            //[出发地经纬度，目的地经纬度]
+                        });
+                    }
+                }
+            }
+        } else {
+            for (var j = 0; j < wLength; j++) {
+                for (var i = 0, len = length; i < len; i++) {
+                    if (wareHouseList[j].Id == data[i].WareHouseSysId) {
+                        tGeoDt.push({
+                            coords: [[wareHouseList[j].Lng, wareHouseList[j].Lat], [data[i].Lng, data[i].Lat]]
+                        });
+                    }
+                }
+            }
+        }
+        return tGeoDt;
+    }
+    @*发货地址目的地数据格式化
+    data：数据源list
+    wareHouseList：仓库list*@
+    function formtVData(data, wareHouseList) {
+        var length = data != null ? data.length : 0;
+        var wLength = wareHouseList != null ? wareHouseList.length : 0;
+        var tGeoDt = [];
+        for (var j = 0; j < wLength; j++) {
+            for (var i = 0, len = length; i < len; i++) {
+                if (wareHouseList[j].Id != data[i].WareHouseSysId) {
+                    tGeoDt.push({
+                        name: data[i].ServiceStationName,
+                        value: [data[i].Lng, data[i].Lat]
+                    });
+                }
+            }
+        }
+        return tGeoDt;
+    }
+
+    @*新开服务站地址点
+    data：数据源list
+    wareHouseList：仓库list*@
+    function formtNData(data, wareHouseList) {
+        var length = data != null ? data.length : 0;
+        var wLength = wareHouseList != null ? wareHouseList.length : 0;
+        var tGeoDt = [];
+        for (var j = 0; j < wLength; j++) {
+            for (var i = 0, len = length; i < len; i++) {
+                if (wareHouseList[j].Id != data[i].WareHouseSysId) {
+                    tGeoDt.push({
+                        name: data[i].ServiceStationName,
+                        value: [data[i].Lng, data[i].Lat]
+                    });
+                }
+            }
+        }
+        return tGeoDt;
+    }
+
+    @*所有仓库经纬度*@
+    function formtWareHouseData(data) {
+        var length = data != null ? data.length : 0;
+        var tGeoDt = [];
+        for (var i = 0, len = length; i < len; i++) {
+            tGeoDt.push({
+                name: data[i].Name,
+                value: [data[i].Lng, data[i].Lat]
+            });
+        }
+        return tGeoDt;
+    }
+
+    var myChart = echarts.init(document.getElementById("AllScore"));
+    function getMapChart() {
+        $.ajax({
+            url: "@Url.Action("RealTimeData", "Home")",
+            type: "GET",
+            success: function (result) {
+                myChart.setOption(option = {
+                    tooltip: {
+                        trigger: 'item',
+                        show: false
+                    },
+                    bmap: {
+                        center: [MapCenter.Lng, MapCenter.Lat],
+                        zoom: 8,
+                        roam: true,
+
+                    },
+                    geo: {
+                        map: 'bmap',
+                        center: [102.9199, 25.4663],
+                        label: {
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    color: "#FFF"
+                                }
+                            },
+                            normal: {
+                                show: true,
+                                textStyle: {
+                                    color: "#FFF"
+                                }
+                            }
+                        },
+                        roam: true,
+                        itemStyle: {
+                            normal: {
+                                areaColor: '#323c48',
+                                borderColor: '#404a59'
+                            },
+                            emphasis: {
+                                areaColor: '#2a333d',
+                            }
+                        }
+                    },
+                    series: [
+                         {   //所有仓库
+                             type: 'effectScatter',
+                             coordinateSystem: 'bmap',
+                             zlevel: 1,
+                             rippleEffect: {
+                                 brushType: 'stroke'
+                             },
+                             label: {
+                                 emphasis: {
+                                     show: true,
+                                     position: 'right',
+                                     formatter: '{b}'
+                                 }
+                             },
+                             symbolSize: 6,
+                             showEffectOn: 'render',
+                             itemStyle: {
+                                 normal: {
+                                     color: '#F0F'
+                                 }
+                             },
+                             data: formtWareHouseData(MapWareHouseList)
+                         }
+                        //, {   //新开店经纬度显示
+                        //    type: 'effectScatter',
+                        //    coordinateSystem: 'bmap',
+                        //    zlevel: 3,
+                        //    rippleEffect: {
+                        //        brushType: 'stroke'
+                        //    },
+                        //    label: {
+                        //        emphasis: {
+                        //            show: true,
+                        //            position: 'right',
+                        //            formatter: '{b}'
+                        //        }
+                        //    },
+                        //    symbolSize: 8,
+                        //    showEffectOn: 'render',
+                        //    itemStyle: {
+                        //        normal: {
+                        //            color: '#ff9800'
+                        //        }
+                        //    },
+                        //    data: formtNData(result.data.NewOutbound, MapWareHouseList)
+                        //}
+                        , {   //当天发货地址路线图
+                            type: 'lines',
+                            coordinateSystem: 'bmap',
+                            zlevel: 2,
+                            large: true,
+                            effect: {
+                                show: true,
+                                constantSpeed: 30,
+                                symbol: 'pin',
+                                symbolSize: 4,
+                                trailLength: 0,
+                            },
+                            lineStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                        offset: 0, color: '#58B3CC'
+                                    }, {
+                                        offset: 1, color: '#F58158'
+                                    }], false),
+                                    width: 1,
+                                    opacity: 0.6,
+                                    curveness: 0.2
+                                }
+                            },
+                            data: formtGCData(result.data.CurrentOutbound, MapWareHouseList, true)
+                        }
+                        , {   //当天发货目的地经纬度
+                            type: 'effectScatter',
+                            coordinateSystem: 'bmap',
+                            zlevel: 4,
+                            rippleEffect: {
+                                brushType: 'stroke'
+                            },
+                            label: {
+                                emphasis: {
+                                    show: true,
+                                    position: 'right',
+                                    formatter: '{b}'
+                                }
+                            },
+                            symbolSize: 3,
+                            showEffectOn: 'render',
+                            itemStyle: {
+                                normal: {
+                                    color: '#F00'
+                                }
+                            },
+                            data: formtVData(result.data.CurrentOutbound, MapWareHouseList)
+                        }
+                        //, {   //历史服务站地址经纬度
+                        //    type: 'effectScatter',
+                        //    coordinateSystem: 'bmap',
+                        //    zlevel: 2,
+                        //    rippleEffect: {
+                        //        brushType: 'stroke'
+                        //    },
+                        //    label: {
+                        //        emphasis: {
+                        //            show: true,
+                        //            position: 'right',
+                        //            formatter: '{b}'
+                        //        }
+                        //    },
+                        //    symbolSize: 2,
+                        //    showEffectOn: 'render',
+                        //    itemStyle: {
+                        //        normal: {
+                        //            color: '#240bf7'
+                        //        }
+                        //    },
+                        //    data: formtNData(result.data.BirdsEysSource, MapWareHouseList)
+                        //}
+                    ]
+                });
+
+                var bmap = myChart.getModel().getComponent('bmap').getBMap();
+                bmap.centerAndZoom(new BMap.Point(MapCenter.Lng, MapCenter.Lat));
+                bmap.addControl(new BMap.NavigationControl({ type: BMAP_NAVIGATION_CONTROL_SMALL }));//显示放大缩小
+
+                bmap.disableScrollWheelZoom();//禁用滚轮缩放，enableScrollWheelZoom开启滚轮缩放
+                var bdary = new BMap.Boundary();
+                bdary.get("云南省", function (rs) {
+                    var count = rs.boundaries.length;
+                    for (var i = 0; i < count; i++) {
+                        var ply = new BMap.Polygon(rs.boundaries[i], { strokeWeight: 2, strokeColor: "#F00", fillColor: "" });
+                        bmap.addOverlay(ply);
+                    }
+                });
+            }
+        });
+    }
+
+    $(function () {
+        getMapChart();
+        setInterval(getMapChart, 5 * 60 * 1000);  //每5分钟刷新一次
+    })
+</script>

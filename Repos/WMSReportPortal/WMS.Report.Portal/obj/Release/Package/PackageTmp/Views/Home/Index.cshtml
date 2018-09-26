@@ -1,0 +1,1631 @@
+﻿<!-- MAIN CONTENT -->
+@using NBK.ECService.WMSReport.Utility;
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+<div id="content">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-5">
+
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-7">
+            <ul id="sparks" class="">
+                <li id="spark_PO" class="sparks-info">
+                    <h5>采购入库 <span class="txt-color-blue"><i class="glyphicon glyphicon-log-in"></i> &nbsp;<label id="lb_Spark_PO"></label></span></h5>
+                    <div id="div_Spark_PO" class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm" style="padding-top:8px"></div>
+                </li>
+                <li id="spark_B2BSO" class="sparks-info">
+                    <h5> B2B出库 <span class="txt-color-purple"><i class="glyphicon glyphicon-log-out"></i>&nbsp;<label id="lb_Spark_B2BSO"></label></span></h5>
+                    <div id="div_Spark_B2BSO" class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm" style="padding-top:8px"></div>
+                </li>
+                <li id="spark_B2CSO" class="sparks-info">
+                    <h5> B2C出库 <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;<label id="lb_Spark_B2CSO"></label></span></h5>
+                    <div id="div_Spark_B2CSO" class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm" style="padding-top:8px"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- widget grid -->
+    <section id="widget-grid" class="">
+
+        @*row系统流量统计*@
+        <div class="row">
+            <article class="col-sm-12">
+                <!-- new widget -->
+                <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                        <h2>系统流量 </h2>
+                        <ul class="nav nav-tabs pull-right in" id="myTab">
+                            <li class="active">
+                                <a id="a_ChartTab1" data-toggle="tab" href="#s1"><i class="fa fa-clock-o"></i> <span class="hidden-mobile hidden-tablet">订单汇总</span></a>
+                            </li>
+
+                            <li>
+                                <a id="a_ChartTab2" data-toggle="tab" href="#s2"><i class="fa fa-sign-in"></i> <span class="hidden-mobile hidden-tablet">近期入库</span></a>
+                            </li>
+
+                            <li>
+                                <a id="a_ChartTab3" data-toggle="tab" href="#s3"><i class="fa fa-sign-out"></i> <span class="hidden-mobile hidden-tablet">近期出库</span></a>
+                            </li>
+                        </ul>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div class="no-padding">
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                        </div>
+                        <!-- end widget edit box -->
+
+                        <div class="widget-body">
+                            <!-- content -->
+                            <div id="myTabContent" class="tab-content">
+                                <div class="tab-pane fade active in padding-10 no-padding-bottom" id="s1">
+                                    <div class="row no-space">
+                                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                                            <span class="demo-liveupdate-1">
+                                                <span class="onoffswitch-title">接口访问量</span> <span class="onoffswitch">
+
+                                                </span>
+                                            </span>
+                                            <div id="updating-chart" class="chart-large txt-color-blue"></div>
+
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 show-stats">
+
+                                            <div class="row">
+                                                <div id="pb_Purchase" class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                                    <span class="text">
+                                                        采购入库
+                                                        <span class="pull-right purchaseUnfinished">
+                                                        </span>
+                                                    </span>
+                                                    <div class="progress" style="height:18px">
+                                                        <div class="progress-bar bg-color-blueDark purchaseFinishedPercentage" aria-valuetransitiongoal=""></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                                    <span class="text">
+                                                        退货入库
+                                                        <span class="pull-right purchaseReturnUnfinished">
+                                                        </span>
+                                                    </span>
+                                                    <div class="progress" style="height:18px">
+                                                        <div class="progress-bar bg-color-blue purchaseReturnFinishedPercentage" aria-valuetransitiongoal=""></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                                    <span class="text">
+                                                        出库
+                                                        <span class="pull-right outboundUnfinished">
+                                                        </span>
+                                                    </span>
+                                                    <div class="progress" style="height:18px">
+                                                        <div class="progress-bar bg-color-blue outboundFinishedPercentage" aria-valuetransitiongoal=""></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12">
+                                                    <span class="text">
+                                                        退货出库
+                                                        <span class="pull-right outboundReturnUnfinished">
+                                                        </span>
+                                                    </span>
+                                                    <div class="progress" style="height:18px">
+                                                        <div class="progress-bar bg-color-greenLight outboundReturnFinishedPercentage" aria-valuetransitiongoal=""></div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="show-stat-microcharts">
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="easy-pie-chart txt-color-orangeDark receiptOrderFinishedPercentage" data-percent="" data-pie-size="50">
+                                                <span class="percent percent-sign">35</span>
+                                            </div>
+                                            <span class="easy-pie-title">收货订单 </span>
+                                            <ul class="smaller-stat hidden-sm pull-right">
+                                                <li>
+                                                    <span class="label bg-color-red" style="width:150px">
+                                                        <i class="fa fa-caret-up"></i> 未完成
+                                                        <span class="receiptOrderUnfinished"></span>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="label bg-color-green " style="width:150px">
+                                                        <i class="fa fa-caret-down"></i> 已完成
+                                                        <span class="receiptOrderFinished"></span>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="easy-pie-chart txt-color-greenLight pickOrderFinishedPercentage" data-percent="" data-pie-size="50">
+                                                <span class="percent percent-sign">78.9 </span>
+                                            </div>
+                                            <span class="easy-pie-title"> 拣货订单 </span>
+                                            <ul class="smaller-stat hidden-sm pull-right">
+                                                <li>
+                                                    <span class="label bg-color-red" style="width:150px">
+                                                        <i class="fa fa-caret-up"></i> 未完成
+                                                        <span class="pickOrderUnfinished"></span>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="label bg-color-green " style="width:150px">
+                                                        <i class="fa fa-caret-down"></i> 已完成
+                                                        <span class="pickOrderFinished"></span>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="easy-pie-chart txt-color-blue notOutPCTFinishedPercentage" data-percent="" data-pie-size="50">
+                                                <span class="percent percent-sign">23 </span>
+                                            </div>
+                                            <span class="easy-pie-title" style="width:150px">未出库数量占库存总量</span>
+                                            <ul class="smaller-stat hidden-sm pull-right">
+                                                <li>
+                                                    <span class="label bg-color-red" style="width:150px">
+                                                        <i class="fa fa-caret-up"></i> 未出库
+                                                        <span class="notOutPCTFinished"></span> 件
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="label bg-color-green " style="width:150px">
+                                                        <i class="fa fa-caret-down"></i> 总库存
+                                                        <span class="notOutPCTTotalCount"></span> 件
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="easy-pie-chart txt-color-darken notInPCTFinishedPercentage" data-percent="" data-pie-size="50">
+                                                <span class="percent percent-sign">36 </span>
+                                            </div>
+                                            <span class="easy-pie-title" style="width:150px"> 未入库数量占库存总量</span>
+                                            <ul class="smaller-stat hidden-sm pull-right">
+                                                <li>
+                                                    <span class="label bg-color-red" style="width:150px">
+                                                        <i class="fa fa-caret-up"></i> 未入库
+                                                        <span class="notInPCTFinished"></span> 件
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="label bg-color-green " style="width:150px">
+                                                        <i class="fa fa-caret-down"></i> 总库存
+                                                        <span class="notInPCTTotalCount"></span> 件
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="hdnTotalInvQty" value="" />
+                                </div>
+                                <!-- end s1 tab pane -->
+
+                                <div class="tab-pane fade" id="s2">
+                                    <div class="padding-10">
+                                        <label id="lb_InboundFlotChart"></label>
+                                        <div class="inline-group" style="margin-top:5px; margin-bottom:-10px">
+                                            <div id="legend_InboundFlotChart"></div>
+                                        </div>
+                                        <div id="inboundFlotChart" class="chart-large has-legend-unique"></div>
+                                    </div>
+                                </div>
+                                <!-- end s2 tab pane -->
+
+                                <div class="tab-pane fade" id="s3">
+                                    <div class="padding-10">
+                                        <label id="lb_OutboundFlotChart"></label>
+                                        <div class="inline-group" style="margin-top:5px; margin-bottom:-10px">
+                                            <div id="legend_OutboundFlotChart"></div>
+                                        </div>
+                                        <div id="outboundFlotChart" class="chart-large has-legend-unique"></div>
+                                    </div>
+                                </div>
+                                <!-- end s2 tab pane -->
+
+                            </div>
+
+                            <!-- end content -->
+                        </div>
+
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+
+            </article>
+        </div>
+
+        @*泛亚近7天个渠道发货入库对比散点图*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-41" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>泛亚近七天各渠道发货量</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding eachChannelInvOut" id="div_eachChannelInvOutChart11">
+                            @Html.Action("EachChannelInvOut", new { flag = 1, type = 1 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-42" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>泛亚近七天各渠道入库数量</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding eachChannelInvOut" id="div_eachChannelInvOutChart21">
+                            @Html.Action("EachChannelInvOut", new { flag = 2, type = 1 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        @*邮政近7天个渠道发货入库对比散点图*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-51" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>邮政近七天各渠道发货量</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding eachChannelInvOut" id="div_eachChannelInvOutChart12">
+                            @Html.Action("EachChannelInvOut", new { flag = 1, type = 2 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-52" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>邮政近七天各渠道入库数量</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding eachChannelInvOut" id="div_eachChannelInvOutChart22">
+                            @Html.Action("EachChannelInvOut", new { flag = 2, type = 2 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        @*泛亚邮政库存种类分布图*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-61" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>泛亚库存种类分布</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding eachChannelInvOut" id="div_InventoryTypeDistrib1">
+                            @Html.Action("InventoryTypeDistrib", new { flag = 1 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-62" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>邮政库存种类分布</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding eachChannelInvOut" id="div_InventoryTypeDistrib2">
+                            @Html.Action("InventoryTypeDistrib", new { flag = 2 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        @*泛亚邮政仓库作业分布图，时间表图*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-71" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>泛亚仓库作业分布</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding eachChannelInvOut" id="div_WorkDistribution1">
+                            @Html.Action("WorkDistribution", new { flag = 1 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-72" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>邮政仓库作业分布</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding eachChannelInvOut" id="div_WorkDistribution2">
+                            @Html.Action("WorkDistribution", new { flag = 2 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        @*仓库近10天入库业务和出库业务对比，柱状图*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-21" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>仓库10天入库业务对比</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding" id="div_ReceiptChart">
+                            @Html.Partial("_ReceiptChart")
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-22" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>仓库10天出库业务对比</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding" id="div_OutboutChart">
+                            @Html.Partial("_OutboutChart")
+                        </div>
+                    </div>
+                </div>
+
+
+            </article>
+        </div>
+
+        @*仓库库存渠道占比统计环形图*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-4">
+                <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>仓库整体库存渠道占比</h2>
+                    </header>
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+
+                        <div id="div_ChannelInv0" class="widget-body no-padding">
+                            @Html.Action("ChannelInventory", new { WHFlag = 0 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="col-sm-12 col-md-12 col-lg-4">
+                <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>泛亚仓库库存渠道占比</h2>
+                    </header>
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+
+                        <div id="div_ChannelInv1" class="widget-body no-padding">
+                            @Html.Action("ChannelInventory", new { WHFlag = 1 })
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-4">
+                <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>邮政仓库库存渠道占比</h2>
+                    </header>
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+
+                        <div id="div_ChannelInv2" class="widget-body no-padding">
+                            @Html.Action("ChannelInventory", new { WHFlag = 2 })
+                        </div>
+                    </div>
+                </div>
+
+
+            </article>
+        </div>
+
+        @*发货统计、商品周转*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>发货统计</h2>
+                    </header>
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+
+                        <div class="widget-body no-padding">
+                            <table id="gvServiceStationReceipt" class="table table-striped table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th data-data="ServiceStationName">发货地址</th>
+                                        @*
+                                            <th data-data="DisplayReceiptPeriod">平均进货周期(天)</th>*@
+                                        <th data-data="LastReceiptPeriodQty">最后一次发货数量</th>
+                                        <th data-data="TotalQty">合计发货数量</th>
+                                        @*
+                                            <th data-data="DisplayNextReceiptPeriodDate">预计下次收货日期</th>*@
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-sm-12 col-md-12 col-lg-6">
+                <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false">
+
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>商品周转</h2>
+
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+
+                        <div class="widget-body no-padding">
+                            <table class="table table-striped table-hover table-condensed" id="gvTurnoverSku">
+                                <thead>
+                                    <tr>
+                                        <th class="text-align-center" data-data="SkuName" width="30%">商品名称</th>
+                                        <th class="text-align-center" data-data="UPC" width="15%">商品UPC</th>
+                                        <th class="text-align-center" width="15%">近半年转化</th>
+                                        <th class="text-align-center" width="13%">平均月销售</th>
+                                        <th width="13%" class="text-align-center" data-data="InvQty">剩余库存量</th>
+                                        @*
+                                            <th width="20%" class="text-align-center">库存预警</th>*@
+                                    </tr>
+                                </thead>
+
+                            </table>
+
+                            <!-- end content -->
+
+                        </div>
+
+                    </div>
+                    <!-- end widget div -->
+                </div>
+
+
+            </article>
+        </div>
+
+        @*畅销滞销商品top10*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-6">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-21" data-widget-editbutton="false">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>畅销商品TOP 10</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- end widget edit box -->
+                        <!-- widget content -->
+                        <div class="widget-body">
+                            <div id="skuMaxRank" class="table-responsive">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>UPC</th>
+                                            <th>商品名称</th>
+                                            <th>出库总量</th>
+                                            <th>总出库占比</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in SkuShipmentsRankDetailDto">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{item.UPC}}</td>
+                                            <td>{{item.SkuName}}</td>
+                                            <td>{{item.Qty}}</td>
+                                            <td>
+                                                <div class="sparkline{{$index}}">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+            <article class="col-sm-12 col-md-12 col-lg-6">
+
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>滞销商品TOP 10</h2>
+
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+
+                        </div>
+                        <!-- widget content -->
+                        <div class="widget-body">
+
+                            <div id="skuMinRank" class="table-responsive">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>UPC</th>
+                                            <th>商品名称</th>
+                                            <th>出库总量</th>
+                                            <th>剩余库存数量</th>
+                                            <th>库龄天数</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in SkuShipmentsRankDetailDto">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{item.UPC}}</td>
+                                            <td>{{item.SkuName}}</td>
+                                            <td>{{item.Qty}}</td>
+                                            <td>{{item.InvQty}}</td>
+                                            <td>{{item.ZeroDateDisplay}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+
+            </article>
+        </div>
+
+        @*每月出入口统计日历展示*@
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-3" data-widget-colorbutton="false">
+
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
+                        <h2> 每月出入库统计 </h2>
+                        <div class="widget-toolbar">
+                            <!-- add: non-hidden - to disable auto hide -->
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+                                    Showing <i class="fa fa-caret-down"></i>
+                                </button>
+                                <ul class="dropdown-menu js-status-update pull-right">
+                                    <li>
+                                        <a href="javascript:void(0);" id="mt">Month</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" id="ag">Agenda</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" id="td">Today</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+
+                            <input class="form-control" type="text">
+
+                        </div>
+                        <!-- end widget edit box -->
+
+                        <div class="widget-body no-padding">
+                            <!-- content goes here -->
+                            <div class="widget-body-toolbar">
+
+                                <div id="calendar-buttons">
+
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-prev"><i class="fa fa-chevron-left"></i></a>
+                                        <a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-next"><i class="fa fa-chevron-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="calendar"></div>
+
+                            <!-- end content -->
+                        </div>
+
+                    </div>
+                    <!-- end widget div -->
+                </div>
+            </article>
+        </div>
+
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+
+</div>
+<!-- END MAIN CONTENT -->
+@section pagespecific {
+    @Scripts.Render("~/plugins/dataTables")
+    <script src="/scripts/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    @Scripts.Render("~/scripts/vue")
+
+    <script>
+
+        var IndexPageChart = {
+            ServiceStationReceiptTable: {},
+            init: function () {
+                var _self = this;
+                _self.initServiceStationReceipt();
+                _self.initTurnoverSku();
+                setInterval(_self.initApiProcessChart, 3 * 1000); //每5秒 刷新一次
+                //_self.initUpdateChart();
+            },
+            initApiProcessChart: function () {
+                $.ajax({
+                    url: "@Url.Action("GetApiProcessResult", "Home")",
+                    type: "get",
+                    success: function (data) {
+                        if (data.success) {
+                            var result = data.result;
+                            successData = [];
+                            var formatArr = [];
+
+                            $.each(result.SuccessList, function () {
+                                successData.push([this.minutes, this.ProcessCount]);
+                                formatArr.push([this.minutes, this.DisplayDate]);
+                            });
+
+                            var $UpdatingChartColors = $("#updating-chart").css('color');
+                            var options = {
+                                yaxis: {
+                                    min: 0,
+                                    tickDecimals: 0
+                                },
+                                xaxis: {
+                                    ticks: formatArr
+                                },
+                                colors: [$UpdatingChartColors],
+                                series: {
+                                    lines: {
+                                        lineWidth: 1,
+                                        fill: true,
+                                        fillColor: {
+                                            colors: [
+                                                {
+                                                    opacity: 0.4
+                                                }, {
+                                                    opacity: 0
+                                                }
+                                            ]
+                                        },
+                                        steps: false
+
+                                    }
+                                }
+                            };
+
+                            $("#updating-chart").length && $.plot($("#updating-chart"), [successData], options);
+
+                        }
+                    }
+                });
+            },
+            initTurnoverSku: function () {
+                IndexPageChart.TurnoverSkuTable = $('#gvTurnoverSku').DataTable({
+                    "sAjaxSource": "@Url.Action("GetTurnoverSkuPage", "Home")",
+                    dom: 'frtip',
+                    "columnDefs": [
+                        {
+                            "targets": 2,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                var column = '<div class="gvTurnoverSku sparkline txt-color-blue text-align-center" data-sparkline-height="22px" data-sparkline-width="90px" data-sparkline-barwidth="2">';
+                                column += full.InQty1 + "," + full.OutQty1 + "," + full.InQty2 + "," + full.OutQty2 + "," + full.InQty3 + "," + full.OutQty3 + "," + full.InQty4 + "," + full.OutQty4 + "," + full.InQty5 + "," + full.OutQty5 + "," + full.InQty6 + "," + full.OutQty6;
+                                column += '</div>';
+                                return column;
+                            }
+                        },
+                        {
+                            "targets": 3,
+                            render: function (data, type, full, meta) {
+                                return full.AverageQty.toFixed(2);
+                            }
+                        }
+                        //,
+                         //{
+                         //    "targets": 5,
+                         //    render: function (data, type, full, meta) {
+                         //        return full.Prompt;
+                         //    }
+                         //}
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": false, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[1, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    },
+                    "fnDrawCallback": function () {
+                        $('.gvTurnoverSku').sparkline('html', { type: 'bar' });
+                    }
+
+                });
+            },
+            initServiceStationReceipt: function () {
+                IndexPageChart.ServiceStationReceiptTable = $('#gvServiceStationReceipt').DataTable({
+                    "sAjaxSource": "@Url.Action("GetServiceStationReceiptInfo", "Home")",
+                    dom: 'frtip',
+                    "columnDefs": [],
+                    "iDisplayLength": 10,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": false, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[1, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+            }
+        };
+
+        $(document).ready(function () {
+            $('.progress-bar').progressbar({
+                display_text: 'fill'
+            });
+
+
+            $(".js-status-update a").click(function () {
+                var selText = $(this).text();
+                var $this = $(this);
+                $this.parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+                $this.parents('.dropdown-menu').find('li').removeClass('active');
+                $this.parent().addClass('active');
+            });
+
+            /*
+            * TODO: add a way to add more todo's to list
+            */
+
+            // initialize sortable
+            $(function () {
+                $("#sortable1, #sortable2").sortable({
+                    handle: '.handle',
+                    connectWith: ".todo",
+                    update: countTasks
+                }).disableSelection();
+            });
+
+            // check and uncheck
+            $('.todo .checkbox > input[type="checkbox"]').click(function () {
+                var $this = $(this).parent().parent().parent();
+
+                if ($(this).prop('checked')) {
+                    $this.addClass("complete");
+
+                    $(this).parent().hide();
+
+                    // once clicked - add class, copy to memory then remove and add to sortable3
+                    $this.slideUp(500, function () {
+                        $this.clone().prependTo("#sortable3").effect("highlight", {}, 800);
+                        $this.remove();
+                        countTasks();
+                    });
+                } else {
+                    // insert undo code here...
+                }
+
+            })
+            // count tasks
+            function countTasks() {
+
+                $('.todo-group-title').each(function () {
+                    var $this = $(this);
+                    $this.find(".num-of-tasks").text($this.next().find("li").size());
+                });
+
+            }
+
+            /*
+            * RUN PAGE GRAPHS
+            */
+
+            IndexPageChart.init();
+
+            skuMaxRank.init();
+            skuMinRank.init();
+
+            $(function () {
+                initData.GetProgressBarData();
+
+                initData.GetPieChartSummaryData();
+
+                var trgt = [[1354586000000, 153], [1364587000000, 658], [1374588000000, 198], [1384589000000, 663], [1394590000000, 801], [1404591000000, 1080], [1414592000000, 353], [1424593000000, 749], [1434594000000, 523], [1444595000000, 258], [1454596000000, 688], [1464597000000, 364]], prft = [[1354586000000, 53], [1364587000000, 65], [1374588000000, 98], [1384589000000, 83], [1394590000000, 980], [1404591000000, 808], [1414592000000, 720], [1424593000000, 674], [1434594000000, 23], [1444595000000, 79], [1454596000000, 88], [1464597000000, 36]], sgnups = [[1354586000000, 647], [1364587000000, 435], [1374588000000, 784], [1384589000000, 346], [1394590000000, 487], [1404591000000, 463], [1414592000000, 479], [1424593000000, 236], [1434594000000, 843], [1444595000000, 657], [1454596000000, 241], [1464597000000, 341]], toggles = $("#rev-toggles"), target = $("#flotcontainer");
+
+                var data = [{
+                    label: "Target Profit",
+                    data: trgt,
+                    bars: {
+                        show: true,
+                        align: "center",
+                        barWidth: 30 * 30 * 60 * 1000 * 80
+                    }
+                }, {
+                    label: "Actual Profit",
+                    data: prft,
+                    color: '#3276B1',
+                    lines: {
+                        show: true,
+                        lineWidth: 3
+                    },
+                    points: {
+                        show: true
+                    }
+                }, {
+                    label: "Actual Signups",
+                    data: sgnups,
+                    color: '#71843F',
+                    lines: {
+                        show: true,
+                        lineWidth: 1
+                    },
+                    points: {
+                        show: true
+                    }
+                }]
+
+                var options = {
+                    grid: {
+                        hoverable: true
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        //content: '%x - %y',
+                        //dateFormat: '%b %y',
+                        defaultTheme: false
+                    },
+                    xaxis: {
+                        mode: "time"
+                    },
+                    yaxes: {
+                        tickFormatter: function (val, axis) {
+                            return "$" + val;
+                        },
+                        max: 1200
+                    }
+
+                };
+
+                plot2 = null;
+
+                function plotNow() {
+                    var d = [];
+                    toggles.find(':checkbox').each(function () {
+                        if ($(this).is(':checked')) {
+                            d.push(data[$(this).attr("name").substr(4, 1)]);
+                        }
+                    });
+                    if (d.length > 0) {
+                        if (plot2) {
+                            plot2.setData(d);
+                            plot2.draw();
+                        } else {
+                            plot2 = $.plot(target, d, options);
+                        }
+                    }
+
+                };
+
+                toggles.find(':checkbox').on('change', function () {
+                    plotNow();
+                });
+                plotNow()
+
+            });
+
+            /*
+             * VECTOR MAP
+             */
+
+            data_array = {
+                "US": 4977,
+                "AU": 4873,
+                "IN": 3671,
+                "BR": 2476,
+                "TR": 1476,
+                "CN": 146,
+                "CA": 134,
+                "BD": 100
+            };
+
+            //$('#vector-map').vectorMap({
+            //    map: 'world_mill_en',
+            //    backgroundColor: '#fff',
+            //    regionStyle: {
+            //        initial: {
+            //            fill: '#c4c4c4'
+            //        },
+            //        hover: {
+            //            "fill-opacity": 1
+            //        }
+            //    },
+            //    series: {
+            //        regions: [{
+            //            values: data_array,
+            //            scale: ['#85a8b6', '#4d7686'],
+            //            normalizeFunction: 'polynomial'
+            //        }]
+            //    },
+            //    onRegionLabelShow: function (e, el, code) {
+            //        if (typeof data_array[code] == 'undefined') {
+            //            e.preventDefault();
+            //        } else {
+            //            var countrylbl = data_array[code];
+            //            el.html(el.html() + ': ' + countrylbl + ' visits');
+            //        }
+            //    }
+            //});
+
+            /*
+             * FULL CALENDAR JS
+             */
+
+            //gavin
+            if ($("#calendar").length) {
+
+                $.ajax({
+                    url: "@Url.Action("GetDailyEventDataCountInfo", "Home")",
+                    data:
+                    {
+                        'sysId': '@ViewBag.UOMSysId'
+                    },
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            var date = new Date();
+                            var d = date.getDate();
+                            var m = date.getMonth();
+                            var y = date.getFullYear();
+
+                            var eventArr = [];
+
+                            $.each(data.Data.OutboundList, function () {
+                                eventArr.push({
+                                    title: this.BussinessNameDisplay,
+                                    start: new Date(this.Year, this.Month - 1, this.Day),
+                                    // description: 'long description',
+                                    allDay: true,
+                                    //className: ["event", "bg-color-greenLight"],
+                                    backgroundColor: "#FFA400"
+                                    //icon: 'fa-check'
+                                });
+                            });
+
+                            $.each(data.Data.InboundList, function () {
+                                eventArr.push({
+                                    title: this.BussinessNameDisplay,
+                                    start: new Date(this.Year, this.Month - 1, this.Day),
+                                    // description: 'long description',
+                                    allDay: true,
+                                    backgroundColor: "#50AB4D"
+                                    //className: ["event", "bg-color-blue"],
+                                    //icon: 'fa-check'
+                                });
+                            });
+
+                            $.each(data.Data.EstimateOutboundList, function () {
+                                eventArr.push({
+                                    title: this.BussinessNameDisplay,
+                                    start: new Date(this.Year, this.Month - 1, this.Day),
+                                    // description: 'long description',
+                                    allDay: true,
+                                    backgroundColor: "#EA423A"
+                                    //className: ["event", "bg-color-darken"],
+                                    //icon: 'fa-check'
+                                });
+                            });
+
+                            $.each(data.Data.EstimateInboundList, function () {
+                                eventArr.push({
+                                    title: this.BussinessNameDisplay,
+                                    start: new Date(this.Year, this.Month - 1, this.Day),
+                                    // description: 'long description',
+                                    allDay: true,
+                                    backgroundColor: "#14BED4"
+                                    //className: ["event", "bg-color-yellow"],
+                                    //icon: 'fa-check'
+                                });
+                            });
+
+
+                            var calendar = $('#calendar').fullCalendar({
+                                header: {
+                                    left: '',
+                                    center: 'title',
+                                    right: ''
+                                },
+
+                                theme: true,
+                                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                                monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                                dayNames: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+                                dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+                                today: ["今天"],
+                                firstDay: 1,
+                                buttonText: {
+                                    today: '本月',
+                                    month: '月',
+                                    week: '周',
+                                    day: '日',
+                                    prev: '上一月',
+                                    next: '下一月'
+                                },
+                                titleFormat: {
+                                    month: 'YYYY年 MM月'
+                                },
+
+                                editable: false,
+                                draggable: false,
+                                selectable: false,
+                                selectHelper: false,
+                                unselectAuto: false,
+                                disableResizing: false,
+
+                                select: function (start, end, allDay) {
+                                    var title = prompt('Event Title:');
+                                    if (title) {
+                                        calendar.fullCalendar('renderEvent', {
+                                            title: title,
+                                            start: start,
+                                            end: end,
+                                            allDay: allDay
+                                        }, true // make the event "stick"
+                                        );
+                                    }
+                                    calendar.fullCalendar('unselect');
+                                },
+
+
+                                events: eventArr,
+
+                                //单击事件项时触发
+                                eventClick: function (calEvent, jsEvent, view) {
+                                    var eventTitle = calEvent.title;
+                                    var eventDate = calEvent.start.format("YYYY-MM-DD");
+                                    var portalBaseUrl = '@PublicConst.WmsPortalUrl';
+
+                                    if (eventTitle.indexOf("出库") == 0) {
+                                        window.open(portalBaseUrl + "Outbound/OutboundMaintain?outboundDateFrom=" + eventDate + "&outboundDateTo=" + eventDate);
+                                    }
+                                    else if (eventTitle.indexOf("入库") == 0) {
+                                        window.open(portalBaseUrl + "Receipt/ReceiptList?receiptDateFrom=" + eventDate + "&receiptDateTo=" + eventDate);
+                                    }
+                                },
+
+                                eventRender: function (event, element, icon) {
+                                    if (!event.description == "") {
+                                        element.find('.fc-event-title').append("<br/><span class='ultra-light'>" + event.description + "</span>");
+                                    }
+                                    if (!event.icon == "") {
+                                        element.find('.fc-event-title').append("<i class='air air-top-right fa " + event.icon + " '></i>");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+
+            };
+
+            /* hide default buttons */
+            $('.fc-header-right, .fc-header-center').hide();
+
+            // calendar prev
+            $('#calendar-buttons #btn-prev').click(function () {
+                $('.fc-button-prev').click();
+                return false;
+            });
+
+            // calendar next
+            $('#calendar-buttons #btn-next').click(function () {
+                $('.fc-button-next').click();
+                return false;
+            });
+
+            // calendar today
+            $('#calendar-buttons #btn-today').click(function () {
+                $('.fc-button-today').click();
+                return false;
+            });
+
+            // calendar month
+            $('#mt').click(function () {
+                $('#calendar').fullCalendar('changeView', 'month');
+            });
+
+            // calendar agenda week
+            $('#ag').click(function () {
+                $('#calendar').fullCalendar('changeView', 'agendaWeek');
+            });
+
+            // calendar agenda day
+            $('#td').click(function () {
+                $('#calendar').fullCalendar('changeView', 'agendaDay');
+            });
+
+            /*
+             * CHAT
+             */
+
+            $.filter_input = $('#filter-chat-list');
+            $.chat_users_container = $('#chat-container > .chat-list-body')
+            $.chat_users = $('#chat-users')
+            $.chat_list_btn = $('#chat-container > .chat-list-open-close');
+            $.chat_body = $('#chat-body');
+
+            // custom css expression for a case-insensitive contains()
+            jQuery.expr[':'].Contains = function (a, i, m) {
+                return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+            };
+
+            function listFilter(list) {// header is any element, list is an unordered list
+                // create and add the filter form to the header
+
+                $.filter_input.change(function () {
+                    var filter = $(this).val();
+                    if (filter) {
+                        $.chat_users.find("a:not(:Contains(" + filter + "))").parent().slideUp();
+                        $.chat_users.find("a:Contains(" + filter + ")").parent().slideDown();
+                    } else {
+                        $.chat_users.find("li").slideDown();
+                    }
+                    return false;
+                }).keyup(function () {
+                    $(this).change();
+
+                });
+
+            }
+
+            // on dom ready
+            listFilter($.chat_users);
+
+            // open chat list
+            $.chat_list_btn.click(function () {
+                $(this).parent('#chat-container').toggleClass('open');
+            });
+
+            // 正式代码
+            $('.progress-bar').progressbar({
+                display_text: 'fill'
+            });
+            setInterval(switchChartTab, 10 * 1000);  //设置首页Tab自动切换
+            FlotChart.initData();
+            SparkLine.initData();
+        });
+
+        // 正式代码
+        var FlotChart = {
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetFlotChartSummaryDto", "Home")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            FlotChart.initUI("#inboundFlotChart", "入库", "#lb_InboundFlotChart", "#legend_InboundFlotChart", data.Data.Inbound);
+                            FlotChart.initUI("#outboundFlotChart", "出库", "#lb_OutboundFlotChart", "#legend_OutboundFlotChart", data.Data.Outbound);
+                        } else {
+
+                        }
+                    }
+                });
+            },
+            initUI: function (id, type, labelId, legendId, flotData) {
+                var text = "";
+                if (flotData.MOMPercentage > 0) {
+                    text = "仓库" + type + "数量上月环比上涨" + flotData.MOMPercentage.toFixed(2) + "%";
+                    $(labelId).css("color", "red");
+                } else {
+                    text = "仓库" + type + "数量上月环比下跌" + flotData.MOMPercentage.toFixed(2) + "%";
+                    $(labelId).css("color", "green");
+                }
+                $(labelId).html(text);
+
+                var recent = [], mom = [], dates = [];
+                for (var i = 0; i < flotData.Dates.length; i++) {
+                    recent.push([i + 1, flotData.Recent[i]]);
+                    mom.push([i + 1, flotData.MOM[i]]);
+                    dates.push([i + 1, flotData.Dates[i]]);
+                }
+
+                var data = [
+                    {
+                        label: "近期",
+                        data: recent,
+                        lines: {
+                            show: true,
+                            lineWidth: 1,
+                            fill: true,
+                            fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.13 }] }
+                        },
+                        points: { show: true }
+                    },
+                    {
+                        label: "上月同期",
+                        data: mom,
+                        lines: {
+                            show: true,
+                            lineWidth: 1,
+                            fill: true,
+                            fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.13 }] }
+                        },
+                        points: { show: true }
+                    }
+                ];
+                var options = {
+                    grid: { hoverable: true },
+                    tooltip: true,
+                    tooltipOpts: { defaultTheme: false },
+                    xaxis: {
+                        labelWidth: 150,
+                        labelHeight: 25,
+                        ticks: dates
+                    },
+                    legend: {
+                        show: true,
+                        noColumns: 2,
+                        labelBoxBorderColor: "#000",
+                        container: legendId,
+                        position: "ne",
+                        margin: [5, 5],
+                        backgroundColor: "#efefef",
+                        backgroundOpacity: 1
+                    }
+                };
+                $.plot($(id), data, options);
+            }
+        }
+
+        var SparkLine = {
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetSparkLineSummaryDto", "Home")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            SparkLine.initUI("#lb_Spark_PO", "#div_Spark_PO", "#57889c", data.Data.Purchase);
+                            SparkLine.initUI("#lb_Spark_B2BSO", "#div_Spark_B2BSO", "#6e587a", data.Data.B2BOutbound);
+                            SparkLine.initUI("#lb_Spark_B2CSO", "#div_Spark_B2CSO", "#496949", data.Data.B2COutbound);
+                        } else {
+
+                        }
+                    }
+                });
+            },
+            initUI: function (labelId, divId, barColor, sparkLineData) {
+                refreshData(sparkLineData.TotalCount, labelId);
+                $(divId).sparkline(sparkLineData.RecentData, {
+                    type: 'bar',
+                    barColor: barColor
+                });
+            }
+        }
+
+        var currentIndex = 0;
+        function switchChartTab() {
+            var indexArray = [0, 1, 2];
+            if (currentIndex == indexArray[indexArray.length - 1]) {
+                currentIndex = indexArray[0];
+            } else {
+                currentIndex++;
+            }
+            $('#myTab li:eq(' + currentIndex + ') a').tab('show');
+        }
+
+        function refreshData(newNum, keyId) {
+            $({ numberValue: 0 }).animate({ numberValue: newNum }, {
+                duration: 1000,
+                easing: 'linear',
+                step: function () {
+                    $(keyId).html(Math.floor(this.numberValue));
+                },
+                done: function () {
+                    if (newNum != null && $(keyId).html() != newNum.toString()) {
+                        $(keyId).html(newNum);
+                    }
+                }
+            });
+        }
+
+        //商品发货量最大排名
+        var skuMaxRank = {
+            viewModel: {},
+            init: function () {
+                $.ajax({
+                    url: "@Url.Action("GetMaxSkuShipmentsRank", "Home")",
+                    data: { iDisplayStart: 0, iDisplayLength: 10 },
+                    type: "POST",
+                    success: function (data) {
+                        skuMaxRank.initVue(data);
+                        if (data != null) {
+                            for (var i in data.SkuShipmentsRankDetailDto) {
+                                var qty = data.SkuShipmentsRankDetailDto[i].Qty;
+                                var value = parseFloat(qty) / parseFloat(data.TotalQty) * 100;
+                                $('#skuMaxRank .sparkline' + i).sparkline([qty, data.TotalQty - qty], { type: 'pie' });
+
+                                $('#skuMaxRank .sparkline' + i).append("  " + value.toFixed(1) + "%");
+                            }
+                        }
+                    }
+                });
+            },
+            initVue: function (data) {
+                skuMaxRank.viewModel = new Vue({
+                    el: "#skuMaxRank",
+                    data: data,
+                    methods: {
+                    }
+                });
+            }
+        }
+
+        //商品发货量最小排名
+        var skuMinRank = {
+            viewModel: {},
+            init: function () {
+                $.ajax({
+                    url: "@Url.Action("GetMinSkuShipmentsRank", "Home")",
+                    data: { iDisplayStart: 0, iDisplayLength: 10 },
+                    type: "POST",
+                    success: function (data) {
+                        skuMinRank.initVue(data);
+                    }
+                });
+            },
+            initVue: function (data) {
+                skuMinRank.viewModel = new Vue({
+                    el: "#skuMinRank",
+                    data: data,
+                    methods: {
+                    }
+                });
+            }
+        }
+        var initData = {};
+        //获取系统流量进度条
+        initData.GetProgressBarData = function () {
+            $.ajax({
+                url: "@Url.Action("GetProgressBarData", "Home")",
+                data: {},
+                type: "POST",
+                success: function (data) {
+                    if (data.Success) {
+                        $(".purchaseUnfinished").html(data.Data.Purchase.Unfinished + " 未完成 / " + data.Data.Purchase.Finished + "完成");
+                        $(".purchaseReturnUnfinished").html(data.Data.PurchaseReturn.Unfinished + " 未完成 / " + data.Data.PurchaseReturn.Finished + "完成");
+                        $(".outboundUnfinished").html(data.Data.Outbound.Unfinished + " 未完成 / " + data.Data.Outbound.Finished + "完成");
+                        $(".outboundReturnUnfinished").html(data.Data.OutboundReturn.Unfinished + " 未完成 / " + data.Data.OutboundReturn.Finished + "完成");
+
+                        $(".purchaseFinishedPercentage").attr('aria-valuetransitiongoal', data.Data.Purchase.FinishedPercentage);
+                        $(".purchaseReturnFinishedPercentage").attr('aria-valuetransitiongoal', data.Data.PurchaseReturn.FinishedPercentage);
+                        $(".outboundFinishedPercentage").attr('aria-valuetransitiongoal', data.Data.Outbound.FinishedPercentage);
+                        $(".outboundReturnFinishedPercentage").attr('aria-valuetransitiongoal', data.Data.OutboundReturn.FinishedPercentage);
+                        $('.progress .progress-bar').progressbar({
+                            transition_delay: 1500
+                        });
+                    }
+                }
+            });
+        }
+        initData.GetPieChartSummaryData = function () {
+            $.ajax({
+                url: "@Url.Action("GetPieChartSummaryData", "Home")",
+                data: {},
+                type: "POST",
+                success: function (data) {
+                    if (data.Success) {
+                        $('.receiptOrderFinishedPercentage').data('easyPieChart').update(data.Data.ReceiptOrder.FinishedPercentage);
+                        $(".receiptOrderUnfinished").html(data.Data.ReceiptOrder.Unfinished);
+                        $(".receiptOrderFinished").html(data.Data.ReceiptOrder.Finished);
+
+                        $('.pickOrderFinishedPercentage').data('easyPieChart').update(data.Data.PickOrder.FinishedPercentage);
+                        $(".pickOrderUnfinished").html(data.Data.PickOrder.Unfinished);
+                        $(".pickOrderFinished").html(data.Data.PickOrder.Finished);
+
+                        $('.notOutPCTFinishedPercentage').data('easyPieChart').update(data.Data.NotOutPCT.FinishedPercentage);
+                        $(".notOutPCTFinished").html(data.Data.NotOutPCT.Finished);
+                        $(".notOutPCTTotalCount").html(data.Data.NotOutPCT.TotalCount);
+
+                        $('.notInPCTFinishedPercentage').data('easyPieChart').update(data.Data.NotInPCT.FinishedPercentage);
+                        $(".notInPCTFinished").html(data.Data.NotInPCT.Finished);
+                        $(".notInPCTTotalCount").html(data.Data.NotInPCT.TotalCount);
+
+                        $("#hdnTotalInvQty").html(data.Data.NotOutPCT.TotalCount);
+                    }
+                }
+            });
+
+        }
+    </script>
+}

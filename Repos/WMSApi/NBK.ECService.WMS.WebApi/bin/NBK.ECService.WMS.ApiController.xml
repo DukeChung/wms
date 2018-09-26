@@ -1,0 +1,3253 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NBK.ECService.WMS.ApiController</name>
+    </assembly>
+    <members>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.AccountController.UserLoginCheck(NBK.ECService.WMS.DTO.Account.LoginUserInfo)">
+            <summary>
+            校验用户登陆验证
+            #1. 失败登陆次数
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.AccountController.UserLoginSuccess(NBK.ECService.WMS.DTO.Account.LoginUserInfo)">
+            <summary>
+            登陆成功时调用
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.AccountController.UserLoginFail(NBK.ECService.WMS.DTO.Account.LoginUserInfo)">
+            <summary>
+            登陆失败时调用
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.BaseController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.BaseController.#ctor(NBK.ECService.WMS.Application.Interface.IBaseAppService)">
+            <summary>
+            
+            </summary>
+            <param name="baseAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.BaseController.BaseApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.BaseController.GenNextNumber(System.String,System.Int32)">
+            <summary>
+            生成单号  
+            </summary>
+            <param name="tableName"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.BaseController.GetCoordinate(System.String,System.String)">
+            <summary>
+            获取坐标
+            </summary>
+            <param name="city"></param>
+            <param name="address"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.BaseController.PushOutboundECC(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="outboundOrder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.BaseController.TestConnection">
+            <summary>
+            测试连接是否成功
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController.#ctor(NBK.ECService.WMS.Application.Interface.ICarrierAppService)">
+            <summary>
+            
+            </summary>
+            <param name="carrierAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController.CarrierApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController.GetCarrierList(NBK.ECService.WMS.DTO.CarrierQuery)">
+            <summary>
+            获取承运商列表
+            </summary>
+            <param name="carrierQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController.AddCarrier(NBK.ECService.WMS.DTO.CarrierDto)">
+            <summary>
+            新增承运商
+            </summary>
+            <param name="carrierDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController.GetCarrierById(System.Guid)">
+            <summary>
+            根据Id获取承运商
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController.EditCarrier(NBK.ECService.WMS.DTO.CarrierDto)">
+            <summary>
+            编辑承运商
+            </summary>
+            <param name="carrierDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController.DeleteCarrier(System.Collections.Generic.List{System.Guid})">
+            <summary>
+            删除承运商
+            </summary>
+            <param name="sysIds"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.CarrierController.GetExpressListByIsActive">
+            <summary>
+            获取可用承运商
+            </summary>
+            <param name=""></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.ComponentController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ComponentController.#ctor(NBK.ECService.WMS.Application.Interface.IComponentAppService)">
+            <summary>
+            
+            </summary>
+            <param name="componentAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ComponentController.ComponentApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ComponentController.GetComponentListByPaging(NBK.ECService.WMS.DTO.ComponentQuery)">
+            <summary>
+            获取组装件列表
+            </summary>
+            <param name="componentQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ComponentController.GetComponentById(NBK.ECService.WMS.DTO.ComponentQuery)">
+            <summary>
+            获取组装件
+            </summary>
+            <param name="componentQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.ContainerController">
+            <summary>
+            容器管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ContainerController.#ctor(NBK.ECService.WMS.Application.Interface.IContainerAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ContainerController.DeleteContainer(System.String,System.Guid)">
+            <summary>
+            批量删除， 逗号分隔sysid
+            </summary>
+            <param name="sysIdList"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController.#ctor(NBK.ECService.WMS.Application.Interface.ILocationAppService)">
+            <summary>
+            
+            </summary>
+            <param name="locationAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController.LocationApi">
+            <summary>
+            Location
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController.GetLocationList(NBK.ECService.WMS.DTO.LocationQuery)">
+            <summary>
+            获取库位列表
+            </summary>
+            <param name="locationQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController.AddLocation(NBK.ECService.WMS.DTO.LocationDto)">
+            <summary>
+            新增库位
+            </summary>
+            <param name="locationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController.GetLocationById(System.Guid,System.Guid)">
+            <summary>
+            根据Id获取库位
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController.EditLocation(NBK.ECService.WMS.DTO.LocationDto)">
+            <summary>
+            编辑库位
+            </summary>
+            <param name="locationDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController.DeleteLocation(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除库位
+            </summary>
+            <param name="sysIds"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LocationController.GetSelectLocation(System.Guid,System.Nullable{System.Guid})">
+            <summary>
+            获取库位下拉框
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController">
+            <summary>
+            批次模板
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController.#ctor(NBK.ECService.WMS.Application.Interface.ILotTemplateAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="lotTemplateAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController.LotTemplatApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController.GetLotTemplateDtoById(System.Guid)">
+            <summary>
+            根据ID获取SysCode
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController.DeleteLotTemplate(System.Collections.Generic.List{System.Guid})">
+            <summary>
+            删除批次模板
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController.GetLotTemplateDtoListByPageInfo(NBK.ECService.WMS.DTO.LotTemplateQuery)">
+            <summary>
+            获取分页数据
+            </summary>
+            <param name="lotTemplateQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController.InsertLotTemplate(NBK.ECService.WMS.DTO.LotTemplateDto)">
+            <summary>
+            新增批次模板
+            </summary>
+            <param name="lotTemplateDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController.UpdateLotTemplate(NBK.ECService.WMS.DTO.LotTemplateDto)">
+            <summary>
+            更新批次模板
+            </summary>
+            <param name="lotTemplateDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.LotTemplateController.GetSelectLotTemplate(System.String)">
+            <summary>
+            获取下拉 批次模板
+            </summary>
+            <param name="lotCode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.PackageController">
+            <summary>
+            包装管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.PackageController.#ctor(NBK.ECService.WMS.Application.Interface.IPackageAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.PackageController.GetSelectPack(System.String)">
+            <summary>
+            获取下拉 批次模板
+            </summary>
+            <param name="lotCode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController.#ctor(NBK.ECService.WMS.Application.Interface.ISkuAppService)">
+            <summary>
+            
+            </summary>
+            <param name="skuAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController.SkuApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController.GetSkuList(NBK.ECService.WMS.DTO.SkuQuery)">
+            <summary>
+            获取SKU列表
+            </summary>
+            <param name="skuQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController.AddSku(NBK.ECService.WMS.DTO.SkuDto)">
+            <summary>
+            新增SKU
+            </summary>
+            <param name="skuDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController.GetSkuById(System.Guid)">
+            <summary>
+            根据Id获取SKU
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController.EditSku(NBK.ECService.WMS.DTO.SkuDto)">
+            <summary>
+            编辑SKU
+            </summary>
+            <param name="skuDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController.DeleteSku(System.Collections.Generic.List{System.Guid})">
+            <summary>
+            删除SKU
+            </summary>
+            <param name="sysIds"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SkuController.GetSkuAndSkuPackListByUPC(NBK.ECService.WMS.DTO.DuplicateUPCChooseQuery)">
+            <summary>
+            根据UPC 获取 商品UPC 已经 包装UPC对应的商品信息集合
+            </summary>
+            <param name="upc"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController">
+            <summary>
+            基础资料系统代码
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.#ctor(NBK.ECService.WMS.Application.Interface.ISysCodeAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="sysCodeAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.SysCodeApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.GetSysCodeDtoById(System.Guid)">
+            <summary>
+            根据ID获取SysCode
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.GetSysCodeDetailDtoById(System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.DeleteSysCodeDetailByIdList(System.Collections.Generic.List{System.Guid})">
+            <summary>
+            删除明细
+            </summary>
+            <param name="sysId"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.GetSysCodeDtoListByPageInfo(NBK.ECService.WMS.DTO.SysCodeQuery)">
+            <summary>
+            查询分页数据
+            </summary>
+            <param name="sysCodeQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.GetSysCodeDetailDtoList(System.Guid)">
+            <summary>
+            查询明细列表
+            </summary>
+            <param name="sysCodeSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.UpdateSysCode(NBK.ECService.WMS.DTO.SysCodeDto)">
+            <summary>
+            查询分页数据
+            </summary>
+            <param name="sysCodeDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.UpdateSysCodeDetail(NBK.ECService.WMS.DTO.SysCodeDetailDto)">
+            <summary>
+            更新明细
+            </summary>
+            <param name="sysCodeDetailDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.InsertSysCodeDetail(NBK.ECService.WMS.DTO.SysCodeDetailDto)">
+            <summary>
+            更新SysCodeDetail
+            </summary>
+            <param name="sysCodeDetailDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SysCodeController.GetSelectBySysCode(System.String,System.Boolean)">
+            <summary>
+            获取系统设置明细
+            </summary>
+            <param name="sysCodeType"></param>
+            <param name="isActive"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.SystemController">
+            <summary>
+            系统相关
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.SystemController.#ctor(NBK.ECService.WMS.Application.Interface.ISystemAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.#ctor(NBK.ECService.WMS.Application.Interface.IWareHouseAppService)">
+            <summary>
+            
+            </summary>
+            <param name="wareHouseAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.WareHouseApi">
+            <summary>
+            WareHouse
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.GetWareHouseByUserId(System.Int32)">
+            <summary>
+            获取仓库信息
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.GetNoAssignedWarehouse(NBK.ECService.WMS.DTO.UserWarehouseQuery)">
+            <summary>
+            查询用户未匹配的仓库列表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.GetAssignedWarehouse(NBK.ECService.WMS.DTO.UserWarehouseQuery)">
+            <summary>
+            查询用户已匹配的仓库列表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.SetAssignedWarehouse(NBK.ECService.WMS.DTO.UserWarehouseDto)">
+            <summary>
+            设置匹配用户仓库
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.SetNoAssignedWarehouse(NBK.ECService.WMS.DTO.UserWarehouseDto)">
+            <summary>
+            取消匹配用户仓库
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.GetConnectionStringByWarehouseSysId(System.Guid,System.Boolean)">
+            <summary>
+            根据仓库ID 是否写库标识 获取连接字符串
+            </summary>
+            <param name="WarehouseSysId"></param>
+            <param name="IsWrite"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WareHouseController.GetWarehouseByOtherId(System.String)">
+            <summary>
+            根据otherid获取仓库信息
+            </summary>
+            <param name="OtherId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.VendorController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.VendorController.#ctor(NBK.ECService.WMS.Application.Interface.IVendorAppService)">
+            <summary>
+            
+            </summary>
+            <param name="vendorAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.VendorController.VendorApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.VendorController.GetSelectVendor">
+            <summary>
+            获取供应商
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.WorkUserController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WorkUserController.#ctor(NBK.ECService.WMS.Application.Interface.IWorkUserAppService)">
+            <summary>
+            
+            </summary>
+            <param name="workUserAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WorkUserController.GetWorkUserList(NBK.ECService.WMS.DTO.WorkUserQuery)">
+            <summary>
+            获取工单用户列表
+            </summary>
+            <param name="workUserQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WorkUserController.AddWorkUser(NBK.ECService.WMS.DTO.WorkUserDto)">
+            <summary>
+            新增工单用户
+            </summary>
+            <param name="workUserDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WorkUserController.GetWorkUserById(System.Guid,System.Guid)">
+            <summary>
+            根据Id获取工单用户
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSydId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WorkUserController.GetWorkUsers(NBK.ECService.WMS.DTO.WorkUserQuery)">
+            <summary>
+            获取所有启用工单用户
+            </summary>
+            <param name="workUserQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WorkUserController.EditWorkUser(NBK.ECService.WMS.DTO.WorkUserDto)">
+            <summary>
+            编辑工单用户
+            </summary>
+            <param name="workUserDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.WorkUserController.DeleteWorkUser(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除工单用户
+            </summary>
+            <param name="sysIds"></param>
+            <param name="warehouseSydId"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController.#ctor(NBK.ECService.WMS.Application.Interface.IZoneAppService)">
+            <summary>
+            
+            </summary>
+            <param name="zoneAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController.ZoneApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController.GetZoneList(NBK.ECService.WMS.DTO.ZoneQuery)">
+            <summary>
+            获取储区列表
+            </summary>
+            <param name="zoneQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController.AddZone(NBK.ECService.WMS.DTO.ZoneDto)">
+            <summary>
+            新增储区
+            </summary>
+            <param name="zoneDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController.GetZoneById(System.Guid,System.Guid)">
+            <summary>
+            根据Id获取储区
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController.EditZone(NBK.ECService.WMS.DTO.ZoneDto)">
+            <summary>
+            编辑储区
+            </summary>
+            <param name="zoneDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController.DeleteZone(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除储区
+            </summary>
+            <param name="sysIds"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.BaseDataControllers.ZoneController.GetSelectZone(System.Nullable{System.Guid},System.String)">
+            <summary>
+            获取储区数下拉列表据源
+            </summary>
+            <param name="zoneCode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.#ctor(NBK.ECService.WMS.Application.Interface.IPurchaseAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="purchaseAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.PurchaseAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.GetPurchaseDetailSkuByUpcIsNull(System.Guid,System.Guid)">
+            <summary>
+            更新入库单状态
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.SavePurchaseDetailSkuStyle(NBK.ECService.WMS.DTO.PurchaseDetailSkuDto)">
+            <summary>
+            更新Sku属性
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.SaveBatchPurchaseAndReceipt(NBK.ECService.WMS.DTO.PurchaseBatchDto)">
+            <summary>
+            生成采购单并收货
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.AppointBatchNumber(System.String,System.String,System.Guid)">
+            <summary>
+            指定入库批号
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.ObsoletePurchase(NBK.ECService.WMS.DTO.PurchaseOperateDto)">
+            <summary>
+            作废采购订单
+            </summary>
+            <param name="purchaseDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.ClosePurchase(NBK.ECService.WMS.DTO.PurchaseOperateDto)">
+            <summary>
+            关闭采购订单
+            </summary>
+            <param name="purchaseDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.AutoShelves(NBK.ECService.WMS.DTO.PurchaseOperateDto)">
+            <summary>
+            退货入库，自动收货上架
+            </summary>
+            <param name="purchaseDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.GenerateQcOrderByPurchase(NBK.ECService.WMS.DTO.PurchaseQcDto)">
+            <summary>
+            入库单生成质检单
+            </summary>
+            <param name="purchaseQcDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.UpdatePurchaseBusinessTypeBySysId(System.String,System.String,System.Guid)">
+            <summary>
+            修改业务类型（指定上下行）
+            </summary>
+            <param name="sysId"></param>
+            <param name="businessType"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.PurchaseController.InsertPurchaseAndDetailsByReturnOutbound(NBK.ECService.WMS.DTO.PurchaseForReturnDto)">
+            <summary>
+            退货入库创建指定仓库入库单
+            </summary>
+            <param name="purchase"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.#ctor(NBK.ECService.WMS.Application.Interface.IReceiptAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="receiptAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.ReceiptApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.GetReceiptOperationByOrderNumber(System.String,System.String,System.Int32,System.Guid)">
+            <summary>
+            获取收货操作信息
+            </summary>
+            <param name="orderNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.CreateReceiptByPoOrder(System.String,System.String,System.Int32,System.Guid)">
+            <summary>
+            创建收货信息
+            </summary>
+            <param name="orderNumber"></param>
+            <returns></returns>z
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.SaveReceiptOperation(NBK.ECService.WMS.DTO.ReceiptOperationDto)">
+            <summary>
+            保存入库单明细信息
+            </summary>
+            <param name="receiptOperationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.UpdateReceiptStatus(System.Guid,NBK.ECService.WMS.Utility.Enum.ReceiptStatus,System.String,System.Int32,System.Guid)">
+            <summary>
+            更新入库单状态
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.CancelReceiptByPurchase(NBK.ECService.WMS.DTO.ReceiptCancelDto)">
+            <summary>
+            取消收货（入库单整单取消）
+            </summary>
+            <param name="receiptCancelDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.PickingMaterial(NBK.ECService.WMS.DTO.PickingMaterialDto)">
+            <summary>
+            领料分拣
+            </summary>
+            <param name="picking"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.GetPickingMaterialList(NBK.ECService.WMS.DTO.PickingMaterialQuery)">
+            <summary>
+            获取领料记录
+            </summary>
+            <param name="pickingQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.CheckDuplicateSN(System.Collections.Generic.List{System.String},System.String,System.Guid)">
+            <summary>
+            收货时检查SN是否重复
+            </summary>
+            <param name="snList"></param>
+            <param name="type">校验场景类型: 1. 收货  2. 发货</param>
+            <param name="warehouseSysId"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.GetReceiptDetailCollectionLotViewList(NBK.ECService.WMS.DTO.ReceiptCollectionLotQuery)">
+            <summary>
+            根据商品获取批次采集相关信息
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InboundControllers.ReceiptController.SaveReceiptDetailLot(NBK.ECService.WMS.DTO.ReceiptCollectionLotDto)">
+            <summary>
+            保存批次采集
+            </summary>
+            <param name="receiptCollectionLotDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.FrozenController.#ctor(NBK.ECService.WMS.Application.Interface.IFrozenAppService)">
+            <summary>
+            
+            </summary>
+            <param name="locationAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.FrozenController.FrozenApi">
+            <summary>
+            Location
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.FrozenController.GetFrozenRequestSkuByPage(NBK.ECService.WMS.DTO.FrozenRequestQuery)">
+            <summary>
+            查询冻结请求的商品展示列表数据源
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.FrozenController.SaveFrozenRequest(NBK.ECService.WMS.DTO.FrozenRequestDto)">
+            <summary>
+            冻结库存操作
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.FrozenController.GetFrozenRequestList(NBK.ECService.WMS.DTO.FrozenListQuery)">
+            <summary>
+            冻结记录查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.FrozenController.UnFrozenRequest(NBK.ECService.WMS.DTO.FrozenRequestDto)">
+            <summary>
+            解冻
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.FrozenController.GetFrozenDetailByPage(NBK.ECService.WMS.DTO.FrozenRequestQuery)">
+            <summary>
+            查询冻结货位或者储区 商品明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController">
+            <summary>
+            库存移动
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.#ctor(NBK.ECService.WMS.Application.Interface.IStockMovementAppService)">
+            <summary>
+            
+            </summary>
+            <param name="stockMovementAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.StockMovementAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.GetStockMovementSkuList(NBK.ECService.WMS.DTO.StockMovementSkuQuery)">
+            <summary>
+            获取库存移动SKU列表
+            </summary>
+            <param name="stockMovementSkuQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.GetStockMovement(System.Guid,System.String,System.String,System.Guid)">
+            <summary>
+            获取库存移动信息
+            </summary>
+            <param name="skuSysId"></param>
+            <param name="loc"></param>
+            <param name="lot"></param>
+            <param name="wareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.SaveStockMovement(NBK.ECService.WMS.DTO.StockMovementDto)">
+            <summary>
+            保存调整
+            </summary>
+            <param name="stockMovementDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.GetStockMovementList(NBK.ECService.WMS.DTO.StockMovementQuery)">
+            <summary>
+            获取移动单列表
+            </summary>
+            <param name="stockMovementQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.ConfirmStockMovement(NBK.ECService.WMS.DTO.StockMovementOperationDto)">
+            <summary>
+            确认移动
+            </summary>
+            <param name="stockMovementOperationDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.CancelStockMovement(NBK.ECService.WMS.DTO.StockMovementOperationDto)">
+            <summary>
+            取消移动
+            </summary>
+            <param name="stockMovementOperationDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockMovementController.ImportStockMovementList(NBK.ECService.WMS.DTO.ImportStockMovement)">
+            <summary>
+            库位变更导入
+            </summary>
+            <param name="list"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController">
+            <summary>
+            盘点
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.#ctor(NBK.ECService.WMS.Application.Interface.IStockTakeAppService)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.StockTakeAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetStockTakeList(NBK.ECService.WMS.DTO.StockTakeQuery)">
+            <summary>
+            获取盘点列表
+            </summary>
+            <param name="stockTakeQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.AddStockTake(NBK.ECService.WMS.DTO.StockTakeDto)">
+            <summary>
+            创建盘点单
+            </summary>
+            <param name="stockTakeDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetSelectWarehouse">
+            <summary>
+            获取仓库下拉框
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetStockTakeViewById(System.Guid,System.Guid)">
+            <summary>
+            获取盘点单
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetStockTakeDetailList(NBK.ECService.WMS.DTO.StockTakeViewQuery)">
+            <summary>
+            获取盘点单明细
+            </summary>
+            <param name="stockTakeViewQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetStockTakeDiffList(NBK.ECService.WMS.DTO.StockTakeViewQuery)">
+            <summary>
+            获取盘点单差异
+            </summary>
+            <param name="stockTakeViewQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.ReplayStockTakeDetail(NBK.ECService.WMS.DTO.ReplayStockTakeDto)">
+            <summary>
+            盘点单明细复盘
+            </summary>
+            <param name="replayStockTakeDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetAdjustmentDto(NBK.ECService.WMS.DTO.CreateAdjustmentDto)">
+            <summary>
+            获取生成损益单数据
+            </summary>
+            <param name="createAdjustmentDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.StockTakeComplete(NBK.ECService.WMS.DTO.StockTakeCompleteDto)">
+            <summary>
+            盘点完成
+            </summary>
+            <param name="stockTakeCompleteDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.DeleteStockTake(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除盘点单
+            </summary>
+            <param name="sysIds"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetStockTakeReport(NBK.ECService.WMS.DTO.StockTakeReportQuery)">
+            <summary>
+            盘点汇总报告
+            </summary>
+            <param name="stockTakeReportQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetSelectSkuClass(NBK.ECService.WMS.DTO.SelectSkuClassDto)">
+            <summary>
+            获取商品分类下拉框
+            </summary>
+            <param name="selectSkuClassDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.GetWaitingStockTakeSkuList(NBK.ECService.WMS.DTO.StockTakeSkuQuery)">
+            <summary>
+            获取待盘点商品信息
+            </summary>
+            <param name="stockTakeSkuQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.NewStockTake(NBK.ECService.WMS.DTO.NewStockTakeDto)">
+            <summary>
+            创建盘点单
+            </summary>
+            <param name="newStockTakeDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTakeController.StockTakeStart(NBK.ECService.WMS.DTO.StockTakeStartDto)">
+            <summary>
+            开始盘点
+            </summary>
+            <param name="stockTakeStartDto"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController">
+            <summary>
+            损益管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.#ctor(NBK.ECService.WMS.Application.Interface.IAdjustmentAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.GetAdjustmentListByPage(NBK.ECService.WMS.DTO.AdjustmentQuery)">
+            <summary>
+            分页查询损益单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.GetAdjustmentBySysId(System.Guid,System.Guid)">
+            <summary>
+            查询损益明细
+            </summary>
+            <param name="sysid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.AddAdjustment(NBK.ECService.WMS.DTO.AdjustmentDto)">
+            <summary>
+            创建损益
+            </summary>
+            <param name="adjustment"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.UpdateAdjustment(NBK.ECService.WMS.DTO.AdjustmentDto)">
+            <summary>
+            编辑损益
+            </summary>
+            <param name="adjustment"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.DeleteAjustmentSkus(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除损益单商品
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.GetSkuInventoryList(NBK.ECService.WMS.DTO.SkuInvLotLocLpnQuery)">
+            <summary>
+            查询商品库存信息
+            </summary>
+            <param name="skuQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.Audit(NBK.ECService.WMS.DTO.AdjustmentAuditDto)">
+            <summary>
+            审核通过
+            </summary>
+            <param name="dto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.AdjustmentController.Void(NBK.ECService.WMS.DTO.AdjustmentAuditDto)">
+            <summary>
+            作废
+            </summary>
+            <param name="dto"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.InventoryControllers.StockTransferController">
+            <summary>
+            容器管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTransferController.GetStockTransferLotByPage(NBK.ECService.WMS.DTO.StockTransferQuery)">
+            <summary>
+            分页查询库存批次信息
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTransferController.GetStockTransferBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取单条批次库存信息
+            </summary>
+            <param name="sysid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTransferController.CreateStockTransfer(NBK.ECService.WMS.DTO.StockTransferDto)">
+            <summary>
+            创建批次转移单
+            </summary>
+            <param name="st"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTransferController.GetStockTransferOrderByPage(NBK.ECService.WMS.DTO.StockTransferQuery)">
+            <summary>
+            分页获取批次转移单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTransferController.StockTransferOperation(NBK.ECService.WMS.DTO.StockTransferDto)">
+            <summary>
+            确认转移
+            </summary>
+            <param request=""></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTransferController.StockTransferCancel(NBK.ECService.WMS.DTO.StockTransferDto)">
+            <summary>
+            取消转移
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.InventoryControllers.StockTransferController.GetStockTransferOrderBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取转移单明细内容
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.MQControllers.MQOutboundController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.MQOutboundController.#ctor(NBK.ECService.WMS.Application.Interface.IOutboundAppService)">
+            <summary>
+            
+            </summary>
+            <param name="outboundAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.MQOutboundController.MQOutboundAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.MQOutboundController.OutboundQuickDelivery(NBK.ECService.WMS.DTO.Outbound.OutboundQuickDeliveryDto)">
+            <summary>
+            快速发货(消息队列调用)
+            </summary>
+            <param name="outboundQuickDeliveryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.MQOutboundController.CreateOutboundByMQ(NBK.ECService.WMS.DTO.MQProcessDto{NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyOutboundDto})">
+            <summary>
+            异步创建出库单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.MQControllers.MQWorkController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.MQWorkController.#ctor(NBK.ECService.WMS.Application.Interface.IWorkMangerAppService)">
+            <summary>
+            
+            </summary>
+            <param name="workMangerAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.MQWorkController.MQWorkAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.MQWorkController.MQUpdateWorkByDocOrder(NBK.ECService.WMS.DTO.MQ.MQWorkDto)">
+            <summary>
+            修改工单状态(消息队列调用)
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.MQWorkController.MQAddWork(NBK.ECService.WMS.DTO.MQ.MQWorkDto)">
+            <summary>
+            增加工单(消息队列调用)
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.OrderRuleController.#ctor(NBK.ECService.WMS.Application.Interface.IOrderRuleSettingAppService)">
+            <summary>
+            
+            </summary>
+            <param name="orderRuleSettingAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.OrderRuleController.OrderBindingByPreOrderRule(NBK.ECService.WMS.DTO.MQ.OrderRule.MQOrderRuleDto)">
+            <summary>
+            预包装订单绑定
+            </summary>
+            <param name="preOrderRuleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.OrderRuleController.OutboundOrderAutomaticAllocation(NBK.ECService.WMS.DTO.MQ.OrderRule.MQOrderRuleDto)">
+            <summary>
+            预包装订单绑定
+            </summary>
+            <param name="preOrderRuleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.MQControllers.TransferInventoryController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.TransferInventoryController.#ctor(NBK.ECService.WMS.Application.Interface.ITransferInventoryAppService)">
+            <summary>
+            
+            </summary>
+            <param name="transferInventoryAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.TransferInventoryController.TransferInventoryAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.TransferInventoryController.CreateTransferInventoryReceipt(NBK.ECService.WMS.DTO.MQ.MQTransferInventoryDto)">
+            <summary>
+            移仓单创建入库单
+            </summary>
+            <param name="transferInventoryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.TransferInventoryController.AddOutboundByTransferInventory(NBK.ECService.WMS.DTO.MQ.MQTransferInventoryDto)">
+            <summary>
+            移仓单创建出库单
+            </summary>
+            <param name="transferInventoryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.MQControllers.TransferInventoryController.UpdateTransferInventoryStatus(NBK.ECService.WMS.DTO.MQ.MQTransferInventoryDto)">
+            <summary>
+            移仓单修改状态
+            </summary>
+            <param name="transferInventoryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController">
+            <summary>
+            订单管理_移仓单管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.#ctor(NBK.ECService.WMS.Application.Interface.IPreBulkPackAppService)">
+            <summary>
+            
+            </summary>
+            <param name="preBulkPackAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.PreBulkPackAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.AddPreBulkPack(NBK.ECService.WMS.DTO.BatchPreBulkPackDto)">
+            <summary>
+            增加散货预包装
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.GetPreBulkPackByPage(NBK.ECService.WMS.DTO.PreBulkPackQuery)">
+            <summary>
+            分页查询 散货封装单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.UpdatePreBulkPack(NBK.ECService.WMS.DTO.PreBulkPackDto)">
+            <summary>
+            更新散货预包装
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.GetPreBulkPackBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取封装单明细
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.DeletePrebulkPackSkus(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除封箱单商品
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.DeletePrebulkPack(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除封箱单
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.ImportPreBulkPack(NBK.ECService.WMS.DTO.PreBulkPackDto)">
+            <summary>
+            散货装导入
+            </summary>
+            <param name="dto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PreBulkPackController.GetPrebulkPackStorageCase(System.Guid,System.Guid)">
+            <summary>
+            根据出库单ID获取散货封箱单号
+            </summary>
+            <param name="sysId">出库单SYSID</param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OrderControllers.OutboundTransferOrderController">
+            <summary>
+            订单管理_交接管理 
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.OutboundTransferOrderController.#ctor(NBK.ECService.WMS.Application.Interface.IOutboundTransferOrderAppService)">
+            <summary>
+            
+            </summary>
+            <param name="outboundTransferOrderAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.OutboundTransferOrderController.OutboundTransferOrderAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.OutboundTransferOrderController.GetOutboundTransferOrderByPage(NBK.ECService.WMS.DTO.OutboundTransferOrderQuery)">
+            <summary>
+            分页获取预包装单数据
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.OutboundTransferOrderController.GetDataBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取交接明细数据
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.OutboundTransferOrderController.GetOutboundTransferBox(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            分页获取预包装单数据
+            </summary>
+            <param name="request"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.OutboundTransferOrderController.GetOutboundTransferOrder(NBK.ECService.WMS.DTO.OutboundTransferOrderQuery)">
+            <summary>
+            根据出库单获取所有交接单
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.OutboundTransferOrderController.UpdateTransferOrderSku(NBK.ECService.WMS.DTO.OutboundTransferOrderMoveDto)">
+            <summary>
+            更新交接明细内容
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController">
+            <summary>
+            订单管理_移仓单管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.#ctor(NBK.ECService.WMS.Application.Interface.IPrePackAppService)">
+            <summary>
+            
+            </summary>
+            <param name="prePackAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.PrePackAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.GetPrePackByPage(NBK.ECService.WMS.DTO.PrePackQuery)">
+            <summary>
+            分页获取预包装单数据
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.GetPrePackSkuByPage(NBK.ECService.WMS.DTO.PrePackSkuQuery)">
+            <summary>
+            分页获取预包装库存数据
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.SavePrePackSku(NBK.ECService.WMS.DTO.PrePackSkuDto)">
+            <summary>
+            生成预包装单
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.GetPrePackBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取预包装单明细
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.UpdatePrePackSku(NBK.ECService.WMS.DTO.PrePackSkuDto)">
+            <summary>
+            编辑预包装单和明细
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.DeletePerPack(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除预包装
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.ImportPrePack(NBK.ECService.WMS.DTO.PrePackSkuDto)">
+            <summary>
+            预包装导入
+            </summary>
+            <param name="prePackSkuDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.IsStorageLoc(NBK.ECService.WMS.DTO.PrePackQuery)">
+            <summary>
+            判断预包装货位是否存在
+            </summary>
+            <param name="query"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.PrePackController.CopyPrePack(NBK.ECService.WMS.DTO.PrePackCopy)">
+            <summary>
+            预报装复制
+            </summary>
+            <param name="query"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OrderControllers.TransferInventoryWebApiController">
+            <summary>
+            订单管理_移仓单管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.TransferInventoryWebApiController.#ctor(NBK.ECService.WMS.Application.Interface.ITransferInventoryAppService)">
+            <summary>
+            
+            </summary>
+            <param name="transferInventoryAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.TransferInventoryWebApiController.TransferInventoryWebApiAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.TransferInventoryWebApiController.GetTransferinventoryByPage(NBK.ECService.WMS.DTO.TransferinventoryQuery)">
+            <summary>
+            分页获取移仓单数据
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.TransferInventoryWebApiController.GetTransferinventoryBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取移仓单数据
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderControllers.TransferInventoryWebApiController.ObsoleteTransferinventory(NBK.ECService.WMS.DTO.TransferinventoryUpdateQuery)">
+            <summary>
+            作废移仓单
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController">
+            <summary>
+            订单管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.#ctor(NBK.ECService.WMS.Application.Interface.IOrderRuleSettingAppService)">
+            <summary>
+            
+            </summary>
+            <param name="orderRuleSettingAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.OrderRuleSettingAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.GetPreOrderRuleByWarehouseSysId(System.Guid)">
+            <summary>
+            分页获取预包装单数据
+            </summary>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.SavePreOrderRule(NBK.ECService.WMS.DTO.PreOrderRuleDto)">
+            <summary>
+            分页获取预包装单数据
+            </summary>
+            <param name="preOrderRuleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.GetOutboundRuleByWarehouseSysId(System.Guid)">
+            <summary>
+            分页获取预包装单数据
+            </summary>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.SaveOutboundRule(NBK.ECService.WMS.DTO.OutboundRuleDto)">
+            <summary>
+            分页获取预包装单数据
+            </summary>
+            <param name="outboundRuleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.GetWorkRuleByWarehouseSysId(System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.SaveWorkRule(NBK.ECService.WMS.DTO.WorkRuleDto)">
+            <summary>
+            分页获取预包装单数据
+            </summary>
+            <param name="workRuleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.GetAssemblyRuleWarehouseSysId(System.Guid)">
+            <summary>
+            获取加工规则
+            </summary>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OrderRuleSettingControllers.OrderRuleSettingController.SaveAssemblyRule(NBK.ECService.WMS.DTO.AssemblyRuleDto)">
+            <summary>
+            保存生产加工规则
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController">
+            <summary>
+            第三方接口
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.#ctor(NBK.ECService.WMS.Application.Interface.IThirdPartyAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="thirdPartyAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.ThirdPartyAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertOrUpdateSku(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartySkuDto)">
+            <summary>
+            插入/更新SKU
+            </summary>
+            <param name="skuDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertOrUpdateSkuPack(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartySkuPackDto)">
+            <summary>
+            插入/更新Pack
+            </summary>
+            <param name="skuDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertOrUpdateSkuClass(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartySkuClassDto)">
+            <summary>
+            插入/更新SKU分类
+            </summary>
+            <param name="skuClassDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertPurchase(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyPurchaseDto)">
+            <summary>
+            插入采购单
+            </summary>
+            <param name="purchaseDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertOutbound(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyOutboundDto)">
+            <summary>
+            插入订单
+            </summary>
+            <param name="outboundDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertInStock(System.Guid,System.Int32,System.String)">
+            <summary>
+            商城入库接口
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertOutStock(System.Guid,System.String,System.Int32)">
+            <summary>
+            商城出库接口
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.VoidOutbound(System.String,System.String,System.Int32,System.String)">
+            <summary>
+            关闭出库单
+            </summary>
+            <param name="orderCode"></param>
+            <param name="currentUserId"></param>
+            <param name="currentUserName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertWareHouse(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyWareHouseDto)">
+            <summary>
+            写入仓库数据
+            </summary>
+            <param name="thirdPartyWareHouseDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertAssembly(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyAssemblyDto)">
+            <summary>
+            组装单
+            </summary>
+            <param name="assemblyDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.ClosePurchase(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyPurchaseOperateDto)">
+            <summary>
+            关闭采购单
+            </summary>
+            <param name="purchaseDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.CreateTransferInventory(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartTransferInventoryDto)">
+            <summary>
+            ecc调用:创建移仓单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.GetRegionListByName(System.String)">
+            <summary>
+            通过名称查询地区列表
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.GetRegionIntactBySysId(System.Guid)">
+            <summary>
+            获取详细地址
+            </summary>
+            <param name="regionSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertStockTransfer(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyStockTransferDto)">
+            <summary>
+            ecc调用:库存转移
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.GetInitChannelInventoryData(NBK.ECService.WMS.DTO.InitInventoryFromChannelRequest)">
+            <summary>
+            渠道库存初始化
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertLoadingSequence(NBK.ECService.WMS.DTO.ThirdPartyLoadingSequenceDto)">
+            <summary>
+            TMS调用：装车顺序
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertTMSOrder(NBK.ECService.WMS.DTO.ThirdPartyLoadingSequenceDto)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertSkuBorrow(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartySkuBorrowAddDto)">
+            <summary>
+            ecc调用:商品外借新增
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.InsertReturnPurchase(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyReturnPurchaseDto)">
+            <summary>
+            ecc调用:已出库单据创建退货单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.ThirdPartyController.UpdateOutboundByReturnPurchase(NBK.ECService.WMS.DTO.ThirdParty.ThirdPartyUpdateOutboundDto)">
+            <summary>
+            ecc调用:待出库单据更新出库单
+            </summary>
+            <param name="thirdPartyUpdateOutboundDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.#ctor(NBK.ECService.WMS.Application.Interface.IRedisAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="redisAppService"></param>
+            <param name="chartAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.RedisAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.SynchroAll">
+            <summary>
+            同步SKU  包含分类 
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.SynchroMenu">
+            <summary>
+            同步菜单
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.CleanUserLoginRedis">
+            <summary>
+            同步菜单
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.SynchroSku">
+            <summary>
+            同步SKU  包含分类 
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.SynchroPack">
+            <summary>
+            同步包装 包含单位
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.SynchroLottemplate">
+            <summary>
+            同步批次模板
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.SynchroWarehouse">
+            <summary>
+            同步仓库 
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.GetRedis(System.String)">
+            <summary>
+            根据key获取Redis
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.CleanReviewRecords(System.String,System.Guid)">
+            <summary>
+            清除复核缓存
+            </summary>
+            <param name="outboundOrder"></param>
+            <param name="warehouseSysId"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.SynchroSetAccessLog(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OtherControllers.RedisController.ClearRedisByKey(System.String)">
+            <summary>
+            根据key清除缓存
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController">
+            <summary>
+            出库管理
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.#ctor(NBK.ECService.WMS.Application.Interface.IOutboundAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.GetDeliveryBoxByOrderNumber(System.String,System.String,System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="orderNumber"></param>
+            <param name="wareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.SaveDeliveryByVanningSysId(System.Collections.Generic.List{System.Guid},System.String,System.Int32,System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="vanningSysIds"></param>
+            <param name="currentUserName"></param>
+            <param name="currentUserId"></param>
+            <param name="wareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.BatchOutboundByFIFO(NBK.ECService.WMS.DTO.Outbound.OutboundBatchDto)">
+            <summary>
+            快进快出业务
+            </summary>
+            <param name="outboundBatchDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.OutboundQuickDelivery(NBK.ECService.WMS.DTO.Outbound.OutboundQuickDeliveryDto)">
+            <summary>
+            快速发货(系统调用)
+            </summary>
+            <param name="outboundQuickDeliveryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.OutboundAllocationDelivery(NBK.ECService.WMS.DTO.Outbound.OutboundAllocationDeliveryDto)">
+            <summary>
+            分配发货
+            </summary>
+            <param name="outboundAllocationDeliveryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.CheckOutboundAllocationDelivery(NBK.ECService.WMS.DTO.Outbound.OutboundAllocationDeliveryDto)">
+            <summary>
+            分配发货检查差异
+            </summary>
+            <param name="outboundAllocationDeliveryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.GetPartShipmentSkuList(NBK.ECService.WMS.DTO.Outbound.OutboundAllocationDeliveryDto)">
+            <summary>
+            获取部分发货商品明细
+            </summary>
+            <param name="outboundAllocationDeliveryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.SavePartShipmentMemo(NBK.ECService.WMS.DTO.PartShipmentMemoDto)">
+            <summary>
+            更新出库明细备注
+            </summary>
+            <param name="partShipmentMemoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.ObsoleteOutbound(NBK.ECService.WMS.DTO.OutboundOperateDto)">
+            <summary>
+            作废出库单
+            </summary>
+            <param name="outboundDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.OutboundReturn(NBK.ECService.WMS.DTO.OutboundOperateDto)">
+            <summary>
+            退货入库
+            </summary>
+            <param name="outboundDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.OutboundPartReturn(NBK.ECService.WMS.DTO.OutboundPartReturnDto)">
+            <summary>
+            部分退货入库
+            </summary>
+            <param name="outboundDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.OutboundCancel(NBK.ECService.WMS.DTO.OutboundOperateDto)">
+            <summary>
+            取消发货
+            </summary>
+            <param name="outboundDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.GetOutboundPrePackDiff(System.Guid,System.Guid)">
+            <summary>
+            获取出库单预包装差异
+            </summary>
+            <param name="outboundSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.BindPrePackOrder(NBK.ECService.WMS.DTO.OutboundBindQuery)">
+            <summary>
+            绑定出库单
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.UnBindPrePackOrder(NBK.ECService.WMS.DTO.OutboundBindQuery)">
+            <summary>
+            解绑出库单
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.AddTMSBoxNumber(NBK.ECService.WMS.DTO.BatchTMSBoxNumberDto)">
+            <summary>
+            打印交接单号
+            </summary>
+            <param name="dto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.CreateTMSBoxCount(NBK.ECService.WMS.DTO.BatchTMSBoxNumberDto)">
+            <summary>
+            给TMS推送总箱数
+            </summary>
+            <param name="dto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.GetInsufficientStockSkuList(NBK.ECService.WMS.DTO.Outbound.OutboundAllocationDeliveryDto)">
+            <summary>
+            获取库存不足商品
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.AddOutboundExceptionService(NBK.ECService.WMS.DTO.AddOutboundExceptionDto)">
+             <summary>
+            增加异常记录数据
+             </summary>
+             <param name="dto"></param>
+             <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.DeleteOutboundException(System.Collections.Generic.List{System.Guid},System.Guid,System.Guid)">
+            <summary>
+            删除异常数据记录
+            </summary>
+            <param name="request"></param>
+            <param name="warehouseSysId"></param>
+            <param name="outboundSysId"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.CancelOutboundReturnByPurchase(NBK.ECService.WMS.DTO.PurchaseForReturnDto)">
+            <summary>
+            关闭或作为入库单时 ，回写更新outbound 对应的 returnqty
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.OutboundController.AddOutboundReturnQtyByPurchase(NBK.ECService.WMS.DTO.OutboundReturnDto)">
+            <summary>
+            异步回写出库单退货数量
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.#ctor(NBK.ECService.WMS.Application.Interface.IPickDetailAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="pickDetailAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.PickDetailAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.GetPickDetailListDtoByPageInfo(NBK.ECService.WMS.DTO.PickDetailQuery)">
+            <summary>
+            获取分页信息
+            </summary>
+            <param name="pickDetailQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.GetPickOutboundListDtoByPageInfo(NBK.ECService.WMS.DTO.PickDetailQuery)">
+            <summary>
+            获取分页信息
+            </summary>
+            <param name="pickDetailQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.GeneratePickDetailByPickRule(NBK.ECService.WMS.DTO.CreatePickDetailRuleDto)">
+            <summary>
+            根据拣货规则生成拣货单
+            </summary>
+            <param name="createPickDetailRuleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.CancelPickDetail(NBK.ECService.WMS.DTO.CancelPickDetailDto)">
+            <summary>
+            取消拣货
+            </summary>
+            <param name="cancelPickDetailDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.CancelPickQty(NBK.ECService.WMS.DTO.CancelPickQtyDto)">
+            <summary>
+            取消拣货数量
+            </summary>
+            <param name="cancelPickQtyDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.SavePickingOperation(NBK.ECService.WMS.DTO.PickingOperationDto)">
+            <summary>
+            拣货
+            </summary>
+            <param name="pickingOperationDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.PickDetailController.GetPickingOperationDetails(NBK.ECService.WMS.DTO.PickingOperationQuery)">
+            <summary>
+            获取拣货单明细
+            </summary>
+            <param name="pickingOperationQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.#ctor(NBK.ECService.WMS.Application.Interface.IVanningAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="vanningAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.VanningAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.GetVanningList(NBK.ECService.WMS.DTO.VanningQueryDto)">
+            <summary>
+            内裤扫描仪
+            </summary>
+            <param name="vanningQueryDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.GetVanningOperationDtoByOrder(System.String,System.Guid)">
+            <summary>
+            获取装箱操作相关数据
+            </summary>
+            <param name="orderNumber">拣货单或者出库单</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.SaveVanningDetailOperationDto(NBK.ECService.WMS.DTO.VanningOperationDto)">
+            <summary>
+            装箱-封箱 提交数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.GetHandoverGroupByPage(NBK.ECService.WMS.DTO.HandoverGroupQuery)">
+            <summary>
+            交接单分页查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.GetHandoverGroupByOrder(System.String,System.Guid)">
+            <summary>
+            根据交接单号查询交接单
+            </summary>
+            <param name="HandoverGroupOrder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.GetVanningViewById(NBK.ECService.WMS.DTO.VanningViewQuery)">
+            <summary>
+            获取装箱单明细
+            </summary>
+            <param name="vanningViewQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.GetVanningSysIdByVanningDetailSysId(System.Guid,System.Guid)">
+            <summary>
+            根据装箱明细SysId获取装箱SysId
+            </summary>
+            <param name="vanningDetailSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.OutboundControllers.VanningController.CancelVanning(NBK.ECService.WMS.DTO.VanningCancelDto)">
+            <summary>
+            取消装箱
+            </summary>
+            <param name="vanningCancelDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.#ctor(NBK.ECService.WMS.Application.Interface.IPrintAppService)">
+            <summary>
+            系统构造
+            </summary>
+            <param name="printAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.PrintAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintPickDetailByOrderDto(System.String,System.Guid)">
+            <summary>
+            按订单打印
+            </summary>
+            <param name="pickDetailOrder"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintPickDetailByBatchDto(System.String,System.Guid)">
+            <summary>
+            按贱货单号打印
+            </summary>
+            <param name="pickDetailOrder"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintRecommendPickDetail(System.Guid,System.Guid)">
+            <summary>
+            获取推荐货位 打印出库单列表
+            </summary>
+            <param name="outboundSysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintReceiptDto(System.String,System.Guid)">
+            <summary>
+            收货单打印
+            </summary>
+            <param name="receiptOrder"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintPurchaseViewDto(System.Guid,System.Guid)">
+            <summary>
+            打印采购单
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintVanningDetailDto(System.Guid,System.String,System.Guid)">
+            <summary>
+            打印箱贴
+            </summary>
+            <param name="vanningDetailSysId"></param>
+            <param name="actionType"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintVanningDetailStick(System.Guid,System.String,System.Guid)">
+            <summary>
+            获取箱贴数据
+            </summary>
+            <param name="vanningDetailSysId"></param>
+            <param name="actionType"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintVanningDetailStickToB(System.Guid,System.String,System.Guid)">
+            <summary>
+            获取箱贴数据
+            </summary>
+            <param name="vanningDetailSysId"></param>
+            <param name="actionType"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintOutboundDto(System.Guid,System.Guid)">
+            <summary>
+            获取打印出库单数据
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintOutboundPrePackDiffDto(System.Guid,System.Guid)">
+            <summary>
+            获取打印预包装差异数据
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintTMSPackNumberList(System.Guid,System.Guid)">
+            <summary>
+            获取打印出库单对应的交接单列表
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintOutboundPreBulkPackDiffDto(System.Guid,System.Guid)">
+            <summary>
+            获取打印散货箱差异数据
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintAssemblyRCMDPickDetail(System.Guid,System.Guid)">
+            <summary>
+            生产加工单推荐拣货货位
+            </summary>
+            <param name="assemblySysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintReceiptAutoShelves(System.Guid,System.Guid)">
+            <summary>
+            打印收货自动上架单
+            </summary>
+            <param name="receiptSysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintStockTakeDto(System.Guid,System.Guid)">
+            <summary>
+            打印盘点单
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintStockTakeReportDto(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            打印盘点单汇总报告
+            </summary>
+            <param name="sysIds"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintQualityControlDto(System.Guid,System.Guid)">
+            <summary>
+            打印质检单
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintPrebulkPackByBatchDto(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            批量打印散货封箱单
+            </summary>
+            <param name="sysIds"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.PrintControllers.PrintController.GetPrintPickingMaterialDetailList(NBK.ECService.WMS.DTO.PrintPickingMaterialQuery)">
+            <summary>
+            获取打印领料数据
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController">
+            <summary>
+            RF基础资料
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.#ctor(NBK.ECService.WMS.Application.Interface.ILocationAppService,NBK.ECService.WMS.Application.Interface.ISkuAppService,NBK.ECService.WMS.Application.Interface.IRFOutboundAppService,NBK.ECService.WMS.Application.Interface.IRFBasicsAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.RFBaseAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.LocIsExist(NBK.ECService.WMS.DTO.LocationQuery)">
+            <summary>
+            判断货位是否存在
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.CheckSkuIsExist(NBK.ECService.WMS.DTO.SkuQuery)">
+            <summary>
+            判断商品是否存在
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.GetSkuByUPC(System.String)">
+            <summary>
+            通过UPC获取SKU
+            </summary>
+            <param name="upc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.GetSkuPackListByUPC(System.String,System.Guid)">
+            <summary>
+            根据UPC获取商品和包装
+            </summary>
+            <param name="upc"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.GetSkuListByUPC(System.String,System.Guid)">
+            <summary>
+            根据UPC获取商品
+            </summary>
+            <param name="upc"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.GetPackBySkuSysId(System.Guid,System.Guid)">
+            <summary>
+            根据商品SYSID获取商品包装
+            </summary>
+            <param name="skuSysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.GetPackListByUPC(System.String,System.Guid)">
+            <summary>
+            根据UPC获取包装信息
+            </summary>
+            <param name="upc"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFBaseController.UpdateSkuPack(NBK.ECService.WMS.DTO.RFSkuPackDto)">
+            <summary>
+            更新商品外包装
+            </summary>
+            <param name="packDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.#ctor(NBK.ECService.WMS.Application.Interface.IOutboundAppService,NBK.ECService.WMS.Application.Interface.IRFOutboundAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetDeliveryBoxByOrderNumber(System.String,System.String,System.Guid)">
+            <summary>
+            RF获取发货信息
+            </summary>
+            <param name="type"></param>
+            <param name="orderNumber"></param>
+            <param name="wareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.SaveDeliveryByVanningSysId(NBK.ECService.WMS.DTO.RFScanDeliveryDto)">
+            <summary>
+            RF发货
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.CheckOutboundExists(NBK.ECService.WMS.DTO.OutboundQuery)">
+            <summary>
+            判断出库单是否存在
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetWaitingReviewList(NBK.ECService.WMS.DTO.RFOutboundQuery)">
+            <summary>
+            待复核出库单明细
+            </summary>
+            <param name="outboundQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.CheckReviewDetailSku(NBK.ECService.WMS.DTO.RFCheckReviewDetailSkuDto)">
+            <summary>
+            检查待复核商品信息
+            </summary>
+            <param name="checkReviewDetailSkuDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetReviewFinishResult(NBK.ECService.WMS.DTO.RFReviewFinishDto)">
+            <summary>
+            复核完成
+            </summary>
+            <param name="reviewFinishDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetPrePackByQuery(NBK.ECService.WMS.DTO.RFPrePackQuery)">
+            <summary>
+            获取预包装信息
+            </summary>
+            <param name="prePackQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.CheckPrePackDetailSku(NBK.ECService.WMS.DTO.RFPrePackQuery)">
+            <summary>
+            验证商品是否存在
+            </summary>
+            <param name="prePackQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.ScanPrePack(NBK.ECService.WMS.DTO.RFPrePackDto)">
+            <summary>
+            扫描预包装
+            </summary>
+            <param name="rfPrePackDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetPrePackDetailList(NBK.ECService.WMS.DTO.RFPrePackQuery)">
+            <summary>
+            分页查询预包装明细
+            </summary>
+            <param name="prePackQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetPreBulkPackDetailsByStorageCase(System.String,System.Guid)">
+            <summary>
+            根据箱号获取散货预包装明细
+            </summary>
+            <param name="storageCase"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetStorageCaseSkuList(System.String,System.Guid)">
+            <summary>
+            根据容器获取商品list
+            </summary>
+            <param name="storageCase"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.CheckPreBulkPackDetailSku(System.String,System.Guid)">
+            <summary>
+            检查散货商品是否存在
+            </summary>
+            <param name="upc"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GeneratePreBulkPackDetail(NBK.ECService.WMS.DTO.RFPreBulkPackDetailDto)">
+            <summary>
+            生成散货预包装明细
+            </summary>
+            <param name="preBulkPackDetailDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetOutboundDetailList(System.String,System.Guid)">
+            <summary>
+            查询出库明细
+            </summary>
+            <param name="outboundOrder"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.CheckTransferOrderAndPreBulkPack(System.String,System.String,System.Guid)">
+            <summary>
+            根据容器号交接单号检查是否是同一出库单
+            </summary>
+            <param name="transferOrder"></param>
+            <param name="storageCase"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.CheckTransferOrder(System.String,System.String,System.Guid)">
+            <summary>
+            整件复核检查交接单是否有效
+            </summary>
+            <param name="transferOrder"></param>
+            <param name="outboundOrder"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.CheckStorageCaseIsAvailable(System.String,System.String,System.Guid)">
+            <summary>
+            检查容器是否与出库单匹配
+            </summary>
+            <param name="outboundOrder"></param>
+            <param name="storageCase"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.AddOutboundTransferOrder(NBK.ECService.WMS.DTO.RFOutboundTransferOrderQuery)">
+            <summary>
+            向交接单中插入数据
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.SealedOutboundTransferBox(NBK.ECService.WMS.DTO.RFOutboundTransferOrderQuery)">
+            <summary>
+            交接箱复核完成封箱
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetTransferOrderReviewDiffList(NBK.ECService.WMS.DTO.RFOutboundQuery)">
+            <summary>
+            交接箱复核完成封箱
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetWaitingOutboundReviewListByPaging(NBK.ECService.WMS.DTO.RFOutboundQuery)">
+            <summary>
+            获取待复核的出库单
+            </summary>
+            <param name="outboundQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.CheckOutboundReviewOrder(NBK.ECService.WMS.DTO.RFOutboundQuery)">
+            <summary>
+            判断扫描的单号是否待复核
+            </summary>
+            <param name="outboundQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetWaitingSingleReviewDetails(NBK.ECService.WMS.DTO.RFOutboundQuery)">
+            <summary>
+            获取散货待复核明细
+            </summary>
+            <param name="outboundQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.SingleReviewScanning(NBK.ECService.WMS.DTO.RFSingleReviewScanningDto)">
+            <summary>
+            散件复核扫描
+            </summary>
+            <param name="scanningDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.SingleReviewFinish(NBK.ECService.WMS.DTO.RFSingleReviewFinishDto)">
+            <summary>
+            散货复核完成
+            </summary>
+            <param name="finishDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.WholeReviewScanning(NBK.ECService.WMS.DTO.RFWholeReviewScanningDto)">
+            <summary>
+            整件复核扫描
+            </summary>
+            <param name="scanningDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetWaitingWholeReviewDetails(NBK.ECService.WMS.DTO.RFOutboundQuery)">
+            <summary>
+            获取整件待复核明细
+            </summary>
+            <param name="outboundQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.WholeReviewFinish(NBK.ECService.WMS.DTO.RFWholeReviewFinishDto)">
+            <summary>
+            整件复核完成
+            </summary>
+            <param name="finishDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFOutboundController.GetOutboundReviewDiff(NBK.ECService.WMS.DTO.RFOutboundQuery)">
+            <summary>
+            整单差异
+            </summary>
+            <param name="outboundQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.RFControllers.RFInventoryController">
+            <summary>
+            RF库存
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFInventoryController.#ctor(NBK.ECService.WMS.Application.Interface.IRFInventoryAppService)">
+            <summary>
+            
+            </summary>
+            <param name="rfInventoryAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFInventoryController.RFInventoryAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFInventoryController.GetInvSkuLocList(NBK.ECService.WMS.DTO.RFInvSkuLocQuery)">
+            <summary>
+            RF库存查询
+            </summary>
+            <param name="invSkuLocQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFInventoryController.StockMovement(NBK.ECService.WMS.DTO.RFStockMovementDto)">
+            <summary>
+            RF库位变更
+            </summary>
+            <param name="rfStockMovementDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController">
+            <summary>
+            RF拣货
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.#ctor(NBK.ECService.WMS.Application.Interface.IRFPickDetailAppService,NBK.ECService.WMS.Application.Interface.IOutboundAppService,NBK.ECService.WMS.Application.Interface.IAssemblyAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.GetWaitingPickOutboundList(NBK.ECService.WMS.DTO.RFPickQuery)">
+            <summary>
+            获取待拣货的出库单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.GetWaitingContainerPickingListByPaging(NBK.ECService.WMS.DTO.RFPickQuery)">
+            <summary>
+            获取待容器拣货的出库单
+            </summary>
+            <param name="pickQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.GetWaitingPickSkuList(NBK.ECService.WMS.DTO.RFPickQuery)">
+            <summary>
+            获取某个出库单的待拣货商品
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.GetContainerPickingDetailList(NBK.ECService.WMS.DTO.RFPickQuery)">
+            <summary>
+            获取出库单容器拣货明细
+            </summary>
+            <param name="pickQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.CheckOutboundDetailSku(NBK.ECService.WMS.DTO.RFPickDetailDto)">
+            <summary>
+            检查商品是否存在于出库单明细中
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.ScanPickDetail(NBK.ECService.WMS.DTO.RFPickDetailDto)">
+            <summary>
+            扫描拣货
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.GenerateContainerPickingDetail(NBK.ECService.WMS.DTO.RFGenerateContainerPickingDetailDto)">
+            <summary>
+            容器拣货扫描
+            </summary>
+            <param name="pickingDetailDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.RFSetPickingRedis(NBK.ECService.WMS.DTO.RFPickFinishDto)">
+            <summary>
+            RF拣货记录缓存
+            </summary>
+            <param name="setRedisDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.RFPickFinish(NBK.ECService.WMS.DTO.RFPickFinishDto)">
+            <summary>
+            RF拣货完成
+            </summary>
+            <param name="pickFinishDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.GetPickResult(NBK.ECService.WMS.DTO.RFPickQuery)">
+            <summary>
+            拣货完成结果
+            </summary>
+            <param name="pickQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.CheckOutboundOrder(NBK.ECService.WMS.DTO.OutboundQuery)">
+            <summary>
+            判断扫描的单号是否待拣货
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.CheckContainerPickingOutboundOrder(NBK.ECService.WMS.DTO.RFOutboundQuery)">
+            <summary>
+            判断扫描的单号是否待容器拣货
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.CheckContainerIsAvailable(System.String,System.String,System.Guid)">
+            <summary>
+            判断容器是否可用
+            </summary>
+            <param name="storageCase"></param>
+            <param name="outboundOrder"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.GetWaitingAssemblyList(NBK.ECService.WMS.DTO.RFAssemblyPickQuery)">
+            <summary>
+            获取待拣货的加工单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.CheckAssemblyOrder(NBK.ECService.WMS.DTO.AssemblyQuery)">
+            <summary>
+            判断扫描的单号是否待拣货
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.GetWaitingAssemblyPickSkuList(NBK.ECService.WMS.DTO.RFAssemblyPickQuery)">
+            <summary>
+            获取加工单中的待拣货商品
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.CheckAssemblyDetailSku(NBK.ECService.WMS.DTO.RFAssemblyPickDetailDto)">
+            <summary>
+            检查商品是否存在于加工单明细中
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFPickDetailController.AssemblyScanPickDetail(NBK.ECService.WMS.DTO.RFAssemblyPickDetailDto)">
+            <summary>
+            加工单扫描拣货
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFReceiptController.#ctor(NBK.ECService.WMS.Application.Interface.IRFReceiptAppService)">
+            <summary>
+            
+            </summary>
+            <param name="rfReceiptAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFReceiptController.RFReceiptAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFReceiptController.GetWaitingReceiptListByPaging(NBK.ECService.WMS.DTO.RFReceiptQuery)">
+            <summary>
+            待收货列表
+            </summary>
+            <param name="receiptQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFReceiptController.CheckReceipt(NBK.ECService.WMS.DTO.RFReceiptQuery)">
+            <summary>
+            检查收货单是否能收货
+            </summary>
+            <param name="receiptQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFReceiptController.GetReceiptOperationDetailList(NBK.ECService.WMS.DTO.RFReceiptQuery)">
+            <summary>
+            获取入库单收货明细
+            </summary>
+            <param name="receiptQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFReceiptController.SaveReceiptOperation(NBK.ECService.WMS.DTO.ReceiptOperationDto)">
+            <summary>
+            收货完成
+            </summary>
+            <param name="receiptOperationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController">
+            <summary>
+            RF盘点
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.#ctor(NBK.ECService.WMS.Application.Interface.IRFStockTakeAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.GetInventoryNoStockTakeList(NBK.ECService.WMS.DTO.RFInventoryQuery)">
+            <summary>
+            查询未盘点库存
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.SaveStockTake(NBK.ECService.WMS.DTO.StockTakeFirstDto)">
+            <summary>
+            初盘保存盘点单和盘点明细或修改盘点明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.GetStockTakeFirstList(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            初盘清单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.GetStockTakeFirstListByPaging(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            获取待初盘单据列表
+            </summary>
+            <param name="stockTakeQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.CheckStockTakeFirstDetailSku(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="upc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.GetStockTakeFirstDetailList(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            获取初盘明细
+            </summary>
+            <param name="stockTakeQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.StockTakeFirstScanning(NBK.ECService.WMS.DTO.StockTakeFirstDto)">
+            <summary>
+            初盘扫描
+            </summary>
+            <param name="stockTakeFirstDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.GetStockTakeSecondListByPage(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            复盘单据列表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.GetStockTakeSecondList(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            复盘清单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.StockTakeSecond(NBK.ECService.WMS.DTO.StockTakeSecondDto)">
+            <summary>
+            复盘
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.UpdateSecondStockTakeStatus(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            复盘修改盘点单状态
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.UpdateFirstStockTakeStatus(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            修改盘点单状态
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.CheckSecondStockTake(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            检查复盘单据是否存在
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.RFStockTakeController.CheckFirstStockTake(NBK.ECService.WMS.DTO.RFStockTakeQuery)">
+            <summary>
+            检查初盘单据是否存在
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController">
+            <summary>
+            RF上架
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.#ctor(NBK.ECService.WMS.Application.Interface.IShelvesAppService,NBK.ECService.WMS.Application.Interface.IReceiptAppService,NBK.ECService.WMS.Application.Interface.IAssemblyAppService)">
+            <summary>
+            系统构造
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.GetWaitingShelvesList(NBK.ECService.WMS.DTO.RFShelvesQuery)">
+            <summary>
+            查询待上架单据列表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.GetWaitingShelvesSkuList(NBK.ECService.WMS.DTO.RFShelvesQuery)">
+            <summary>
+            查询某收货单待上架商品列表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.GetAdviceToLoc(NBK.ECService.WMS.DTO.RFShelvesQuery)">
+            <summary>
+            获取收货明细推荐货位
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.GetInventoryList(NBK.ECService.WMS.DTO.RFInventoryQuery)">
+            <summary>
+            查询库存
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.ScanShelves(NBK.ECService.WMS.DTO.ScanShelvesDto)">
+            <summary>
+            扫描上架
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.AutoShelves(NBK.ECService.WMS.DTO.ScanShelvesDto)">
+            <summary>
+            扫描上架
+            </summary>
+            <param name="scanShelvesDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.CheckReceiptDetailSku(NBK.ECService.WMS.DTO.ScanShelvesDto)">
+            <summary>
+            检查商品是否存在于收货明细中
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.CheckReceiptOrder(NBK.ECService.WMS.DTO.ReceiptQuery)">
+            <summary>
+            判断扫描的单号是否待上架
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.CheckAssemblyOrderNotOnShelves(System.String,System.Guid)">
+            <summary>
+            判断扫描的加工单是否待上架
+            </summary>
+            <param name="assemblyOrder"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.GetAssemblyWaitingShelvesList(NBK.ECService.WMS.DTO.RFAssemblyShelvesQuery)">
+            <summary>
+            获取待上架加工单列表
+            </summary>
+            <param name="assemblyShelvesQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.GetAssemblyWaitingShelvesSkuList(NBK.ECService.WMS.DTO.RFAssemblyShelvesQuery)">
+            <summary>
+            获取加工单待上架商品列表
+            </summary>
+            <param name="assemblyShelvesQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.CheckAssemblyWaitShelvesSku(NBK.ECService.WMS.DTO.RFAssemblyScanShelvesDto)">
+            <summary>
+            加工单成品上架校验
+            </summary>
+            <param name="scanShelvesDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.AssemblyScanShelves(NBK.ECService.WMS.DTO.RFAssemblyScanShelvesDto)">
+            <summary>
+            加工单成品扫描上架
+            </summary>
+            <param name="scanShelvesDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.RFControllers.ShelvesController.CancelShelves(NBK.ECService.WMS.DTO.CancelShelvesDto)">
+            <summary>
+            取消上架
+            </summary>
+            <param name="cancelShelvesDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.#ctor(NBK.ECService.WMS.Application.Interface.IAssemblyAppService)">
+            <summary>
+            
+            </summary>
+            <param name="assemblyAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.AssemblyAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.GetAssemblyList(NBK.ECService.WMS.DTO.AssemblyQuery)">
+            <summary>
+            获取生产加工单列表
+            </summary>
+            <param name="assemblyQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.GetAssemblyViewDtoById(System.Guid,System.Guid)">
+            <summary>
+            获取生产加工单详情
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.UpdateAssemblyStatus(System.Guid,NBK.ECService.WMS.Utility.Enum.AssemblyStatus,System.Int32,System.String,System.Guid)">
+            <summary>
+            更新生产加工单状态
+            </summary>
+            <param name="sysId"></param>
+            <param name="status"></param>
+            <param name="currentUserId"></param>
+            <param name="currentUserName"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.CancelAssemblyPicking(System.Guid,System.Int32,System.String,System.Guid)">
+            <summary>
+            撤销领料
+            </summary>
+            <param name="sysId"></param>
+            <param name="currentUserId"></param>
+            <param name="currentUserName"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.FinishAssemblyOrder(NBK.ECService.WMS.DTO.AssemblyFinishDto)">
+            <summary>
+            完成加工单
+            </summary>
+            <param name="assemblyFinishDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.GetSkuListForAssembly(NBK.ECService.WMS.DTO.AssemblySkuQuery)">
+            <summary>
+            创建加工单商品选择列表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.AddAssembly(NBK.ECService.WMS.DTO.AddAssemblyDto)">
+            <summary>
+            WMS创建加工单
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.GetWeighSkuListForAssembly(NBK.ECService.WMS.DTO.AssemblyWeightSkuQuery)">
+            <summary>
+            查询加工源商品 已称重列表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.AssemblyController.SaveAssemblySkuWeight(NBK.ECService.WMS.DTO.AssemblyWeightSkuRequest)">
+            <summary>
+            保存加工称重
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.#ctor(NBK.ECService.WMS.Application.Interface.IQualityControlAppService)">
+            <summary>
+            
+            </summary>
+            <param name="qualityControlAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.QualityControlAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.GetQualityControlList(NBK.ECService.WMS.DTO.QualityControlQuery)">
+            <summary>
+            获取质检单列表
+            </summary>
+            <param name="qualityControlQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.DeleteQualityControl(System.Collections.Generic.List{System.Guid},System.Guid)">
+            <summary>
+            删除质检单
+            </summary>
+            <param name="sysIds"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.GetQualityControlViewDto(System.Guid,System.Guid)">
+            <summary>
+            获取质检详情
+            </summary>
+            <param name="sysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.GetDocDetails(NBK.ECService.WMS.DTO.DocDetailQuery)">
+            <summary>
+            获取质检相关单据明细
+            </summary>
+            <param name="docDetailQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.GetQCDetails(NBK.ECService.WMS.DTO.QCDetailQuery)">
+            <summary>
+            获取质检明细
+            </summary>
+            <param name="qcDetailQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.SaveQualityControl(NBK.ECService.WMS.DTO.SaveQualityControlDto)">
+            <summary>
+            保存质检单
+            </summary>
+            <param name="saveQualityControlDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.FinishQualityControl(NBK.ECService.WMS.DTO.FinishQualityControlDto)">
+            <summary>
+            质检完成
+            </summary>
+            <param name="finishQualityControlDto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.QualityControlController.GetAdjustmentDto(NBK.ECService.WMS.DTO.CreateAdjustmentDto)">
+            <summary>
+            获取生成损益单数据
+            </summary>
+            <param name="createAdjustmentDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.#ctor(NBK.ECService.WMS.Application.Interface.ISkuBorrowAppService,NBK.ECService.WMS.Application.Interface.IZTOAppService)">
+            <summary>
+            
+            </summary>
+            <param name="skuborrowAppService"></param>
+            <param name="ztoTOAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.SkuBorrowAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.GetSkuBorrowListByPage(NBK.ECService.WMS.DTO.SkuBorrowQuery)">
+            <summary>
+            分页查询商品外借
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.GetSkuInventoryList(NBK.ECService.WMS.DTO.SkuInvLotLocLpnQuery)">
+            <summary>
+            查询商品库存信息
+            </summary>
+            <param name="skuQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.AddSkuBorrow(NBK.ECService.WMS.DTO.SkuBorrowDto)">
+            <summary>
+            创建商品外借
+            </summary>
+            <param name="skuborrow"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.GetSkuBorrowBySysId(System.Guid,System.Guid)">
+            <summary>
+            查询商品外借
+            </summary>
+            <param name="SysId"></param>
+            <param name="WareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.GetSkuBorrowByOrder(System.String,System.Guid)">
+            <summary>
+            查询商品外借
+            </summary>
+            <param name="BorrowOrder"></param>
+            <param name="WareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.UpdateSkuBorrow(NBK.ECService.WMS.DTO.SkuBorrowDto)">
+            <summary>
+            编辑商品外借
+            </summary>
+            <param name="skuborrow"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.DeleteSkuBorrowSkus(System.Collections.Generic.List{System.Guid})">
+            <summary>
+            删除商品外界商品
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.Audit(NBK.ECService.WMS.DTO.SkuBorrowDto)">
+            <summary>
+            审核通过
+            </summary>
+            <param name="dto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.Void(NBK.ECService.WMS.DTO.SkuBorrowAuditDto)">
+            <summary>
+            作废
+            </summary>
+            <param name="dto"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.OrderMarke(NBK.ECService.WMS.DTO.ThirdParty.GenerateZTOOrderMarkeRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.SkuBorrowController.OrderSubmit(NBK.ECService.WMS.DTO.ThirdParty.GenerateZTOOrderSubmitRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMS.ApiController.VASControllers.WorkMangerController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.WorkMangerController.#ctor(NBK.ECService.WMS.Application.Interface.IWorkMangerAppService)">
+            <summary>
+            
+            </summary>
+            <param name="workMangerAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.WorkMangerController.WorkMangerAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.WorkMangerController.GetWorkByPage(NBK.ECService.WMS.DTO.WorkQueryDto)">
+            <summary>
+            分页获取工单数据
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.WorkMangerController.GetWorkBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取工单明细
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.WorkMangerController.CancelWork(NBK.ECService.WMS.DTO.CancelWorkDto)">
+            <summary>
+            作废工单
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.WorkMangerController.UpdateWorkInfo(NBK.ECService.WMS.DTO.WorkUpdateDto)">
+            <summary>
+            更新工单
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:NBK.ECService.WMS.ApiController.VASControllers.WorkMangerController.AddWork(System.Collections.Generic.List{NBK.ECService.WMS.DTO.WorkDetailDto})">
+            <summary>
+            创建工单
+            </summary>
+            <param name="dtoList"></param>
+        </member>
+    </members>
+</doc>

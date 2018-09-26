@@ -1,0 +1,24 @@
+﻿
+<div id="shortcut">
+    <ul>
+        <li>
+            <a id="toplione" href="@Url.Action("HistoryServiceStation", "Home")" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i class="fa fa-map-marker fa-4x"></i> <span>仓库业务分布</span> </span> </a>
+        </li>
+        <li>
+            <a id="toplitwo" href="@Url.Action("WareHouse", "Home")" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i class="fa fa-calendar fa-4x"></i> <span>最新仓库发货分布</span> </span> </a>
+        </li>
+    </ul>
+</div>
+<script>
+    $(function () {
+        $('.jarvismetro-tile').removeClass('selected');
+        var test = window.location.pathname;
+        if (test == "/home/historyservicestation") {
+            $("#toplione").addClass('selected');
+        }
+        else if (test == "/home/warehouse") {
+            $("#toplitwo").addClass('selected');
+        }
+
+    });
+</script>

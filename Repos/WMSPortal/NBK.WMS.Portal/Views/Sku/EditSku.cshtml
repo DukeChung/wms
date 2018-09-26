@@ -1,0 +1,487 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.SkuDto
+@{
+    ViewBag.Title = "编辑商品";
+}
+
+@Html.Breadcrumb("商品管理", "/Sku/SkuList", "编辑商品")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="editSkuForm" class="form-horizontal" method="get">
+            <input type="hidden" id="SysId" name="SysId" value="@Model.SysId" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label">商品编号:</label>
+                <div class="col-sm-4"><input type="text" id="SkuCode" name="SkuCode" class="form-control" value="@Model.SkuCode"></div>
+
+                <label class="col-sm-2 control-label">商品名称:</label>
+                <div class="col-sm-4"><input type="text" id="SkuName" name="SkuName" class="form-control" value="@Model.SkuName"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">货品分类:</label>
+                <div class="col-sm-4">
+                    <div class="input-group">
+                        <input type="hidden" id="SkuClassSysId" name="SkuClassSysId" value="@Model.SkuClassSysId" />
+                        <input type="text" id="SkuClassName" name="SkuClassName" class="form-control" value="@Model.SkuClassName" readonly="readonly"> <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#skuClassModal"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal inmodal fade" id="skuClassModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">一级类别:</label>
+                                    <div class="col-sm-8">
+                                        <select id="SkuClassSysId1" name="SkuClassSysId1" class="form-control" index="1" onchange="skuClassChanged(this)">
+                                            @{
+                                                <option value="">请选择</option>
+                                                foreach (var skuClass in (List<SelectListItem>)ViewBag.SkuClass1List)
+                                                {
+                                                    <option value="@skuClass.Value">@skuClass.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">二级类别:</label>
+                                    <div class="col-sm-8">
+                                        <select id="SkuClassSysId2" name="SkuClassSysId2" class="form-control" index="2" onchange="skuClassChanged(this)">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">三级类别:</label>
+                                    <div class="col-sm-8">
+                                        <select id="SkuClassSysId3" name="SkuClassSysId3" class="form-control" index="3" onchange="skuClassChanged(this)">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">四级类别:</label>
+                                    <div class="col-sm-8">
+                                        <select id="SkuClassSysId4" name="SkuClassSysId4" class="form-control" index="4" onchange="skuClassChanged(this)">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">五级类别:</label>
+                                    <div class="col-sm-8">
+                                        <select id="SkuClassSysId5" name="SkuClassSysId5" class="form-control">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-sm btn-primary" id="btnSaveSkuClass" data-dismiss="modal" onclick="addSkuClass();"><i class="fa fa-check-square-o"></i> 保存</a>
+                                <a class="btn btn-white btn-sm" id="btnCloseSkuClass" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <label class="col-sm-2 control-label">保质期类型:</label>
+                <div class="col-sm-4">
+                    <select id="ShelfLifeCodeType" name="ShelfLifeCodeType" class="form-control chosen-select" data-placeholder="请选择">
+                        @{
+                            foreach (var shelfLifeType in (List<SelectListItem>)ViewBag.ShelfLifeTypeList)
+                            {
+                                if (Model.ShelfLifeCodeType.ToString() == shelfLifeType.Value)
+                                {
+                                    <option value="@shelfLifeType.Value" selected>@shelfLifeType.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@shelfLifeType.Value">@shelfLifeType.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">描述:</label>
+                <div class="col-sm-4"><input type="text" id="SkuDescr" name="SkuDescr" class="form-control" value="@Model.SkuDescr"></div>
+
+                <label class="col-sm-2 control-label">入库保质期天数:</label>
+                <div class="col-sm-4"><input type="text" id="ShelfLifeOnReceiving" name="ShelfLifeOnReceiving" class="form-control" value="@Model.ShelfLifeOnReceiving"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">出库保质期天数:</label>
+                <div class="col-sm-4"><input type="text" id="ShelfLife" name="ShelfLife" class="form-control" value="@Model.ShelfLife"></div>
+
+                <label class="col-sm-2 control-label">包装代码:</label>
+                <div class="col-sm-4">
+                    <select id="PackSysId" name="PackSysId" class="form-control chosen-select" data-placeholder="请选择">
+                        @{
+                            foreach (var pack in (List<SelectListItem>)ViewBag.PackList)
+                            {
+                                if (Model.PackSysId.ToString() == pack.Value)
+                                {
+                                    <option value="@pack.Value" selected>@pack.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@pack.Value">@pack.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">保质期天数:</label>
+                <div class="col-sm-4"><input type="text" id="DaysToExpire" name="DaysToExpire" class="form-control" value="@Model.DaysToExpire"></div>
+
+                <label class="col-sm-2 control-label">批次模板:</label>
+                <div class="col-sm-4">
+                    <select id="LotTemplateSysId" name="LotTemplateSysId" class="form-control chosen-select" data-placeholder="请选择">
+                        @{
+                            foreach (var lotTemplate in (List<SelectListItem>)ViewBag.LotTemplateList)
+                            {
+                                if (Model.LotTemplateSysId.ToString() == lotTemplate.Value)
+                                {
+                                    <option value="@lotTemplate.Value" selected>@lotTemplate.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@lotTemplate.Value">@lotTemplate.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">保质期控制:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="ShelfLifeIndicator" name="ShelfLifeIndicator" checked="@Model.ShelfLifeIndicator.GetValueOrDefault()"><i></i>
+                    </div>
+                </div>
+
+                <label class="col-sm-2 control-label">长:</label>
+                <div class="col-sm-4"><input type="text" id="Length" name="Length" class="form-control" value="@Model.Length" onchange="calculateCube()"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">宽:</label>
+                <div class="col-sm-4"><input type="text" id="Width" name="Width" class="form-control" value="@Model.Width" onchange="calculateCube()"></div>
+
+                <label class="col-sm-2 control-label">高:</label>
+                <div class="col-sm-4"><input type="text" id="Height" name="Height" class="form-control" value="@Model.Height" onchange="calculateCube()"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">体积:</label>
+                <div class="col-sm-4"><input type="text" id="Cube" name="Cube" class="form-control" value="@Model.Cube"></div>
+
+                <label class="col-sm-2 control-label">净重:</label>
+                <div class="col-sm-4"><input type="text" id="NetWeight" name="NetWeight" class="form-control" value="@Model.NetWeight"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">毛重:</label>
+                <div class="col-sm-4"><input type="text" id="GrossWeight" name="GrossWeight" class="form-control" value="@Model.GrossWeight"></div>
+
+                <label class="col-sm-2 control-label">成本价格:</label>
+                <div class="col-sm-4"><input type="text" id="CostPrice" name="CostPrice" class="form-control" value="@Model.CostPrice"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">销售价格:</label>
+                <div class="col-sm-4"><input type="text" id="SalePrice" name="SalePrice" class="form-control" value="@Model.SalePrice"></div>
+
+                <label class="col-sm-2 control-label">生鲜:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="Fresh" name="Fresh" checked="@Model.Fresh.GetValueOrDefault()"><i></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">易碎品:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="FragileArticles" name="FragileArticles" checked="@Model.FragileArticles.GetValueOrDefault()"><i></i>
+                    </div>
+                </div>
+
+                <label class="col-sm-2 control-label">颜色:</label>
+                <div class="col-sm-4"><input type="text" id="Color" name="Color" class="form-control" value="@Model.Color"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">型号:</label>
+                <div class="col-sm-4"><input type="text" id="Style" name="Style" class="form-control" value="@Model.Style"></div>
+
+                <label class="col-sm-2 control-label">外部ID:</label>
+                <div class="col-sm-4"><input type="text" id="OtherId" name="OtherId" class="form-control" value="@Model.OtherId"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">UPC:</label>
+                <div class="col-sm-4"><input type="text" id="UPC" name="UPC" class="form-control" value="@Model.UPC"></div>
+
+                <label class="col-sm-2 control-label">OtherUPC1:</label>
+                <div class="col-sm-4"><input type="text" id="OtherUPC1" name="OtherUPC1" class="form-control" value="@Model.OtherUPC1"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">OtherUPC2:</label>
+                <div class="col-sm-4"><input type="text" id="OtherUPC2" name="OtherUPC2" class="form-control" value="@Model.OtherUPC2"></div>
+
+                <label class="col-sm-2 control-label">OtherUPC3:</label>
+                <div class="col-sm-4"><input type="text" id="OtherUPC3" name="OtherUPC3" class="form-control" value="@Model.OtherUPC3"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">OtherUPC4:</label>
+                <div class="col-sm-4"><input type="text" id="OtherUPC4" name="OtherUPC4" class="form-control" value="@Model.OtherUPC4"></div>
+
+                <label class="col-sm-2 control-label">推荐库位:</label>
+                <div class="col-sm-4">
+                    <select id="RecommendLoc" name="RecommendLoc" class="form-control" data-placeholder="请选择">
+                        @{
+                            foreach (var location in (List<SelectListItem>)ViewBag.LocationList)
+                            {
+                                if (Model.RecommendLoc == location.Text)
+                                {
+                                    <option value="@location.Text" selected>@location.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@location.Text">@location.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">原材料:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="IsMaterial" name="IsMaterial" checked="@Model.IsMaterial.GetValueOrDefault()"><i></i>
+                    </div>
+                </div>
+                <label class="col-sm-2 control-label">启用:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="IsActive" name="IsActive" checked="@Model.IsActive"><i></i>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="SpecialTypes">商品类型</label>
+                <div class="col-sm-4">
+                    <select class="form-control m-b" name="SpecialTypes" id="SpecialTypes">
+                        <option value="1">正常</option>
+                        <option value="2">SN管控商品</option>
+                        <option value="3">农资商品</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" onclick="editSku();"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables", "~/plugins/validate")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+            
+            $("#SpecialTypes").val('@Model.SpecialTypes');
+
+            $("#editSkuForm").validate({
+                rules: {
+                    SkuCode: {
+                        required: true,
+                        maxlength: 32
+                    },
+                    SkuName: {
+                        required: true,
+                        maxlength: 64
+                    },
+                    SkuDescr: {
+                        required: true,
+                        maxlength: 256
+                    },
+                    ShelfLifeOnReceiving: {
+                        digits: true,
+                        min: 0
+                    },
+                    ShelfLife: {
+                        digits: true,
+                        min: 0
+                    },
+                    DaysToExpire: {
+                        number: true,
+                        min: 0
+                    },
+                    Length: {
+                        number: true,
+                        min: 0
+                    },
+                    Width: {
+                        number: true,
+                        min: 0
+                    },
+                    Height: {
+                        number: true,
+                        min: 0
+                    },
+                    Cube: {
+                        number: true,
+                        min: 0
+                    },
+                    NetWeight: {
+                        number: true,
+                        min: 0
+                    },
+                    GrossWeight: {
+                        number: true,
+                        min: 0
+                    },
+                    CostPrice: {
+                        number: true,
+                        min: 0
+                    },
+                    SalePrice: {
+                        number: true,
+                        min: 0
+                    },
+                    Color: {
+                        maxlength: 16
+                    },
+                    Style: {
+                        maxlength: 32
+                    },
+                    UPC: {
+                        maxlength: 32
+                    },
+                    OtherUPC1: {
+                        maxlength: 32
+                    },
+                    OtherUPC2: {
+                        maxlength: 32
+                    },
+                    OtherUPC3: {
+                        maxlength: 32
+                    },
+                    OtherUPC4: {
+                        maxlength: 32
+                    }
+                }
+            });
+        });
+
+        $('.chosen-select').chosen({ width: "100%" });
+
+        function editSku() {
+            if ($("#editSkuForm").valid()) {
+                $.ajax({
+                    url: "/Sku/SaveEditSku",
+                    type: "POST",
+                    data: $("#editSkuForm").serializeObject(),
+                    success: function (data) {
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            window.location.href = "/Sku/SkuList";
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            }
+        }
+
+        function calculateCube() {
+            var length = $("#Length").val();
+            var width = $("#Width").val();
+            var height = $("#Height").val();
+            if (!isNaN(length) && !isNaN(width) && !isNaN(height)) {
+                $("#Cube").val((length * width * height).toFixed(2));
+            } else {
+                $("#Cube").val("");
+            }
+        }
+
+        function skuClassChanged(e) {
+            for (var i = (parseInt($(e).attr("index")) + 1) ; i < 6; i++) {
+                $("#SkuClassSysId" + i + " option[value!='']").remove();
+            }
+            $.ajax({
+                url: "/StockTake/GetSelectSkuClass?parentSysId=" + e.value,
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                traditional: true,
+                success: function (data) {
+                    for (var i in data) {
+                        $("#SkuClassSysId" + (parseInt($(e).attr("index")) + 1)).append("<option value='" + data[i].Value + "'>" + data[i].Text + "</option>");
+                    }
+                },
+                error: function (data) {
+                    msgErro("获取商品分类失败");
+                }
+            });
+        }
+
+        function addSkuClass() {
+            if ($("#SkuClassSysId5").val() != "") {
+                setSkuClass("SkuClassSysId5");
+            } else if ($("#SkuClassSysId4").val() != "") {
+                setSkuClass("SkuClassSysId4");
+            } else if ($("#SkuClassSysId3").val() != "") {
+                setSkuClass("SkuClassSysId3");
+            } else if ($("#SkuClassSysId2").val() != "") {
+                setSkuClass("SkuClassSysId2");
+            } else if ($("#SkuClassSysId1").val() != "") {
+                setSkuClass("SkuClassSysId1");
+            } else {
+                $("#SkuClassName").val("");
+                $("#SkuClassSysId").val("");
+            }
+        }
+
+        function setSkuClass(selectedSkuClass) {
+            $("#SkuClassName").val($("#" + selectedSkuClass).find("option:selected").text());
+            $("#SkuClassSysId").val($("#" + selectedSkuClass).val());
+        }
+    </script>
+}

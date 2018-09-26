@@ -1,0 +1,103 @@
+﻿@using NBK.ECService.WMSLog.Utility
+@{
+    ViewBag.Title = "RF消息推送";
+}
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form id="pushMessageForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">推送用户：</label>
+                <div class="col-sm-9">
+                    <select class="form-control m-b" name="PushType" id="PushType">
+                        <option selected value="0">全员推送</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">消息标题:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="MessageTitle" name="MessageTitle" class="form-control" placeholder="请输入消息标题">
+                </div>
+
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">消息描述:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="MessageDesc" name="MessageDesc" class="form-control" placeholder="请输入消息描述">
+                </div>
+
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">消息内容:</label>
+                <div class="col-sm-9">
+                    <textarea  id="MessageContent" name="MessageContent"  class="form-control" placeholder="请输入消息内容"></textarea>
+                </div>
+
+                <div class="col-sm-1">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-9">
+                    <a class="btn btn-sm btn-primary" id="btnPushButton"><i class="fa fa-check-square-o"></i> 推送</a>
+                </div>
+                <div class="col-sm-2">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+       
+        $(function () {
+           
+            $("#pushMessageForm").validate({
+                ignore: [],
+                rules: {
+                    MessageTitle: {
+                        required: true
+                    },
+                    MessageContent: {
+                        required: true
+                    }
+                }
+            });
+
+            $("#btnPushButton").click(function () {
+                if ($("#pushMessageForm").valid()) {
+                    saveLoading('show');
+                    $.ajax({
+                        url: "/RFMessage/PushMessage",
+                        type: 'POST',
+                        data: { "PushType": $("#PushType").val(), "MessageTitle": $("#MessageTitle").val(), "MessageDesc": $("#MessageDesc").val(), "MessageContent": $("#MessageContent").val() },
+                        success: function (data) {
+                            saveLoading('hide');
+                            if (data.Success) {
+                                msgSuccess("推送成功!");
+                                $("#MessageTitle").val('');
+                                $("#MessageDesc").val('');
+                                $("#MessageContent").val('');
+                            }
+                            else {
+                                msgErro(data.Message);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+

@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+    <div class="page-group">
+        <div id="page-review-wholereview" class="page page-current">
+            <header class="bar bar-nav">
+                <a id="btnBack" class="button button-link button-nav pull-left">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">整件复核</h1>
+                <a id="btnViewDiff" class="button button-link button-nav pull-right" style="margin-right:8px">查看复核情况</a>
+            </header>
+
+            <div class="row page-content content" data-distance="50">
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="ibox float-e-margins">
+                                <input type="hidden" id="selectkey" name="selectkey" value="" />
+                                <input type="hidden" id="values" name="values" value="" />
+                                <input type="hidden" id="texts" name="texts" value="" />
+                                <div class="ibox-content">
+                                    <h4>请扫描交接条码</h4>
+                                    <input id="transferOrder" name="transferOrder" class="form-control input-s" placeholder="请扫描交接条码">
+                                    <h4>请扫描商品</h4>
+                                    <input id="skuUPC" name="skuUPC" class="form-control input-s" placeholder="请扫描商品">
+                                    <h4>请输入商品数量</h4>
+                                    <input id="qty" name="qty" class="form-control input-s" placeholder="请输入商品数量">
+                                    <p id="msg" name="msg" class="msg-error"></p>
+                                </div>
+                                <div class="ibox-content">
+                                    <a id="btnSkip" class="button button-link button-nav">跳过</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

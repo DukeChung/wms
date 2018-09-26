@@ -1,0 +1,87 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrintPickDetailByBatchDto
+@{
+    ViewBag.Title = "";
+    Layout = null;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">批量拣货单</H1>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("拣货单号", Model.PickDetailOrder)
+                @Html.PrintTitle("订单数量", Model.OrderCount.ToString())
+                @Html.PrintTitle("商品数量", Model.SkuQty.ToString())
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("SKU数", Model.SkuCount.ToString())
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("商品条码")
+                            @Html.PrintTh("商品名称")
+                            @*@Html.PrintTh("商品描述")*@
+                            @Html.PrintTh("包装系数")
+                            @Html.PrintTh("库位")
+                            @Html.PrintTh("数量")
+                            @Html.PrintTh("单位")
+                            @Html.PrintTh("渠道")
+                            @Html.PrintTh("业务类型")
+                            @Html.PrintTh("批次")
+                        </tr>
+                        @{
+                            if (Model != null && Model.PrintPickDetailDtos != null && Model.PrintPickDetailDtos.Count > 0)
+                            {
+                                foreach (var info in Model.PrintPickDetailDtos)
+                                {
+                                    <tr>
+                                        <td style="padding: 8px 0;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;text-align: left;font-family: 宋体;font-size: 16px;">@info.UPC</td>
+                                        <td style="padding: 8px 0;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;text-align: left;font-family: 宋体;font-size: 16px;">@info.SkuName</td>
+
+                                        @Html.PrintTd(info.PackFactor)
+                                        <td style="padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;text-align: left;font-family: 宋体;font-size: 16px;width:80px;">@info.Loc</td>
+                                        @Html.PrintTd(info.Qty.ToString())
+                                        @Html.PrintTd(info.UomNameDisplay)
+                                        @Html.PrintTd(info.Channel)
+                                        @Html.PrintTd(info.OutboundChildType)
+                                        @Html.PrintTd(info.Lot)
+                                    </tr>
+                                }
+                            }
+                        }
+                        <tbody>
+                            <tr>
+                                @Html.PrintTd()
+                                @Html.PrintTd()
+                                @Html.PrintTd()
+                                @Html.PrintTd()
+                                @Html.PrintTd("打印时间")
+                                @Html.PrintTd(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                                @Html.PrintTd("打印人")
+                                @Html.PrintTd()
+                                @Html.PrintTd($"{ViewBag.PrintUserName}")
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+

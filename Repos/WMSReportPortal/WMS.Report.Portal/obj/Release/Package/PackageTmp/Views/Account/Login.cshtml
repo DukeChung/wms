@@ -1,0 +1,126 @@
+﻿@model LoginViewModel
+@{
+    ViewBag.PageId = "extr-page";
+    ViewBag.PageClass = "animated fadeInDown";
+}
+<style>
+    #top-right {
+        display: none;
+    }
+</style>
+<div id="content" class="container" style="margin-top:100px;">
+    <div class="row">
+        @{ Html.RenderPartial("_LoginText"); }
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+            <div class="well no-padding">
+                <div id="login-form" class="smart-form client-form">
+                    <header>
+                        用户登录
+                    </header>
+                    @Html.ValidationBootstrap()
+                    <fieldset>
+                        <section>
+                            <label class="label">用户名</label>
+                            <label class="input">
+                                <i class="icon-append fa fa-user"></i>
+                                <input type="text" name="LoginName" id="LoginName" placeholder="用户名">
+                                <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>请输入用户名</b>
+                            </label>
+                        </section>
+
+                        <section>
+                            <label class="label">密码</label>
+                            <label class="input">
+                                <i class="icon-append fa fa-lock"></i>
+                                <input type="password" name="Password" id="Password" placeholder="密码">
+                                <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> 请输入密码</b>
+                            </label>
+                        </section>
+
+                        <section>
+                            <div class="validation-summary-errors text-danger" id="msgDisplay" style="display:none;"></div>
+                        </section>
+                        @*<section>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="rememberMe" value="true" checked="checked">
+                                    <input type="hidden" name="rememberMe" value="false" />
+                                    <i></i>记住密码
+                                </label>
+                            </section>*@
+                    </fieldset>
+                    <footer>
+                        <button type="button" id="submintform" class="btn btn-primary">
+                            登录
+                        </button>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdnkey" value="MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGsXYGuspXPOoIcBdmLhgMIM+EOE
+3OwvNcw8FWfYRGeuhvv4ARFgPn8W/MRjyc/LbeceLux2h13/eaure3zPUfzzmvDj
+fKoTs+uTlH21R/vQF17nZJKw+OJ/xztjILeGzMp2cJj8Yn4khOiuc8yVIZTSJt1O
+1Q6LSf+S61dD+oLfAgMBAAE=" />
+@section pagespecific {
+    <script src="~/Scripts/jsencrypt.min.js"></script>
+    <script type="text/javascript">
+        var LoginModel = {
+            init: function () {
+                $("#submintform").bind("click", LoginModel.login);
+            },
+            login: function () {
+                var loginName = $("#LoginName").val();
+                var psd = $("#Password").val();
+                if (loginName == '' || loginName == null) {
+                    LoginModel.displayMsg("请输入用户名");
+                    return false;
+                } if (psd == '' || psd == null) {
+                    LoginModel.displayMsg("请输入密码");
+                    return false;
+                }
+
+                var encrypt = new JSEncrypt();
+                encrypt.setPublicKey($("#hdnkey").val());
+                loginName = encrypt.encrypt(loginName);
+                psd = encrypt.encrypt(psd);
+
+
+                $('#submintform').unbind("click");
+
+                var loginData = {
+                    LoginName: encodeURI(loginName).replace(/\+/g, '%2B'),
+                    Password: encodeURI(psd).replace(/\+/g, '%2B')
+                };
+                $.ajax({
+                    url: "@Url.Action("Login", "Account")" + "?ReturnUrl=" + "@ViewBag.ReturnUrl",
+                    data: loginData,
+                    dataType: "json",
+                    type: "post",
+                    success: function (response) {
+                        if (response.success == true) {
+                            window.location.href = response.returnUrl;
+                        } else {
+                            LoginModel.displayMsg(response.message);
+                        }
+                        $("#submintform").bind("click", LoginModel.login);
+                    },
+                    error: function (response) {
+                        alert("服务器异常，请联系support");
+                        $("#submintform").bind("click", LoginModel.login);
+                    }
+                });
+
+            },
+            displayMsg: function (msg) {
+                $("#msgDisplay").html(msg);
+                $("#msgDisplay").show(300)
+                setTimeout(function () { $("#msgDisplay").hide(300); }, 3000);
+            }
+
+        }
+        $(function () {
+            LoginModel.init();
+        });
+    </script>
+}

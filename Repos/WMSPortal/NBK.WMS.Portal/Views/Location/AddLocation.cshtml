@@ -1,0 +1,245 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "新增库位";
+}
+
+@Html.Breadcrumb("库位管理", "/Location/LocationList", "新增库位")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="addLocationForm" class="form-horizontal" method="get">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">货位:</label>
+                <div class="col-sm-4"><input type="text" id="Loc" name="Loc" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">货位用途:</label>
+                <div class="col-sm-4">
+                    <select id="LocUsage" name="LocUsage" class="form-control">
+                        @{
+                            <option value="">请选择</option>
+                            foreach (var locUsage in (List<SelectListItem>)ViewBag.LocUsageList)
+                            {
+                                <option value="@locUsage.Value">@locUsage.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">货位种类:</label>
+                <div class="col-sm-4">
+                    <select id="LocCategory" name="LocCategory" class="form-control">
+                        @{
+                            <option value="">请选择</option>
+                            foreach (var locCategory in (List<SelectListItem>)ViewBag.LocCategoryList)
+                            {
+                                <option value="@locCategory.Value">@locCategory.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <label class="col-sm-2 control-label">货位属性:</label>
+                <div class="col-sm-4"><input type="text" id="LocFlag" name="LocFlag" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">处理方式:</label>
+                <div class="col-sm-4"><input type="text" id="LocHandling" name="LocHandling" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">储区:</label>
+                <div class="col-sm-4">
+                    <select id="ZoneSysId" name="ZoneSysId" class="form-control">
+                        @{
+                            <option value="">请选择</option>
+                            foreach (var zone in (List<SelectListItem>)ViewBag.ZoneList)
+                            {
+                                <option value="@zone.Value">@zone.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">路线顺序:</label>
+                <div class="col-sm-4"><input type="text" id="LogicalLoc" name="LogicalLoc" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">X坐标:</label>
+                <div class="col-sm-4"><input type="text" id="XCoord" name="XCoord" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Y坐标:</label>
+                <div class="col-sm-4"><input type="text" id="YCoord" name="YCoord" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">层数:</label>
+                <div class="col-sm-4"><input type="text" id="LocLevel" name="LocLevel" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">体积:</label>
+                <div class="col-sm-4"><input type="text" id="Cube" name="Cube" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">长度:</label>
+                <div class="col-sm-4"><input type="text" id="Length" name="Length" class="form-control" onchange="calculateCubic()"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">宽度:</label>
+                <div class="col-sm-4"><input type="text" id="Width" name="Width" class="form-control" onchange="calculateCubic()"></div>
+
+                <label class="col-sm-2 control-label">高度:</label>
+                <div class="col-sm-4"><input type="text" id="Height" name="Height" class="form-control" onchange="calculateCubic()"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">容积:</label>
+                <div class="col-sm-4"><input type="text" id="CubicCapacity" name="CubicCapacity" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">载重:</label>
+                <div class="col-sm-4"><input type="text" id="WeightCapacity" name="WeightCapacity" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">启用:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="IsActive" name="IsActive" checked><i></i>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" onclick="addLocation();"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables", "~/plugins/validate")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $("#addLocationForm").validate({
+                rules: {
+                    Loc: {
+                        required: true,
+                        maxlength: 32
+                    },
+                    LocUsage: {
+                        required: true,
+                        maxlength: 32
+                    },
+                    LocCategory: {
+                        maxlength: 32
+                    },
+                    LocFlag: {
+                        maxlength: 32
+                    },
+                    LocHandling: {
+                        maxlength: 32
+                    },
+                    LogicalLoc: {
+                        digits: true,
+                        min: 0
+                    },
+                    XCoord: {
+                        number: true,
+                        min: 0
+                    },
+                    YCoord: {
+                        number: true,
+                        min: 0
+                    },
+                    LocLevel: {
+                        digits: true,
+                        min: 0
+                    },
+                    Cube: {
+                        number: true,
+                        min: 0
+                    },
+                    Length: {
+                        digits: true,
+                        min: 0
+                    },
+                    Width: {
+                        digits: true,
+                        min: 0
+                    },
+                    Height: {
+                        digits: true,
+                        min: 0
+                    },
+                    CubicCapacity: {
+                        number: true,
+                        min: 0
+                    },
+                    WeightCapacity: {
+                        number: true,
+                        min: 0
+                    },
+                    ZoneSysId: {
+                        required: true
+                    }
+                },
+                messages: {
+                    ZoneSysId: {
+                        required: "请选择"
+                    },
+                    LocUsage: {
+                        required: "请选择"
+                    }
+                }
+            });
+        });
+
+        function addLocation() {
+            if ($("#addLocationForm").valid()) {
+                $.ajax({
+                    url: "/Location/SaveAddLocation",
+                    type: "POST",
+                    data: $("#addLocationForm").serializeObject(),
+                    success: function (data) {
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            window.location.href = "/Location/LocationList";
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            }
+        }
+
+        function calculateCubic() {
+            var length = $("#Length").val();
+            var width = $("#Width").val();
+            var height = $("#Height").val();
+            if (!isNaN(length) && !isNaN(width) && !isNaN(height)) {
+                $("#CubicCapacity").val((length * width * height).toFixed(4));
+            } else {
+                $("#CubicCapacity").val("");
+            }
+        }
+    </script>
+}
+

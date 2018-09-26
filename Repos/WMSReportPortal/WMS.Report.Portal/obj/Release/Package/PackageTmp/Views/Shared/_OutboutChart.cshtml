@@ -1,0 +1,87 @@
+﻿
+@{
+    Layout = null;
+}
+<div id="wareHouseOutboundChart" style="width:100%;height:100%;">
+
+</div>
+
+
+<script>
+    var outboundChart = {
+        init: function () {
+            var _self = this;
+            var height = Math.ceil($(window).height() * 0.5);
+            $("#div_OutboutChart").height(height);
+            var wareHouseOutboundChart = echarts.init(document.getElementById("wareHouseOutboundChart"));
+            $.ajax({
+                url: "@Url.Action("GetOutboundListData", "Home")",
+                type: "GET",
+                success: function (result) {
+                    if (result.success) {
+                        wareHouseOutboundChart.setOption(option = {
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            toolbox: {
+                                right: 20,
+                                feature: {
+                                    magicType: { show: true, type: ['line', 'bar'] },
+                                    restore: { show: true, title: '刷新' },
+                                    saveAsImage: { show: true, title: '保存图片' }
+                                }
+                            },
+                            legend: {
+                                data: _self.formtTitleData(result.data)
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    data: result.date
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value',
+                                    name: '数量'
+                                }
+                            ],
+                            series: _self.formtData(result.data)
+                        });
+                    }
+
+                }
+            });
+        },
+        formtData: function (list) {
+            var data = [];
+            var length = list != null ? list.length : 0;
+            for (var i = 0; i < length; i++) {
+                data.push({
+                    name: list[i].WareHouseName,
+                    type: 'bar',
+                    data: list[i].Qty
+                });
+            }
+            return data;
+        },
+        formtTitleData: function (list) {
+            var data = [];
+            var length = list != null ? list.length : 0;
+            for (var i = 0; i < length; i++) {
+                data.push(list[i].WareHouseName);
+            }
+            return data;
+        }
+
+    }
+
+
+    @*格式化柱状图数据标题注释*@
+    outboundChart.init();
+
+
+
+
+
+</script>

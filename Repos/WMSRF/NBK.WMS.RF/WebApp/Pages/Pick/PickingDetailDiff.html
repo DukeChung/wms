@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+<body>
+    <div class="page-group">
+        <div id="page-picking-detaildiff" class="page page-current">
+
+            <header class="bar bar-nav">
+                <a id="btnBack" class="button button-link button-nav pull-left">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">待拣货明细</h1>
+            </header>
+
+            <div class="row page-content content" data-distance="50">
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="padding:0.1rem">NO</th>
+                                                <th style="padding:0.1rem 0.2rem">商品名称</th>
+                                                <!--<th style="padding:0.1rem 0.2rem">商品条码</th>-->
+                                                <th style="padding:0.1rem 0.2rem">库位</th>
+                                                <th style="padding:0.1rem">出库</th>
+                                                <th style="padding:0.1rem">拣货</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="pickingDetailDiffList"></tbody>
+                                    </table>
+                                    <p id="msg" name="msg" class="msg-error"></p>
+                                </div>
+                                <div class="ibox-content">
+                                    <a id="btnPickFinish" class="btn btn-block btn-primary compose-mail">拣货完成</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,496 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil;
+@model NBK.ECService.WMS.DTO.StockTransferDto
+
+@{
+    ViewBag.Title = "库存批次转移管理";
+}
+
+@Html.Breadcrumb("库存批次转移管理", "/StockTransfer/StockTransferList", "库存批次转移明细")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="AjustmentView" class="ibox-content m-b-sm border-bottom">
+
+        <form id="AjustmentForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">转移明细</H2>
+                </label>
+
+                <div class="col-sm-7">
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divBarCode">
+                        </div>
+
+                        <div class="col-sm-3">
+
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align:right" id="divBarCodeValue">@Model.StockTransferOrder</div>
+                        <div class="col-sm-1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        商品名称:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.SkuName </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        UPC:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.UPC </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        状态:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.StatusDisplay</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        转移数量:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.DisplayToQty</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group   hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        来源货位:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.FromLoc </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        目标货位:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.ToLoc </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        来源批次:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.FromLot</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        目标批次:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.ToLot</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        来源失效日期:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.FromExpiryDateDisplay </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        目标失效日期:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.ToExpiryDateDisplay </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        来源生产日期:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.FromProduceDateDisplay</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        目标生产日期:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.ToProduceDateDisplay</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        来源外部批次:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.FromExternalLot </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-4">
+                        目标外部批次:
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12"> @Model.ToExternalLot </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            @{
+                if (Model.LotVisible01.HasValue && Model.LotVisible01 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName01:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr01 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName01:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr01 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible02.HasValue && Model.LotVisible02 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName02:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr02 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName02:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr02 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible03.HasValue && Model.LotVisible03 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName03:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr03 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName03:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr03 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible04.HasValue && Model.LotVisible04 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName04:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr04 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName04:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr04 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible05.HasValue && Model.LotVisible05 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName05:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr05 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName05:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr05 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible06.HasValue && Model.LotVisible06 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName06:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr06 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName06:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr06 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible07.HasValue && Model.LotVisible07 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName07:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr07 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName07:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr07 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible08.HasValue && Model.LotVisible08 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName08:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr08 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName08:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr08 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @{
+                if (Model.LotVisible09.HasValue && Model.LotVisible09 == true)
+                {
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                来源 @Model.LotAttrName09:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.FromLotAttr09 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-4">
+                                目标 @Model.LotAttrName09:
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-12"> @Model.ToLotAttr09 </div>
+                                    <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-white btn-sm" id="btnReturn"><i class="fa fa-times"></i> 返回</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+
+            $("#btnReturn").click(function () {
+                backParentPage();
+            });
+        });
+
+        var backParentPage = function () {
+            window.location.href = '@Url.Action("StockTransferList", "StockTransfer")';
+        };
+
+    </script>
+}

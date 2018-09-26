@@ -1,0 +1,239 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+
+@{
+    ViewBag.Title = "工单管理";
+}
+
+@Html.Breadcrumb("增值服务", "工单管理")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+
+                <div class="form-group">
+                    <label class="control-label" for="WorkOrder">工单号</label>
+                    <input type="text" id="WorkOrder" name="WorkOrder" value="" placeholder="请输入工单号" class="form-control">
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("来源单号", "DocOrder")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("指派人", "AppointUserName")
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="Status">工单状态</label>
+                    <select class="form-control m-b" name="Status" id="Status">
+                        <option selected>全部</option>
+                        <option value="10">挂起</option>
+                        <option value="20">进行中</option>
+                        <option value="30">完成</option>
+                        <option value="40">拒绝</option>
+                        <option value="-99">作废</option>
+                        <option value="-999">取消</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="Status">工单类型</label>
+                    <select class="form-control m-b" name="WorkType" id="WorkType">
+                        <option selected>全部</option>
+                        <option value="20">收货</option>
+                        <option value="40">上架</option>
+                        <option value="60">拣货</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvWorkManger" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="WorkOrder">工单号</th>
+                                <th data-data="StatusName">订单状态</th>
+                                <th data-data="DocOrder">来源单号</th>
+                                <th data-data="AppointUserName">指派人</th>
+                                <th data-data="WorkTypeDisplay">工单类型</th>
+                                <th data-data="CreateDateDisplay">创建时间</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/print")
+    @Scripts.Render("~/plugins/chosen")
+
+    <script>
+
+        var workIndex = {
+            table: {},
+            init: function () {
+                var _self = this;
+
+                _self.table = $('#gvWorkManger').DataTable({
+                    "sAjaxSource": "/WorkManger/GetWorkByPage",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "WorkOrder", "value": $("#WorkOrder").val() },
+                            { "name": "DocOrder", "value": $("#DocOrder").val() },
+                            { "name": "AppointUserName", "value": $("#AppointUserName").val() },
+                            { "name": "Status", "value": $("#Status").val() },
+                            { "name": "WorkType", "value": $("#WorkType").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'pageLength',
+                         @if (AuthorizeManager.HasFunction(AuthKeyConst.VAS_WorkManger_Edit, User.Identity.Name))
+                    {
+                            <text>
+                            {
+                                text: '编辑',
+                                action: function (e, dt, node, config) {
+                                    var sysId = GetGridSysId();
+                                    if (sysId != null) {
+                                        var selectRow = workIndex.table.rows(':has(:checkbox:checked)');
+                                        if (selectRow.length == 1) {
+                                            if (selectRow.data()[0].Status != 10 && selectRow.data()[0].Status != 20) {
+                                                msgAlert("只有挂起和进行中的才能编辑!");
+                                                return;
+                                            }
+                                            window.location.href = "/WorkManger/UpdateWork?sysId=" + sysId;
+                                        }
+                                    }
+                                }
+                            },
+                            </text>
+                        },
+                            @if (AuthorizeManager.HasFunction(AuthKeyConst.VAS_WorkManger_Cancel, User.Identity.Name))
+                    {
+                            <text>
+                            {
+                                text: '作废',
+                                action: function (e, dt, node, config) {
+                                    var sysIds = GetGridMultiselectSysId();
+                                    if (sysIds != null) {
+                                        msgConfirm("是否作废所选记录？", function (isConfirm) {
+                                            if (isConfirm) {
+                                                saveLoading('show');
+                                                $.ajax({
+                                                    url: "/WorkManger/CancelWork?sysIds=" + sysIds,
+                                                    type: "GET",
+                                                    success: function (data) {
+                                                        setTimeout(function () {
+                                                            saveLoading();
+                                                            if (data.Success) {
+                                                                msgSuccess(data.Message, setTimeout(function () { table.ajax.reload(); }, 100));
+                                                            } else {
+                                                                msgErro(data.Message);
+                                                            }
+                                                        }, 100);
+                                                    },
+                                                    error: function (data) {
+                                                        saveLoading();
+                                                        msgErro(data.Message);
+                                                    }
+                                                });
+                                            }
+                                        }, true);
+                                    } else {
+                                        msgErro("请在列表中勾选一项!");
+                                        return false;
+                                    }
+                                }
+                            }
+                                </text>
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" WorkOrder="' + full.WorkOrder + '" status="' + full.Status + '" />';
+                            }
+                        },
+                        {
+                            "targets": 1,
+                            render: function (data, type, full, meta) {
+                                return '<a target="_blank" href="/WorkManger/WorkView?sysId=' + full.SysId + '">' + full.WorkOrder + '</a>';
+                            }
+                        }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        buttons: {
+                            pageLength: {
+                                _: "每页显示 %d 条记录"
+                            }
+                        },
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+
+                    workIndex.table.ajax.reload();
+                });
+            }
+        }
+
+
+        $(function () {
+
+            workIndex.init();
+
+        });
+    </script>
+}

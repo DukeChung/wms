@@ -1,0 +1,98 @@
+﻿@model List<NBK.ECService.WMSReport.DTO.CalendarDataByDateDto>
+
+@{
+    ViewBag.Title = "商品包装查询报表";
+    Layout = null;
+}
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="reference">
+                <thead>
+                    <tr>
+                        <th>仓库名称</th>
+                        <th>入库单总数量</th>
+                        <th>新建</th>
+                        <th>收货中</th>
+                        <th>部分入库</th>
+                        <th>已入库</th>
+                        <th>关闭</th>
+                        <th>出库单总数量</th>
+                        <th>新建</th>
+                        <th>分配完成</th>
+                        <th>拣货完成</th>
+                        <th>出库完成</th>
+                        <th>关闭</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.PurchaseQty</td>
+                                <td>@item.NewPurchaseQty</td>
+                                <td>@item.InReceiptQty</td>
+                                <td>@item.PartReceiptQty</td>
+                                <td>@item.FinishQty</td>
+                                <td>@item.CancelPurchaseQty</td>
+                                <td>@item.OutboundQty</td>
+                                <td>@item.NewOutboundQty</td>
+                                <td>@item.AllocationQty</td>
+                                <td>@item.PickingQty</td>
+                                <td>@item.DeliveryQty</td>
+                                <td>@item.CancelOutboundQty</td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<style>
+    table {
+        display: table;
+        border-collapse: separate;
+        border-spacing: 2px;
+        border-color: grey;
+        font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+        font-size: 13px;
+        color: #333;
+    }
+
+        table.reference, table.tecspec {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 4px;
+            margin-top: 4px;
+        }
+
+            table.reference th {
+                color: #fff;
+                border: 1px solid #ddd;
+                padding: 8px 10px;
+                color: #333;
+                vertical-align: top;
+                text-align: left;
+            }
+
+            table.reference tr:nth-child(odd) {
+                background-color: #f5f5f5;
+            }
+
+            table.reference td {
+                line-height: 2em;
+                min-width: 24px;
+                border: 1px solid #ddd;
+                padding: 8px 10px;
+                vertical-align: top;
+            }
+</style>

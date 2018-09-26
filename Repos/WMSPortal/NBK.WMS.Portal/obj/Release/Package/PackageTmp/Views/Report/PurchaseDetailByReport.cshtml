@@ -1,0 +1,172 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+@{
+    ViewBag.Title = "入库明细查询";
+}
+
+@Html.Breadcrumb("报表", "入库明细查询")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form method="post" id="exportForm">
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("入库单号", "PurchaseOrder")
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("商品名称", "SkuName")
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("UPC", "UPC")
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("供应商名称", "VendorName")
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.DataPickerTextBox("最后入库日期从", "LastReceiptDateFrom")
+                </div>
+                <div class="col-sm-3">
+                    @Html.DataPickerTextBox("最后入库日期到", "LastReceiptDateTo")
+                </div>
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-3">
+                    <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvPurchaseDetailReport" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th data-data="PurchaseOrder">入库单号</th>
+                                @*<th data-data="ReceiptOrder">收货单号</th>*@
+                                <th data-data="SkuName">商品名称</th>
+                                <th data-data="UPC">UPC</th>
+                                <th data-data="Qty">采购数量</th>
+                                <th data-data="ReceivedQty">实际入库数量</th>
+                                @*<th data-data="RejectedQty">拒收数量</th>*@
+                                <th data-data="LastReceiptDateDisplay">最后入库日期</th>
+                                <th data-data="VendorName">供应商</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    <script>
+        var PurchaseDetailReport = {
+            table: {},
+            init: function () {
+                var _self = this;
+                $('#divLastReceiptDateFrom .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divLastReceiptDateTo .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+
+                _self.table = $('#gvPurchaseDetailReport').DataTable({
+                    "sAjaxSource": "GetPurchaseDetailReport",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "PurchaseOrder", "value": $("#PurchaseOrder").val() },
+                            { "name": "SkuName", "value": $("#SkuName").val() },
+                            { "name": "UPC", "value": $("#UPC").val() },
+                            { "name": "VendorName", "value": $("#VendorName").val() },
+                            { "name": "LastReceiptDateFrom", "value": $("#LastReceiptDateFrom").val() },
+                            { "name": "LastReceiptDateTo", "value": $("#LastReceiptDateTo").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'pageLength',
+                        @if (AuthorizeManager.HasFunction(AuthKeyConst.Report_PurchaseDetailReport_Export, User.Identity.Name))
+                    {
+                            <text>
+                            {
+                                text: '导出',
+                                action: function (e, dt, node, config) {
+                                    var exportForm = $("#exportForm");
+                                    exportForm.attr("action", '@Url.Action("PurchaseDetailReportExport")');
+                                    exportForm.submit();
+                                }
+                            }
+                            </text>
+                }
+                    ],
+                    "columnDefs": [],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        buttons: {
+                            pageLength: {
+                                _: "每页显示 %d 条记录"
+                            }
+                        },
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+
+                    if (!commonCheckDateCompare($("#LastReceiptDateFrom").val(), $("#LastReceiptDateTo").val())) {
+                        msgAlert("最后入库终止日期应大于最后入库起始日期！");
+                        return false;
+                    }
+
+                    PurchaseDetailReport.table.ajax.reload();
+                });
+
+            }
+        }
+
+        $(function () {
+            PurchaseDetailReport.init();
+        })
+
+    </script>
+}

@@ -1,0 +1,627 @@
+﻿@using NBK.ECService.WMSReport.DTO.Base
+@using WMS.Global.Portal.Helpers
+@using NBK.AuthServiceUtil
+
+@{
+    ViewBag.Title = "出库汇总报表";
+}
+
+@Html.Breadcrumb("报表", "出库汇总报表")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form method="post" id="exportForm">
+            <div class="row">
+                <div class="col-sm-3">
+
+                    <div class="form-group">
+                        <label class="control-label" for="OutboundOrder">出库单号</label>
+                        <input type="text" id="OutboundOrder" name="OutboundOrder" value="" placeholder="请输入出库单号" class="form-control">
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("收货人姓名", "ConsigneeName")
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("收货人电话", "ConsigneePhone")
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="Status">出库单状态</label>
+                        <select class="form-control m-b" name="Status" id="Status">
+                            <option selected>全部</option>
+                            <option value="10">新建</option>
+                            <option value="30">分配完成</option>
+                            <option value="40">拣货完成</option>
+                            <option value="70">出库完成</option>
+                            <option value="-999">作废</option>
+                            <option value="-10">关闭</option>
+                        </select>
+                    </div>
+                </div>
+            </div> 
+               
+                    <div class="row">
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("商品名称", "SkuName")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("商品条码", "UPC")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("商品编号", "SkuCode")
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label" for="OutboundType">出库单类型</label>
+                                <select class="form-control m-b" name="OutboundType" id="OutboundType">
+                                    <option selected>全部</option>
+                                    <option value="10">正常</option>
+                                    <option value="20">B2C</option>
+                                    <option value="30">B2B</option>
+                                    <option value="40">退货出库</option>
+                                    <option value="50">快进快出</option>
+                                    <option value="60">移仓</option>
+                                    <option value="70">原材料出库</option>
+                                    <option value="80">农资出库单</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            @Html.DataPickerTextBox("创建时间从", "CreateDateFrom")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DataPickerTextBox("创建时间到", "CreateDateTo")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DataPickerTextBox("审核时间从", "AuditingDateFrom")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DataPickerTextBox("审核时间到", "AuditingDateTo")
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            @Html.DataPickerTextBox("发货时间从", "ActualShipDateFrom")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DataPickerTextBox("发货时间到", "ActualShipDateTo")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("外部单据号", "ExternOrderId")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("收货人地址", "ConsigneeAddress")
+                            @*@Html.SearchTextBox("快递单号", "CarrierNumber")*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">移入仓:</label>
+                                <select id="ToWareHouseSysId" name="ToWareHouseSysId" class="form-control">
+                                    <option value="">全部仓库</option>
+                                    @{
+                                    foreach (var warehouse in (List<SelectItem>)ViewBag.WarehouseList)
+                                    {
+                                    <option value="@warehouse.Value">@warehouse.Text</option>
+                                    }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("服务综合体编码", "ServiceStationCode")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("服务综合体名称", "ServiceStationName")
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label" for="Region">服务综合体地区</label>
+                                <select id="Region" name="Region" class="form-control chosen-select">
+                                    <option value="">请输入</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label" for="Region">是否原材料</label>
+                                <select id="IsMaterial" name="IsMaterial" class="form-control ">
+                                    <option value="">全部</option>
+                                    <option value="true">是</option>
+                                    <option value="false">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("业务类型", "OutboundChildType")
+                        </div>
+
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("入库单号", "PurchaseOrder")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("平台订单号", "PlatformOrder")
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label" for="Region">是否退货</label>
+                                <select id="IsReturn" name="IsReturn" class="form-control ">
+                                    <option value="">全部</option>
+                                    <option value="true">是</option>
+                                    <option value="false">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("TMS运单号", "TMSOrder")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DataPickerTextBox("装车时间从", "DepartureDateFrom")
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DataPickerTextBox("装车时间到", "DepartureDateTo")
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            @Html.SearchTextBox("渠道", "Channel")
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">所属仓库:</label>
+                                <select id="SearchWarehouseSysId" name="SearchWarehouseSysId" class="form-control"> 
+                                    @{
+                                        foreach (var warehouse in (List<SelectItem>)ViewBag.WarehouseList)
+                                        {
+                                            <option value="@warehouse.Value">@warehouse.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top: 25px; float: left;">查询</button>
+                        </div>
+                    </div> 
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvOutbound" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th data-data="WarehouseName">所属仓库</th>
+                                <th data-data="OutboundOrder">出库单编号</th>
+                                <th data-data="StatusName">订单状态</th>
+                                <th data-data="OutboundTypeName">单据类型</th>
+                                <th data-data="OutboundChildType">业务类型</th>
+                                <th data-data="ExternOrderId">外部单据号</th>
+                                <th data-data="CreateDateDisplay">创建时间</th>
+                                <th data-data="PickdetailCreateDateDisplay">分配时间</th> 
+                                <th data-data="ActualShipDateDisplay">发货时间</th> 
+                                <th data-data="DisplayTotalQty">订单商品总数</th>
+                                <th data-data="DisplayTotalShippedQty">发货商品总数</th>
+                                <th data-data="ConsigneeName">收货人姓名</th>
+                                <th data-data="FullAddress" width="10%">收货人地址</th>
+                                <th data-data="ServiceStationCode">服务综合体编码</th>
+                                <th data-data="ServiceStationName" width="10%">服务综合体名称</th>
+                                <th data-data="Remark">订单备注</th>
+                                <th data-data="PlatformOrder">平台订单号</th>
+                                <th data-data="TMSOrder">TMS运单号</th>
+                                <th data-data="SortNumber">装车顺序号</th>
+                                <th data-data="DepartureDateDisplay">装车时间</th>
+                                <th data-data="AppointUserNames">作业人</th>
+                                <th data-data="Channel">渠道</th>
+                                <th data-data="IsInvoiceName">是否开票</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/print")
+    @Scripts.Render("~/plugins/chosen")
+
+    <script>
+        var OutboundMaintain = {
+            table: {},
+            init: function () {
+                var _self = this;
+
+                $('#divCreateDateFrom .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divCreateDateTo .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divAuditingDateFrom .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divAuditingDateTo .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divActualShipDateFrom .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divActualShipDateTo .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divDepartureDateFrom .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divDepartureDateTo .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+
+                if ('@ViewBag.CreateDateFrom'.length > 0) {
+                    $("#CreateDateFrom").val('@ViewBag.CreateDateFrom');
+                }
+
+                if ('@ViewBag.CreateDateTo'.length > 0) {
+                    $("#CreateDateTo").val('@ViewBag.CreateDateTo');
+                }
+
+                _self.table = $('#gvOutbound').DataTable({
+                    "sAjaxSource": "GetOutboundByPage",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "OutboundOrder", "value": $("#OutboundOrder").val() },
+                            { "name": "ConsigneeName", "value": $("#ConsigneeName").val() },
+                            { "name": "ConsigneePhone", "value": $("#ConsigneePhone").val() },
+                            { "name": "CreateDateFrom", "value": $("#CreateDateFrom").val() },
+                            { "name": "CreateDateTo", "value": $("#CreateDateTo").val() },
+                            { "name": "Status", "value": $("#Status").val() },
+                            { "name": "AuditingDateFrom", "value": $("#AuditingDateFrom").val() },
+                            { "name": "AuditingDateTo", "value": $("#AuditingDateTo").val() },
+                            { "name": "ActualShipDateFrom", "value": $("#ActualShipDateFrom").val() },
+                            { "name": "ActualShipDateTo", "value": $("#ActualShipDateTo").val() },
+                            { "name": "OutboundType", "value": $("#OutboundType").val() },
+                            { "name": "SkuName", "value": $("#SkuName").val() },
+                            { "name": "UPC", "value": $("#UPC").val() },
+                            { "name": "SkuCode", "value": $("#SkuCode").val() },
+                            //{ "name": "CarrierNumber", "value": $("#CarrierNumber").val() },
+                            { "name": "ExternOrderId", "value": $("#ExternOrderId").val() },
+                            { "name": "ConsigneeAddress", "value": $("#ConsigneeAddress").val() },
+                            { "name": "ToWareHouseSysId", "value": $("#ToWareHouseSysId").val() },
+                            { "name": "ServiceStationCode", "value": $("#ServiceStationCode").val() },
+                            { "name": "ServiceStationName", "value": $("#ServiceStationName").val() },
+                            { "name": "Region", "value": $("a.chosen-single span").text() },
+                            { "name": "IsMaterial", "value": $("#IsMaterial").val() },
+                            { "name": "OutboundChildType", "value": $("#OutboundChildType").val() },
+                            { "name": "PurchaseOrder", "value": $("#PurchaseOrder").val() },
+                            { "name": "PlatformOrder", "value": $("#PlatformOrder").val() },
+                            { "name": "IsReturn", "value": $("#IsReturn").val() },
+                            { "name": "TMSOrder", "value": $("#TMSOrder").val() },
+                            { "name": "DepartureDateFrom", "value": $("#DepartureDateFrom").val() },
+                            { "name": "DepartureDateTo", "value": $("#DepartureDateTo").val() },
+                            { "name": "IsFertilizer", "value": false },
+                            { "name": "Channel", "value": $("#Channel").val() },
+                            { "name": "SearchWarehouseSysId", "value": $("#SearchWarehouseSysId").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'pageLength', 
+                         @if (AuthorizeManager.HasFunction(AuthKeyConst.Report_OutboundSummaryReport_Export, User.Identity.Name))
+                        {
+                                <text> 
+                                   {
+                                       text: '导出',
+                                       action: function (e, dt, node, config) { 
+                                           
+                                           var request = { 
+                                               OutboundOrder: $("#OutboundOrder").val(),
+                                               ConsigneeName: $("#ConsigneeName").val(),
+                                               ConsigneePhone: $("#ConsigneePhone").val(),
+                                               CreateDateFrom: $("#CreateDateFrom").val(),
+                                               CreateDateTo: $("#CreateDateTo").val(),
+                                               Status: $("#Status").val(),
+                                               AuditingDateFrom: $("#AuditingDateFrom").val(),
+                                               AuditingDateTo: $("#AuditingDateTo").val(),
+                                               ActualShipDateFrom: $("#ActualShipDateFrom").val(),
+                                               ActualShipDateTo: $("#ActualShipDateTo").val(),
+                                               OutboundType: $("#OutboundType").val(),
+                                               SkuName: $("#SkuName").val(),
+                                               UPC: $("#UPC").val(),
+                                               SkuCode: $("#SkuCode").val(), 
+                                               ExternOrderId: $("#ExternOrderId").val(),
+                                               ConsigneeAddress: $("#ConsigneeAddress").val(),
+                                               ToWareHouseSysId: $("#ToWareHouseSysId").val(),
+                                               ServiceStationCode: $("#ServiceStationCode").val(),
+                                               ServiceStationName: $("#ServiceStationName").val(), 
+                                               Region: $("a.chosen-single span").text(),
+                                               IsMaterial: $("#IsMaterial").val(),
+                                               OutboundChildType: $("#OutboundChildType").val(),
+                                               PurchaseOrder: $("#PurchaseOrder").val(),
+                                               PlatformOrder: $("#PlatformOrder").val(),
+                                               IsReturn: $("#IsReturn").val(),
+                                               TMSOrder: $("#TMSOrder").val(),
+                                               DepartureDateFrom: $("#DepartureDateFrom").val(),
+                                               DepartureDateTo: $("#DepartureDateTo").val(),
+                                               IsFertilizer: false,
+                                               Channel: $("#Channel").val(),
+                                               SearchWarehouseSysId: $("#SearchWarehouseSysId").val()
+                                           }; 
+
+                                           saveLoading('show');
+                                           $.ajax({
+                                               url: "@Url.Action("OutboundSummaryExport")",
+                                               data: request,
+                                               dataType: "json",
+                                               type: "post",
+                                               success: function (data) {;
+                                                   saveLoading();
+                                                   if (data.success) {
+                                                       window.open(data.filePath);
+                                                   }
+                                                   else {
+                                                       msgErro(data.message);
+                                                   }
+                                               },
+                                               error: function () {
+                                                   saveLoading();
+                                                   msgErro("导出失败！");
+                                               }
+                                           });
+                                       }
+                                   }
+                                </text>
+                         }
+                    ], 
+                    "sScrollX": "100%",
+                    "sScrollXInner": "150%",
+                    "bScrollCollapse": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "iDisplayLength": 50,
+                    "oLanguage": {
+                        buttons: {
+                            pageLength: {
+                                _: "每页显示 %d 条记录"
+                            }
+                        },
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    if (!commonCheckDateCompare($("#CreateDateFrom").val(), $("#CreateDateTo").val())) {
+                        msgAlert("创建时间终止日期应大于起始日期！");
+                        return false;
+                    }
+
+                    if (!commonCheckDateCompare($("#AuditingDateFrom").val(), $("#AuditingDateTo").val())) {
+                        msgAlert("审核时间终止日期应大于起始日期！");
+                        return false;
+                    }
+
+                    if (!commonCheckDateCompare($("#ActualShipDateFrom").val(), $("#ActualShipDateTo").val())) {
+                        msgAlert("发货时间终止日期应大于起始日期！");
+                        return false;
+                    }
+
+                    if (!commonCheckDateCompare($("#DepartureDateFrom").val(), $("#DepartureDateTo").val())) {
+                        msgAlert("装车结束时间应大于装车开始时间！");
+                        return false;
+                    } 
+
+                    OutboundMaintain.table.ajax.reload();
+                });
+
+            },
+            PrintOutbound: function (sysId, outboundOrder) {
+                var LODOP = getLodop();
+                LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+
+                LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintRecommendPickDetail?outboundSysId=" + sysId + "&userName=@ViewBag.CurrentUserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+                LODOP.ADD_PRINT_BARCODE(40, 480, 300, 58, "128B", outboundOrder);
+                LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+                LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+                //LODOP.PREVIEW();
+                LODOP.PRINT();
+                msgAlert("已通知打印，请稍后");
+            }
+        }
+
+        $(function () {
+            $('.chosen-select').chosen({ no_results_text: "正在查询:", width: "100%" });
+            OutboundMaintain.init();
+
+            $("[autocomplete='off']").keyup(function () {
+                if ($("[autocomplete='off']").val().trim() != "") {
+                    regionListSearch();
+                }
+            });
+            $("#Region").change(function () {
+                if ($("#Region").val().trim() != "") {
+                    regionDetailSearch();
+                }
+            });
+        })
+
+        var flag;
+        function regionListSearch() {
+            clearTimeout(flag);
+            flag = setTimeout(function () {
+                if ($("[autocomplete='off']").val().trim() != "") {
+                    $.ajax({
+                        url: "/Outbound/GetRegionListByName",
+                        type: "GET",
+                        data: { "name": $("[autocomplete='off']").val() },
+                        success: function (data) {
+                            if (data.Success) {
+                                $("#Region").html("");
+                                var options = new Array();
+                                for (var i = 0; i < data.Data.length; i++) {
+                                    options.push('<option value="' + data.Data[i].Key + '"' + '>' + data.Data[i].Value + '</option>');
+                                }
+                                $("#Region").append(options.join(''));
+                                var lastSearch = $("[autocomplete='off']").val();
+                                $("#Region").trigger("chosen:updated");
+                                $("[autocomplete='off']").val(lastSearch);
+                            } else {
+                                msgErro(data.Message);
+                            }
+                        },
+                        error: function (data) {
+                            msgErro(data.Message);
+                        }
+                    });
+                }
+            }, 500);
+        }
+
+        function regionDetailSearch() {
+            $.ajax({
+                url: "/Outbound/GetRegionIntactBySysId",
+                type: "GET",
+                data: { "regionSysId": $("#Region").val() },
+                success: function (data) {
+                    if (data.Success) {
+                        $("a.chosen-single span").text(data.Data);
+                    } else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                }
+            });
+        }
+
+        ///ToDay当天未出库
+        function ToDayOutOfStorage() {
+            $("#CreateDateFrom").val("");
+            $("#CreateDateTo").val("");
+            $("#OutboundType").find("option")[0].selected = true;
+            $("#Status").find("option")[0].selected = true;
+            var myDate = new Date();
+            var time1 = myDate.toLocaleDateString();
+            $("#CreateDateFrom").val(time1);
+            $("#CreateDateTo").val(time1);
+            OutboundMaintain.table.ajax.reload();
+        }
+
+        ///ToDay当天未出库
+        function ToBOutOfStorage() {
+            $("#CreateDateFrom").val("");
+            $("#CreateDateTo").val("");
+            $("#OutboundType").find("option")[0].selected = true;
+            $("#Status").find("option")[0].selected = true;
+            var myDate = new Date();
+            var time1 = myDate.toLocaleDateString();
+            $("#CreateDateFrom").val(time1);
+            $("#CreateDateTo").val(time1);
+            $("#OutboundType").find("option")[3].selected = true;
+            $("#Status").find("option")[1].selected = true;
+            OutboundMaintain.table.ajax.reload();
+        }
+
+        ///ToDay当天未出库
+        function ToCOutOfStorage() {
+
+            $("#CreateDateFrom").val("");
+            $("#CreateDateTo").val("");
+            $("#OutboundType").find("option")[0].selected = true;
+            $("#Status").find("option")[0].selected = true;
+            var myDate = new Date();
+            var time1 = myDate.toLocaleDateString();
+            $("#CreateDateFrom").val(time1);
+            $("#CreateDateTo").val(time1);
+            $("#OutboundType").find("option")[2].selected = true;
+            $("#Status").find("option")[1].selected = true;
+            OutboundMaintain.table.ajax.reload();
+        }
+
+        ///清空
+        function OutOfStorageClear() {
+            $("#CreateDateFrom").val("");
+            $("#CreateDateTo").val("");
+            $("#OutboundType").find("option")[0].selected = true;
+            $("#Status").find("option")[0].selected = true;
+            OutboundMaintain.table.ajax.reload();
+        }
+    </script>
+
+}
+
+

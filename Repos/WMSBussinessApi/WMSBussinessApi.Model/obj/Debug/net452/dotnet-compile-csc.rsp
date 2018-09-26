@@ -1,0 +1,19 @@
+﻿-d:DEBUG
+-d:TRACE
+-d:NET452
+-nowarn:CS1701
+-nowarn:CS1702
+-nowarn:CS1705
+-t:library
+-debug:full
+-nostdlib
+-nologo
+"D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\obj\Debug\net452\dotnet-compile.assemblyinfo.cs"
+-out:"D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\bin\Debug\net452\WMSBussinessApi.Model.dll"
+-r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\mscorlib.dll"
+-r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.dll"
+-r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Core.dll"
+-r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\Microsoft.CSharp.dll"
+"D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\Employee.cs"
+"D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\Properties\AssemblyInfo.cs"
+"D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\XXX\XC.cs"

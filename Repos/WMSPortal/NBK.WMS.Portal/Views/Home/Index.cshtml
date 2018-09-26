@@ -1,0 +1,701 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.Breadcrumb("基础资料", "首页")
+
+
+<div class="row  border-bottom white-bg dashboard-header">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <span class="label label-success pull-right">订单合计</span>
+                <h5>当天出库订单</h5>
+                <div class="ibox-content">
+                    <h2 class="no-margins" id="OutboundTotal">0</h2>
+                    <a href="@Url.Action("OutboundMaintain", "Outbound")"><small style="float: right; cursor: pointer">查看更多</small></a>
+                </div>
+            </div>
+            <div class="ibox float-e-margins">
+                <span class="label label-success pull-right"></span>
+                <h5>当天入库订单</h5>
+                <div class="ibox-content">
+                    <h2 class="no-margins" id="PurchaseTotal">0</h2>
+                    <a href="@Url.Action("Index","Purchase")"><small style="float: right;cursor:pointer">查看更多</small></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <span class="label label-info pull-right">单品订单</span>
+                <h5>当天B2C</h5>
+                <div class="ibox-content">
+                    <h3 class="no-margins" id="B2COnlyTotal">0</h3>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2COnlyNewTotal">
+                        0
+                    </div>
+                    <small>新建订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2COnlyPickTotal">
+                        0
+                    </div>
+                    <small>待拣货订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2COnlyDeliverTotal">0</div>
+                    <small>待发货订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2COnlyFinishTotal">0</div>
+                    <small>已经完成</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <span class="label label-primary pull-right">组合订单</span>
+                <h5>当天B2C</h5>
+                <div class="ibox-content">
+                    <h3 class="no-margins" id="B2CMultiTotal">0</h3>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2CMultiNewTotal">
+                        0
+                    </div>
+                    <small>新建订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2CMultiPickTotal">
+                        0
+                    </div>
+                    <small>待拣货订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2CMultiDeliverTotal">0</div>
+                    <small>待发货订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2CMultiFinishTotal">0</div>
+                    <small>已经完成</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <span class="label label-danger pull-right"></span>
+                <h5>当天B2B</h5>
+                <div class="ibox-content">
+                    <h3 class="no-margins" id="B2BTotal">0</h3>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2BNewTotal">
+                        0
+                    </div>
+                    <small>新建订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2BPickTotal">
+                        0
+                    </div>
+                    <small>待拣货订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2BDeliverTotal">0</div>
+                    <small>待发货订单</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="stat-percent font-bold text-info" id="B2BFinishTotal">0</div>
+                    <small>已经完成</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-sm-3">
+            <h4>超过3天未收货的入库单</h4>
+            <ul class="list-group clear-list m-t" id="exceedThreeDays"></ul>
+            <ul class="list-group clear-list m-t" id="AdventSkuChart"></ul>
+        </div>*@
+    <div class="col-sm-8">
+        <div class="ibox float-e-margins">
+            <canvas id="lineChart" height="110"></canvas>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div>
+            <h4>
+                出库入库单据状态占比
+            </h4>
+            <p id="ptChart">
+                截止：2016年10月10日 18点30分
+            </p>
+            <div class="row text-center">
+                <div class="col-lg-6">
+                    <canvas id="purchaseChart" width="140" height="140" style="margin: 18px auto 0"></canvas>
+                    <h5>入库单据</h5>
+                </div>
+                <div class="col-lg-6">
+                    <canvas id="OutboundChart" width="140" height="140" style="margin: 18px auto 0"></canvas>
+                    <h5>出库单据</h5>
+                </div>
+            </div>
+            <div class="m-t">
+                <small id="ptChartMsg" style="color:#1c84c6 "></small>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@*<div class="row ">
+        <div class="col-lg-12">
+            <div class="ibox" style="padding:20px 0 0;margin-bottom:0;">
+                <div class="ibox-title">
+                    <h5>预包装看板</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a href="/PrePack/Index">
+                            <i class="fa fa-ellipsis-h" title="更多"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content ibox-heading clearfix" id="prePackDataList">
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div>
+                                <canvas id="barChart" height="100"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="small-chat-box fadeInRight animated">
+
+    <div class="heading" draggable="true">
+        <small class="chat-date pull-right">
+            02.19.2015
+        </small>
+        Small chat
+    </div>
+
+
+</div>
+
+
+<div style="display: none" id="AdventTemp">
+    <li class="list-group-item">
+        <span class="pull-right" style="color:red">
+            ExpiryDate
+        </span>
+        <span class="label label-danger">Index</span> SkuName 货位:Loc
+    </li>
+</div>
+
+<div style="display: none" id="AdventTempMore">
+    <li class="list-group-item">
+        <span class="pull-right">
+            <a href="/Report/ExpiryInvLotBySkuReport">查看更多</a>
+        </span>
+        <span class="label label-primary"></span>
+    </li>
+</div>
+
+<div style="display: none" id="ExceedThreeDaysTemp">
+    <li class="list-group-item">
+        <span class="pull-right" style="color:red">
+            AuditingDateDisplay
+        </span>
+        <span class="label label-danger">Index</span><a target="_blank" href="/Purchase/PurchaseView?sysId=PurchaseSysId">PurchaseOrder</a>
+    </li>
+</div>
+<div style="display: none" id="ExceedThreeDaysTempMore">
+    <li class="list-group-item">
+        <span class="pull-right">
+            <a href="/Purchase/Index?from=home">查看更多</a>
+        </span>
+        <span class="label label-primary"></span>
+    </li>
+</div>
+
+<div style="display: none" id="PrePackTemp">
+    <div class="col-lg-3">
+        <div class="ibox">
+            <div class="ibox-title">
+                <span class="label label-primary pull-right">displayTypeName</span>
+                <h5>托盘货位：LocValue</h5>
+            </div>
+            <div class="ibox-content">
+                <div>
+                    <p>出库单号：<a href="OutboundSysIdVal" openhtmlorreload style="color:colorType">OutboundValue</a></p>
+                    <h6>预包装完成百分比：</h6>
+                    <div class="stat-percent">PercentValue</div>
+                    <div class="progress progress-mini">
+                        <div style="width: PercentValue;" class="progress-bar"></div>
+                    </div>
+                </div>
+                <div class="row  m-t-sm">
+                    <div class="col-lg-12">
+                        <a class="pull-right" target="_blank" href="/PrePack/PerPackView?sysId=PrePackDetailValue"><h6>查看详情</h6></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/flot")
+    @Scripts.Render("~/plugins/sparkline")
+    @Scripts.Render("~/plugins/chartJs")
+    @Scripts.Render("~/plugins/peity")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            InitGetToDayOrderStatusTotal();
+            $(".bar_dashboard").peity("bar", {
+                fill: ["#1ab394", "#d7d7d7"],
+                width: 100
+            })
+
+            $("#sparkline8").sparkline([5, 6, 7, 2, 0, 4, 2, 4, 5, 7, 2, 4, 12, 14, 4, 2, 14, 12, 7], {
+                type: 'bar',
+                barWidth: 8,
+                height: '150px',
+                barColor: '#1ab394',
+                negBarColor: '#c6c6c6'
+            });
+
+            var updatingChart = $(".updating-chart").peity("line", { fill: '#1ab394', stroke: '#169c81', width: 64 })
+
+            setInterval(function () {
+                var random = Math.round(Math.random() * 10)
+                var values = updatingChart.text().split(",")
+                values.shift()
+                values.push(random)
+
+                updatingChart
+                    .text(values.join(","))
+                    .change()
+            }, 1000);
+
+            var data1 = [
+                [0, 4], [1, 8], [2, 5], [3, 10], [4, 4], [5, 16], [6, 5], [7, 11], [8, 6], [9, 11], [10, 30], [11, 10], [12, 13], [13, 4], [14, 3], [15, 3], [16, 6]
+            ];
+            var data2 = [
+                [0, 1], [1, 0], [2, 2], [3, 0], [4, 1], [5, 3], [6, 1], [7, 5], [8, 2], [9, 3], [10, 2], [11, 1], [12, 0], [13, 2], [14, 8], [15, 0], [16, 0]
+            ];
+            $("#flot-dashboard-chart").length && $.plot($("#flot-dashboard-chart"), [
+                    data1, data2
+            ],
+                {
+                    series: {
+                        lines: {
+                            show: false,
+                            fill: true
+                        },
+                        splines: {
+                            show: true,
+                            tension: 0.4,
+                            lineWidth: 1,
+                            fill: 0.4
+                        },
+                        points: {
+                            radius: 0,
+                            show: true
+                        },
+                        shadowSize: 2
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+                        tickColor: "#d5d5d5",
+                        borderWidth: 1,
+                        color: '#d5d5d5'
+                    },
+                    colors: ["#1ab394", "#464f88"],
+                    xaxis: {
+
+                    },
+                    yaxis: {
+                        ticks: 4
+                    },
+                    tooltip: false
+                }
+            );
+
+
+            var data1 = [
+                [0, 4], [1, 8], [2, 5], [3, 10], [4, 4], [5, 16], [6, 5], [7, 11], [8, 6], [9, 11], [10, 30], [11, 10], [12, 13], [13, 4], [14, 3], [15, 3], [16, 6]
+            ];
+            var data2 = [
+                [0, 1], [1, 0], [2, 2], [3, 0], [4, 1], [5, 3], [6, 1], [7, 5], [8, 2], [9, 3], [10, 2], [11, 1], [12, 0], [13, 2], [14, 8], [15, 0], [16, 0]
+            ];
+            $("#flot-dashboard-chart").length && $.plot($("#flot-dashboard-chart"), [
+                    data1, data2
+            ],
+                {
+                    series: {
+                        lines: {
+                            show: false,
+                            fill: true
+                        },
+                        splines: {
+                            show: true,
+                            tension: 0.4,
+                            lineWidth: 1,
+                            fill: 0.4
+                        },
+                        points: {
+                            radius: 0,
+                            show: true
+                        },
+                        shadowSize: 2
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+                        tickColor: "#d5d5d5",
+                        borderWidth: 1,
+                        color: '#d5d5d5'
+                    },
+                    colors: ["#1ab394", "#1C84C6"],
+                    xaxis: {
+
+                    },
+                    yaxis: {
+                        ticks: 4
+                    },
+                    tooltip: false
+                }
+            );
+
+            InitOutboundAndReturnCharData();
+            InitReceiptAndOutChart();
+            /* InitAdventSku();*/
+            InitLineChart();
+            //InitPrePackBoard();
+
+            /*超过三天未收货的入库单*/
+            //InitGetExceedThreeDays();
+
+            //三分钟之后更新
+            //setInterval(function () {
+            //    InitPrePackBoard()
+            //}, 3 * 60 * 1000);
+        });
+
+        function InitOutboundAndReturnCharData() {
+            $.ajax({
+                url: "/Chart/GetOutboundAndReturnCharDataOfLastTenDays",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var ctx2 = document.getElementById("barChart").getContext("2d");
+                        new Chart(ctx2, { type: 'bar', data: data.Data, options: { responsive: true } });
+                    } else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                }
+            });
+        }
+
+        function InitLineChart() {
+
+            var lineData = {
+                labels: [],
+                datasets: [
+                    {
+                        label: "近十日收货数量统计",
+                        backgroundColor: 'rgba(26,179,148,0.5)',
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: []
+                    }, {
+                        label: "近十日发货数量统计",
+                        backgroundColor: 'rgba(250, 151, 31, 0.5)',
+                        pointBorderColor: "#fff",
+                        data: []
+                    }
+                ]
+            };
+
+            $.ajax({
+                url: "/Chart/GetSkuReceiptOutboundChartAfter10",
+                type: "get",
+                success: function (data) {
+                    if (data.success) {
+                        for (var i = 0; data.ChartData.length > i; i++) {
+                            lineData.labels.push(data.ChartData[i].AfterDay);
+                            lineData.datasets[0].data.push(data.ChartData[i].ReceiptCount);
+                            lineData.datasets[1].data.push(data.ChartData[i].OutboundCount);
+                        }
+                    }
+                    else {
+                        msgErro("收发货商品报表获取异常，请检查!");
+                    }
+                    var lineOptions = {
+                        responsive: true
+                    };
+
+                    var ctx = document.getElementById("lineChart").getContext("2d");
+                    new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                }
+            });
+
+
+
+
+        }
+
+        function InitGetExceedThreeDays() {
+            $.ajax({
+                url: "/Chart/GetExceedThreeDaysPurchase",
+                type: "POST",
+                data: {},
+                success: function (data) {
+                    if (data.Success) {
+                        var html = $("#ExceedThreeDaysTemp").html();
+                        if (data.ChartData.length > 0) {
+                            var htmlMore = $("#ExceedThreeDaysTempMore").html();
+                            for (var i = 0; data.ChartData.length > i; i++) {
+                                var li = html.replace(/PurchaseOrder/g, data.ChartData[i].PurchaseOrder)
+                                    .replace(/AuditingDateDisplay/g, data.ChartData[i].AuditingDateDisplay)
+                                    .replace(/Index/g, i + 1)
+                                    .replace(/PurchaseSysId/g, data.ChartData[i].SysId);
+                                $("#exceedThreeDays").append(li);
+                            }
+                            $("#exceedThreeDays").append(htmlMore);
+                        } else {
+                            $("#exceedThreeDays").append('<li class="list-group-item">暂无未收货的入库单</li>');
+                        }
+                    }
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                }
+            });
+        }
+
+        function InitGetToDayOrderStatusTotal() {
+            $.ajax({
+                url: "/Chart/GetToDayOrderStatusTotal",
+                type: "POST",
+                data: {},
+                success: function (data) {
+                    if (data.success) {
+                        refreshData("#OutboundTotal", data.TotalCount.OutboundTotal);
+                        refreshData("#PurchaseTotal", data.TotalCount.PurchaseTotal);
+                        refreshData("#B2COnlyTotal", data.TotalCount.B2COnlyTotal);
+                        refreshData("#B2COnlyNewTotal", data.TotalCount.B2COnlyNewTotal);
+                        refreshData("#B2COnlyPickTotal", data.TotalCount.B2COnlyPickTotal);
+                        refreshData("#B2COnlyDeliverTotal", data.TotalCount.B2COnlyDeliverTotal);
+                        refreshData("#B2COnlyFinishTotal", data.TotalCount.B2COnlyFinishTotal);
+                        refreshData("#B2CMultiTotal", data.TotalCount.B2CMultiTotal);
+                        refreshData("#B2CMultiNewTotal", data.TotalCount.B2CMultiNewTotal);
+                        refreshData("#B2CMultiPickTotal", data.TotalCount.B2CMultiPickTotal);
+                        refreshData("#B2CMultiDeliverTotal", data.TotalCount.B2CMultiDeliverTotal);
+                        refreshData("#B2CMultiFinishTotal", data.TotalCount.B2CMultiFinishTotal);
+                        refreshData("#B2BTotal", data.TotalCount.B2BTotal);
+                        refreshData("#B2BNewTotal", data.TotalCount.B2BNewTotal);
+                        refreshData("#B2BPickTotal", data.TotalCount.B2BPickTotal);
+                        refreshData("#B2BDeliverTotal", data.TotalCount.B2BDeliverTotal);
+                        refreshData("#B2BFinishTotal", data.TotalCount.B2BFinishTotal);
+                    }
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                }
+            });
+        }
+
+        function refreshData(keyId, newNum) {
+            $({ numberValue: 0 }).animate({ numberValue: newNum }, {
+                duration: 1000,
+                easing: 'linear',
+                step: function () {
+                    $(keyId).html(Math.floor(this.numberValue));
+                },
+                done: function () {
+                    if (newNum != null && $(keyId).html() != newNum.toString()) {
+                        $(keyId).html(newNum);
+                    }
+                }
+            });
+        }
+
+        /* 临期产品预警先屏蔽
+        //function InitAdventSku() {
+        //    $.ajax({
+        //        url: "/Chart/GetAdventSkuChart",
+        //        type: "POST",
+        //        data: {},
+        //        success: function (data) {
+        //            if (data.success) {
+        //                var html = $("#AdventTemp").html();
+        //                if (data.ChartData.length > 0) {
+        //                    var htmlMore = $("#AdventTempMore").html();
+        //                    for (var i = 0; data.ChartData.length > i; i++) {
+        //                        var li = html.replace(/ExpiryDate/g, data.ChartData[i].ExpiryDateText)
+        //                            .replace(/SkuName/g, data.ChartData[i].SkuName)
+        //                            .replace(/Index/g, i + 1)
+        //                        .replace(/Loc/g, data.ChartData[i].Loc);
+        //                        $("#AdventSkuChart").append(li);
+        //                    }
+        //                } else {
+        //                    html = html.replace(/ExpiryDate/g, "")
+        //                           .replace(/SkuName/g, "暂无临期商品")
+        //                           .replace(/Index/g, "");
+        //                    $("#AdventSkuChart").append(html);
+        //                }
+
+        //                $("#AdventSkuChart").append(htmlMore);
+        //            }
+        //        },
+        //        error: function (data) {
+        //            msgErro(data.Message);
+        //        }
+        //    });
+        //}
+        */
+
+        function InitReceiptAndOutChart() {
+
+            $.ajax({
+                url: "/Chart/GetPurchaseAndOutboundChart",
+                type: "POST",
+                data: {},
+                success: function (data) {
+                    if (data.success) {
+                        $("#ptChart").html("截止:" + data.ChartData.ChartDate);
+                        $("#ptChartMsg").html("入库:  新建[" + data.ChartData.PurchaseNewCount + "]  收货中[" + data.ChartData.PurchaseInReceiptCount + "]  收货完成[" + data.ChartData.PurchaseFinishCount + "]" +
+                            "<br/>出库:  新建[" + data.ChartData.OutboundNewCount + "]  拣货[" + data.ChartData.OutboundPickCount + "]  发货完成[" + data.ChartData.OutboundDeliveryCount + "]");
+                        var purchaseChart = document.getElementById("purchaseChart").getContext("2d");
+                        var exports = new Chart(purchaseChart, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ["新建", "收货中", "收货完成"],
+                                datasets: [
+                                    {
+                                        data: [data.ChartData.PurchaseNewCount, data.ChartData.PurchaseInReceiptCount, data.ChartData.PurchaseFinishCount],
+                                        backgroundColor: ["#a3e1d4", "#dedede", "#9CC3DA"]
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: false,
+                                legend: {
+                                    display: false
+                                },
+
+                            }
+                        });
+
+
+                        var OutboundChart = document.getElementById("OutboundChart").getContext("2d");
+                        var expose = new Chart(OutboundChart,
+                        {
+                            type: 'doughnut',
+                            data: {
+                                labels: ["新建", "拣货", "发货完成"],
+                                datasets: [
+                                    {
+                                        data: [data.ChartData.OutboundNewCount, data.ChartData.OutboundPickCount, data.ChartData.OutboundDeliveryCount],
+                                        backgroundColor: ["#a3e1d4", "#dedede", "#9CC3DA"]
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: false,
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (data) {
+                    msgErro(data.Message);
+                }
+            });
+        }
+
+        function InitPrePackBoard() {
+            $.ajax({
+                url: "/Chart/GetPrePackBoard",
+                type: "POST",
+                data: {},
+                success: function (data) {
+                    if (data.success) {
+                        $("#prePackDataList").empty();
+                        if (data.ChartData.length > 0) {
+                            var html = $("#PrePackTemp").html();
+                            for (var i = 0; data.ChartData.length > i; i++) {
+                                var div = '';
+                                div = html.replace(/LocValue/g, data.ChartData[i].StorageLoc)
+                                .replace(/OutboundValue/g, data.ChartData[i].OutboundOrder)
+                                .replace(/PercentValue/g, data.ChartData[i].Progress)
+                                .replace(/PrePackDetailValue/g, data.ChartData[i].SysId)
+                                if (data.ChartData[i].OutboundOrder != '暂无') {
+                                    div = div.replace(/displayTypeName/g, '已绑定')
+                                }
+                                else {
+                                    div = div.replace(/displayTypeName/g, '未绑定')
+                                }
+                                if (data.ChartData[i].OutboundSysId == "00000000-0000-0000-0000-000000000000" || data.ChartData[i].OutboundSysId == null) {
+                                    div = div.replace(/openhtmlorreload/g, "")
+                                    .replace(/OutboundSysIdVal/g, "#");
+                                }
+                                else {
+                                    div = div.replace(/openhtmlorreload/g, "target='_blank'")
+                                        .replace(/OutboundSysIdVal/g, "/Outbound/OutboundView?sysId=" + data.ChartData[i].OutboundSysId);
+                                }
+                                if (data.ChartData[i].Type == 1) {
+                                    div = div.replace(/colorType/g, "#1ab394");
+                                }
+                                else {
+                                    div = div.replace(/colorType/g, "#F00");
+                                }
+                                $("#prePackDataList").append(div);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}
+

@@ -1,0 +1,164 @@
+﻿@{
+    bool isEnableLeftSide = false;
+}
+@if (ViewBag.IsPjaxRequest ?? false)
+{
+    <title>@ViewBag.Title</title>
+    @RenderSection("styles", false)
+    @RenderSection("headScripts", false)
+    @RenderSection("scripts", false)
+    @LayoutContent(isEnableLeftSide)
+    return;
+}
+@using System.Configuration
+@{
+    var benzUrl = ConfigurationManager.AppSettings["BenzURL"];
+    var benzUrlBuilder = new UriBuilder(benzUrl);
+    var benzHost = (benzUrlBuilder.Port != 80 && benzUrlBuilder.Port != 443) ? string.Format("{0}:{1}", benzUrlBuilder.Host, benzUrlBuilder.Port) : benzUrlBuilder.Host;
+    var cdnHost = CdnContentUrlExtensions.Configuration.Value.CloudFrontDomainName;
+    var siteId = "ymc-res-web";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="shortcut icon" href="@Url.CdnContent("~/favicon.ico")">
+    <link rel="Bookmark" href="@Url.CdnContent("~/favicon.ico")">
+    <link href="@Url.CdnContent("~/Content/kendo/kendo.css")" rel="stylesheet" />
+    <link href="@Url.CdnContent("~/Content/fx.css")" rel="stylesheet" />
+    <link href="@Url.CdnContent("~/Content/share.min.css")" rel="stylesheet" />
+    @RenderSection("styles", false)
+    <script>
+        var flabcfg = flabcfg || {
+            siteId: '@siteId',
+            benzUrl: '@benzUrl',
+            benzHost: '@benzHost',
+            cdnUrl: '//@cdnHost',
+        };
+        var _hmt = _hmt || [];
+        _hmt.push(['_setAccount', '1001']);
+    </script>
+    <!--基础js-->
+    <script src="@Url.CdnContent("~/bundles/base.js")"></script>
+    @RenderSection("headScripts", false)
+</head>
+<body>
+    @if (ViewBag.BlankLayout != null && ViewBag.BlankLayout)
+    {
+        @RenderBody()
+    }
+    else
+    {
+    <!--页面头部-->
+        <header id="layout-header" style="">
+            <div class="header">
+                <div class="logo" style="float:left">
+                    @ViewBag.SystemName
+                </div>
+                @if (ViewBag.HideMenu == null || !ViewBag.HideMenu)
+                {
+                    <nav>
+                        @Html.Partial("Menu")
+                    </nav>
+                }
+                @if (Request.IsAuthenticated)
+                {
+                    @*<div class="favicon"><img src="@Url.CdnContent("~/Content/images/headimg.jpg")" title="@DisplayName" /></div>
+                        <div class="msg">
+                            <div class="drop-menu-effect">
+                                <div class="menu">
+                                    <span><a href="#">9</a></span>
+                                </div>
+                                <div class="submenu">
+                                    <div class="msgtit"><a href="@Url.Action("MessageList","UserMessage")">查看所有消息</a></div>
+                                    <ul data-bind="foreach: items">
+                                        <li><a href="#" data-bind="text: title(),style: { color: isReaded()  ? 'black' : 'red' }"></a><img src="@Url.CdnContent("~/Content/images/dot.png")" /></li>
+                                    </ul>
+                                </div>
+                                <div class="submenucont">
+                                    <div class="msgtit1"><img src="@Url.CdnContent("~/Content/images/back.png")" /><a href="#">返回消息列表</a></div>
+                                    <p>新消息内容新消息内容新消息内容新消息内容新消息内容新消息内容</p>
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="login-info">
+                        @*<text> 当前用户 :  @DisplayName </text>
+                            @Html.ActionLink("注销", "LogOff", "Account", new { area = "" }, new { })*@
+                        <a href="@Url.Action("LogOff", "Account", new { area = "" })"><img src="@Url.CdnContent("~/Content/images/quit.png")"></a>
+                    </div>
+                }
+            </div>
+        </header>
+
+    <!--页面内容区域-->
+        <div id="pjax-container">
+            @LayoutContent(isEnableLeftSide)
+        </div>
+
+    <!--页面底部部分-->
+        <footer id="layout-footer">
+            @if (Request.IsAuthenticated)
+            {
+                <span style="margin-right:20px;">当前用户:@DisplayName</span>
+            }
+            <span>&copy; @DateTime.Now.Year @ViewBag.SystemName @ViewBag.SystemVersion</span>
+        </footer>
+    }
+    <!--全局Windows对象-->
+    <div id="NewWindow"> </div>
+    <!--全局阻断式消息开始-->
+    <div id="GlobalBlockNotificationArea"></div>
+    @(Html.Kendo().Notification()
+        .Name("GlobalBlockNotification")
+        .AppendTo("#GlobalBlockNotificationArea")
+        .Stacking(NotificationStackingSettings.Up)
+        .Position(c => c.Top(80).Right(10).Bottom(30).Pinned(true))
+        .HtmlAttributes(new { style = "z-index:99999" })
+        .HideOnClick(false)
+        .AutoHideAfter(0)
+        .Templates(c =>
+        {
+            c.Add().Type("GlobalBlock").ClientTemplate(" <div class='blockitem-info' id='gbm_#=messageId#'><h3>#= title #</h3><p>#= content #</p><div><button type='button' onclick=\"flab.usermsg.blockMessage.confirmBlockMessage('#= messageId #')\">确认</button></div></div>");
+        })
+    )
+    <!--全局阻断式消息结束-->
+    <!--Kendo JS-->
+    <script src="@Url.CdnContent("~/bundles/kendo.js")"></script>
+    <script src="@Url.CdnContent("~/bundles/fx.js")"></script>
+    <!--自定义的JS加载-->
+    <script src="@Url.CdnContent("~/bundles/share.min.js")"></script>
+
+    @RenderSection("scripts", false)
+    <script type="text/javascript">
+        var _hmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _hmProtocol + flabcfg.benzHost + "%2fua.js%3f" + "@siteId" + "' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</body>
+</html>
+
+@helper LayoutContent(bool isEnableLeftSide)
+{
+    <!--页面内容区域-->
+    <div id="body-content" class="body-content @(IsSectionDefined("BottomToolbar") ? "withBottomToolbar" : string.Empty)" style="">
+        @if (isEnableLeftSide)
+        {
+        <!--左边栏-->
+            <div class="leftMenu" style="position:absolute;left:0px;  top:0px; bottom:0px; width:200px; overflow:auto; border-right:solid 2px #ccc;">
+                @Html.Partial("_SideBar")
+            </div>
+        }
+        <!--右边内容区域， 左边栏不开启的情况下，为整体的内容区域-->
+        <div class="rightContent" style="position:absolute; left:@(isEnableLeftSide?200:0)px; right:0px; top:0px; bottom:0px; overflow:auto;">
+            @RenderBody()
+        </div>
+    </div>
+if (IsSectionDefined("BottomToolbar"))
+{
+        <!--页面toolbar区域-->
+        <div id="layout-toolbar">
+            @RenderSection("BottomToolbar", false)
+        </div>
+    }
+}

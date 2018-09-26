@@ -1,0 +1,679 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "批次采集";
+}
+
+@Html.Breadcrumb("收货单管理", "/Receipt/ReceiptList", "批次采集")
+<link rel="stylesheet" type="text/css" href="~/Content/plugins/ui-dialog.css" />
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <div id="ReceiptCollectionLotForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">批次采集</H2>
+                </label>
+                <div class="col-sm-10"></div>
+            </div>
+            <div class="form-group hr-line-dashed">
+                <div class="col-sm-12">
+                </div>
+            </div>
+
+            <div id="divReceipt">
+                <div class="form-group">
+                    <div class="col-sm-1">UPC:</div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12"> <input type="text" id="ScanBarCode" style="width: 100%" v-on:change="ScanBarCode"> </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">商品名称:</div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12">{{ ReceiptDetailLot.SkuName }}</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">收货数量:</div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12">{{ ReceiptDetailLot.TotalReceivedQty }}</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">未采集剩余数量:</div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12">{{ ReceiptDetailLot.NoCollectionQty }}</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-1">批次数量:</div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12"> <input type="text" id="InputQty" style="width: 100%" v-on:change="CheckInputQty"> </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">打印数量:</div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12"> <input type="number" id="PrintQty" style="width: 100%" onkeyup="value=value.replace(/[^0-9]/g,'')" onpaste="value=value.replace(/[^0-9]/g,'')"> </div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <form id="lotForm" action="#">
+                        <div id="lot10" style="display: none">
+                            <div class="col-sm-1" id="LotName10" name="LotName10" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                生产日期
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <div class="form-group" id="divLotValue10" style="width:85%;">
+                                    <div class="input-group date" style="margin-left:15px;width:100%;">
+                                        <span class="input-group-addon" style="display:none;"><i class="fa fa-calendar"></i></span>
+                                        <input type="text" id="LotValue10" name="LotValue10" style="width: 100%" value="" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="lot11" style="display: none">
+                            <div class="col-sm-1" id="LotName11" name="LotName11" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                失效日期
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <div class="form-group" id="divLotValue11" style="width:85%;">
+                                    <div class="input-group date" style="margin-left:15px;width:100%;">
+                                        <span class="input-group-addon" style="display:none;"><i class="fa fa-calendar"></i></span>
+                                        <input type="text" id="LotValue11" name="LotValue11" style="width: 100%" value="" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="lot01" style="display: none">
+                            <div class="col-sm-1" id="LotName01" name="LotName01" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue01" name="LotValue01" style="width: 85%">
+                            </div>
+                        </div>
+                        <div id="lot02" style="display: none">
+                            <div class="col-sm-1" id="LotName02" name="LotName02" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue02" name="LotValue02" style="width: 85%">
+                            </div>
+                        </div>
+                        <div id="lot03" style="display: none">
+                            <div class="col-sm-1" id="LotName03" name="LotName03" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue03" name="LotValue03" style="width: 85%">
+                            </div>
+                        </div>
+                        <div id="lot04" style="display: none">
+                            <div class="col-sm-1" id="LotName04" name="LotName04" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue04" name="LotValue04" style="width: 85%">
+                            </div>
+                        </div>
+                        <div id="lot05" style="display: none">
+                            <div class="col-sm-1" id="LotName05" name="LotName05" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue05" name="LotValue05" style="width: 85%">
+                            </div>
+                        </div>
+                        <div id="lot06" style="display: none">
+                            <div class="col-sm-1" id="LotName06" name="LotName06" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue06" name="LotValue06" style="width: 85%">
+                            </div>
+                        </div>
+                        <div id="lot07" style="display: none">
+                            <div class="col-sm-1" id="LotName07" name="LotName07" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue07" name="LotValue07" style="width: 85%">
+                            </div>
+                        </div>
+                        <div id="lot08" style="display: none">
+                            <div class="col-sm-1" id="LotName08" name="LotName08" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue08" name="LotValue08" style="width: 85%">
+                            </div>
+                        </div>
+                        <div id="lot12" style="display: none">
+                            <div class="col-sm-1" id="LotName12" name="LotName12" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+
+                            </div>
+                            <div class="col-sm-5" style="padding-right: 0px; padding-left: 0px; margin-top: 10px">
+                                <input type="text" id="LotValue12" name="LotValue12" style="width: 85%">
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+                <div class="form-group ">
+                    <div class="col-sm-12">
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a id="a-details" data-toggle="tab" href="#tab-details">已采集批次明细</a></li>
+                            </ul>
+                            <div id="divReceiptDetailList" class="tab-content">
+                                <div id="tab-details" class="tab-pane active">
+                                    <div id="divReceiptDetailViewList" class="col-sm-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>商品名称</th>
+                                                    <th>UPC</th>
+                                                    <th>数量</th>
+                                                    <th>批次号</th>
+                                                    <th>批次01</th>
+                                                    <th>批次02</th>
+                                                    <th>批次03</th>
+                                                    <th>批次04</th>
+                                                    <th>批次05</th>
+                                                    <th>批次06</th>
+                                                    <th>批次07</th>
+                                                    <th>批次08</th>
+                                                    <th>批次09</th>
+                                                    <th>外部批号</th>
+                                                    <th>生产日期</th>
+                                                    <th>失效日期</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="info in ReceiptDetailLot.ReceiptDetailLotViewDtoList">
+                                                    <td>{{info.SkuName}}</td>
+                                                    <td>{{info.SkuUPC}}</td>
+                                                    <td>{{info.DisplayReceivedQty}}</td>
+                                                    <td>{{info.ToLot}}</td>
+                                                    <td>{{info.LotAttr01}}</td>
+                                                    <td>{{info.LotAttr02}}</td>
+                                                    <td>{{info.LotAttr03}}</td>
+                                                    <td>{{info.LotAttr04}}</td>
+                                                    <td>{{info.LotAttr05}}</td>
+                                                    <td>{{info.LotAttr06}}</td>
+                                                    <td>{{info.LotAttr07}}</td>
+                                                    <td>{{info.LotAttr08}}</td>
+                                                    <td>{{info.LotAttr09}}</td>
+                                                    <td>{{info.ExternalLot}}</td>
+                                                    <td>{{info.ProduceDateText}}</td>
+                                                    <td>{{info.ExpiryDateText}}</td>
+                                                </tr>
+                                                <tr id="noReceiptDetailList" style="display:none;"><td colspan="8">无已采集收货批次明细</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSavePrint"><i class="fa fa-check-square-o"></i> 保存并打印</a>
+            <a class="btn btn-white btn-sm" id="btnReturn" href="/Receipt/ReceiptView?sysId=@ViewBag.ReceiptSysId"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+@section Styles {
+    @Styles.Render("~/plugins/dataPickerStyles")    
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/print")
+    @Scripts.Render("~/Scripts/vue.js")
+    @Scripts.Render("~/plugins/dataPicker")
+    <script type="text/javascript" src="~/Scripts/plugins/artDialog/dialog-plus-min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ScanBarCode").focus();
+
+            $('#divLotValue10 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                onSelect: gotoDate
+            }).on('changeDate', gotoDate);
+
+            $('#divLotValue11 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                onSelect: gotoDate
+            }).on('changeDate', gotoDate);
+
+            function gotoDate() {
+                //验证批次模板
+                var lotTemp = $("#lotForm").valid();
+                if (!lotTemp) {
+                    return;
+                }
+            }
+
+            var lastScanCode;
+            var lastSkuSysId;
+            var receipt = new Vue({
+                el: '#divReceipt',
+                data: {
+                    ReceiptDetailViewDtoList: [],
+                    ReceiptDetailLot: {
+                        ReceiptDetailLotViewDtoList: []
+                    }
+                },
+                methods:
+                {
+                    getReceiptDetailViewDtoList: function () {
+                        $.ajax({
+                            url: "/Receipt/GetReceiptDetailViewListByCollectionLot",
+                            type: "POST",
+                            data: {
+                                sysId: '@ViewBag.ReceiptSysId'
+                            },
+                            success: function (data) {
+                                receipt.ReceiptDetailViewDtoList = data;
+                            },
+                            error: function () {
+                            }
+                        });
+                    },
+                    getReceiptDetailLotViewDtoList: function (upc, skuSysId) {
+                        $.ajax({
+                            url: "/Receipt/GetReceiptDetailCollectionLotViewList",
+                            type: "POST",
+                            data: {
+                                ReceiptSysId: '@ViewBag.ReceiptSysId',
+                                UPC: upc,
+                                SkuSysId: skuSysId
+                            },
+                            success: function (data) {
+                                receipt.ReceiptDetailLot = data;
+                            },
+                            error: function () {
+                            }
+                        });
+                    },
+                    CheckInputQty: function () {
+                        var inputQty = $("#InputQty").val().trim();
+                        if(inputQty != ""){
+                            var re = new RegExp("^[0-9]+(\.[0-9]+)?$", "g");
+                            var val = re.test(inputQty) ? inputQty : "0";
+                            $("#InputQty").val(val);
+
+                            if(parseFloat(val) > parseFloat(receipt.ReceiptDetailLot.NoCollectionQty)){
+                                $("#InputQty").val("0");
+                                msgAlert("批次数量不能大于剩余未采集数量!");
+                                return;
+                            }
+                        }
+
+                    },
+                    ScanBarCode: function () {
+                        lastSkuSysId = "";
+                        if ($("#ScanBarCode").val().length == 0) {
+                            $("#ScanBarCode").focus();
+                            return;
+                        }
+
+                        var barCode = $("#ScanBarCode").val().trim();
+                        $("#ScanBarCode").val("");
+                        $("#ScanBarCode").focus();
+
+                        var skuPackUPCCount = 0; //统计明细商品所有包装码等于输入UPC的数量
+                        var skuSysIdList = new Array();
+                        var isUPC = false;
+                        $.each(receipt.ReceiptDetailViewDtoList, function (index, el) {
+                            isUPC = false;
+                            if (el.SkuUPC == barCode) {
+                                isUPC = true;
+                            }
+
+                            if (el.UPC02 == barCode) {
+                                skuPackUPCCount++;
+                                isUPC = true;
+                            }
+                            if (el.UPC03 == barCode) {
+                                skuPackUPCCount++;
+                                isUPC = true;
+                            }
+                            if (el.UPC04 == barCode) {
+                                skuPackUPCCount++;
+                                isUPC = true;
+                            }
+                            if (el.UPC05 == barCode) {
+                                skuPackUPCCount++;
+                                isUPC = true;
+                            }
+
+                            if (isUPC) {
+                                skuSysIdList.push(el.SkuSysId);  //记录当前单据的所有 skuSysId ，如果后续需要弹出选择UPC页面，那么这个集合会作为筛选条件
+                            }
+                        });
+
+                        var purchaseArr = receipt.ReceiptDetailViewDtoList.filter(function (item) {
+                            return item.SkuUPC === barCode;
+                        });
+                        if (purchaseArr.length === 0 && skuPackUPCCount == 0) {
+                            PayError();
+                            msgAlert("扫描的条码未找到对应的货品,请仔细核对!");
+                            return;
+                        }
+
+                        if (purchaseArr.length == 1 && skuPackUPCCount == 0) {
+                            //正常扫码
+                            receipt.ScanBarCode_Fun(purchaseArr, barCode);
+                        } else if (purchaseArr.length == 0 && skuPackUPCCount == 1) {
+                            var skuPackArr = receipt.ReceiptDetailViewDtoList.filter(function (item) {
+                                return item.UPC02 == barCode || item.UPC03 == barCode ||
+                                    item.UPC04 == barCode || item.UPC05 == barCode;
+                            });
+
+                            barCode = skuPackArr[0].SkuUPC; //将sku upc 赋值给 barCode
+
+                            purchaseArr = receipt.ReceiptDetailViewDtoList.filter(function (item) {
+                                return item.SkuSysId === skuPackArr[0].SkuSysId;
+                            });
+                            receipt.ScanBarCode_Fun(purchaseArr, barCode);
+                        } else {
+                            //出现重复UPC 商品，需要手动筛选
+                            ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                            ChooseSkuModel.showModal(barCode, function (chooseSku) {
+                                purchaseArr = receipt.ReceiptDetailViewDtoList.filter(function (item) {
+                                    return item.SkuSysId === chooseSku.SkuSysId;
+                                });
+
+                                if (purchaseArr.length === 0) {
+                                    PayError();
+                                    msgAlert("扫描的条码未找到对应的货品,请仔细核对!");
+                                    return;
+                                }
+
+                                barCode = chooseSku.UPC;
+                                receipt.ScanBarCode_Fun(purchaseArr, barCode);
+                            });
+                        }
+                    },
+                    ScanBarCode_Fun: function (purchaseArr, barCode) {
+                        lastScanCode = barCode;
+                        lastSkuSysId = purchaseArr[0].SkuSysId;
+                        //显示商品信息和已采集批次明细
+                        receipt.getReceiptDetailLotViewDtoList(barCode, purchaseArr[0].SkuSysId);
+                        //显示批次模板
+                        CreateLotTemp(purchaseArr[0].LotTemplateDto);
+                        //验证批次模板
+                        var lotTemp = $("#lotForm").valid();
+                        if (!lotTemp) {
+                            return;
+                        }
+                    }
+                }
+            });
+
+            //获取收货明细
+            receipt.getReceiptDetailViewDtoList();
+
+            //检测批次模板
+            function CreateLotTemp(lotTemplateDto) {
+                $("#lot01").hide();
+                $("#LotValue01").removeClass("required");
+                $("#LotValue01").val("");
+                if (lotTemplateDto.LotVisible01) {
+                    $("#lot01").show();
+                    $("#LotName01").html(lotTemplateDto.Lot01);
+                    if (lotTemplateDto.LotMandatory01) {
+                        if ($("#LotValue01").val().length === 0) {
+                            $("#LotValue01").addClass("required");
+                            $("#LotValue01").val(lotTemplateDto.DefaultIN01);
+                        }
+                    }
+                }
+
+                $("#lot02").hide();
+                $("#LotValue02").removeClass("required");
+                $("#LotValue02").val("");
+                if (lotTemplateDto.LotVisible02) {
+                    $("#lot02").show();
+                    $("#LotName02").html(lotTemplateDto.Lot02);
+                    if (lotTemplateDto.LotMandatory02) {
+                        if ($("#LotValue02").val().length === 0) {
+                            $("#LotValue02").addClass("required");
+                            $("#LotValue02").val(lotTemplateDto.DefaultIN02);
+                        }
+                    }
+                }
+
+
+                $("#lot03").hide();
+                $("#LotValue03").removeClass("required");
+                $("#LotValue03").val("");
+                if (lotTemplateDto.LotVisible03) {
+                    $("#lot03").show();
+                    $("#LotName03").html(lotTemplateDto.Lot03);
+                    if (lotTemplateDto.LotMandatory03) {
+                        if ($("#LotValue03").val().length === 0) {
+                            $("#LotValue03").addClass("required");
+                            $("#LotValue03").val(lotTemplateDto.DefaultIN03);
+                        }
+                    }
+                }
+
+
+                $("#lot04").hide();
+                $("#LotValue04").removeClass("required");
+                $("#LotValue04").val("");
+                if (lotTemplateDto.LotVisible04) {
+                    $("#lot04").show();
+                    $("#LotName04").html(lotTemplateDto.Lot04);
+                    if (lotTemplateDto.LotMandatory04) {
+                        if ($("#LotValue04").val().length === 0) {
+                            $("#LotValue04").addClass("required");
+                            $("#LotValue04").val(lotTemplateDto.DefaultIN04);
+                        }
+                    }
+                }
+
+                $("#lot05").hide();
+                $("#LotValue05").removeClass("required");
+                $("#LotValue05").val("");
+                if (lotTemplateDto.LotVisible05) {
+                    $("#lot05").show();
+                    $("#LotName05").html(lotTemplateDto.Lot05);
+                    if (lotTemplateDto.LotMandatory05) {
+                        if ($("#LotValue05").val().length === 0) {
+                            $("#LotValue05").addClass("required");
+                            $("#LotValue05").val(lotTemplateDto.DefaultIN05);
+                        }
+                    }
+                }
+
+                $("#lot06").hide();
+                $("#LotValue06").removeClass("required");
+                $("#LotValue06").val("");
+                if (lotTemplateDto.LotVisible06) {
+                    $("#lot06").show();
+                    $("#LotName06").html(lotTemplateDto.Lot06);
+                    if (lotTemplateDto.LotMandatory06) {
+                        if ($("#LotValue06").val().length === 0) {
+                            $("#LotValue06").addClass("required");
+                            $("#LotValue06").val(lotTemplateDto.DefaultIN06);
+                        }
+                    }
+                }
+
+                $("#lot07").hide();
+                $("#LotValue07").removeClass("required");
+                $("#LotValue07").val("");
+                if (lotTemplateDto.LotVisible07) {
+                    $("#lot07").show();
+                    $("#LotName07").html(lotTemplateDto.Lot07);
+                    if (lotTemplateDto.LotMandatory07) {
+                        if ($("#LotValue07").val().length === 0) {
+                            $("#LotValue07").addClass("required");
+                            $("#LotValue07").val(lotTemplateDto.DefaultIN07);
+                        }
+                    }
+                }
+
+                $("#lot08").hide();
+                $("#LotValue08").removeClass("required");
+                $("#LotValue08").val("");
+                if (lotTemplateDto.LotVisible08) {
+                    $("#lot08").show();
+                    $("#LotName08").html(lotTemplateDto.Lot08);
+                    if (lotTemplateDto.LotMandatory08) {
+                        if ($("#LotValue08").val().length === 0) {
+                            $("#LotValue08").addClass("required");
+                            $("#LotValue08").val(lotTemplateDto.DefaultIN08);
+                        }
+                    }
+                }
+
+                $("#lot09").hide();
+                $("#LotValue09").removeClass("required");
+                $("#LotValue09").val("");
+                if (lotTemplateDto.LotVisible09) {
+                    $("#lot09").show();
+                    $("#LotName09").html(lotTemplateDto.Lot09);
+                    if (lotTemplateDto.LotMandatory09) {
+                        if ($("#LotValue09").val().length === 0) {
+                            $("#LotValue09").addClass("required");
+                            $("#LotValue09").val(lotTemplateDto.DefaultIN09);
+                            $("#LotValue09").focus();
+                        }
+                    }
+                }
+
+                $("#lot10").hide();
+                $("#LotValue10").removeClass("required");
+                $("#LotValue10").val("");
+                if (lotTemplateDto.LotVisible10) {
+                    $("#lot10").show();
+                    $("#LotName10").html(lotTemplateDto.Lot10);
+                    if (lotTemplateDto.LotMandatory10) {
+                        if ($("#LotValue10").val().length === 0) {
+                            $("#LotValue10").addClass("required");
+                            $("#LotValue10").val(lotTemplateDto.DefaultIN10);
+                        }
+                    }
+                }
+
+                $("#lot11").hide();
+                $("#LotValue11").removeClass("required");
+                $("#LotValue11").val("");
+                if (lotTemplateDto.LotVisible11) {
+                    $("#lot11").show();
+                    $("#LotName11").html(lotTemplateDto.Lot11);
+                    if (lotTemplateDto.LotMandatory11) {
+                        if ($("#LotValue11").val().length === 0) {
+                            $("#LotValue11").addClass("required");
+                            $("#LotValue11").val(lotTemplateDto.DefaultIN11);
+                        }
+                    }
+                }
+
+                $("#lot12").hide();
+                $("#LotValue12").removeClass("required");
+                $("#LotValue12").val("");
+                if (lotTemplateDto.LotVisible12) {
+                    $("#lot12").show();
+                    $("#LotName12").html(lotTemplateDto.Lot12);
+                    if (lotTemplateDto.LotMandatory12) {
+                        if ($("#LotValue12").val().length === 0) {
+                            $("#LotValue12").addClass("required");
+                            $("#LotValue12").val(lotTemplateDto.DefaultIN12);
+                        }
+                    }
+                }
+            }
+
+            //保存并打印
+            $("#btnSavePrint").on("click", function () {
+                var lotTemp = $("#lotForm").valid();
+                if (!lotTemp) {
+                    return;
+                }
+
+                if ($("#InputQty").val().trim() == "") {
+                    msgAlert("批次数量不能为空!");
+                    return;
+                }
+                if (parseFloat($("#InputQty").val().trim()) <= 0) {
+                    msgAlert("批次数量必须大于0!");
+                    return;
+                }
+
+                //组织批次采集数据
+                var receiptCollectionLot = {
+                    ReceiptSysId: '@ViewBag.ReceiptSysId',
+                    SkuSysId: lastSkuSysId,
+                    UPC: lastScanCode,
+                    LotTemplateValueDtos: [{
+                        Qty: $("#InputQty").val(),
+                        LotValue01: $("#LotValue01").val(),
+                        LotValue02: $("#LotValue02").val(),
+                        LotValue03: $("#LotValue03").val(),
+                        LotValue04: $("#LotValue04").val(),
+                        LotValue05: $("#LotValue05").val(),
+                        LotValue06: $("#LotValue06").val(),
+                        LotValue07: $("#LotValue07").val(),
+                        LotValue08: $("#LotValue08").val(),
+                        LotValue09: $("#LotValue09").val(),
+                        ProduceDate: $("#LotValue10").val(),
+                        ExpiryDate: $("#LotValue11").val(),
+                        ExternalLot: $("#LotValue12").val()
+                    }]
+                };
+                saveLoading('show');
+                $.ajax({
+                    url: "/Receipt/SaveReceiptDetailLot",
+                    type: "POST",
+                    data: receiptCollectionLot,
+                    success: function (data) {
+                        saveLoading();
+                        if (data.IsSuccess) {
+                            msgSuccess();
+                            print.PrintLot(parseInt($("#PrintQty").val()), '@ViewBag.PrintName', data.ToLot, data.LotAttr01);
+                            receipt.getReceiptDetailLotViewDtoList(lastScanCode, lastSkuSysId);
+                            $("#ScanBarCode").focus();
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function () {
+                        saveLoading();
+                        msgErro();
+                    }
+                });
+            });
+        });
+
+        
+    </script>
+}

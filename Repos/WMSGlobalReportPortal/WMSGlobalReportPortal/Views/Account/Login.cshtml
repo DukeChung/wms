@@ -1,0 +1,102 @@
+﻿@model AccountLoginModel
+@{
+    ViewBag.PageId = "extr-page";
+    ViewBag.PageClass = "animated fadeInDown";
+}
+
+@*@section topright{
+
+    }*@
+
+<div id="content" class="container">
+    <div class="row">
+        @{ Html.RenderPartial("_LoginText"); }
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+            <div class="well no-padding">
+                <form method="POST" id="login-form" class="smart-form client-form">
+                    <header>
+                        登 录
+                    </header>
+                    @Html.HiddenFor(m => m.ReturnUrl)
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationBootstrap()
+                    <fieldset>
+                        <section>
+                            <label class="label">用户名</label>
+                            <label class="input">
+                                <i class="icon-append fa fa-user"></i>
+                                <input type="text" name="email" value="" placeholder="请输入用户名">
+                                <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> 请输入用户名</b>
+                            </label>
+                        </section>
+
+                        <section>
+                            <label class="label">密  码</label>
+                            <label class="input">
+                                <i class="icon-append fa fa-lock"></i>
+                                <input type="password" name="password" value="" placeholder="请输入密码">
+                                <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> 请输入密码</b>
+                            </label>
+                            <div class="note">
+                                <i class="fa fa-frown-o"></i> 忘记密码请联系helpdesk
+                            </div>
+                        </section>
+
+                        <section>
+                            <label class="checkbox">
+                                <input type="checkbox" name="rememberMe" value="true" checked="checked">
+                                <input type="hidden" name="rememberMe" value="false" />
+                                <i></i>Stay signed in
+                            </label>
+                        </section>
+                    </fieldset>
+                    <footer>
+                        <button type="button" onclick="login();" class="btn btn-primary">
+                            进入
+                        </button>
+                    </footer>
+                </form>
+            </div>
+            @{ Html.RenderPartial("_SocialMedia"); }
+        </div>
+    </div>
+</div>
+@section pagespecific {
+    <script type="text/javascript">
+        $(function () {
+            // Validation
+            $("#login-form").validate({
+                // Rules for form validation
+                rules: {
+                    email: {
+                        required: true,
+                    },
+                    password: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 20
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    email: {
+                        required: '请输入用户名',
+
+                    },
+                    password: {
+                        required: '请输入密码'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+        });
+        function login() {
+            window.location.href = "@Url.Action("Index", "Home")";
+        }
+    </script>
+}

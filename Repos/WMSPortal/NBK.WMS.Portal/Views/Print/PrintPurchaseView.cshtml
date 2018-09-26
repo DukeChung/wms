@@ -1,0 +1,93 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.Utility.Enum
+@model NBK.ECService.WMS.DTO.PrintPurchaseViewDto
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="" style="width:1000px">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-12 control-label ">
+                    <H2 style="color: red;text-align:left">入库单</H2>
+                </label>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("入库单号", Model.PurchaseOrder)
+                @Html.PrintTitle("采购日期", Model.PurchaseDateText)
+                @Html.PrintTitle("入库日期", Model.LastReceiptDateText)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("供应商", Model.VendorName)
+                @Html.PrintTitle("联系人", Model.VendorContacts)
+                @Html.PrintTitle("联系方式", Model.VendorPhone)
+            </div>
+
+            <div class="form-group">
+                @if (Model.Type == (int)PurchaseType.TransferInventory)
+            {
+                    @Html.PrintTitle("移仓单号", Model.TransferInventoryOrder)
+                    @Html.PrintTitle("移出仓", Model.FromWareHouseName)
+                }
+                @Html.PrintTitle("备注", Model.Descr)
+            </div>
+            <br />
+            <br />
+            <div class="form-group">
+                <label class="col-sm-1 control-label">入库清单</label>
+                <div class="col-sm-11"></div>
+            </div>
+            <div class="form-group ">
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                @Html.PrintTh("序号")
+                                @Html.PrintTh("商品编码")
+                                @Html.PrintTh("商品名称")
+                                @Html.PrintTh("UPC")
+                                @Html.PrintTh("商品描述")
+                                @*@Html.PrintTh("包装")*@
+                                @Html.PrintTh("包装单位")
+                                @Html.PrintTh("包装系数")
+                                @Html.PrintTh("入库数量")
+                                @Html.PrintTh("已入库数量")
+                                @Html.PrintTh("赠品数量")
+                                @Html.PrintTh("备注")
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var index = 0;
+                                foreach (var purchaseDetail in Model.PrintPurchaseDetailViewDtoList)
+                                {
+                                    index++;
+                                    <tr>
+                                        @Html.PrintTd(index.ToString())
+                                        @Html.PrintTd(purchaseDetail.SkuCode)
+                                        @Html.PrintTd(purchaseDetail.SkuName)
+                                        @Html.PrintTd(purchaseDetail.SkuUPC)
+                                        @Html.PrintTd(purchaseDetail.SkuDescr)
+                                        @*@Html.PrintTd(purchaseDetail.PackCode)*@
+                                        @Html.PrintTd(purchaseDetail.UOMCode)
+                                        @Html.PrintTd(purchaseDetail.PackFactor)
+                                        @Html.PrintTd(purchaseDetail.DisplayQty.GetValueOrDefault().ToString())
+                                        @Html.PrintTd(purchaseDetail.DisplayReceivedQty.GetValueOrDefault().ToString())
+                                        @Html.PrintTd(purchaseDetail.GiftQty.ToString())
+                                        @Html.PrintTd(purchaseDetail.Remark)
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

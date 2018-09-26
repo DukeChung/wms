@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+<body>
+    <div class="page-group">
+        <div id="page-picking-detail" class="page page-current">
+            <header class="bar bar-nav">
+                <a id="btnBack" class="button button-link button-nav pull-left">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">拣货</h1>
+                <a id="btnViewDiff" class="button button-link button-nav pull-right" style="margin-right:8px">查看待拣货明细</a>
+            </header>
+            <div class="row page-content content">
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="ibox float-e-margins">
+
+                                <input type="hidden" id="selectkey" name="selectkey" value="" />
+                                <input type="hidden" id="values" name="values" value="" />
+                                <input type="hidden" id="texts" name="texts" value="" />
+                                <div class="ibox-content" style="padding:0.2rem">
+                                    <table style="border-collapse:separate;border-spacing:0px 2px">
+                                        <tr>
+                                            <td style="width:25%" align="right"><h4 style="font-size:0.4rem">当前库位：</h4></td>
+                                            <td style="width:75%" colspan="2"><input id="currentLoc" name="currentLoc" class="form-control input-s" style="font-weight:bold;padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">商品名称：</h4></td>
+                                            <td colspan="2"><input id="currentSkuName" name="currentSkuName" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">批次：</h4></td>
+                                            <td colspan="2"><input id="currentLot" name="currentLot" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">UPC：</h4></td>
+                                            <td colspan="2"><input id="currentSkuUPC" name="currentSkuUPC" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">数量：</h4></td>
+                                            <td><input id="currentQty" name="currentQty" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" disabled></td>
+                                            <td style="width:20%;text-align:center"><label id="currentUomName" style="font-size:0.6rem;margin-bottom:0rem"></label></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="3"><hr style="margin-top:0.1rem;margin-bottom:0.1rem" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">库位条码：</h4></td>
+                                            <td colspan="2"><input id="loc" name="loc" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" placeholder="请扫描库位条码"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">容器条码：</h4></td>
+                                            <td colspan="2"><input id="container" name="container" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" placeholder="请扫描容器条码"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">批次：</h4></td>
+                                            <td colspan="2"><input id="lot" name="lot" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" placeholder="请扫描批次（非必填）"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">UPC/包装：</h4></td>
+                                            <td colspan="2"><input id="skuUPC" name="skuUPC" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" placeholder="请扫描商品UPC/包装条码"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right"><h4 style="font-size:0.4rem">拣货数量：</h4></td>
+                                            <td><input id="qty" name="qty" class="form-control input-s" style="padding:0rem, 0.2rem, 0rem, 0.2rem;height:1.2rem" placeholder="请填写拣货数量"></td>
+                                            <td style="width:30%"><label style="font-size:0.4rem;padding:0rem, 0.2rem, 0rem, 0.2rem;height:1rem;margin-left:0.3rem;vertical-align:central"><input id="continuousMode" type="checkbox" style="zoom:140%;vertical-align:bottom;outline:none" checked />连续模式</label></td>
+                                        </tr>
+                                    </table>
+                                    <p id="msg" name="msg" class="msg-error"></p>
+                                    <input type="hidden" id="currentSkuSysId" name="currentSkuSysId" value="" />
+                                </div>
+                                <table style="width:100%;margin-top:0.2rem">
+                                    <tr>
+                                        <td style="width:40%;text-align:left"><a id="btnProgress" class="button-nav" style="margin-top:5px;margin-left:5px;font-size:0.6rem">拣货进度：</a></td>
+                                        <td style="width:40%;text-align:left"><a id="btnQtyProgress" class="button-nav" style="margin-top:5px;margin-left:5px;font-size:0.6rem">拣货数量：</a></td>
+                                        <td style="width:20%;text-align:right"><a id="btnNext" class="button-nav" style="margin-top:5px;margin-right:5px;font-size:0.6rem">下一页</a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

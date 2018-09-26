@@ -1,0 +1,7 @@
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.Utility\bin\Release\NBK.ECService.WMSLog.Utility.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.Utility\bin\Release\NBK.ECService.WMSLog.Utility.pdb
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.Utility\bin\Release\AutoMapper.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.Utility\bin\Release\AutoMapper.xml
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.Utility\obj\Release\NBK.ECService.WMSLog.Utility.csprojResolveAssemblyReference.cache
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.Utility\obj\Release\NBK.ECService.WMSLog.Utility.dll
+D:\GitWork\WMS\Repos\WMSLogPortal\NBK.ECService.WMSLog.Utility\obj\Release\NBK.ECService.WMSLog.Utility.pdb

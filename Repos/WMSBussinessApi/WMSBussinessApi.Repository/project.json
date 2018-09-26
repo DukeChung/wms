@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+
+  "dependencies": {
+    "WMSBussinessApi.Model": "*",
+    "WMSBussinessApi.Dto": "1.0.0",
+    "Schubert.Framework.Data.Dapper": "1.9.5"
+  },
+
+  "frameworks": {
+    "net452": {}
+  }
+}

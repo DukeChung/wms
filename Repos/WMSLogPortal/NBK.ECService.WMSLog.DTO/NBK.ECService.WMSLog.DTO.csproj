@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7E2A411A-D839-4938-B0D7-BF0171C0C4A1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBK.ECService.WMSLog.DTO</RootNamespace>
+    <AssemblyName>NBK.ECService.WMSLog.DTO</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Abp">
+      <HintPath>..\..\WMSApi\packages\Abp.0.7.1.0\lib\net451\Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab">
+      <HintPath>..\..\WMSApi\packages\FortuneLab.1.6.4.13\lib\net451\FortuneLab.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Abp">
+      <HintPath>..\..\WMSApi\packages\FortuneLab.Abp.1.6.2.1\lib\net451\FortuneLab.Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\WMSLogApi\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\AccessLogDto.cs">
+      <Link>AccessLogDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\AccessLog\AccessLogListDto.cs">
+      <Link>AccessLog\AccessLogListDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\AccessLog\AccessLogQuery.cs">
+      <Link>AccessLog\AccessLogQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\BusinessLogDto.cs">
+      <Link>BusinessLogDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\BussinessLog\BusinessLogListDto.cs">
+      <Link>BussinessLog\BusinessLogListDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\BussinessLog\BusinessLogQuery.cs">
+      <Link>BussinessLog\BusinessLogQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\BussinessLog\InboundBizLogDto.cs">
+      <Link>BussinessLog\InboundBizLogDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\BussinessLog\OutboundBizLogDto.cs">
+      <Link>BussinessLog\OutboundBizLogDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\CheckStock\DiffReceiptInvOut.cs">
+      <Link>CheckStock\DiffReceiptInvOut.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\CheckStock\InvAndPickDetailAllocatedQty.cs">
+      <Link>CheckStock\InvAndPickDetailAllocatedQty.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\CheckStock\InvLotAndInvLotLocLpn.cs">
+      <Link>CheckStock\InvLotAndInvLotLocLpn.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\CheckStock\InvSkuLocAndInvLotLocLpn.cs">
+      <Link>CheckStock\InvSkuLocAndInvLotLocLpn.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\CheckStock\InvSkuLotLocLpnQty.cs">
+      <Link>CheckStock\InvSkuLotLocLpnQty.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\Common\ApiProcessResultTotalDto.cs">
+      <Link>Common\ApiProcessResultTotalDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\Common\LogStatisticBaseDto.cs">
+      <Link>Common\LogStatisticBaseDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\ConnectionStringDto.cs">
+      <Link>ConnectionStringDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\Extend\BaseDto.cs">
+      <Link>Base\BaseDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\Extend\BaseQuery.cs">
+      <Link>Base\BaseQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\Extend\Pages.cs">
+      <Link>Base\Pages.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\InterfaceLogDto.cs">
+      <Link>InterfaceLogDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\InterfaceLog\InterfaceLogListDto.cs">
+      <Link>InterfaceLog\InterfaceLogListDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\InterfaceLog\InterfaceLogQuery.cs">
+      <Link>InterfaceLog\InterfaceLogQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\InterfaceLog\InterfaceStatisticList.cs">
+      <Link>InterfaceLog\InterfaceStatisticList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\InterfaceLog\InterfaceStatisticQuery.cs">
+      <Link>InterfaceLog\InterfaceStatisticQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\PushMessage\PushMessageQuery.cs">
+      <Link>PushMessage\PushMessageQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\PushMessage\WarehouseDto.cs">
+      <Link>PushMessage\WarehouseDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\SummaryLogDto.cs">
+      <Link>SummaryLogDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\SummaryLog\MaxFrequencyDto.cs">
+      <Link>SummaryLog\MaxFrequencyDto.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WMSLogApi\NBK.ECService.WMSLog.DTO\SummaryLog\SummaryLogQuery.cs">
+      <Link>SummaryLog\SummaryLogQuery.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NBK.ECService.WMSLog.Utility\NBK.ECService.WMSLog.Utility.csproj">
+      <Project>{060dc2c5-ffe0-49a4-8405-a8c8357eb1a7}</Project>
+      <Name>NBK.ECService.WMSLog.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

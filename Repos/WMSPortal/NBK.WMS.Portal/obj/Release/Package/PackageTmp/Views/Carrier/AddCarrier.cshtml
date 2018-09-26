@@ -1,0 +1,102 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "新增承运商";
+}
+
+@Html.Breadcrumb("承运商管理", "/Carrier/CarrierList", "新增承运商")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="addCarrierForm" class="form-horizontal" method="get">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">承运商名称:</label>
+                <div class="col-sm-4"><input type="text" id="CarrierName" name="CarrierName" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">承运商联系电话:</label>
+                <div class="col-sm-4"><input type="text" id="CarrierPhone" name="CarrierPhone" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">承运商外部ID:</label>
+                <div class="col-sm-4"><input type="text" id="OtherCarrierId" name="OtherCarrierId" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">承运商联系人:</label>
+                <div class="col-sm-4"><input type="text" id="CarrierContacts" name="CarrierContacts" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">启用:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="IsActive" name="IsActive" checked><i></i>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" onclick="addCarrier();"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables", "~/plugins/validate")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $("#addCarrierForm").validate({
+                rules: {
+                    CarrierName: {
+                        required: true,
+                        maxlength: 32
+                    },
+                    CarrierPhone: {
+                        required: true,
+                        maxlength: 32
+                    },
+                    OtherCarrierId: {
+                        required: true,
+                        maxlength: 64
+                    },
+                    CarrierContacts: {
+                        required: true,
+                        maxlength: 32
+                    }
+                }
+            });
+        });
+
+        function addCarrier() {
+            if ($("#addCarrierForm").valid()) {
+                $.ajax({
+                    url: "/Carrier/SaveAddCarrier",
+                    type: "POST",
+                    data: $("#addCarrierForm").serializeObject(),
+                    success: function (data) {
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            window.location.href = "/Carrier/CarrierList";
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            }
+        }
+    </script>
+}
+

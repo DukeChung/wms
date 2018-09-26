@@ -1,0 +1,256 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.LocationDto
+@{
+    ViewBag.Title = "编辑库位";
+}
+
+@Html.Breadcrumb("库位管理", "/Location/LocationList", "编辑库位")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="editLocationForm" class="form-horizontal" method="get">
+            <input type="hidden" id="SysId" name="SysId" value="@Model.SysId" />
+            <input type="hidden" id="CreateBy" name="CreateBy" value="@Model.CreateBy" />
+            <input type="hidden" id="CreateDate" name="CreateDate" value="@Model.CreateDate" />
+            <input type="hidden" id="CreateUserName" name="CreateUserName" value="@Model.CreateUserName" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label">货位:</label>
+                <div class="col-sm-4"><input disabled="disabled" type="text" id="Loc" name="Loc" class="form-control" value="@Model.Loc"></div>
+
+                <label class="col-sm-2 control-label">货位用途:</label>
+                <div class="col-sm-4">
+                    <select id="LocUsage" name="LocUsage" class="form-control">
+                        @{
+                            foreach (var locUsage in (List<SelectListItem>)ViewBag.LocUsageList)
+                            {
+                                if (Model.LocUsage == locUsage.Value)
+                                {
+                                    <option value="@locUsage.Value" selected>@locUsage.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@locUsage.Value">@locUsage.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">货位种类:</label>
+                <div class="col-sm-4">
+                    <select id="LocCategory" name="LocCategory" class="form-control">
+                        @{
+                            foreach (var locCategory in (List<SelectListItem>)ViewBag.LocCategoryList)
+                            {
+                                if (Model.LocCategory == locCategory.Value)
+                                {
+                                    <option value="@locCategory.Value" selected>@locCategory.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@locCategory.Value">@locCategory.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+
+                <label class="col-sm-2 control-label">货位属性:</label>
+                <div class="col-sm-4"><input type="text" id="LocFlag" name="LocFlag" class="form-control" value="@Model.LocFlag"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">处理方式:</label>
+                <div class="col-sm-4"><input type="text" id="LocHandling" name="LocHandling" class="form-control" value="@Model.LocHandling"></div>
+
+                <label class="col-sm-2 control-label">储区:</label>
+                <div class="col-sm-4">
+                    <select id="ZoneSysId" name="ZoneSysId" class="form-control" disabled="disabled">
+                        @{
+                            foreach (var zone in (List<SelectListItem>)ViewBag.ZoneList)
+                            {
+                                if (Model.ZoneSysId == Guid.Parse(zone.Value))
+                                {
+                                    <option value="@zone.Value" selected>@zone.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@zone.Value">@zone.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">路线顺序:</label>
+                <div class="col-sm-4"><input type="text" id="LogicalLoc" name="LogicalLoc" class="form-control" value="@Model.LogicalLoc"></div>
+
+                <label class="col-sm-2 control-label">X坐标:</label>
+                <div class="col-sm-4"><input type="text" id="XCoord" name="XCoord" class="form-control" value="@Model.XCoord"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Y坐标:</label>
+                <div class="col-sm-4"><input type="text" id="YCoord" name="YCoord" class="form-control" value="@Model.YCoord"></div>
+
+                <label class="col-sm-2 control-label">层数:</label>
+                <div class="col-sm-4"><input type="text" id="LocLevel" name="LocLevel" class="form-control" value="@Model.LocLevel"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">体积:</label>
+                <div class="col-sm-4"><input type="text" id="Cube" name="Cube" class="form-control" value="@Model.Cube"></div>
+
+                <label class="col-sm-2 control-label">长度:</label>
+                <div class="col-sm-4"><input type="text" id="Length" name="Length" class="form-control" value="@Model.Length" onchange="calculateCubic()"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">宽度:</label>
+                <div class="col-sm-4"><input type="text" id="Width" name="Width" class="form-control" value="@Model.Width" onchange="calculateCubic()"></div>
+
+                <label class="col-sm-2 control-label">高度:</label>
+                <div class="col-sm-4"><input type="text" id="Height" name="Height" class="form-control" value="@Model.Height" onchange="calculateCubic()"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">容积:</label>
+                <div class="col-sm-4"><input type="text" id="CubicCapacity" name="CubicCapacity" class="form-control" value="@Model.CubicCapacity"></div>
+
+                <label class="col-sm-2 control-label">载重:</label>
+                <div class="col-sm-4"><input type="text" id="WeightCapacity" name="WeightCapacity" class="form-control" value="@Model.WeightCapacity"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">启用:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="IsActive" name="IsActive" checked="@Model.IsActive"><i></i>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" onclick="editLocation();"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables", "~/plugins/validate")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $("#editLocationForm").validate({
+                rules: {
+                    Loc: {
+                        required: true,
+                        maxlength: 32
+                    },
+                    LocUsage: {
+                        maxlength: 32
+                    },
+                    LocCategory: {
+                        maxlength: 32
+                    },
+                    LocFlag: {
+                        maxlength: 32
+                    },
+                    LocHandling: {
+                        maxlength: 32
+                    },
+                    LogicalLoc: {
+                        digits: true,
+                        min: 0
+                    },
+                    XCoord: {
+                        number: true,
+                        min: 0
+                    },
+                    YCoord: {
+                        number: true,
+                        min: 0
+                    },
+                    LocLevel: {
+                        digits: true,
+                        min: 0
+                    },
+                    Cube: {
+                        number: true,
+                        min: 0
+                    },
+                    Length: {
+                        digits: true,
+                        min: 0
+                    },
+                    Width: {
+                        digits: true,
+                        min: 0
+                    },
+                    Height: {
+                        digits: true,
+                        min: 0
+                    },
+                    CubicCapacity: {
+                        number: true,
+                        min: 0
+                    },
+                    WeightCapacity: {
+                        number: true,
+                        min: 0
+                    }
+                }
+            });
+        });
+
+        function editLocation() {
+            if ($("#editLocationForm").valid()) {
+                $.ajax({
+                    url: "/Location/SaveEditLocation",
+                    type: "POST",
+                    data: $("#editLocationForm").serializeObject(),
+                    success: function (data) {
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            window.location.href = "/Location/LocationList";
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            }
+        }
+
+        function calculateCubic() {
+            var length = $("#Length").val();
+            var width = $("#Width").val();
+            var height = $("#Height").val();
+            if (!isNaN(length) && !isNaN(width) && !isNaN(height)) {
+                $("#CubicCapacity").val((length * width * height).toFixed(4));
+            } else {
+                $("#CubicCapacity").val("");
+            }
+        }
+    </script>
+}
+

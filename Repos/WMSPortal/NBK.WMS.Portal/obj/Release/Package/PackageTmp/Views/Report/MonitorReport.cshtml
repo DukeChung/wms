@@ -1,0 +1,453 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "监控报表";
+}
+
+@Html.Breadcrumb("报表", "监控报表")
+@section Styles {
+    @Styles.Render("~/Content/plugins/jqGrid/jqGridStyles");
+    <style>
+        .fadeBackground {
+            animation: change ease-in 5s;
+        }
+
+        @@keyframes change {
+            from {
+                background-color: #1ab394;
+            }
+
+            to {
+                background-color: #ffffff;
+            }
+        }
+    </style>
+
+}
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>监控报表</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="jqGrid_wrapper row">
+                        <div id="div_1" class="col-lg-6" style="overflow-x:auto">
+                            <table id="table_list_1"> </table>
+                            <div id="pager_list_1"></div>
+                        </div>
+                        <div id="div_2" class="col-lg-6" style="overflow-x:auto">
+                            <table id="table_list_2"></table>
+                            <div id="pager_list_2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="jqGrid_wrapper row">
+                        <div id="div_3" class="col-lg-6" style="overflow-x:auto">
+                            <table id="table_list_3"></table>
+                            <div id="pager_list_3"></div>
+                        </div>
+                        <div id="div_4" class="col-lg-6" style="overflow-x:auto">
+                            <table id="table_list_4"></table>
+                            <div id="pager_list_4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="jqGrid_wrapper row">
+                        <div id="div_5" class="col-lg-6" style="overflow-x:auto">
+                            <table id="table_list_5"></table>
+                            <div id="pager_list_5"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/jqGrid")
+
+    <script type="text/javascript">
+
+        $(function () {
+            show();
+            function show() {
+                showLoading();
+                window.setTimeout(hideLoading, 2000);
+            }
+            setInterval(show, 30000);
+
+            $(window).bind('resize', function () {
+                var width = $('.jqGrid_wrapper').width() / 2.2;
+                $('#table_list_1').setGridWidth(width);
+                $('#table_list_2').setGridWidth(width);
+                $('#table_list_3').setGridWidth(width);
+                $('#table_list_4').setGridWidth(width);
+                $('#table_list_5').setGridWidth(width);
+            });
+        });
+
+        function showLoading() {
+            $("#div_1").html(" <table id=\"table_list_1\"></table><div id=\"pager_list_1\"></div>");
+            $("#div_2").html(" <table id=\"table_list_2\"></table><div id=\"pager_list_2\"></div>");
+            $("#div_3").html(" <table id=\"table_list_3\"></table><div id=\"pager_list_3\"></div>");
+            $("#div_4").html(" <table id=\"table_list_4\"></table><div id=\"pager_list_4\"></div>");
+            $("#div_5").html(" <table id=\"table_list_5\"></table><div id=\"pager_list_5\"></div>");
+
+
+            $("#table_list_1").jqGrid({
+                datatype: "local",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: false,
+                rowNum: 50,
+                rowList: [50, 100, 150, 200],
+                colNames: ['入库单号', '入库单状态', '入库单创建时间[操作人]', '收货单号', '收货单状态', '收货单创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                    { name: 'PurchaseOrder', index: 'PurchaseOrder', width: 120, sorttype: "string" },
+                    { name: 'PurchaseStatusName', index: 'PurchaseStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'PurchaseCreateDisplay', index: 'PurchaseCreateTime', width: 220, sorttype: "string" },
+                    { name: 'ReceiptOrder', index: 'ReceiptOrder', width: 120, sorttype: "string" },
+                    { name: 'ReceiptStatusName', index: 'ReceiptStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'ReceiptCreateDisplay', index: 'ReceiptCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'PurchaseCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_1",
+                viewrecords: true,
+                caption: "入库",
+                hidegrid: false,
+            });
+
+            $("#table_list_1").jqGrid('navGrid', '#pager_list_1', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $("#table_list_2").jqGrid({
+                datatype: "local",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: true,
+                rowNum: 50,
+                rowList: [50, 100, 150, 200],
+                colNames: ['出库单号', '出库单状态', '创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                    { name: 'OutboundOrder', index: 'OutboundOrder', width: 120, sorttype: "string" },
+                    { name: 'OutboundStatusName', index: 'OutboundStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'OutboundCreateDisplay', index: 'OutboundCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'OutboundCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_2",
+                viewrecords: true,
+                caption: "出库",
+                hidegrid: false,
+            });
+
+            $("#table_list_2").jqGrid('navGrid', '#pager_list_2', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $("#table_list_3").jqGrid({
+                datatype: "local",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: true,
+                rowNum: 50,
+                rowList: [50, 100, 150, 200],
+                colNames: ['工单单号', '工单状态', '指派人', '来源单据号', '创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                   { name: 'WorkOrder', index: 'WorkOrder', width: 120, sorttype: "string" },
+                    { name: 'WorkStatusName', index: 'WorkStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'AppointUserName', index: 'AppointUserName', width: 120, sorttype: "string" },
+                    { name: 'DocOrder', index: 'DocOrder', width: 120, sorttype: "string" },
+                    { name: 'WorkCreateDisplay', index: 'WorkCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'WorkCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_3",
+                viewrecords: true,
+                caption: "工单",
+                hidegrid: false,
+            });
+
+            $("#table_list_3").jqGrid('navGrid', '#pager_list_3', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $("#table_list_4").jqGrid({
+                datatype: "local",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: true,
+                rowNum: 50,
+                rowList: [50, 100, 150, 200],
+                colNames: ['退货入库单单号', '退货入库单状态', '创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                   { name: 'PurchaseOrder', index: 'PurchaseOrder', width: 120, sorttype: "string" },
+                    { name: 'PurchaseStatusName', index: 'PurchaseStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'PurchaseCreateDisplay', index: 'PurchaseCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'PurchaseCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_4",
+                viewrecords: true,
+                caption: "退货入库单",
+                hidegrid: false,
+            });
+
+            $("#table_list_4").jqGrid('navGrid', '#pager_list_4', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $("#table_list_5").jqGrid({
+                datatype: "local",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: false,
+                rowNum: 50,
+                rowList: [50, 100, 150, 200],
+                colNames: ['库存转移单单号','库存转移单状态', '商品名称', 'UPC', '数量', '转移数量', '来源货位', '目标货位', '来源批次', '目标批次', '创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                    { name: 'StockTransferOrder', index: 'StockTransferOrder', width: 120, sorttype: "string" },
+                    { name: 'StockTransferStatusName', index: 'StockTransferOrder', width: 120, sorttype: "string", align: "center" },
+                    { name: 'SkuName', index: 'SkuName', width: 120, sorttype: "string", align: "center" },
+                    { name: 'UPC', index: 'UPC', width: 120, sorttype: "string" },
+                    { name: 'DisplayCurrentQty', index: 'DisplayCurrentQty', width: 90, sorttype: "string" },
+                    { name: 'DisplayToQty', index: 'DisplayToQty', width: 90, sorttype: "string" },
+                    { name: 'FromLoc', index: 'FromLoc', width: 140, sorttype: "string" },
+                    { name: 'ToLoc', index: 'ToLoc', width: 140, sorttype: "string" },
+                    { name: 'FromLot', index: 'FromLot', width: 140, sorttype: "string" },
+                    { name: 'ToLot', index: 'ToLot', width: 140, sorttype: "string" },
+                    { name: 'TransferCreateDisplay', index: 'TransferCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'PurchaseCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_5",
+                viewrecords: true,
+                caption: "库存转移单",
+                hidegrid: false,
+            });
+
+            $("#table_list_5").jqGrid('navGrid', '#pager_list_5', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $('.loading').show();
+        }
+
+        function hideLoading() {
+            $("#div_1").html(" <table id=\"table_list_1\"></table><div id=\"pager_list_1\"></div>");
+            $("#div_2").html(" <table id=\"table_list_2\"></table><div id=\"pager_list_2\"></div>");
+            $("#div_3").html(" <table id=\"table_list_3\"></table><div id=\"pager_list_3\"></div>");
+            $("#div_4").html(" <table id=\"table_list_4\"></table><div id=\"pager_list_4\"></div>");
+            $("#div_5").html(" <table id=\"table_list_5\"></table><div id=\"pager_list_5\"></div>");
+
+            $("#table_list_1").jqGrid({
+                url: '/Report/GetMonitorReportPurchaseDto',
+                mtype: 'GET',
+                datatype: "json",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: false,
+                rowNum: 50,
+                rowList: [50, 100, 150, 200],
+                colNames: ['入库单号', '入库单状态', '入库单创建时间[操作人]', '收货单号', '收货单状态', '收货单创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                    { name: 'PurchaseOrder', index: 'PurchaseOrder', width: 120, sorttype: "string" },
+                    { name: 'PurchaseStatusName', index: 'PurchaseStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'PurchaseCreateDisplay', index: 'PurchaseCreateTime', width: 220, sorttype: "string" },
+                    { name: 'ReceiptOrder', index: 'ReceiptOrder', width: 120, sorttype: "string" },
+                    { name: 'ReceiptStatusName', index: 'ReceiptStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'ReceiptCreateDisplay', index: 'ReceiptCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'PurchaseCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_1",
+                viewrecords: true,
+                caption: "入库",
+                hidegrid: false,
+                jsonReader: {
+                    page: "page",
+                    total: "total",
+                    records: "records"
+                },
+                gridComplete: function () {
+                    var ids = $("#table_list_1").getDataIDs();
+                    for (var i = 0; i < ids.length; i++) {
+                        var rowData = $("#table_list_1").getRowData(ids[i]);
+                        if (rowData.IsNew == 1) {
+                            $("#table_list_1").find("tr:eq(" + ids[i] + ")").addClass("fadeBackground");
+                        }
+                    }
+                },
+            });
+
+            $("#table_list_1").jqGrid('navGrid', '#pager_list_1', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $("#table_list_2").jqGrid({
+                url: '/Report/GetMonitorReportOutBoundDto',
+                mtype: 'GET',
+                datatype: "json",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: true,
+                rowNum: 50,
+                rowList: [50, 100, 150, 200],
+                colNames: ['出库单号', '出库单状态', '创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                    { name: 'OutboundOrder', index: 'OutboundOrder', width: 120, sorttype: "string" },
+                    { name: 'OutboundStatusName', index: 'OutboundStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'OutboundCreateDisplay', index: 'OutboundCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'OutboundCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_2",
+                viewrecords: true,
+                caption: "出库",
+                hidegrid: false,
+                jsonReader: {
+                    page: "page",
+                    total: "total",
+                    records: "records"
+                },
+                gridComplete: function () {
+                    var ids = $("#table_list_2").getDataIDs();
+                    for (var i = 0; i < ids.length; i++) {
+                        var rowData = $("#table_list_2").getRowData(ids[i]);
+                        if (rowData.IsNew == 1) {
+                            $("#table_list_2").find("tr:eq(" + ids[i] + ")").addClass("fadeBackground");
+                        }
+                    }
+                }
+            });
+
+            $("#table_list_2").jqGrid('navGrid', '#pager_list_2', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $("#table_list_3").jqGrid({
+                url: '/Report/GetMonitorReportWorkDto',
+                mtype: 'GET',
+                datatype: "json",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: true,
+                rowNum: 49,
+                rowList: [50, 100, 150, 200],
+                colNames: ['工单单号', '工单状态', '指派人', '来源单据号', '创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                   { name: 'WorkOrder', index: 'WorkOrder', width: 120, sorttype: "string" },
+                    { name: 'WorkStatusName', index: 'WorkStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'AppointUserName', index: 'AppointUserName', width: 120, sorttype: "string" },
+                    { name: 'DocOrder', index: 'DocOrder', width: 120, sorttype: "string" },
+                    { name: 'WorkCreateDisplay', index: 'WorkCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'WorkCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_3",
+                viewrecords: true,
+                caption: "工单",
+                hidegrid: false,
+                jsonReader: {
+                    page: "page",
+                    total: "total",
+                    records: "records"
+                },
+                gridComplete: function () {
+                    var ids = $("#table_list_3").getDataIDs();
+                    for (var i = 0; i < ids.length; i++) {
+                        var rowData = $("#table_list_3").getRowData(ids[i]);
+                        if (rowData.IsNew == 1) {
+                            $("#table_list_3").find("tr:eq(" + ids[i] + ")").addClass("fadeBackground");
+                        }
+                    };
+                }
+            });
+
+            $("#table_list_3").jqGrid('navGrid', '#pager_list_3', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $("#table_list_4").jqGrid({
+                url: '/Report/GetMonitorReportPurchaseReturnDto',
+                mtype: 'GET',
+                datatype: "json",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: true,
+                rowNum: 49,
+                rowList: [50, 100, 150, 200],
+                colNames: ['退货入库单单号', '退货入库单状态', '创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                   { name: 'PurchaseOrder', index: 'PurchaseOrder', width: 120, sorttype: "string" },
+                    { name: 'PurchaseStatusName', index: 'PurchaseStatus', width: 90, sorttype: "string", align: "center" },
+                    { name: 'PurchaseCreateDisplay', index: 'PurchaseCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'PurchaseCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_4",
+                viewrecords: true,
+                caption: "退货入库单",
+                hidegrid: false,
+                jsonReader: {
+                    page: "page",
+                    total: "total",
+                    records: "records"
+                },
+                gridComplete: function () {
+                    var ids = $("#table_list_4").getDataIDs();
+                    for (var i = 0; i < ids.length; i++) {
+                        var rowData = $("#table_list_4").getRowData(ids[i]);
+                        if (rowData.IsNew == 1) {
+                            $("#table_list_4").find("tr:eq(" + ids[i] + ")").addClass("fadeBackground");
+                        }
+                    };
+                }
+            });
+
+            $("#table_list_4").jqGrid('navGrid', '#pager_list_4', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $("#table_list_5").jqGrid({
+                url: '/Report/GetStockTransferDto',
+                mtype: 'GET',
+                datatype: "json",
+                height: 250,
+                autowidth: true,
+                shrinkToFit: false,
+                rowNum: 50,
+                rowList: [50, 100, 150, 200],
+                colNames: ['库存转移单单号', '库存转移单状态','商品名称', 'UPC', '数量', '转移数量', '来源货位', '目标货位', '来源批次', '目标批次', '创建时间[操作人]', '停留时间', 'IsNew'],
+                colModel: [
+                    { name: 'StockTransferOrder', index: 'StockTransferOrder', width: 120, sorttype: "string" },
+                    { name: 'StockTransferStatusName', index: 'StockTransferOrder', width: 120, sorttype: "string", align: "center" },
+                    { name: 'SkuName', index: 'SkuName', width: 120, sorttype: "string", align: "center" },
+                    { name: 'UPC', index: 'UPC', width: 120, sorttype: "string" },
+                    { name: 'DisplayCurrentQty', index: 'DisplayCurrentQty', width: 90, sorttype: "string" },
+                    { name: 'DisplayToQty', index: 'DisplayToQty', width: 90, sorttype: "string" },
+                    { name: 'FromLoc', index: 'FromLoc', width: 140, sorttype: "string" },
+                    { name: 'ToLoc', index: 'ToLoc', width: 140, sorttype: "string" },
+                    { name: 'FromLot', index: 'FromLot', width: 140, sorttype: "string" },
+                    { name: 'ToLot', index: 'ToLot', width: 140, sorttype: "string" },
+                    { name: 'TransferCreateDisplay', index: 'TransferCreateTime', width: 220, sorttype: "string" },
+                    { name: 'StayTime', index: 'PurchaseCreateTime', width: 110, sorttype: "string" },
+                    { name: 'IsNew', index: 'IsNew', hidden: true }
+                ],
+                pager: "#pager_list_5",
+                viewrecords: true,
+                caption: "库存转移单",
+                hidegrid: false,
+                jsonReader: {
+                    page: "page",
+                    total: "total",
+                    records: "records"
+                },
+                gridComplete: function () {
+                    var ids = $("#table_list_5").getDataIDs();
+                    for (var i = 0; i < ids.length; i++) {
+                        var rowData = $("#table_list_5").getRowData(ids[i]);
+                        if (rowData.IsNew == 1) {
+                            $("#table_list_5").find("tr:eq(" + ids[i] + ")").addClass("fadeBackground");
+                        }
+                    };
+                }
+            });
+
+            $("#table_list_5").jqGrid('navGrid', '#pager_list_5', { del: false, add: false, edit: false }, {}, {}, {}, { multipleSearch: true });
+
+            $('.loading').hide();
+        }
+
+    </script>
+}

@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "系统接口访问统计";
+}
+<div id="content">
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-sitemap"></i> </span>
+                    <h2 class="title-font">系统接口访问统计</h2>
+                </header>
+                <div>
+                    <div class="widget-body no-padding">
+                        <div id="div_WMSBizAccessGlobal"> </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </article>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+
+    <script>
+        var WMSBizAccessGlobalModel = {
+            init: function () {
+                var barChart = echarts.init(document.getElementById("div_WMSBizAccessGlobal"));
+
+                $.ajax({
+                    url: "@Url.Action("GetAccessBizList","Home")",
+                    type: "GET",
+                    success: function (response) {
+                        if (response.Success) {
+                            //WMSBizAccessGlobalModel.init(response.Data);
+                            var data = response.Data;
+
+                            barChart.setOption(option = {
+                                title: {
+                                    //text: '系统接口访问统计'
+                                },
+                                tooltip: {
+                                    trigger: 'item',
+                                    triggerOn: 'mousemove'
+
+                                },
+                                series: [{
+                                    type: 'sankey',
+                                    layout: 'none',
+                                    data: data.nodes,
+                                    links: data.links,
+                                    itemStyle: {
+                                        normal: {
+                                            borderWidth: 1,
+                                            borderColor: '#aaa'
+                                        }
+                                    },
+                                    lineStyle: {
+                                        normal: {
+                                            curveness: 0.5
+                                        }
+                                    }
+                                }]
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
+        $(function () {
+            var height = Math.ceil($(window).height()) - 150;
+            $("#div_WMSBizAccessGlobal").height(height);
+
+            WMSBizAccessGlobalModel.init();
+        })
+
+
+    </script>
+}

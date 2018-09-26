@@ -1,0 +1,31 @@
+﻿
+<div id="content">
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <div style="padding:30px;">
+                    <label>银行卡号：</label>
+                    <input type="text" placeholder="请输入储蓄卡卡号" name="cardNo" id="cardNo" style="padding:5px;width:300px;" />
+                    <span id="butGetNo" style="padding:7px 10px;border-radius: 3px;background-color:#f5f5f5;border: 1px solid #696969; cursor: pointer;">获取卡号</span>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
+<script src="~/Scripts/jquery.bankInput.js"></script>
+
+<script>
+    $(function () {
+        //初始化插件
+        $("#cardNo").bankInput();
+
+        $("#butGetNo").on('click', function () {
+            var no = $("#cardNo").val();
+            if (no != '') {
+                no = no.replace(/[ ]/g, "");    //取值时，去掉中间空格
+                alert(no);
+            }
+        });
+    });
+
+</script>

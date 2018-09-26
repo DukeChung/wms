@@ -1,0 +1,4 @@
+2017-12-04 17:40:57,149 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/12/4 17:40:57/异步更新出库单经纬度开始
+2017-12-04 17:41:14,492 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/12/4 17:41:14/异步更新出库单经纬度开始
+2017-12-04 17:41:19,752 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/12/4 17:41:19/总共需要更新：3449 条
+2017-12-04 17:46:15,111 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/12/4 17:46:15/更新出库单经纬度结束

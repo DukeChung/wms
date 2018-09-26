@@ -1,0 +1,21 @@
+--temp-output:D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\obj\Debug\net452\
+--out:D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\bin\Debug\net452\WMSBussinessApi.Model.dll
+--define:DEBUG
+--define:TRACE
+--define:NET452
+--suppress-warning:CS1701
+--suppress-warning:CS1702
+--suppress-warning:CS1705
+--optimize:False
+--output-name:WMSBussinessApi.Model
+--file-version:1.0.0.0
+--version:1.0.0.0
+--informational-version:1.0.0
+--target-framework:.NETFramework,Version=v4.5.2
+--reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\mscorlib.dll
+--reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.dll
+--reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Core.dll
+--reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\Microsoft.CSharp.dll
+D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\Employee.cs
+D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\Properties\AssemblyInfo.cs
+D:\GitWork\WMS\Repos\WMSBussinessApi\WMSBussinessApi.Model\XXX\XC.cs

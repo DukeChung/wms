@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "http://schemas.gznb.com/schubert/v1.9/module.json",
+  "name": "WMSBussinessApi.RepositoryImp",
+  "author": "wheecas",
+  "description": "仓储服务接口实现模块",
+  "version": "1.0",
+  "category": "WMSBussinessApi.RepositoryImp",
+  "includeUserInterface": false
+}

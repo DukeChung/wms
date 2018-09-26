@@ -1,0 +1,496 @@
+﻿@using WMS.Global.Portal.Helpers
+@{
+    ViewBag.Title = "农资汇总看板";
+}
+@Html.Breadcrumb("农资汇总看板", "")
+
+<!-- MAIN CONTENT -->
+<div id="content">
+
+    <div class="row">
+        <article class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 style="font-family: 等线;font-weight:100;">国资化肥出入库对比</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divRORadar" style="height:500px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <!-- WIDGET END -->
+        <article class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 style="font-family: 等线;font-weight:100;">国资化肥库存情况</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divInvRadar" class="chart" style="height:500px"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+    <div class="row">
+        <article class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="jarviswidget" id="wid-id-31" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">国资商城16-16-16 氯基50kg/袋(库存分布)</h2>
+                </header>
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divAChart" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">国资商城17-17-17 硫酸钾型50kg/袋(库存分布)</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divBChart" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">国资商城10-10-10 氯基40kg/袋(库存分布) </h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divCChart" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">国资商城—云天化尿素SF 40kg/袋(库存分布) </h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divDChart" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+    <div class="row">
+        <article class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="jarviswidget" id="wid-id-31" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">国资商城15-15-15 硫酸钾型50kg/袋(库存分布)</h2>
+                </header>
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divEChart" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">国资商城矿源腐殖酸有机肥料40kg/袋(库存分布)</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divFChart" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">国资商城13-5-7  氯基40kg/袋(库存分布)</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divGChart" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">国资商城—东风尿素JD 40kg/袋(库存分布) </h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divHChart" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
+@section pagespecific {
+    <script>
+
+        var A = "03fabcb1-3f89-47e2-a9b8-1107ab323d1a";
+        var B = "59707948-4dc0-4d9a-832d-5b4a48bd3155";
+        var C = "68037927-d35d-40ad-a65a-0ca0af824578";
+        var D = "74cd11ce-0893-49c5-b4dc-6e862eb1144c";
+        var E = "e1f23697-edc7-46f4-a5cd-d1398291fffe";
+        var F = "cb74960d-009e-4266-a9ad-350a52697b26";
+        var G = "e7d5bbb4-7ddf-4be5-b708-608fc1a82dea";
+        var H = "fb0c1f73-73ba-40af-b43b-838b6f00c17e";
+
+        $(document).ready(function () { RORadarInit(); InvRadarInit(); APieInit(); BPieInit(); CPieInit(); DPieInit(); EPieInit(); FPieInit(); GPieInit(); HPieInit(); });
+
+        function RORadarInit() {
+            var RORadar = echarts.init(document.getElementById("divRORadar"));
+
+            $.ajax({
+                url: "@Url.Action("GetFertilizerRORadarList", "Fertilizer")",
+                type: "post",
+                data: { SkuSysIds: [A, B, C, D, E, F, G, H] },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success) {
+                        RORadar.setOption(
+                            option = {
+                                title: {
+                                    text: ''
+                                },
+                                tooltip: {},
+                                legend: {
+                                    data: ['收货情况', '出库情况']
+                                },
+                                radar: {
+                                    // shape: 'circle',
+                                    name: {
+                                        textStyle: {
+                                            color: '#fff',
+                                            backgroundColor: '#999',
+                                            borderRadius: 3,
+                                            padding: [3, 5]
+                                        }
+                                    },
+                                    indicator: data.Indicator
+                                },
+                                series: [{
+                                    name: '收货情况 vs 出库情况（Receipt vs Outbound）',
+                                    type: 'radar',
+                                    data: [{ value: data.RData, name: '收货情况' }, { value: data.OData, name: '出库情况' }]
+                                }]
+                            }
+                        );
+                    }
+                }
+            });
+        }
+
+        function InvRadarInit() {
+            var InvRadar = echarts.init(document.getElementById("divInvRadar"));
+
+            $.ajax({
+                url: "@Url.Action("GetFertilizerInvRadarList", "Fertilizer")",
+                type: "post",
+                data: { SkuSysIds: [A, B, C, D, E, F, G, H] },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success) {
+                        InvRadar.setOption(
+                             option = {
+                                 title: {
+                                     text: ''
+                                 },
+                                 tooltip: {},
+                                 legend: {
+                                     data: ['库存情况']
+                                 },
+                                 radar: {
+                                     // shape: 'circle',
+                                     name: {
+                                         textStyle: {
+                                             color: '#fff',
+                                             backgroundColor: '#999',
+                                             borderRadius: 3,
+                                             padding: [3, 5]
+                                         }
+                                     },
+                                     indicator: data.Indicator
+                                 },
+                                 series: [{
+                                     name: '库存情况）',
+                                     type: 'radar',
+                                     data: [{ value: data.Data, name: '库存情况' }]
+                                 }]
+                             }
+                        );
+                    }
+                }
+            });
+        }
+
+        function APieInit() {
+            var AChart = echarts.init(document.getElementById("divAChart"));
+            getPieData(A, AChart);
+        }
+
+        function BPieInit() {
+            var BChart = echarts.init(document.getElementById("divBChart"));
+            getPieData(B, BChart);
+        }
+
+        function CPieInit() {
+            var CChart = echarts.init(document.getElementById("divCChart"));
+            getPieData(C, CChart);
+        }
+
+        function DPieInit() {
+            var DChart = echarts.init(document.getElementById("divDChart"));
+            getPieData(D, DChart);
+        }
+
+        function EPieInit() {
+            var EChart = echarts.init(document.getElementById("divEChart"));
+            getPieData(E, EChart);
+        }
+
+        function FPieInit() {
+            var FChart = echarts.init(document.getElementById("divFChart"));
+            getPieData(F, FChart);
+        }
+
+        function GPieInit() {
+            var GChart = echarts.init(document.getElementById("divGChart"));
+            getPieData(G, GChart);
+        }
+
+        function HPieInit() {
+            var HChart = echarts.init(document.getElementById("divHChart"));
+            getPieData(H, HChart);
+        }
+
+        function getPieData(skuSysId, pieChar) {
+            $.ajax({
+                url: "@Url.Action("GetFertilizerInvPieList", "Fertilizer")",
+                type: "post",
+                data: { SkuSysId: [skuSysId] },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success) {
+                        pieChar.setOption(
+                            option = {
+                                tooltip: {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                                },
+                                legend: {
+                                    orient: 'vertical',
+                                    x: 'left',
+                                    data: data.LegendData
+                                },
+                                series: [
+                                    {
+                                        name: '库存',
+                                        type: 'pie',
+                                        radius: ['50%', '70%'],
+                                        avoidLabelOverlap: false,
+                                        label: { normal: { show: false, position: 'center' }, emphasis: { show: true, textStyle: { fontSize: '30', fontWeight: 'bold' } } },
+                                        labelLine: { normal: { show: false } },
+                                        data: data.Data
+                                    }
+                                ]
+                            }
+                        );
+                    }
+                }
+            });
+        }
+    </script>
+}

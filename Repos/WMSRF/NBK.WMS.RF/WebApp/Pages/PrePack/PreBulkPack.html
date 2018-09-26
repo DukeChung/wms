@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+    <div class="page-group">
+        <div id="page-prebulkpack-index" class="page page-current">
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">散货封箱</h1>
+            </header>
+
+            <div class="row page-content content" data-distance="50">
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <div class="ibox float-e-margins">
+
+                                <input type="hidden" id="selectkey" name="selectkey" value="" />
+                                <input type="hidden" id="values" name="values" value="" />
+                                <input type="hidden" id="texts" name="texts" value="" />
+
+                                <div class="ibox-title font" style="font-size:16px;">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td style="width:30%;text-align:left">
+                                                <input type="radio" id="radio1" name="radio" style="width:20px; height:20px;" checked="checked" value="1" /><label for="radio1">交替模式</label>
+                                            </td>
+                                            <td style="width:40%;text-align:left">
+                                                <input type="radio" id="radio2" name="radio" style="width:20px; height:20px; margin-left:15px;" value="2" /><label for="radio2"> 连续模式</label>
+                                            </td>
+                                            <td style="width:30%;text-align:right">
+                                                <a id="btnReset" style="width:80px;float:right" class="btn btn-block btn-primary compose-mail">清空</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="ibox-content">
+                                    <h4>请扫描箱号</h4>
+                                    <input id="storageCase" name="storageCase" class="form-control input-s" placeholder="请扫描箱号">
+                                    <h4>请输入商品数量</h4>
+                                    <input id="qty" name="qty" class="form-control input-s" placeholder="请输入商品数量">
+                                    <h4>请扫描商品</h4>
+                                    <input id="skuUPC" name="skuUPC" class="form-control input-s" placeholder="请扫描商品">
+                                    <p id="msg" name="msg" class="msg-error"></p>
+                                </div>
+                                <div class="ibox-content" style="text-align:center">
+                                    <div class="buttons-tab">
+                                        <a id="tabLink1" href="#tab1" class="tab-link active button" style="font-size:14px">未扫描</a>
+                                        <a id="tabLink2" href="#tab2" class="tab-link button" style="font-size:14px">查看预包装明细</a>
+                                    </div>
+
+                                    <div class="tabs">
+                                        <div id="tab1" class="tab active">
+                                            <div class="ibox-content">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>NO</th>
+                                                            <th>商品条码</th>
+                                                            <th>商品名称</th>
+                                                            <th>未扫描数</th>
+                                                            <th>单位</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="PreBulkPackNoScanList"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div id="tab2" class="tab">
+                                            <div class="ibox-content">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>NO</th>
+                                                            <th>商品条码</th>
+                                                            <th>商品名称</th>
+                                                            <th>计划数量</th>
+                                                            <th>数量</th>
+                                                            <th>单位</th>
+                                                            <th style="display:none">SkuSysId</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="PreBulkPackDetailList"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<a href="javascript:void(0)"><h4 id="txt_DetailList">查看散货预包装明细 <i id="icon_DetailList" class="fa fa-chevron-down"></i></h4></a>-->
+                                </div>
+                                <!--<div id="div_DetailList" class="ibox-content" style="display:none">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td style="width:50%;text-align:left">已预包装SKU数: <label id="txt_SkuCount">0</label>个</td>
+                                            <td style="width:50%;text-align:right">商品总数量: <label id="txt_SkuQtyCount">0</label>个</td>
+                                        </tr>
+                                    </table>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>NO</th>
+                                                <th>商品条码</th>
+                                                <th>商品名称</th>
+                                                <th>数量</th>
+                                                <th>单位</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="PreBulkPackDetailList"></tbody>
+                                    </table>
+                                </div>-->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    
+</body>
+</html>
+

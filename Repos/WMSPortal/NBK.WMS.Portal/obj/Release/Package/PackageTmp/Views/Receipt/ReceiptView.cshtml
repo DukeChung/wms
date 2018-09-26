@@ -1,0 +1,870 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.ReceiptViewDto
+@{
+    ViewBag.Title = "收货单明细";
+}
+
+@Html.Breadcrumb("收货单管理", "/Receipt/ReceiptList", "收货单明细")
+<link rel="stylesheet" type="text/css" href="~/Content/plugins/ui-dialog.css" />
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <H2 style="color: red;text-align:left">收货单</H2>
+                </label>
+
+                <div class="col-sm-7"></div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7"></div>
+                        <div class="col-sm-5" id="divBarCode"></div>
+
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-8 font-italic" id="divBarCodeValue">@Model.ReceiptOrder</div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group hr-line-dashed">
+                <div class="col-sm-12">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">收货单号:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12" id="divReceiptOrder">@Model.ReceiptOrder</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">供应商:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.VendorName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">单据类型:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.ReceiptTypeText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">单据状态:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px">
+                            <div class="col-sm-2">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">预计收货日期:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.ExpectedReceiptDateText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">实际收货日期:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.ReceipDateText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">到达日期:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.ArrivalDateText</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">作业人:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.AppointUserNames</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1">总预计收货数量:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.DisplayTotalExpectedQty</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px;"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">总实际收货数量:</div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12">@Model.DisplayTotalReceivedQty</div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px;"> </div>
+                    </div>
+                </div>
+                @*<div class="col-sm-1">总拒收数量:</div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12">@Model.DisplayTotalRejectedQty</div>
+                            <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px;"> </div>
+                        </div>
+                    </div>*@
+                <div class="col-sm-1"></div>
+                <div class="col-sm-2">
+                </div>
+            </div>
+            <div class="form-group ">
+                <div class="col-sm-12">
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a id="a-details" data-toggle="tab" href="#tab-details">收货清单</a></li>
+                            <li class=""><a id="a-detailsLot" data-toggle="tab" href="#tab-detailsLot">收货批次清单</a></li>
+                        </ul>
+                        <div id="divReceiptDetailList" class="tab-content">
+                            <div id="tab-details" class="tab-pane active">
+                                <label class="col-sm-2 control-label" style="text-align:left"></label>
+                                <div class="col-sm-8"></div>
+                                <label class="col-sm-2 control-label">SKU数:@Model.ReceiptDetailViewDtoList.Select(p => p.SkuCode).Distinct().Count()</label>
+
+                                <div id="divReceiptDetailViewList" class="col-sm-12">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>商品名称</th>
+                                                <th>UPC</th>
+                                                <th>商品描述</th>
+                                                <th>外部Id</th>
+                                                <th>包装单位</th>
+                                                <th>包装系数</th>
+                                                <th>已入库数量</th>
+                                                <th>上架状态</th>
+                                                <th>上架数量</th>
+                                                <th>赠品数量</th>
+                                                <th>破损数量</th>
+                                                <th>备注</th>
+                                                <th>是否采集批次</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="info in ReceiptDetailViewList">
+                                                <td>{{info.SkuName}}</td>
+                                                <td>{{info.SkuUPC}}</td>
+                                                <td>{{info.SkuDescr}}</td>
+                                                <td>{{info.OtherId}}</td>
+                                                <td>{{info.UOMDescr}}</td>
+                                                <td>{{info.PackFactor}}</td>
+                                                <td>{{info.DisplayReceivedQty}}</td>
+                                                <td>{{info.ShelvesStatusText}}</td>
+                                                <td>{{info.DisplayShelvesQty}}</td>
+                                                <td>{{info.GiftQty}}</td>
+                                                <td>{{info.AdjustmentQty}}</td>
+                                                <td>{{info.Remark}}</td>
+                                                <td v-if="info.IsMustLot">是</td>
+                                                <td v-else>否</td>
+                                            </tr>
+                                            <tr id="noReceiptDetailList" style="display:none;"><td colspan="8">无收货明细</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="tab-detailsLot" class="tab-pane">
+                                <label class="col-sm-2 control-label" style="text-align:left"></label>
+                                <div class="col-sm-8"></div>
+                                <label class="col-sm-2 control-label">SKU数:@Model.ReceiptDetailViewDtoList.Select(p => p.SkuCode).Distinct().Count()</label>
+
+                                <div id="divReceiptDetailViewList" class="col-sm-12">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>商品名称</th>
+                                                <th>UPC</th>
+                                                <th>商品描述</th>
+                                                <th>外部Id</th>
+                                                <th>包装单位</th>
+                                                <th>包装系数</th>
+                                                <th>已入库数量</th>
+                                                <th>上架状态</th>
+                                                <th>上架数量</th>
+                                                <th>批次号</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="info in ReceiptDetailLotViewList">
+                                                <td>{{info.SkuName}}</td>
+                                                <td>{{info.SkuUPC}}</td>
+                                                <td>{{info.SkuDescr}}</td>
+                                                <td>{{info.OtherId}}</td>
+                                                <td>{{info.UOMDescr}}</td>
+                                                <td>{{info.PackFactor}}</td>
+                                                <td>{{info.DisplayReceivedQty}}</td>
+                                                <td>{{info.ShelvesStatusText}}</td>
+                                                <td>{{info.DisplayShelvesQty}}</td>
+                                                <td>{{info.ToLot}}</td>
+                                                <td v-if="info.ToLot != null && info.ToLot != ''"><a class="btn btn-white btn-sm" data-toggle="modal" data-target="#printLotModal" onclick="PrintReceiptDetailLot('{{info.ToLot}}','{{info.LotAttr01}}');"><i class="fa fa-print"></i>打印批次</a></td>
+                                                <td v-else></td>
+                                            </tr>
+                                            <tr id="noReceiptDetailLotList" style="display:none;"><td colspan="8">无收货批次明细</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-sm-2 control-label" style="text-align:left">相关收货单</label>
+
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>收货单号</th>
+                                <th>收货单打印时间</th>
+                                <th>操作人</th>
+                                <th>收货备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var index = 0;
+                                if (Model.RelatedReceiptPurchaseDtoList != null && Model.RelatedReceiptPurchaseDtoList.Any())
+                                {
+                                    foreach (var relatedReceipt in Model.RelatedReceiptPurchaseDtoList)
+                                    {
+                                        index++;
+                                        <tr>
+                                            <td>@index</td>
+                                            <td><a href="/Receipt/ReceiptView?sysId=@relatedReceipt.SysId">@relatedReceipt.ReceiptOrder</a></td>
+                                            <td>@relatedReceipt.ReceiptDateText</td>
+                                            <td>@relatedReceipt.UpdateUserName</td>
+                                            <td>@relatedReceipt.Descr</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="5">暂无收货记录</td></tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="modal inmodal fade" id="shelvesModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-body" style="max-height:600px;">
+                                <div class="form-group">
+                                    <label class="col-sm-12">请输入商品条码:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" id="skuUPC" name="skuUPC" class="form-control">
+                                        <input type="hidden" id="skuSysId" name="skuSysId" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-12">请输入库位条码:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" id="loc" name="loc" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-12">请输入批次号:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" id="lot" name="lot" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-12">请输入商品上架数量:</label>
+                                    <div class="col-sm-12">
+                                        <input type="number" id="skuQty" name="skuQty" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group" id="divStock">
+                                    <label class="col-sm-12">提示：当前商品在以下库位中有库存</label>
+                                    <div v-for="info in StockList">
+                                        <div class="col-sm-6">{{info.Loc}}</div>
+                                        <div class="col-sm-6">{{info.DisplayQty}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-sm btn-primary" id="btnSaveShelves"><i class="fa fa-check-square-o"></i> <span id="saveShelvesText">上架</span></a>
+                                <a class="btn btn-white btn-sm" id="btnCloseSkuClass" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="modal inmodal fade" id="printLotModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-body" style="max-height:600px;">
+                                <div class="form-group">
+                                    <label class="col-sm-12">请输入打印数量:</label>
+                                    <div class="col-sm-12">
+                                        <input type="number" id="PrintQty" name="PrintQty" class="form-control" value="1">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-white btn-sm" onclick="PrintLotModal();"><i class="fa fa-print"></i>打印</a>
+                                    <a class="btn btn-white btn-sm" id="btnCloseSkuClass" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-white btn-sm" id="btnPrint" onclick="PrintReceipt();" style="en"><i class="fa fa-print"></i> 打印收货单</a>
+            <a class="btn btn-white btn-sm" id="btnShelves" data-toggle="modal" data-target="#shelvesModal" onclick="UpcFocus();"><i class="fa fa-level-up"></i>手动上架</a>
+            <a class="btn btn-sm btn-primary" id="btnAutoShelves"><i class="fa fa-level-up"></i> 自动上架</a>
+            <a class="btn btn-sm btn-primary" id="btnCancelShelves"><i class="fa fa-level-down"></i> 取消上架</a>
+            <a class="btn btn-sm btn-primary" target="_blank" href="/Receipt/PickingMaterial?sysId=@Model.SysId">领料</a>
+            <a class="btn btn-sm btn-primary" target="_blank" href="/Receipt/PrintPickingMaterialList?sysId=@Model.SysId">领料记录</a>
+            <a class="btn btn-sm btn-primary" target="_blank" href="/Receipt/ReceiptDetailCollectionLot?sysId=@Model.SysId&&receiptOrder=@Model.ReceiptOrder">批次采集</a>
+            <a class="btn btn-white btn-sm" id="btnPrintShelves" onclick="PrintShelves();"><i class="fa fa-print"></i> 打印上架单</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+    @Scripts.Render("~/Scripts/vue.js")
+    <script type="text/javascript" src="~/Scripts/plugins/artDialog/dialog-plus-min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+            var receiptOrder = '@Model.ReceiptOrder';
+            //查询库存
+            var stock = new Vue({
+                el: '#divStock',
+                data: {
+                    StockList: []
+                },
+                methods:
+                {
+                    getStock: function () {
+                        $.ajax({
+                            url: "/Receipt/GetInventoryList",
+                            type: "POST",
+                            data: {
+                                ReceiptOrder: receiptOrder,
+                                UPC: $("#skuUPC").val().trim(),
+                                SkuSysId: $("#skuSysId").val()
+                            },
+                            success: function (data) {
+                                if (data != null) {
+                                    stock.StockList = data;
+                                }
+                            },
+                            error: function () {
+
+                            }
+                        });
+                    }
+                }
+            });
+
+            //收货清单
+            var receipt = new Vue({
+                el: '#divReceiptDetailList',
+                data: {
+                    ReceiptDetailViewList: [],
+                    ReceiptDetailLotViewList: []
+                },
+                methods:
+                {
+                    getReceiptDetailViewList: function () {
+                        $.ajax({
+                            url: "/Receipt/GetReceiptDetailViewList",
+                            type: "POST",
+                            data: {
+                                sysId: '@Model.SysId'
+                            },
+                            success: function (data) {
+                                if (data != null && data.length > 0) {
+                                    receipt.ReceiptDetailViewList = data;
+                                } else {
+                                    $("#noReceiptDetailList").show();
+                                }
+                            },
+                            error: function () {
+                            }
+                        });
+                        $.ajax({
+                            url: "/Receipt/GetReceiptDetailLotViewList",
+                            type: "POST",
+                            data: {
+                                sysId: '@Model.SysId'
+                            },
+                            success: function (data) {
+                                if (data != null && data.length > 0) {
+                                    receipt.ReceiptDetailLotViewList = data;
+                                } else {
+                                    $("#noReceiptDetailLotList").show();
+                                }
+                            },
+                            error: function () {
+                            }
+                        });
+                    }
+                }
+            });
+
+            receipt.getReceiptDetailViewList();
+
+            //上架
+
+            //UPC
+            $("#skuUPC").keydown(function () {
+                if (event.keyCode == 13) {
+                    $("#loc").focus();
+                }
+            });
+            $("#skuUPC").on("blur", function () {
+                var skuUPC = $("#skuUPC").val().trim();
+                if (skuUPC != "") {
+
+                    var skuPackUPCCount = 0; //统计明细商品所有包装码等于输入UPC的数量
+                    var skuSysIdList = new Array();
+                    var isUPC = false;
+                    $.each(receipt.$data.ReceiptDetailViewList, function (index, el) {
+                        isUPC = false;
+                        if (el.SkuUPC == skuUPC) {
+                            isUPC = true;
+                        }
+
+                        if (el.UPC02 == skuUPC) {
+                            skuPackUPCCount++;
+                            isUPC = true;
+                        }
+                        if (el.UPC03 == skuUPC) {
+                            skuPackUPCCount++;
+                            isUPC = true;
+                        }
+                        if (el.UPC04 == skuUPC) {
+                            skuPackUPCCount++;
+                            isUPC = true;
+                        }
+                        if (el.UPC05 == skuUPC) {
+                            skuPackUPCCount++;
+                            isUPC = true;
+                        }
+
+                        if (isUPC) {
+                            var existsResult = $.inArray(el.SkuSysId, skuSysIdList);
+                            if (existsResult == -1) {  //该skusysid 未出现过，才添加队列，防止出现同商品不同批次，导致弹出选择UPC页面 但只有一个sku结果的场景
+                                skuSysIdList.push(el.SkuSysId);  //记录当前单据的所有 skuUPC ，如果后续需要弹出选择UPC页面，那么这个集合会作为筛选条件
+                            }
+                        }
+
+                    });
+
+                    var receiptArr = receipt.$data.ReceiptDetailViewList.filter(function (item) {
+                        return item.SkuUPC == skuUPC;
+                    });
+
+                    //UI 当前输入的qty 数量，后边作为与包装qty 乘积的系数
+                    var tempUIQty = $("#skuQty").val();
+                    if (tempUIQty == 0 || tempUIQty.length == 0) {
+                        tempUIQty = 1;
+                    }
+
+                    if (skuSysIdList.length <= 1) {
+                        if (skuPackUPCCount == 0) { //输入的是商品UPC
+                            //正常扫码，只有商品UPC
+                            skuUPCBlur();
+                        } else if (skuSysIdList.length == 0 && skuPackUPCCount == 1) {
+                            var skuPackArr = receipt.$data.ReceiptDetailViewList.filter(function (item) {
+                                return item.UPC02 == skuUPC || item.UPC03 == skuUPC ||
+                                    item.UPC04 == skuUPC || item.UPC05 == skuUPC;
+                            });
+
+                            //仅存在箱子码
+                            //此处将UI当前qty * 包装qty，得到最终 qty，即 x 箱 *  y个（每箱数量） = 最终数量
+                            if (skuPackArr[0].UPC02 == skuUPC && !isNaN(skuPackArr[0].FieldValue02)) {
+                                $("#skuQty").val(skuPackArr[0].FieldValue02 * tempUIQty);
+                            }
+                            else if (skuPackArr[0].UPC03 == skuUPC && !isNaN(skuPackArr[0].FieldValue03)) {
+                                $("#skuQty").val(skuPackArr[0].FieldValue03 * tempUIQty);
+                            }
+                            else if (skuPackArr[0].UPC04 == skuUPC && !isNaN(skuPackArr[0].FieldValue04)) {
+                                $("#skuQty").val(skuPackArr[0].FieldValue04 * tempUIQty);
+                            }
+                            else if (skuPackArr[0].UPC05 == skuUPC && !isNaN(skuPackArr[0].FieldValue05)) {
+                                $("#skuQty").val(skuPackArr[0].FieldValue05 * tempUIQty);
+                            }
+
+                            $("#skuUPC").val(skuPackArr[0].SkuUPC); //将sku upc 赋值给 skuUPC栏位
+                            $("#skuSysId").val(skuPackArr[0].SkuSysId);
+
+                            skuUPCBlur();
+                        } else {
+                            //出现重复UPC 商品，需要手动筛选
+                            ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                            ChooseSkuModel.showModal(skuUPC, function (chooseSku) {
+                                $("#skuSysId").val(chooseSku.SkuSysId);
+                                $("#skuUPC").val(chooseSku.UPC);
+                                $("#skuQty").val(chooseSku.Qty * tempUIQty);
+                                skuUPCBlur();
+                            });
+                        }
+
+                    } else {
+                        //出现重复UPC 商品，需要手动筛选
+                        ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                        ChooseSkuModel.showModal(skuUPC, function (chooseSku) {
+                            $("#skuSysId").val(chooseSku.SkuSysId);
+                            $("#skuUPC").val(chooseSku.UPC);
+                            $("#skuQty").val(chooseSku.Qty * tempUIQty);
+                            skuUPCBlur();
+                        });
+                    }
+
+
+
+                    //if ((receiptArr.length == 0 || receiptArr.length == 1) && skuPackUPCCount == 0) {
+                    //    //正常扫码，只有商品UPC
+                    //    skuUPCBlur();
+
+                    //} else if (receiptArr.length == 0 && skuPackUPCCount == 1) {
+
+                    //    var skuPackArr = receipt.$data.ReceiptDetailViewList.filter(function (item) {
+                    //        return item.UPC02 == skuUPC || item.UPC03 == skuUPC ||
+                    //            item.UPC04 == skuUPC || item.UPC05 == skuUPC;
+                    //    });
+
+                    //    //仅存在箱子码
+                    //    //此处将UI当前qty * 包装qty，得到最终 qty，即 x 箱 *  y个（每箱数量） = 最终数量
+                    //    if (skuPackArr[0].UPC02 == skuUPC && !isNaN(skuPackArr[0].FieldValue02)) {
+                    //        $("#skuQty").val(skuPackArr[0].FieldValue02 * tempUIQty);
+                    //    }
+                    //    else if (skuPackArr[0].UPC03 == skuUPC && !isNaN(skuPackArr[0].FieldValue03)) {
+                    //        $("#skuQty").val(skuPackArr[0].FieldValue03 * tempUIQty);
+                    //    }
+                    //    else if (skuPackArr[0].UPC04 == skuUPC && !isNaN(skuPackArr[0].FieldValue04)) {
+                    //        $("#skuQty").val(skuPackArr[0].FieldValue04 * tempUIQty);
+                    //    }
+                    //    else if (skuPackArr[0].UPC05 == skuUPC && !isNaN(skuPackArr[0].FieldValue05)) {
+                    //        $("#skuQty").val(skuPackArr[0].FieldValue05 * tempUIQty);
+                    //    }
+
+                    //    $("#skuUPC").val(skuPackArr[0].SkuUPC); //将sku upc 赋值给 skuUPC栏位
+                    //    $("#skuSysId").val(skuPackArr[0].SkuSysId);
+
+                    //    skuUPCBlur();
+                    //} else {
+                    //    //出现重复UPC 商品，需要手动筛选
+                    //    ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                    //    ChooseSkuModel.showModal(skuUPC, function (chooseSku) {
+                    //        $("#skuSysId").val(chooseSku.SkuSysId);
+                    //        $("#skuUPC").val(chooseSku.UPC);
+                    //        $("#skuQty").val(chooseSku.Qty * tempUIQty);
+                    //        skuUPCBlur();
+                    //    });
+
+                    //}
+
+                }
+            });
+
+            function skuUPCBlur() {
+                $.ajax({
+                    url: "/Receipt/CheckReceiptDetailSku",
+                    type: "POST",
+                    data: {
+                        ReceiptOrder: receiptOrder,
+                        UPC: $("#skuUPC").val().trim(),
+                        SkuSysId: $("#skuSysId").val()
+                    },
+                    success: function (data) {
+                        if (!data.IsSucess) {
+                            $("#skuUPC").val("");
+                            $("#skuSysId").val("");
+                            msgAlert(data.Message, $("#skuUPC").focus());
+                        } else {
+                            $("#loc").focus();
+
+                            //获取推荐货位
+                            $.ajax({
+                                url: "/Receipt/GetAdviceToLoc",
+                                type: "POST",
+                                data: {
+                                    ReceiptOrder: receiptOrder,
+                                    UPC: $("#skuUPC").val().trim(),
+                                    SkuSysId: $("#skuSysId").val()
+                                },
+                                success: function (data) {
+                                    if (data != null) {
+                                        if ($("#loc").val() == "") {
+                                            $("#loc").val(data);
+                                            $("#loc").focus();
+                                        }
+                                    }
+                                },
+                                error: function (data) {
+                                    msgErro(data.Message);
+                                }
+                            });
+
+                            stock.getStock();
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            }
+
+            //货位
+            $("#loc").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    $("#skuQty").focus();
+                }
+            });
+            $("#loc").on("blur", function () {
+                if ($("#loc").val().trim() != "") {
+                    $.ajax({
+                        url: "/Receipt/LocIsExist",
+                        type: "POST",
+                        data: {
+                            LocationSearch: $("#loc").val()
+                        },
+                        success: function (data) {
+                            if (data != null) {
+                                if (!data.IsSucess) {
+                                    msgAlert(data.Message, $("#loc").focus());
+
+                                    $("#loc").val("");
+                                } else {
+                                    $("#skuQty").focus();
+                                }
+                            }
+                        },
+                        error: function (data) {
+                            msgErro(data.Message);
+                        }
+                    });
+                }
+            });
+
+            $("#btnSaveShelves").on("click", function () {
+                SaveShelves();
+            });
+
+            $("#btnAutoShelves").on("click", function () {
+                AutoShelves();
+            });
+
+            $("#btnCancelShelves").on('click', function () {
+                CancelShelves();
+            });
+
+
+            //回车上架
+            $("#skuQty").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    SaveShelves();
+                }
+            });
+
+            // 自动上架
+            function AutoShelves() {
+                saveLoading('show');
+                $.ajax({
+                    url: "/Receipt/AutoShelves",
+                    type: "POST",
+                    data: {
+                        ReceiptOrder: receiptOrder,
+                    },
+                    success: function (data) {
+
+                        saveLoading();
+                        if (data.IsSucess) {
+                            msgSuccess("自动上架完成!");
+                            // PrintOutbound('1');        //发货完成立即打印
+                            window.location.reload();
+                        }
+                        else {
+                            msgErro(data.Message);
+                            return false;
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                        return false;
+                    }
+                });
+            }
+
+            //保存上架
+            function SaveShelves() {
+                var loc = $("#loc").val();
+                var lot = $("#lot").val();
+                var upc = $("#skuUPC").val().trim();
+                var qty = $("#skuQty").val();
+                var skuSysId = $("#skuSysId").val();
+
+                if (upc.trim() == "") {
+                    msgAlert("商品条码不能为空", $("#skuUPC").focus());
+
+                    return false;
+                }
+                if (loc.trim() == "") {
+                    msgAlert("库位不能为空", $("#loc").focus());
+                    return false;
+                }
+                if (qty.trim() == "") {
+                    msgAlert("商品上架数量不能为空", $("#skuQty").focus());
+                    return false;
+                } else {
+                    var re = /^\d+(.\d{1,3})?$/;
+                    if (!re.test(qty)) {
+                        msgAlert("上架数量必须大于0!", $("#skuQty").focus());
+                        return false;
+                    }
+                }
+
+                $("#saveShelvesText").html("上架中...");
+                //$("#btnSaveShelves").unbind("click");
+                $.ajax({
+                    url: "/Receipt/ScanShelves",
+                    type: "POST",
+                    data: {
+                        ReceiptOrder: receiptOrder,
+                        UPC: upc,
+                        Loc: loc,
+                        Lot: lot,
+                        InputQty: qty,
+                        SkuSysId: skuSysId
+                    },
+                    success: function (data) {
+                        $("#saveShelvesText").html("上架");
+                        if (data.IsSucess) {
+                            $("#loc").val("");
+                            $("#lot").val("");
+                            $("#skuQty").val("");
+                            $("#skuUPC").val("");
+                            $("#skuSysId").val("");
+                            stock.StockList = null;
+                            msgAlert(data.Message, $("#skuUPC").focus());
+                            receipt.getReceiptDetailViewList();
+                        } else {
+                            msgErro(data.Message);
+                            return false;
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                        return false;
+                    }
+                });
+            }
+
+            //取消上架
+            function CancelShelves() {
+                msgConfirm("确定要取消上架吗？", function (isConfirm) {
+                    if (isConfirm) {
+                        saveLoading('show');
+                        $.ajax({
+                            url: "/Receipt/CancelShelves",
+                            type: "POST",
+                            data: { ReceiptSysId: '@Model.SysId' },
+                            dataType: "json",
+                            success: function (data) {
+                                setTimeout(function () {
+                                    saveLoading();
+                                    if (data.Success) {
+                                        msgSuccess(data.Message, setTimeout(function () {
+                                            window.location.reload();
+                                        }, 1000));
+                                    }
+                                    else {
+                                        msgErro(data.Message);
+                                        return false;
+                                    }
+                                }, 100);
+                            },
+                            error: function (data) {
+                                saveLoading();
+                                msgErro(data.Message);
+                                return false;
+                            }
+                        });
+                    }
+                }, true);
+            }
+        });
+
+        function UpcFocus() {
+            setTimeout(function () {
+                $("#skuUPC").focus();
+                $("#skuUPC").val("");
+            }, 500);
+        }
+
+        function PrintReceipt() {
+
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintReceipt?receiptOrder=@Model.ReceiptOrder" + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            LODOP.ADD_PRINT_BARCODE(40, 450, 206, 58, "128B", "@Model.ReceiptOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            //LODOP.PREVIEW();
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+
+        function PrintShelves() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintReceiptAutoShelves?sysId=@Model.SysId" + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            LODOP.ADD_PRINT_BARCODE(40, 450, 206, 58, "128B", "@Model.ReceiptOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            //LODOP.PREVIEW();
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+
+        //打印批次
+        var printLot = "";
+        var printLotAttr01 = "";
+        function PrintReceiptDetailLot(lot, lotAttr01) {
+            printLot = lot;
+            printLotAttr01 = lotAttr01;
+        }
+        function PrintLotModal() {
+            var printQty = parseInt($("#PrintQty").val());
+            var printName = '@ViewBag.PrintCaseName';
+            print.PrintLot(printQty, printName, printLot, printLotAttr01);
+        }
+    </script>
+}

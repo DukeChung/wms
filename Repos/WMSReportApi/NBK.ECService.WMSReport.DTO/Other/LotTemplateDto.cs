@@ -1,0 +1,134 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NBK.ECService.WMSReport.DTO.Other
+{
+    public class LotTemplateDto
+    {
+        public string ActionName { get; set; }
+        public Guid SysId { get; set; }
+        public string LotCode { get; set; }
+        public string Descr { get; set; }
+        public int? SeqNo01 { get; set; }
+        public string Lot01 { get; set; }
+        public bool? LotVisible01 { get; set; }
+        public bool? LotRFVisible01 { get; set; }
+        public bool? LotMandatory01 { get; set; }
+        public bool? LotMandatoryOT01 { get; set; }
+        public bool? InvCountLotRFVisible01 { get; set; }
+        public string LotType01 { get; set; }
+        public string LotValue01 { get; set; }
+        public string DefaultIN01 { get; set; }
+        public string DefaultOT01 { get; set; }
+        public int? SeqNo02 { get; set; }
+        public string Lot02 { get; set; }
+        public bool? LotVisible02 { get; set; }
+        public bool? LotRFVisible02 { get; set; }
+        public bool? LotMandatory02 { get; set; }
+        public bool? LotMandatoryOT02 { get; set; }
+        public bool? InvCountLotRFVisible02 { get; set; }
+        public string LotType02 { get; set; }
+        public string LotValue02 { get; set; }
+        public string DefaultIN02 { get; set; }
+        public string DefaultOT02 { get; set; }
+        public int? SeqNo03 { get; set; }
+        public string Lot03 { get; set; }
+        public bool? LotVisible03 { get; set; }
+        public bool? LotRFVisible03 { get; set; }
+        public bool? LotMandatory03 { get; set; }
+        public bool? LotMandatoryOT03 { get; set; }
+        public bool? InvCountLotRFVisible03 { get; set; }
+        public string LotType03 { get; set; }
+        public string LotValue03 { get; set; }
+        public string DefaultIN03 { get; set; }
+        public string DefaultOT03 { get; set; }
+        public int? SeqNo04 { get; set; }
+        public string Lot04 { get; set; }
+        public bool? LotVisible04 { get; set; }
+        public bool? LotRFVisible04 { get; set; }
+        public bool? LotMandatory04 { get; set; }
+        public bool? LotMandatoryOT04 { get; set; }
+        public bool? InvCountLotRFVisible04 { get; set; }
+        public string LotType04 { get; set; }
+        public string LotValue04 { get; set; }
+        public string DefaultIN04 { get; set; }
+        public string DefaultOT04 { get; set; }
+        public int? SeqNo05 { get; set; }
+        public string Lot05 { get; set; }
+        public bool? LotVisible05 { get; set; }
+        public bool? LotRFVisible05 { get; set; }
+        public bool? LotMandatory05 { get; set; }
+        public bool? LotMandatoryOT05 { get; set; }
+        public bool? InvCountLotRFVisible05 { get; set; }
+        public string LotType05 { get; set; }
+        public string LotValue05 { get; set; }
+        public string DefaultIN05 { get; set; }
+        public string DefaultOT05 { get; set; }
+        public int? SeqNo06 { get; set; }
+        public string Lot06 { get; set; }
+        public bool? LotVisible06 { get; set; }
+        public bool? LotRFVisible06 { get; set; }
+        public bool? LotMandatory06 { get; set; }
+        public bool? LotMandatoryOT06 { get; set; }
+        public bool? InvCountLotRFVisible06 { get; set; }
+        public string LotType06 { get; set; }
+        public string LotValue06 { get; set; }
+        public string DefaultIN06 { get; set; }
+        public string DefaultOT06 { get; set; }
+        public int? SeqNo07 { get; set; }
+        public string Lot07 { get; set; }
+        public bool? LotVisible07 { get; set; }
+        public bool? LotRFVisible07 { get; set; }
+        public bool? LotMandatory07 { get; set; }
+        public bool? LotMandatoryOT07 { get; set; }
+        public bool? InvCountLotRFVisible07 { get; set; }
+        public string LotType07 { get; set; }
+        public string LotValue07 { get; set; }
+        public string DefaultIN07 { get; set; }
+        public string DefaultOT07 { get; set; }
+        public int? SeqNo08 { get; set; }
+        public string Lot08 { get; set; }
+        public bool? LotVisible08 { get; set; }
+        public bool? LotRFVisible08 { get; set; }
+        public bool? LotMandatory08 { get; set; }
+        public bool? LotMandatoryOT08 { get; set; }
+        public bool? InvCountLotRFVisible08 { get; set; }
+        public string LotType08 { get; set; }
+        public string LotValue08 { get; set; }
+        public string DefaultIN08 { get; set; }
+        public string DefaultOT08 { get; set; }
+        public int? SeqNo09 { get; set; }
+        public string Lot09 { get; set; }
+        public bool? LotVisible09 { get; set; }
+        public bool? LotRFVisible09 { get; set; }
+        public bool? LotMandatory09 { get; set; }
+        public bool? LotMandatoryOT09 { get; set; }
+        public bool? InvCountLotRFVisible09 { get; set; }
+        public string LotType09 { get; set; }
+        public string LotValue09 { get; set; }
+        public string DefaultIN09 { get; set; }
+        public string DefaultOT09 { get; set; }
+        public bool? IsActive { get; set; }
+        public Nullable<int> SeqNo10 { get; set; }
+        public string Lot10 { get; set; }
+        public Nullable<bool> LotVisible10 { get; set; }
+        public Nullable<bool> LotRFVisible10 { get; set; }
+        public Nullable<bool> LotMandatory10 { get; set; }
+        public Nullable<bool> LotMandatoryOT10 { get; set; }
+        public Nullable<int> SeqNo11 { get; set; }
+        public string Lot11 { get; set; }
+        public Nullable<bool> LotVisible11 { get; set; }
+        public Nullable<bool> LotRFVisible11 { get; set; }
+        public Nullable<bool> LotMandatory11 { get; set; }
+        public Nullable<bool> LotMandatoryOT11 { get; set; }
+        public Nullable<int> SeqNo12 { get; set; }
+        public string Lot12 { get; set; }
+        public Nullable<bool> LotVisible12 { get; set; }
+        public Nullable<bool> LotRFVisible12 { get; set; }
+        public Nullable<bool> LotMandatory12 { get; set; }
+        public Nullable<bool> LotMandatoryOT12 { get; set; }
+    }
+}

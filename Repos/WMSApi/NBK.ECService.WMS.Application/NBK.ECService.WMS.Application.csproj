@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2818CE61-3EB4-4BCC-9603-165A020B5FF6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBK.ECService.WMS.Application</RootNamespace>
+    <AssemblyName>NBK.ECService.WMS.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Abp">
+      <HintPath>..\packages\Abp.0.7.1.0\lib\net451\Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="Abp.AutoMapper">
+      <HintPath>..\packages\Abp.AutoMapper.0.7.1.0\lib\net451\Abp.AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Abp.Web">
+      <HintPath>..\packages\Abp.Web.0.7.1.0\lib\net451\Abp.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Logging">
+      <HintPath>..\packages\Castle.LoggingFacility.3.3.0\lib\net45\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab">
+      <HintPath>..\packages\FortuneLab.1.6.4.13\lib\net451\FortuneLab.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Abp">
+      <HintPath>..\packages\FortuneLab.Abp.1.6.2.1\lib\net451\FortuneLab.Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Abp.Web">
+      <HintPath>..\packages\FortuneLab.Abp.Web.1.6.2.1\lib\net451\FortuneLab.Abp.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Authorizations">
+      <HintPath>..\packages\FortuneLab.Authorizations.1.0.1.2\lib\net451\FortuneLab.Authorizations.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.ECService.Core">
+      <HintPath>..\packages\FortuneLab.ECService.Core.1.7.2.8\lib\net451\FortuneLab.ECService.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.WebApiClient">
+      <HintPath>..\packages\FortuneLab.WebApiClient.1.7.2.12\lib\net451\FortuneLab.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountAppService.cs" />
+    <Compile Include="AdjustmentAppService.cs" />
+    <Compile Include="AssemblyAppService.cs" />
+    <Compile Include="BaseAppService.cs" />
+    <Compile Include="BusinessEventTrigger.cs" />
+    <Compile Include="CarrierAppService.cs" />
+    <Compile Include="Check\BaseCheck.cs" />
+    <Compile Include="Check\InsertOrUpdateSkuCheck.cs" />
+    <Compile Include="Check\InsertOutboundCheck.cs" />
+    <Compile Include="Check\InsertOutboundDetailCheck.cs" />
+    <Compile Include="Check\InsertPurchaseCheck.cs" />
+    <Compile Include="Check\InsertPurchaseDetailCheck.cs" />
+    <Compile Include="Check\InsertReturnPurchaseDetailCheck.cs" />
+    <Compile Include="Check\InventoryCheck.cs" />
+    <Compile Include="Check\VoidOutboundCheck.cs" />
+    <Compile Include="ComponentAppService.cs" />
+    <Compile Include="ContainerAppService.cs" />
+    <Compile Include="FrozenAppService.cs" />
+    <Compile Include="Interface\IAccountAppService.cs" />
+    <Compile Include="Interface\IAdjustmentAppService.cs" />
+    <Compile Include="Interface\IAssemblyAppService.cs" />
+    <Compile Include="Interface\IBaseAppService.cs" />
+    <Compile Include="Interface\ICarrierAppService.cs" />
+    <Compile Include="Interface\ICheck.cs" />
+    <Compile Include="Interface\IComponentAppService.cs" />
+    <Compile Include="Interface\IContainerAppService.cs" />
+    <Compile Include="Interface\IFrozenAppService.cs" />
+    <Compile Include="Interface\ILotTemplateAppService.cs" />
+    <Compile Include="Interface\IOrderRuleSettingAppService.cs" />
+    <Compile Include="Interface\IOutboundAppService.cs" />
+    <Compile Include="Interface\IOutboundTransferOrderAppService.cs" />
+    <Compile Include="Interface\IPackageAppService.cs" />
+    <Compile Include="Interface\IPreBulkPackAppService.cs" />
+    <Compile Include="Interface\IPrePackAppService.cs" />
+    <Compile Include="Interface\IPickDetailAppService.cs" />
+    <Compile Include="Interface\IPrintAppService.cs" />
+    <Compile Include="Interface\IPurchaseAppService.cs" />
+    <Compile Include="Interface\ILocationAppService.cs" />
+    <Compile Include="Interface\IQualityControlAppService.cs" />
+    <Compile Include="Interface\IReceiptAppService.cs" />
+    <Compile Include="Interface\IRedisAppService.cs" />
+    <Compile Include="Interface\IRFInventoryAppService.cs" />
+    <Compile Include="Interface\IRFOutboundAppService.cs" />
+    <Compile Include="Interface\IRFPickDetailAppService.cs" />
+    <Compile Include="Interface\IRFReceiptAppService.cs" />
+    <Compile Include="Interface\IRFBasicsAppService.cs" />
+    <Compile Include="Interface\IRFStockTakeAppService.cs" />
+    <Compile Include="Interface\IShelvesAppService.cs" />
+    <Compile Include="Interface\ISkuBorrowAppService.cs" />
+    <Compile Include="Interface\IStockMovementAppService.cs" />
+    <Compile Include="Interface\IStockTakeAppService.cs" />
+    <Compile Include="Interface\IStockTransferAppService.cs" />
+    <Compile Include="Interface\IThirdPartyAppService.cs" />
+    <Compile Include="Interface\ITransferInventoryAppService.cs" />
+    <Compile Include="Interface\IVanningAppService.cs" />
+    <Compile Include="Interface\IVendorAppService.cs" />
+    <Compile Include="Interface\IWareHouseAppService.cs" />
+    <Compile Include="Interface\IWorkMangerAppService.cs" />
+    <Compile Include="Interface\IWorkUserAppService.cs" />
+    <Compile Include="Interface\IZoneAppService.cs" />
+    <Compile Include="Interface\ISkuAppService.cs" />
+    <Compile Include="Interface\ISysCodeAppService.cs" />
+    <Compile Include="Interface\ISystemAppService.cs" />
+    <Compile Include="Interface\IZTOAppService.cs" />
+    <Compile Include="LotTemplateAppService.cs" />
+    <Compile Include="OrderRuleSettingAppService.cs" />
+    <Compile Include="OutboundAppService.cs" />
+    <Compile Include="OutboundTransferOrderAppService.cs" />
+    <Compile Include="PackageAppService.cs" />
+    <Compile Include="PreBulkPackAppService.cs" />
+    <Compile Include="PrePackAppService.cs" />
+    <Compile Include="PickDetailAppService.cs" />
+    <Compile Include="PrintAppService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PurchaseAppService.cs" />
+    <Compile Include="LocationAppService.cs" />
+    <Compile Include="QualityControlAppService.cs" />
+    <Compile Include="ReceiptAppService.cs" />
+    <Compile Include="RedisAppService.cs" />
+    <Compile Include="RFBasicsAppService.cs" />
+    <Compile Include="RFInventoryAppService.cs" />
+    <Compile Include="RFOutboundAppService.cs" />
+    <Compile Include="RFPickDetailAppService.cs" />
+    <Compile Include="RFReceiptAppService.cs" />
+    <Compile Include="RFStockTakeAppService.cs" />
+    <Compile Include="ShelvesAppService.cs" />
+    <Compile Include="SkuBorrowAppService.cs" />
+    <Compile Include="StockMovementAppService.cs" />
+    <Compile Include="StockTakeAppService.cs" />
+    <Compile Include="StockTransferAppService.cs" />
+    <Compile Include="ThirdPartyAppService.cs" />
+    <Compile Include="TransferInventoryAppService.cs" />
+    <Compile Include="VanningAppService.cs" />
+    <Compile Include="VendorAppService.cs" />
+    <Compile Include="WareHouseAppService.cs" />
+    <Compile Include="WorkMangerAppService.cs" />
+    <Compile Include="WorkUserAppService.cs" />
+    <Compile Include="ZoneAppService.cs" />
+    <Compile Include="SkuAppService.cs" />
+    <Compile Include="SysCodeAppService.cs" />
+    <Compile Include="SystemAppService.cs" />
+    <Compile Include="WMSrApplicationModule.cs" />
+    <Compile Include="WMSSettingProvider.cs" />
+    <Compile Include="ZTOAppService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NBK.ECService.WMS.Core\NBK.ECService.WMS.Core.csproj">
+      <Project>{3e09f811-e1ab-4e85-aa3e-a2af0cae4633}</Project>
+      <Name>NBK.ECService.WMS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBK.ECService.WMS.DTO\NBK.ECService.WMS.DTO.csproj">
+      <Project>{04e6e310-a536-4cf9-b0a6-01a765dbf38c}</Project>
+      <Name>NBK.ECService.WMS.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBK.ECService.WMS.Model\NBK.ECService.WMS.Model.csproj">
+      <Project>{4b986aab-284c-4583-952c-4e9d8f5dd426}</Project>
+      <Name>NBK.ECService.WMS.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBK.ECService.WMS.Repository\NBK.ECService.WMS.Repository.csproj">
+      <Project>{0c989120-d441-4ae6-9818-5b09aed30823}</Project>
+      <Name>NBK.ECService.WMS.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBK.ECService.WMS.Utility\NBK.ECService.WMS.Utility.csproj">
+      <Project>{9302533b-2489-4bf3-9e43-61dcbd361d01}</Project>
+      <Name>NBK.ECService.WMS.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

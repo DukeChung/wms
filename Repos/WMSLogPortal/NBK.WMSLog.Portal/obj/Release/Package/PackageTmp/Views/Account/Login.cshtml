@@ -1,0 +1,124 @@
+﻿@model NBK.WMS.Portal.Models.LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国资商城</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/font-awesome/css")
+</head>
+<body class="gray-bg">
+    <div class="loginColumns animated fadeInDown">
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="font-bold">欢迎使用WMS日志系统</h2>
+            </div>
+            <div class="col-md-6">
+                <div class="ibox-content">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <input name="LoginName" id="LoginName" type="text" class="form-control" placeholder="用户名" required="">
+                    </div>
+                    <div class="form-group">
+                        <input name="Password" id="Password" type="password" class="form-control" placeholder="密码" required="">
+                    </div>
+                    <div class="form-group">
+                        <div class="validation-summary-errors text-danger" id="msgDisplay" style="display:none;"></div>
+                    </div>
+
+                    @*<div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    @Html.LabelFor(m => m.RememberMe)
+                                </div>
+                            </div>
+                        </div>*@
+                    <button type="button" class="btn btn-primary block full-width m-b" id="submintform">登陆</button>
+
+                    <p class="m-t">
+                        <small>Inspinia we app framework base on Bootstrap 3 &copy; 2016</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                Copyright Example Company
+            </div>
+            <div class="col-md-6 text-right">
+                <small>© 2014-2015</small>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="hdnkey" value="MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGsXYGuspXPOoIcBdmLhgMIM+EOE
+3OwvNcw8FWfYRGeuhvv4ARFgPn8W/MRjyc/LbeceLux2h13/eaure3zPUfzzmvDj
+fKoTs+uTlH21R/vQF17nZJKw+OJ/xztjILeGzMp2cJj8Yn4khOiuc8yVIZTSJt1O
+1Q6LSf+S61dD+oLfAgMBAAE=" />
+    <script src="~/Scripts/jquery-2.1.1.js"></script>
+    <script src="~/Scripts/jsencrypt.min.js"></script>
+    <script>
+        var LoginModel = {
+            init: function () {
+                $("#submintform").bind("click", LoginModel.login);
+            },
+            login: function () {
+                var loginName = $("#LoginName").val();
+                var psd = $("#Password").val();
+                if (loginName == '' || loginName == null) {
+                    LoginModel.displayMsg("请输入用户名");
+                    return false;
+                } if (psd == '' || psd == null) {
+                    LoginModel.displayMsg("请输入密码");
+                    return false;
+                }
+
+                var encrypt = new JSEncrypt();
+                encrypt.setPublicKey($("#hdnkey").val());
+                loginName = encrypt.encrypt(loginName);
+                psd = encrypt.encrypt(psd);
+
+
+                $('#submintform').unbind("click");
+
+                var loginData = {
+                    LoginName: encodeURI(loginName).replace(/\+/g, '%2B'),
+                    Password: encodeURI(psd).replace(/\+/g, '%2B')
+                };
+                $.ajax({
+                    url: "@Url.Action("Login", "Account")" + "?ReturnUrl=" + "@ViewBag.ReturnUrl",
+                    data: loginData,
+                    dataType: "json",
+                    type: "post",
+                    success: function (response) {
+                        if (response.success == true) {
+                            window.location.href = response.returnUrl;
+                        } else {
+                            LoginModel.displayMsg(response.message);
+                        }
+                        $("#submintform").bind("click", LoginModel.login);
+                    },
+                    error: function (response) {
+                        alert("服务器异常，请联系support");
+                        $("#submintform").bind("click", LoginModel.login);
+                    }
+                });
+
+            },
+            displayMsg: function (msg) {
+                $("#msgDisplay").html(msg);
+                $("#msgDisplay").show(300)
+                setTimeout(function () { $("#msgDisplay").hide(300); }, 3000);
+            }
+        }
+        $(function () {
+            LoginModel.init();
+        });
+    </script>
+</body>
+</html>

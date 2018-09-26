@@ -1,0 +1,147 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "编辑用户";
+}
+
+@Html.Breadcrumb("工单用户管理", "/WorkUser/WorkUserList", "编辑用户")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <form id="editWorkUserForm" class="form-horizontal" method="get">
+        <div class="ibox-content  m-b-sm border-bottom">
+            <input type="hidden" id="SysId" name="SysId" v-model="SysId" />
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户编号:</label>
+                <div class="col-sm-4"><input type="text" id="WorkUserCode" name="WorkUserCode" v-model="WorkUserCode" class="form-control"></div>
+
+                <label class="col-sm-2 control-label">用户姓名:</label>
+                <div class="col-sm-4"><input type="text" id="WorkUserName" name="WorkUserName" v-model="WorkUserName" class="form-control"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">工种:</label>
+                <div class="col-sm-4">
+                    <select id="WorkType" name="WorkType" v-model="WorkType" class="form-control">
+                        @{
+                            <option value=""></option>
+                            foreach (var workType in (List<SelectListItem>)ViewBag.WorkTypeList)
+                            {
+                                <option value="@workType.Value">@workType.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <label class="col-sm-2 control-label">工作状态:</label>
+                <div class="col-sm-4">
+                    <select id="WorkStatus" name="WorkStatus" v-model="WorkStatus" class="form-control">
+                        @{
+                            foreach (var workStatus in (List<SelectListItem>)ViewBag.WorkStatusList)
+                            {
+                                <option value="@workStatus.Value">@workStatus.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">启用:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox i-checks">
+                        <input type="checkbox" id="IsActive" name="IsActive" v-model="IsActive"><i></i>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-sm btn-primary" id="btnSave" v-on:click="editWorkUser"><i class="fa fa-check-square-o"></i> 保存</a>
+                <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack()"><i class="fa fa-times"></i> 返回</a>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables", "~/plugins/validate")
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var WorkUser = {
+            vm: {},
+            init: function () {
+                var _self = this;
+
+                $("#editWorkUserForm").validate({
+                    rules: {
+                        WorkUserCode: {
+                            required: true,
+                            maxlength: 128
+                        },
+                        WorkUserName: {
+                            required: true,
+                            maxlength: 128
+                        }
+                    }
+                });
+
+                $.ajax({
+                    url: "/WorkUser/GetWorkUserById?sysId=@ViewBag.SysId",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            _self.vm = new Vue({
+                                el: "#editWorkUserForm",
+                                data: data.Data,
+                                methods: {
+                                    editWorkUser: function () {
+                                        if ($("#editWorkUserForm").valid()) {
+                                            $.ajax({
+                                                url: "/WorkUser/SaveEditWorkUser",
+                                                type: "POST",
+                                                data: $("#editWorkUserForm").serializeObject(),
+                                                success: function (data) {
+                                                    if (data.Success) {
+                                                        msgSuccess(data.Message, setTimeout(function () { window.location.href = "/WorkUser/WorkUserList"; }, 100));
+                                                    } else {
+                                                        msgErro(data.Message);
+                                                    }
+                                                },
+                                                error: function (data) {
+                                                    msgErro(data.Message);
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+
+                            $('.i-checks').iCheck({
+                                checkboxClass: 'icheckbox_square-green',
+                                radioClass: 'iradio_square-green'
+                            });
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            }
+        }
+
+        $(function () {
+            WorkUser.init();
+        })
+    </script>
+}
+

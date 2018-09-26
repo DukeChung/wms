@@ -1,0 +1,322 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "创建盘点单";
+}
+
+@Html.Breadcrumb("盘点查询", "/StockTake/StockTakeList", "创建盘点单")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">盘点方式:</label>
+                @{
+                    foreach (var stockTakeType in (List<SelectListItem>)ViewBag.StockTakeTypeList)
+                    {
+                        if (stockTakeType.Value == "10")
+                        {
+                            <div class="col-sm-2 radio radio-info radio-inline">
+                                <label><input type="radio" id="@string.Format("StockTakeType_{0}", stockTakeType.Value)" name="StockTakeType" value="@stockTakeType.Value" checked onchange="stockTakeTypeChanged(this)" />@stockTakeType.Text</label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-sm-2 radio">
+                                <label><input type="radio" id="@string.Format("StockTakeType_{0}", stockTakeType.Value)" name="StockTakeType" value="@stockTakeType.Value" onchange="stockTakeTypeChanged(this)" />@stockTakeType.Text</label>
+                            </div>
+                        }
+                    }
+                }
+                <div class="col-sm-2"></div>
+            </div>
+        </form>
+
+        <div id="div_StockTake_10" style="display: block;">
+            <form id="addStockTakeForm_10" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">盘点时间起:</label>
+                    <div class="col-sm-4" id="divStartTime">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="StartTime" name="StartTime" class="form-control">
+                        </div>
+                    </div>
+
+                    <label class="col-sm-2 control-label">盘点时间止:</label>
+                    <div class="col-sm-4" id="divEndTime">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="EndTime" name="EndTime" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">指派给:</label>
+                    <div class="col-sm-4">
+                        <select id="AssignBy" name="AssignBy" class="form-control chosen-select">
+                            @{
+                                <option value="">请选择</option>
+                                foreach (var user in (List<SelectListItem>)ViewBag.UserList)
+                                {
+                                    <option value="@user.Value">@user.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <label class="col-sm-2 control-label">仓库:</label>
+                    <div class="col-sm-4">
+                        <select id="WarehouseSysId" name="WarehouseSysId" class="form-control" disabled="disabled">
+                            @{
+                                <option value="">请选择</option>
+                                foreach (var warehouse in (List<SelectListItem>)ViewBag.WarehouseList)
+                                {
+                                    if (ViewBag.WarehouseSysId.ToString() == warehouse.Value)
+                                    {
+                                        <option value="@warehouse.Value" selected="selected">@warehouse.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@warehouse.Value">@warehouse.Text</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">区域:</label>
+                    <div class="col-sm-4">
+                        <select id="ZoneSysId" name="ZoneSysId" class="form-control">
+                            @{
+                                <option value="">请选择</option>
+                                foreach (var zone in (List<SelectListItem>)ViewBag.ZoneList)
+                                {
+                                    <option value="@zone.Value">@zone.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <label class="col-sm-2 control-label">货架:</label>
+                    <div class="col-sm-4">
+                        <div class="col-sm-4" style="padding-left:0px">
+                            <input type="text" id="StartLoc" name="StartLoc" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="control-label"> 排 —— </label>
+                        </div>
+                        <div class="col-sm-4" style="padding-left:0px">
+                            <input type="text" id="EndLoc" name="EndLoc" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="control-label"> 排</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="div_StockTake_20" style="display: none;">
+            <form id="addStockTakeForm_20" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">盘点时间起:</label>
+                    <div class="col-sm-4" id="divStartTime">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="StartTime" name="StartTime" class="form-control">
+                        </div>
+                    </div>
+
+                    <label class="col-sm-2 control-label">盘点时间止:</label>
+                    <div class="col-sm-4" id="divEndTime">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="EndTime" name="EndTime" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">指派给:</label>
+                    <div class="col-sm-4">
+                        <select id="AssignBy" name="AssignBy" class="form-control chosen-select">
+                            @{
+                                <option value="">请选择</option>
+                                foreach (var user in (List<SelectListItem>)ViewBag.UserList)
+                                {
+                                    <option value="@user.Value">@user.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <label class="col-sm-2 control-label">一级类别:</label>
+                    <div class="col-sm-4">
+                        <select id="SkuClassSysId1" name="SkuClassSysId1" class="form-control" index="1" onchange="skuClassChanged(this)">
+                            @{
+                                <option value="">请选择</option>
+                                foreach (var skuClass in (List<SelectListItem>)ViewBag.SkuClass1List)
+                                {
+                                    <option value="@skuClass.Value">@skuClass.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">二级类别:</label>
+                    <div class="col-sm-4">
+                        <select id="SkuClassSysId2" name="SkuClassSysId2" class="form-control" index="2" onchange="skuClassChanged(this)">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+
+                    <label class="col-sm-2 control-label">三级类别:</label>
+                    <div class="col-sm-4">
+                        <select id="SkuClassSysId3" name="SkuClassSysId3" class="form-control" index="3" onchange="skuClassChanged(this)">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">四级类别:</label>
+                    <div class="col-sm-4">
+                        <select id="SkuClassSysId4" name="SkuClassSysId4" class="form-control" index="4" onchange="skuClassChanged(this)">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+
+                    <label class="col-sm-2 control-label">五级类别:</label>
+                    <div class="col-sm-4">
+                        <select id="SkuClassSysId5" name="SkuClassSysId5" class="form-control">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" onclick="addStockTake();"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    @Scripts.Render("~/plugins/chosen")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.chosen-select').chosen({ width: "100%" });
+
+            $('#divStartTime .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#divEndTime .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $("#addStockTakeForm_10").validate({
+                rules: {
+                    StartTime: {
+                        required: true
+                    },
+                    EndTime: {
+                        required: true
+                    },
+                    AssignBy: {
+                        required: true
+                    }
+                }
+            });
+
+            $("#addStockTakeForm_20").validate({
+                rules: {
+                    StartTime: {
+                        required: true
+                    },
+                    EndTime: {
+                        required: true
+                    },
+                    AssignBy: {
+                        required: true
+                    }
+                }
+            });
+        });
+
+        function stockTakeTypeChanged(e) {
+            $("#div_StockTake_10").attr("style", "display: none;");
+            $("#div_StockTake_20").attr("style", "display: none;");
+
+            if (e.value == "30" || e.value == "40") {
+                $("#btnSave").attr("disabled", true);
+                return;
+            }
+
+            $("#div_StockTake_" + e.value).attr("style", "display: block;");
+            $("#btnSave").attr("disabled", false);
+        }
+
+        function addStockTake() {
+            if ($("div[style^='display: block;']").children().valid()) {
+                $.ajax({
+                    url: "/StockTake/SaveAddStockTake",
+                    type: "POST",
+                    data: getSerializedData(),
+                    success: function (data) {
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            window.location.href = "/StockTake/StockTakeList";
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro(data.Message);
+                    }
+                });
+            }
+        }
+
+        function getSerializedData() {
+            var postData = $("div[style^='display: block;']").children().serializeObject();
+            postData["StockTakeType"] = $('input[type=radio]:checked').val() || '';
+            postData["AssignUserName"] = $("div[style^='display: block;'] a[class='chosen-single']").text();
+            return postData;
+        }
+
+        function skuClassChanged(e) {
+            for (var i = (parseInt($(e).attr("index")) + 1) ; i < 6; i++) {
+                $("#SkuClassSysId" + i + " option[value!='']").remove();
+            }
+            $.ajax({
+                url: "/StockTake/GetSelectSkuClass?parentSysId=" + e.value,
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                traditional: true,
+                success: function (data) {
+                    for (var i in data) {
+                        $("#SkuClassSysId" + (parseInt($(e).attr("index")) + 1)).append("<option value='" + data[i].Value + "'>" + data[i].Text + "</option>");
+                    }
+                },
+                error: function (data) {
+                    msgErro("获取商品分类失败");
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,70 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PrintAssemblyRCMDPickDetailDto
+@{
+    ViewBag.Title = "";
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">推荐货位拣货单</H1>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("加工单号", Model.AssemblyOrder)
+                @Html.PrintTitle("渠道", Model.Channel)
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("商品条码")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("商品描述")
+                            @Html.PrintTh("推荐库位")
+                            @Html.PrintTh("推荐批次")
+                            @Html.PrintTh("库存数量")
+                            @Html.PrintTh("单位")
+
+                        </tr>
+                        @{
+                            foreach (var info in Model.PrintPickDetailDtos)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.UPC)
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.SkuDescr)
+                                    @Html.PrintTd(info.Loc)
+                                    @Html.PrintTd(info.Lot)
+                                    @Html.PrintTd(info.UnitQty.ToString())
+                                    @Html.PrintTd(info.UomName)
+                                </tr>
+                            }
+                        }
+                        <tbody>
+                            <tr>
+                                @Html.PrintTd()
+                                @Html.PrintTd()
+                                @Html.PrintTd()
+                                @Html.PrintTd("打印时间")
+                                @Html.PrintTd(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                                @Html.PrintTd("打印人")
+                                @Html.PrintTd($"{ViewBag.PrintUserName}")
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

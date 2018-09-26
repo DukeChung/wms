@@ -1,0 +1,532 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "创建损益单";
+}
+
+@Html.Breadcrumb("损益单管理", "/Ajustment/AjustmentMaintain", "创建损益单")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/jasnyBootstrapStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="AjustmentView" class="ibox-content m-b-sm border-bottom">
+
+        <div class="row">
+            <label class="col-sm-2 control-label ">
+                选择商品
+            </label>
+        </div>
+        <div class="form-group hr-line-dashed"></div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品条码", "UPC")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品编号", "SkuCode")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品名称", "SkuName")
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label">仓库:</label>
+                    <select id="WarehouseSysId" name="WarehouseSysId" class="form-control" disabled="disabled">
+                        @{
+                            foreach (var warehouse in (List<SelectListItem>)ViewBag.WarehouseList)
+                            {
+                                if (ViewBag.WarehouseSysId.ToString() == warehouse.Value)
+                                {
+                                    <option value="@warehouse.Value" selected="selected">@warehouse.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@warehouse.Value">@warehouse.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("货位", "Loc")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("批次", "Lot")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("托盘", "Lpn")
+            </div>
+            <div class="col-sm-2">
+                @Html.SearchTextBox("渠道", "Channel")
+            </div>
+            <div class="col-sm-1">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <table id="gvAjustmentSku" class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th width="5%"><input type="checkbox" id="ckbAll" onclick="AddAjustmentModel.gvAjustmentSkuCheckAll(this);" /></th>
+                                    <th data-data="SkuCode">商品编号</th>
+                                    <th data-data="SkuName">商品名称</th>
+                                    <th data-data="SkuDescr">商品描述</th>
+                                    <th data-data="UPC">商品条码</th>
+                                    <th data-data="WareHouseName">仓库</th>
+                                    <th data-data="DisplayQty">库存</th>
+                                    <th data-data="Loc">货位</th>
+                                    <th data-data="Lot">批次</th>
+                                    <th data-data="Lpn">托盘</th>
+                                    <th data-data="Channel">渠道</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <label class="col-sm-2 control-label ">
+                损益清单
+            </label>
+        </div>
+        <form id="packForm" class="form-horizontal">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-content">
+
+                            <table id="ajustmentDetails" class="table table-striped table-bordered table-hover dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th width="5%"><input type="checkbox" id="ckbAll" onclick="AddAjustmentModel.gvajustmentDetailsCheckAll(this);" /></th>
+                                        <th data-data="SkuCode">商品编号</th>
+                                        <th data-data="SkuName">商品名称</th>
+                                        <th data-data="SkuDescr">商品描述</th>
+                                        <th data-data="UPC">商品条码</th>
+                                        <th data-data="UOMCode">单位</th>
+                                        <th data-data="WareHouseName">仓库</th>
+                                        <th data-data="Loc">货位</th>
+                                        <th data-data="Lot">批次</th>
+                                        <th data-data="Lpn">托盘</th>
+                                        <th data-data="Channel">渠道</th>
+                                        <th data-data="AdjustlevelCode">损益级别</th>
+                                        <th data-data="Qty">数量</th>
+                                        <th data-data="Remark">备注</th>
+                                        <th>图片</th>
+                                    </tr>
+                                </thead>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-sm btn-primary" id="btnAdd"><i class="fa fa-check-square-o"></i> 保存</a>
+                <a class="btn btn-white btn-sm" id="btnReturn"><i class="fa fa-times"></i> 返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+
+    <script>
+        var AddAjustmentModel = {
+            skutable: {},
+            ajustmentDetailsTable: {},
+            ajustmentDetailsSource: {},
+            adjustmentLevelSource: {},
+            init: function () {
+                var _self = this;
+
+                //$("#WarehouseSysId").get(0).selectedIndex = 0;
+
+                $.ajax({
+                    url: "@Url.Action("GetAdjustmentLevelSysCode", "Ajustment")",
+                    type: "get",
+                    success: function (data) {
+                        _self.adjustmentLevelSource = data.adjustmentLevelList;
+                    }
+                });
+
+                _self.skutable = $('#gvAjustmentSku').DataTable({
+                    "sAjaxSource": "GetSkuList",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "UPC", "value": $("#UPC").val() },
+                            { "name": "SkuCode", "value": $("#SkuCode").val() },
+                            { "name": "SkuName", "value": $("#SkuName").val() },
+                            { "name": "WarehouseSysId", "value": $("#WarehouseSysId").val() },
+                            { "name": "Loc", "value": $("#Loc").val() },
+                            { "name": "Lot", "value": $("#Lot").val() },
+                            { "name": "Lpn", "value": $("#Lpn").val() },
+                            { "name": "Channel", "value": $("#Channel").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '添加',
+                            action: function (e, dt, node, config) {
+                                var sysIdList = GetGridMultiselectSysId();
+                                if (sysIdList != null) {
+                                    var arr = AddAjustmentModel.skutable.rows(':has(:checkbox:checked)');
+                                    var ajustmentDetails = AddAjustmentModel.getAdjustmentDetailSource();
+
+                                    $.each(arr.data(), function (i) {
+                                        var selectSku = this;
+                                        var isAdd = false;
+                                        if (ajustmentDetails.length > 0) {
+                                            for (var i = 0; i < ajustmentDetails.length ; i++) {
+                                                if (ajustmentDetails[i].SkuSysId == selectSku.SkuSysId
+                                                    && ajustmentDetails[i].Loc == selectSku.Loc
+                                                    && ajustmentDetails[i].Lot == selectSku.Lot) {
+                                                    //msgErro("已添加过商品 '" + selectSku.SkuName + "',请勿重复添加!");
+                                                    isAdd = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        if (!isAdd) {
+                                            AddAjustmentModel.ajustmentDetailsTable.rows.add([{
+                                                "SkuSysId": selectSku.SkuSysId,
+                                                "SkuCode": selectSku.SkuCode,
+                                                "SkuName": selectSku.SkuName,
+                                                "SkuDescr": selectSku.SkuDescr,
+                                                "UPC": selectSku.UPC,
+                                                "UOMCode": selectSku.UOMCode,
+                                                "WareHouseName": selectSku.WareHouseName,
+                                                "Loc": selectSku.Loc,
+                                                "Lot": selectSku.Lot,
+                                                "Lpn": selectSku.Lpn,
+                                                "Channel": selectSku.Channel,
+                                                "AdjustlevelCode": _self.adjustmentLevelSource[0].Value,
+                                                "Qty": 1,
+                                                "Remark": "",
+                                                "WareHouseSysId": selectSku.WareHouseSysId,
+                                            }]).draw();
+                                        }
+                                    });
+
+                                    msgAlert("添加完成！(注:已添加商品不会被重复添加)");
+                                }
+                            },
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        }
+                    ], 
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                //var click = function (e) {
+                //    var _td = this;
+
+                //    var selectIndex = $(_td).parent().index();
+
+                //    $('#ajustmentDetails').off('click', 'tbody td:last-child', click);
+                //    var val = _td.innerText;
+                //    $(_td).text('');
+                //    var textBox = $('<input type="number" style="width:100px;" />').blur(function () {
+                //        var _txt = this;
+
+                //        var re = /^-?\d+$/;
+                //        if (!re.test($(_txt).val()) || $(_txt).val() == 0) {
+                //            msgAlert("损益数量必须必须是非0整数!");
+                //            $(_txt).focus();
+                //            return;
+                //        }
+
+                //        $('#ajustmentDetails').on('click', 'tbody td:last-child', click);
+                //        $(_td).text($(_txt).val());
+
+                //        AddAjustmentModel.ajustmentDetailsTable.data()[selectIndex]["Qty"] = $(_td).text();
+
+                //        $(_txt).remove();
+                //    }).val(val);
+                //    $(_td).append(textBox);
+                //    textBox.focus();
+                //};
+
+                //$('#ajustmentDetails').on('click', 'tbody td:last-child', click);
+
+                _self.ajustmentDetailsTable = $('#ajustmentDetails').DataTable({
+                    data: _self.ajustmentDetailsSource,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '删除',
+                            action: function (e, dt, node, config) {
+                                AddAjustmentModel.ajustmentDetailsTable
+                                    .rows(':has(:checkbox:checked)')
+                                    .remove()
+                                    .draw();
+                            },
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        },
+                        {
+                            "targets": 11,
+                            //"width": "15px",
+                            render: function (data, type, full, meta) {
+                                var selection = '<select id="AdjustlevelCode" name="AdjustlevelCode" class="form-control" onchange="AddAjustmentModel.adjustmentLevelChange(this)">';
+
+                                _self.adjustmentLevelSource.forEach(function (e, i) {
+                                    selection += '<option value="' + e.Value + '">' + e.Text + '</option>';
+
+                                });
+
+                                selection += '</select>';
+                                return selection;
+                            }
+                        },
+                        {
+                            "targets": 12,
+                            //"width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="number" style="width:100px;" value="1" onblur="AddAjustmentModel.qtyBlur(this)"/>';
+                            }
+                        },
+                        {
+                            "targets": 13,
+                            render: function (data, type, full, meta) {
+                                return '<input style="width:200px;" value="" onblur="AddAjustmentModel.remarkBlur(this)" />';
+                            }
+                        },
+                        {
+                            "targets": 14,
+                            "width": "20%",
+                            render: function (data, type, full, meta) {
+                                return '<div class="fileinput fileinput-new" data-provides="fileinput"><span class="btn btn-default btn-file"><span class="fileinput-new">选择图片</span><input type="file" id="file_' + full.SkuSysId + full.Lot + full.Loc + full.Lpn + '" onchange="UploadImage(this);"></span><div class="pictures"></div></div>';
+                            }
+                        }
+                    ],
+                    //"scrollX": true,
+
+                    "sScrollX": "100%",
+                    "sScrollXInner": "150%",
+                    "bScrollCollapse": true,
+
+                    "bServerSide": false,
+                    "bProcessing": true,
+                    "bPaginate": false, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    AddAjustmentModel.skutable.ajax.reload();
+                });
+
+                var flag = false;
+                $("#btnAdd").bind("click", function () {
+                    if (flag) {
+                        return;
+                    }
+                    flag = true;
+                    var ajustmentDetaildata = AddAjustmentModel.ajustmentDetailsTable.data();
+                    if (ajustmentDetaildata.length == 0) {
+                        msgAlert("请至少选择一个损益商品");
+                        flag = false;
+                        return;
+                    }
+
+                    var adjustmentDetailList = AddAjustmentModel.getAdjustmentDetailSource();
+                    var requestData = {
+                      
+                        Status: "10",
+                        AdjustmentDetailList: adjustmentDetailList
+                    };
+                    $.ajax({
+                        url: "@Url.Action("AddAjustmentService", "Ajustment")",
+                        data: requestData,
+                        dataType: "json",
+                        type: "post",
+                        success: function (data) {
+                            flag = false;
+                            if (data.success) {
+                                msgSuccess("保存成功!");
+                                AddAjustmentModel.backParentPage();
+                            }
+                            else {
+                                msgErro(data.message);
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            flag = false;
+                            msgErro("操作失败！");
+                        }
+                    });
+
+                });
+
+                $("#btnReturn").bind("click", function () {
+                    AddAjustmentModel.backParentPage();
+                });
+            },
+            qtyBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+                if ($(obj).val() == 0) {
+                    $(obj).val('1');
+                    return;
+                }
+                AddAjustmentModel.ajustmentDetailsTable.data()[selectIndex]["Qty"] = $(obj).val();
+            },
+            adjustmentLevelChange: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                AddAjustmentModel.ajustmentDetailsTable.data()[selectIndex]["AdjustlevelCode"] = $(obj).val();
+            },
+            remarkBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                AddAjustmentModel.ajustmentDetailsTable.data()[selectIndex]["Remark"] = $(obj).val();
+            },
+            gvAjustmentSkuCheckAll: function (obj) {
+                $("#gvAjustmentSku tbody input[type='checkbox']").each(function () {
+                    this.checked = obj.checked;
+                });
+            },
+            gvajustmentDetailsCheckAll: function (obj) {
+                $("#ajustmentDetails tbody input[type='checkbox']").each(function () {
+                    this.checked = obj.checked;
+                });
+            },
+            getAdjustmentDetailSource: function () {
+                var adjustmentDetailList = [];
+                var ajustmentDetaildata = AddAjustmentModel.ajustmentDetailsTable.data();
+
+                for (var i = 0; i < ajustmentDetaildata.length; i++) {
+                    var pictures = [];
+                    $("#file_" + ajustmentDetaildata[i].SkuSysId + ajustmentDetaildata[i].Lot + ajustmentDetaildata[i].Loc + ajustmentDetaildata[i].Lpn).parent().parent().children(".pictures").children(".fileinput-filename").each(function () {
+                        var picture = {
+                            Name: $(this).attr("Name"),
+                            Url: $(this).attr("Url"),
+                            Size: $(this).attr("Size"),
+                            Suffix: $(this).attr("Suffix")
+                        };
+                        pictures.push(picture);
+                    });
+                    ajustmentDetaildata[i].PictureDtoList = pictures;
+                    adjustmentDetailList.push(ajustmentDetaildata[i]);
+                }
+
+                return adjustmentDetailList;
+            },
+            backParentPage: function () {
+                window.location.href = '@Url.Action("AjustmentMaintain", "Ajustment")'
+            }
+        }
+
+        $(function () {
+            AddAjustmentModel.init();
+
+        })
+
+        function UploadImage(obj) {
+            var _this = $(obj);
+            var pictures = $(obj).parent().parent().children(".pictures");
+            if (pictures.children(".fileinput-filename").length >= 3) {
+                msgErro("最多上传3张图片！");
+                return false;
+            }
+            saveLoading('show');
+            var formData = new FormData();
+            formData.append("file", $(obj)[0].files[0]);
+            $.ajax({
+                url: "@Url.Action("UploadImage", "Ajustment")",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    saveLoading('hide');
+                    _this.val('');
+                    if (data.Success) {
+                        msgSuccess("上传成功！");
+                        pictures.append('<span style="margin-left:5px;max-width:100px" title="' + data.Name + '" class="fileinput-filename" Name="' + data.Name + '" Url="' + data.Url + '" Size="' + data.Size + '" Suffix="' + data.Suffix + '"><a href="' + data.ShowUrl + '"  target="_blank">' + data.Name + '</a></span><a class="close" data-dismiss="fileinput" style="float: none" onclick="RemovePiciture(this);">&times;</a>');
+                    }
+                    else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function (data) {
+                    _this.val('');
+                    saveLoading('hide');
+                    msgErro("上传失败！");
+                }
+            });
+        }
+
+        function RemovePiciture(obj) {
+            $(obj).prev().remove();
+            $(obj).remove();
+        }
+    </script>
+}

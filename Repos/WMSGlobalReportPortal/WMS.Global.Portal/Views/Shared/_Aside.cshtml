@@ -1,0 +1,66 @@
+﻿@using NBK.ECService.WMSReport.DTO.Base
+@using WMS.Global.Portal.Controllers
+@using WMS.Global.Portal
+@using System.Security.Claims
+@using NBK.AuthServiceUtil
+@using WMS.Global.Portal.Helpers
+
+<aside id="left-panel">
+    @{ Html.RenderPartial("_CurrentUser"); }
+    <nav>
+        <ul>
+            @{
+                List<MenuDto> menuList = BaseController.GetSystemMenu(User.Identity.Name);
+                if (menuList == null || menuList.Count == 0)
+                {
+                    Response.Redirect("/Account/LogOut");
+                }
+                var mainMenuList = menuList.Where(p => p.ParentSysId.HasValue == false).ToList();
+                foreach (var mainMenuItem in mainMenuList.OrderBy(p => p.SortSequence))
+                {
+                    <li class="@Html.RouteIf(mainMenuItem.Controller,"", "active")">
+                        <a href="#">
+                            <i class="fa fa-lg fa-fw @Html.Raw(mainMenuItem.ICons)"></i>
+                            <span class="menu-item-parent">@mainMenuItem.MenuName</span>
+                        </a>
+
+                        <ul>
+                            @{
+                                var subMenuList = menuList.Where(p => p.ParentSysId == mainMenuItem.SysId);
+                                if (subMenuList != null)
+                                {
+                                    foreach (var subMenuItem in subMenuList.ToList().OrderBy(p => p.SortSequence))
+                                    {
+                                        <li class="@Html.RouteIf(subMenuItem.Action,subMenuItem.Controller,"active")" title="@subMenuItem.MenuName">
+                                            <a href="@Url.Action(subMenuItem.Action, subMenuItem.Controller)">
+                                                @subMenuItem.MenuName
+                                            </a>
+                                        </li>
+                                    }
+                                }
+
+                            }
+                        </ul>
+                    </li>
+                                }
+            }
+        </ul>
+    </nav>
+    <span class="minifyme" data-action="minifyMenu">
+        <i class="fa fa-arrow-circle-left hit"></i>
+    </span>
+
+</aside>
+
+<script>
+    //<!-- ADD THE FATHER MENU ACTIVE BY THE SON MENU WHICH WAS SELECTED-->
+    $(document).ready(function () {
+        if ($("#left-panel>nav>ul>li>ul>li.active").length > 0) {
+            if ($("#left-panel>nav>ul>li>ul>li.active").parent("ul").parent("li").length > 0) {
+                $("#left-panel>nav>ul>li>ul>li.active").parent("ul").parent("li").addClass("active");
+            }
+        }
+    });
+
+</script>
+<!-- END NAVIGATION -->

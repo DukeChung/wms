@@ -1,0 +1,962 @@
+﻿@using WMS.Global.Portal.Helpers
+@{
+    ViewBag.Title = "首页";
+}
+@Html.Breadcrumb("", "")
+<!-- MAIN CONTENT -->
+<div id="content">
+    <div class="row margin-top-10">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <h1 class="top-page-title txt-color-blueDark">
+                    入库
+                </h1>
+                <span class="txt-color-purple"><label id="lb_Spark_P"></label></span>
+            </div>
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-f3" id="CGPurchase" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">采购入库 </span>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-ed" id="MaterialPurchase" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">原材料入库</span>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-fc" id="MovePurchase" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">移仓入库</span>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-ff" id="FertilizerPurchase" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">农资入库</span>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-f9" id="ReturnPurchase" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">退货入库</span>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <h1 class="top-page-title txt-color-blueDark">
+                    出库
+                </h1>
+                <span class="txt-color-purple"><label id="lb_Spark_O"></label></span>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-fb" id="B2COutboundPie" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">B2C出库 </span>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-b8" id="B2BOutboundPie" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">B2B出库 </span>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-8b" id="ReturnOutboundPie" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">退货出库 </span>
+            </div>
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-86" id="MoveOutboundPie" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">移仓出库 </span>
+            </div>
+
+
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-c">
+                <div class="easy-pie-chart txt-color-orangeDark-a2" id="FertilizerOutboundPie" data-percent="" data-pie-size="60">
+                    <span class="percent percent-sign">0</span>
+                </div>
+                <span class="easy-pie-title">农资出库 </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">全局收发存</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="bar-chart" class="chart" style="height: 310px"> </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <!-- WIDGET END -->
+
+    </div>
+
+    <div class="row">
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-31" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">收货分布</h2>
+                </header>
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divReceiptSummary" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">出库分布</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divOutboundSummary" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">库存分布</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divInvSummary" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+
+    <div class="row">
+
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">库龄分析</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divInvAgeSummary" style="height: 370px" class="chart">
+
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">畅销商品Top10</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div style="height:370px" class="chart">
+                            <table class="list-group no-margin" style="width:100%" id="divSkuSaleTop"></table>
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">滞销商品Top10</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div style="height: 370px" class="chart">
+                            <table class="list-group no-margin" style="width:100%" id="divSkuUnsalableTop">
+                                <tr class="trcss">
+                            </table>
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+    </div>
+
+    <div class="row">
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">库存渠道占比</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div id="divChannelPie" style="height: 370px" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">服务站发货Top 10</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div style="height: 370px" class="chart">
+                            <table class="list-group no-margin" style="width:100%" id="divServiceStationOutbound"></table>
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <article class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h2 class="title-font">近期退货</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+                        <div style="height: 370px" class="chart">
+                            <table class="list-group no-margin" style="width:100%" id="divReturnPurchase"></table>
+                        </div>
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+
+    </div>
+
+</div>
+<!-- END MAIN CONTENT -->
+@section pagespecific {
+    <script>
+
+        var pageDataInit = {
+            BarChartInitData: function (data) {
+                var data1 = []; //入库
+                var data2 = []; //出库
+                var data3 = []; //库存
+                var data4 = [];
+                for (var i = 0; i < data.length; i += 1) {
+                    data1.push(data[i].ReceiptQty);
+                    data2.push(data[i].OutboundQtyDisplay);
+                    data3.push(data[i].InitialQty);
+                    data4.push(data[i].CreateDate);
+                }
+                var ds = new Array();
+                ds.push({
+                    name: "入库",
+                    data: data1,
+                    barWidth: 20,
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: '#7da6c0',
+                            opacity: 0.8,
+                            borderWidth: 1,
+                            borderColor: "#729eba"
+                        }
+                    }
+                });
+                ds.push({
+                    name: "出库",
+                    data: data2,
+                    barWidth: 20,
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: '#8ea953',
+                            opacity: 0.8,
+                            borderWidth: 1,
+                            borderColor: "#84a143"
+                        }
+                    }
+                });
+                ds.push({
+                    name: "库存",
+                    type: 'bar',
+                    barWidth: 20,
+                    data: data3,
+                    itemStyle: {
+                        normal: {
+                            color: '#7e7e7e',
+                            opacity: 0.8,
+                            borderWidth: 1,
+                            borderColor: "#787878"
+                        }
+                    }
+                });
+                var data = {
+                    "Ydata": ds,
+                    "Xdata": data4
+                };
+                return data;
+            },
+            GetWareHouseName: function (data) {
+                var ds = [];
+                for (var i = 0; i < data.length; i++) {
+                    ds.push(data[i].WareHouseName);
+                }
+                return ds;
+            },
+            GetWareHouseQty: function (data) {
+                var ds = [];
+                for (var i = 0; i < data.length; i++) {
+                    ds.push(data[i].DisplayQty);
+                }
+                return ds;
+            },
+            SetWareHouseOption: function (name, dataList, typeName) {
+                var option = {
+                    // color: ['#3398DB'],
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(255,255,255,0.8)',
+                        extraCssText: 'box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);',
+                        textStyle: {
+                            color: '#6a717b'
+                        }
+                    },
+                    grid: {
+                        top: '1%',
+                        left: '1%',
+                        right: '6%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    yAxis: [{
+                        type: 'category',
+                        data: name,
+                        axisTick: {
+                            alignWithLabel: true,
+                        },
+                        axisLabel: {
+                            margin: 10,
+                            textStyle: {
+                                fontSize: 12,
+                                color: '#94999f'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#dbe0e6'
+                            }
+                        },
+
+                    }],
+                    xAxis: [{
+                        type: 'value',
+                        axisLabel: {
+                            margin: 10,
+                            textStyle: {
+                                fontSize: 12,
+                                color: '#94999f'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#dbe0e6'
+                            }
+                        }
+                    }],
+                    backgroundColor: '#ffffff',
+                    series: [{
+                        name: typeName,
+                        type: 'bar',
+                        barWidth: 20,
+                        data: dataList,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'right',
+                                textStyle: {
+                                    color: '#333' //color of value
+                                }
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                    offset: 0,
+                                    color: '#64bdc8' // 0% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: '#00c484' // 100% 处的颜色
+                                }], false),
+                                barBorderRadius: [0, 15, 15, 0],
+                                shadowColor: 'rgba(0,0,0,0.1)',
+                                shadowBlur: 3,
+                                shadowOffsetY: 3
+                            }
+                        }
+                    }]
+                }
+                return option;
+            },
+            GetPieAgeData: function (data) {
+                var ds = [];
+                ds.push({ value: data.FirstOrder, name: '0-5天' });
+                ds.push({ value: data.SecondOrder, name: '6-15天' });
+                ds.push({ value: data.ThreeOrder, name: '16-30天' });
+                ds.push({ value: data.FourOrder, name: '31-50天' });
+                ds.push({ value: data.FiveOrder, name: '50天以上' });
+                return ds;
+            },
+            GetChannelData: function (data) {
+                var ds = [];
+                for (var i = 0; i < data.length; i++) {
+                    ds.push({ value: data[i].Qty, name: data[i].ChannelName });
+                }
+                return ds;
+            },
+            SetSkuSaleData: function (data) {
+                var ds = [];
+                ds.push('<tr class="trcss"><td class="firstTd titlColor">商品名称</td><td class="secondTd titlColor">出库数量</td><td class="padding-t-10"></td></tr>');
+                for (var i = 0; i < data.length; i++) {
+                    ds.push(' <tr class="trcss"><td class="firstTd">' + data[i].SkuName + '</td><td class="secondTd">' + data[i].OutboundQty + '</td><td class="padding-t-10"><span class="badge pull-right" style="background-color:' + com.GetColor(i) + ';">' + (parseInt(i) + 1) + '</span></td></tr>')
+                }
+                return ds;
+            },
+
+            SetSkuUnSaleData: function (data) {
+                var ds = []; ds.push('<tr class="trcss"><td class="ssoFirstTdTd titlColor">商品名称</td><td class="ssoSecondTd titlColor">出库数量</td><td class="ssoThirdTd titlColor">最大库龄</td><td class="padding-t-10"></td></tr>');
+                for (var i = 0; i < data.length; i++) {
+                    ds.push(' <tr class="trcss"><td class="ssoFirstTdTd">' + data[i].SkuName + '</td><td class="ssoSecondTd">' + data[i].OutboundQty + '</td><td class="ssoThirdTd">' + data[i].Days + '</td><td class="padding-t-10"><span class="badge pull-right" style="background-color:' + com.GetColor(i) + ';">' + (parseInt(i) + 1) + '</span></td></tr>')
+                }
+                return ds;
+            },
+
+            SetPieOption: function (name, list) {
+                var option = {
+                    title: {
+                        text: "",
+                        x: "center",
+                        show: false
+                    },
+                    tooltip: {
+                        trigger: "item",
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    label: {
+                        normal: {
+                            formatter: "{b} ({d}%)",
+                            position: "insideTopRight"
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            smooth: .6
+                        }
+                    },
+                    toolbox: {
+                        show: false,
+                        feature: {
+                            mark: {
+                                show: !0
+                            },
+                            dataView: {
+                                show: !0,
+                                readOnly: !1
+                            },
+                            magicType: {
+                                show: !0,
+                                type: ["pie", "funnel"]
+                            },
+                            restore: {
+                                show: !0
+                            },
+                            saveAsImage: {
+                                show: !0
+                            }, 
+                        }
+                    },
+                    calculable: !0,
+                    series: [{
+                        name: name,
+                        type: "pie",
+                        roseType: "area",
+                        label: {
+                            normal: {
+                                show: !0
+                            },
+                            emphasis: {
+                                show: !0
+                            }
+                        },
+                        lableLine: {
+                            normal: {
+                                show: !0
+                            },
+                            emphasis: {
+                                show: !0
+                            }
+                        },
+                        data: list
+                    }]
+                };
+                return option;
+            },
+            SetServiceStationOutboundData: function (data) {
+                var ds = [];
+                ds.push('<thead><tr class="trcss"><td class="ssoFirstTdTd titlColor">服务站名称</td><td class="ssoSecondTd titlColor">发货单数</td><td class="ssoThirdTd titlColor">发货数量</td><td class="padding-t-10"></td></tr></thead>');
+                for (var i = 0; i < data.length; i++) {
+                    ds.push(' <tr class="trcss"><td class="ssoFirstTdTd">' + data[i].ServiceStationName + '</td><td class="ssoSecondTd">' + data[i].TotalOrder + '</td><td class="ssoThirdTd">' + data[i].TotalQty + '</td><td class="padding-t-10"><span class="badge pull-right" style="background-color:' + com.GetColor(i) + ';">' + (parseInt(i) + 1) + '</span></td></tr>')
+                }
+                return ds;
+            },
+            SetReturnPurchase: function (list) {
+                var ds = [];
+                ds.push(' <tr class="trcss"><td class="firTd titlColor">出库单号</td><td class="secTd titlColor">出库时间</td><td class="secTd titlColor">退货时间</td><td class="padding-t-10"></td></tr>');
+                for (var i = 0; i < list.length; i++) {
+                    ds.push(' <tr class="trcss"><td class="firTd">' + list[i].ExternalOrder + '</td><td class="secTd">' + list[i].OutboundDateDisplay + '</td><td class="secTd">' + list[i].PurchaseDateDisplay + '</td><td class="padding-t-10"><span class="badge pull-right" style="background-color:' + com.GetColor(i) + ';">' + (parseInt(i) + 1) + '</span></td></tr>')
+                }
+                return ds;
+            }
+        };
+
+        pageDataInit.Init = function () {
+            pageDataInit.GetTopPiePurchase();
+            setTimeout(pageDataInit.GetTopPieOutbound(), 1000);
+            pageDataInit.GetStockInOutData();
+            pageDataInit.GetReceiptSummary();
+            pageDataInit.GetOutboundSummary();
+            pageDataInit.GetInvSummary();
+            pageDataInit.GetInvAgeSummary();
+            pageDataInit.GetSkuSaleData(true);
+            pageDataInit.GetSkuSaleData(false);
+            pageDataInit.GetChannelPie();
+            pageDataInit.GetServiceStationOutboundData();
+            pageDataInit.GetReturnPurchase();
+        };
+
+        /*头部入库各类型占比*/
+        pageDataInit.GetTopPiePurchase = function () {
+            $.ajax({
+                url: "@Url.Action("GetPurchaseTypePieDto", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        com.RefreshData("#lb_Spark_P", data.Data.PurchaseQty);
+                        $('#CGPurchase').data('easyPieChart').update(data.Data.CGPurchasePie);
+                        $('#MaterialPurchase').data('easyPieChart').update(data.Data.MaterialPurchasePie);
+                        $('#MovePurchase').data('easyPieChart').update(data.Data.MovePurchasePie);
+                        $('#FertilizerPurchase').data('easyPieChart').update(data.Data.FertilizerPurchasePie);
+                        $('#ReturnPurchase').data('easyPieChart').update(data.Data.ReturnPurchasePie);
+                    }
+                }
+            });
+        };
+
+        /*头部出库各类型占比*/
+        pageDataInit.GetTopPieOutbound = function () {
+            $.ajax({
+                url: "@Url.Action("GetOutboundTypePieDto", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        com.RefreshData("#lb_Spark_O", data.Data.OutboundQty);
+                        $('#B2COutboundPie').data('easyPieChart').update(data.Data.B2COutboundPie);
+                        $('#B2BOutboundPie').data('easyPieChart').update(data.Data.B2BOutboundPie);
+                        $('#ReturnOutboundPie').data('easyPieChart').update(data.Data.ReturnOutboundPie);
+                        $('#MoveOutboundPie').data('easyPieChart').update(data.Data.MoveOutboundPie);
+                        $('#FertilizerOutboundPie').data('easyPieChart').update(data.Data.FertilizerOutboundPie);
+                    }
+                }
+            });
+        };
+
+        /// 全局收发存
+        pageDataInit.GetStockInOutData = function () {
+            $.ajax({
+                url: "@Url.Action("GetStockInOutData", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var dataArray = pageDataInit.BarChartInitData(data.Data);
+                        var option = {
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'line'        // 默认为直线，可选为：'line' | 'shadow'
+                                }
+                            },
+                            legend: {
+                                data: ['出库', '入库', '库存'],
+                                align: 'right',
+                                right: 10
+                            },
+                            grid: {
+                                top: '2%',
+                                left: '1%',
+                                right: '1%',
+                                bottom: '1%',
+                                containLabel: true
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                axisLine: {
+                                    show: false
+                                },
+                                splitLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: "#efefef"
+                                    }
+                                },
+                                data: dataArray.Xdata
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                axisLine: {
+                                    show: false
+                                }, splitLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: "#efefef"
+                                    }
+                                },
+                                axisLabel: {
+                                    formatter: '{value}'
+                                }
+                            }],
+                            series: dataArray.Ydata
+                        };
+
+                        var barChart = echarts.init(document.getElementById("bar-chart"));
+                        barChart.setOption(option);
+                    }
+                }
+            });
+        };
+
+        //入库分布
+        pageDataInit.GetReceiptSummary = function () {
+            $.ajax({
+                url: "@Url.Action("GetWareHouseReceiptQtyList", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var wareReceiptChart = echarts.init(document.getElementById("divReceiptSummary"));
+                        wareReceiptChart.setOption(pageDataInit.SetWareHouseOption(pageDataInit.GetWareHouseName(data.Data), pageDataInit.GetWareHouseQty(data.Data), '收货数量'));
+                    }
+                }
+            });
+        };
+
+        //出库分布
+        pageDataInit.GetOutboundSummary = function () {
+            $.ajax({
+                url: "@Url.Action("GetWareHouseOutboundQtyList", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var wareOutboundChart = echarts.init(document.getElementById("divOutboundSummary"));
+                        wareOutboundChart.setOption(pageDataInit.SetWareHouseOption(pageDataInit.GetWareHouseName(data.Data), pageDataInit.GetWareHouseQty(data.Data), '出库数量'));
+                    }
+                }
+            });
+        };
+
+        //库存分布
+        pageDataInit.GetInvSummary = function () {
+            $.ajax({
+                url: "@Url.Action("GetWareHouseQtyList", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var wareOutboundChart = echarts.init(document.getElementById("divInvSummary"));
+                        wareOutboundChart.setOption(pageDataInit.SetWareHouseOption(pageDataInit.GetWareHouseName(data.Data), pageDataInit.GetWareHouseQty(data.Data), '库存数量'));
+                    }
+                }
+            });
+        };
+
+
+        //库存分布
+        pageDataInit.GetInvAgeSummary = function () {
+            $.ajax({
+                url: "@Url.Action("GetStockAgeGroup", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var invAgeSummaryChart = echarts.init(document.getElementById("divInvAgeSummary"));
+                        invAgeSummaryChart.setOption(pageDataInit.SetPieOption('库龄天数', pageDataInit.GetPieAgeData(data.Data)));
+                    }
+                }
+            });
+        };
+
+        ///畅销滞销top10
+        pageDataInit.GetSkuSaleData = function (flag) {
+            if (flag) {//畅销
+                $.ajax({
+                    url: "@Url.Action("GetSkuSellingTop10", "Home")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            var html = pageDataInit.SetSkuSaleData(data.Data);
+                            $("#divSkuSaleTop").html(html.join(''));
+                        }
+                    }
+                });
+            } else { //滞销
+                $.ajax({
+                    url: "@Url.Action("GetSkuUnsalableTop10", "Home")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            var html = pageDataInit.SetSkuUnSaleData(data.Data);
+                            $("#divSkuUnsalableTop").html(html.join(''));
+                        }
+                    }
+                });
+            }
+        }
+
+        ///渠道库存占比
+        pageDataInit.GetChannelPie = function () {
+            $.ajax({
+                url: "@Url.Action("GetChannelPieData", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var invChannelPieyChart = echarts.init(document.getElementById("divChannelPie"));
+                        invChannelPieyChart.setOption(pageDataInit.SetPieOption('库龄天数', pageDataInit.GetChannelData(data.Data)));
+                    }
+                }
+            });
+        }
+
+        pageDataInit.GetServiceStationOutboundData = function () {
+            $.ajax({
+                url: "@Url.Action("GetServiceStationOutboundTopTen", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var html = pageDataInit.SetServiceStationOutboundData(data.Data);
+                        $("#divServiceStationOutbound").html(html.join(''));
+                    }
+                }
+            });
+        }
+
+        pageDataInit.GetReturnPurchase = function () {
+            $.ajax({
+                url: "@Url.Action("GetReturnPurchase", "Home")",
+                type: "GET",
+                success: function (data) {
+                    if (data.Success) {
+                        var html = pageDataInit.SetReturnPurchase(data.Data);
+                        $("#divReturnPurchase").html(html.join(''));
+                    }
+                }
+            });
+        }
+
+
+
+        $(document).ready(function () {
+            pageDataInit.Init();
+        });
+    </script>
+}

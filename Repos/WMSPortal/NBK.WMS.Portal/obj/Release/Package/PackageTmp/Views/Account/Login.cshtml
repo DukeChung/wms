@@ -1,0 +1,150 @@
+﻿@model NBK.WMS.Portal.Models.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>国资商城</title>
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/font-awesome/css")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/plugins/slideunlock/jquery.slideunlock.js"></script>
+    <script src="~/Scripts/jsencrypt.min.js"></script>
+    <script type="text/javascript">
+        var LoginModel = {
+            valid: true,
+            init: function () {
+                $("#btnLogin").bind("click", LoginModel.login);
+            },
+            login: function () {
+                var loginName = $("#LoginName").val();
+                var psd = $("#Password").val();
+
+                if (loginName == '' || loginName == null) {
+                    LoginModel.displayMsg("请输入用户名");
+                    return false;
+                } if (psd == '' || psd == null) {
+                    LoginModel.displayMsg("请输入密码");
+                    return false;
+                }
+
+                if (LoginModel.valid) {
+                    LoginModel.displayMsg("验证未通过，请先验证通过");
+                    return false;
+                }
+
+                var encrypt = new JSEncrypt();
+                encrypt.setPublicKey($("#hdnkey").val());
+                loginName = encrypt.encrypt(loginName);
+                psd = encrypt.encrypt(psd);
+                LoginModel.hideMsg();
+                $('#btnLogin').html("正在登录...");
+                $('#btnLogin').unbind("click");
+                var loginData = {
+                    LoginName: encodeURI(loginName).replace(/\+/g, '%2B'),
+                    Password: encodeURI(psd).replace(/\+/g, '%2B')
+                };
+                $.ajax({
+                    url: "@Url.Action("Login", "Account")" + "?ReturnUrl=" + "@ViewBag.ReturnUrl",
+                    data: loginData,
+                    dataType: "json",
+                    type: "post",
+                    success: function (response) {
+                        if (response.success == true) {
+                            window.location.href = response.returnUrl;
+                        } else {
+                            $('#btnLogin').html("登录");
+                            LoginModel.displayMsg(response.message);
+                        }
+                        $("#btnLogin").bind("click", LoginModel.login);
+                    },
+                    error: function (response) {
+                        //msgErro("登陆失败！");
+                        alert("服务器异常，请联系support");
+                        $('#btnLogin').html("登录");
+                        $("#btnLogin").bind("click", LoginModel.login);
+                    }
+                });
+            },
+            displayMsg: function (msg) {
+                $("#msgDisplay").html(msg);
+            },
+            hideMsg: function () {
+                $("#msgDisplay").html('');
+            }
+
+        }
+
+        $(function () {
+            var slider = new SliderUnlock("#slider", {
+                successLabelTip: "验证通过"
+            }, function () {
+                LoginModel.valid = false;
+                $('#label').removeClass('handler_bg').addClass('handler_ok_bg');
+            });
+            slider.init();
+
+            LoginModel.init();
+        })
+    </script>
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="loginColumns animated fadeInDown">
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="font-bold">欢迎使用WMS系统</h2>
+            </div>
+            <div class="col-md-6">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <input name="LoginName" id="LoginName" type="text" class="form-control" placeholder="用户名" required="">
+                    </div>
+                    <div class="form-group">
+                        <input name="Password" id="Password" type="password" class="form-control" placeholder="密码" required="">
+                    </div>
+
+
+                    <div id="slider">
+                        <div id="slider_bg" style="width: 0px;"></div>
+                        <span id="label" class="handler_bg" style="left: 0px; "></span> <span id="labelTip">拖动滑块验证</span>
+                    </div>
+
+
+                    <button type="button" id="btnLogin" class="btn btn-primary block full-width m-b">登录</button>
+                    <div class="validation-summary-errors text-danger" id="msgDisplay"></div>
+                    <p class="m-t">
+                        <a href="/RF/WMSRF.apk">下载RF安装包</a><br />
+                        <small>Inspinia we app framework base on Bootstrap 3 &copy; 2016</small>
+                    </p>
+                </div>
+
+                <input type="hidden" id="hdnkey" value="MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGsXYGuspXPOoIcBdmLhgMIM+EOE
+3OwvNcw8FWfYRGeuhvv4ARFgPn8W/MRjyc/LbeceLux2h13/eaure3zPUfzzmvDj
+fKoTs+uTlH21R/vQF17nZJKw+OJ/xztjILeGzMp2cJj8Yn4khOiuc8yVIZTSJt1O
+1Q6LSf+S61dD+oLfAgMBAAE=" />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                Copyright Example Company
+            </div>
+            <div class="col-md-6 text-right">
+                <small>© 2014-2015</small>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

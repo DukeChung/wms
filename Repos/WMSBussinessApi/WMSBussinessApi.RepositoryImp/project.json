@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+
+  "dependencies": {
+    "WMSBussinessApi.Repository": "*",
+    "Schubert.Framework.Data.Dapper": "1.9.5",
+    "BachLib": "1.0.6",
+    "WMSBussinessApi.Utility": "1.0.0"
+  },
+
+  "frameworks": {
+    "net452": {}
+  }
+}

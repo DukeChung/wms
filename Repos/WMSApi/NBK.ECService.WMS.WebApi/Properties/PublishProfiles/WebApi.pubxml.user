@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+您 Web 项目的发布/打包进程将使用此文件。您可以通过编辑此 MSBuild 文件
+来自定义该进程的行为。若要了解与此相关的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=208121。
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Code\b2c\Source\WMS\Publish\WebApi</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Abp.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/Abp.EntityFramework.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/Abp.Web.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/AutoMapper.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/Castle.Core.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/Castle.Facilities.Logging.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/Castle.Services.Logging.NLogIntegration.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/Castle.Windsor.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/Dapper.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.DynamicFilters.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.Extended.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.Abp.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.Abp.EntityFramework.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.Abp.Web.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.Authorizations.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.Caches.Redis.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.Dapper.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.ECService.Core.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.Logging.RabbitMQTarget.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.MessageQueue.RabbitMq.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/FortuneLab.WebApiClient.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/HibernatingRhinos.Profiler.Appender.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.SignalR.Client.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Caching.Abstractions.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Caching.Memory.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Configuration.Abstractions.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Configuration.Binder.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Configuration.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Configuration.FileExtensions.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Configuration.Json.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.DependencyInjection.Abstractions.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.DependencyInjection.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.FileProviders.Abstractions.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.FileProviders.Physical.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.FileSystemGlobbing.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Logging.Abstractions.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Logging.Debug.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Logging.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Options.ConfigurationExtensions.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Options.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Extensions.Primitives.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/MySql.Data.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/MySql.Data.Entity.EF6.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/NBK.ECService.WMS.ApiController.dll">
+      <publishTime>11/23/2017 16:44:29</publishTime>
+    </File>
+    <File Include="bin/NBK.ECService.WMS.Application.dll">
+      <publishTime>11/23/2017 16:44:29</publishTime>
+    </File>
+    <File Include="bin/NBK.ECService.WMS.Core.dll">
+      <publishTime>11/23/2017 16:44:24</publishTime>
+    </File>
+    <File Include="bin/NBK.ECService.WMS.DTO.dll">
+      <publishTime>11/23/2017 16:44:24</publishTime>
+    </File>
+    <File Include="bin/NBK.ECService.WMS.Model.dll">
+      <publishTime>11/23/2017 16:44:23</publishTime>
+    </File>
+    <File Include="bin/NBK.ECService.WMS.Repository.dll">
+      <publishTime>11/23/2017 16:44:27</publishTime>
+    </File>
+    <File Include="bin/NBK.ECService.WMS.Utility.dll">
+      <publishTime>11/23/2017 16:44:21</publishTime>
+    </File>
+    <File Include="bin/NBK.ECService.WMS.WebApi.dll">
+      <publishTime>11/23/2017 16:44:36</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/Nito.AsyncEx.Concurrent.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/Nito.AsyncEx.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/Nito.AsyncEx.Enlightenment.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/NLog.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/NLog.Extended.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/NLog.Targets.RabbitMQ.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/NLog.Web.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/RabbitMQ.Client.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Collections.Immutable.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Reflection.Metadata.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe.config">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/Schubert.Compatibility.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Schubert.Framework.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Schubert.Zookeeper.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/ServiceStack.Common.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/ServiceStack.Interfaces.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/ServiceStack.Redis.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/ServiceStack.Text.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Swagger.Net.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/Swashbuckle.Core.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/System.Collections.Immutable.dll">
+      <publishTime>05/03/2017 12:52:19</publishTime>
+    </File>
+    <File Include="bin/System.ComponentModel.Primitives.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/System.ComponentModel.TypeConverter.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Runtime.CompilerServices.Unsafe.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/System.Runtime.InteropServices.RuntimeInformation.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/WebActivator.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/WebActivatorEx.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Net.Http.Formatting.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Helpers.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Http.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Http.WebHost.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Mvc.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Optimization.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Razor.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.Deployment.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.Razor.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.resources.dll">
+      <publishTime>05/03/2017 12:52:18</publishTime>
+    </File>
+    <File Include="bin/ZooKeeperNetEx.dll">
+      <publishTime>05/03/2017 12:52:20</publishTime>
+    </File>
+    <File Include="favicon.ico">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="NLog.config">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.min.map">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/modernizr-2.6.2.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/respond.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/respond.min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Scripts/_references.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/css/screen.css">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/images/pet_store_api.png">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/images/wordnik_api.png">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/index.html">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/.DS_Store">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/backbone-min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/handlebars.runtime-1.0.0.beta.6.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/jquery.ba-bbq.min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/jquery.min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/jquery.slideto.min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/jquery.wiggle.min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/swagger.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/lib/underscore-min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/swagger-ui.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="SwaggerUI/swagger-ui.min.js">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Views/Home/Index.cshtml">
+      <publishTime>11/08/2017 09:26:35</publishTime>
+    </File>
+    <File Include="Views/Web.config">
+      <publishTime>05/03/2017 12:52:17</publishTime>
+    </File>
+    <File Include="Views/_ViewStart.cshtml">
+      <publishTime>05/18/2017 13:35:49</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>11/23/2017 16:44:37</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

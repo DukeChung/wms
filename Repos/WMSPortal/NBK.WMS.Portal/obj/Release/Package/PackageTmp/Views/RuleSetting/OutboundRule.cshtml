@@ -1,0 +1,268 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.OutboundRuleDto
+
+@{
+    ViewBag.Title = "出库匹配规则";
+}
+
+@Html.Breadcrumb("出库管理", "出库匹配规则")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <form id="OutboundRuleForm" class="form-horizontal" method="post">
+        <div class="ibox-content m-b-sm border-bottom">
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11" style="color: #a9a9a9; margin-bottom: 10px">
+                    当前页面设置主要是用于出库单出库规则设置,请明确设置规则后在进行操作.
+                    <input type="hidden" id="SysId" name="SysId" value="@Model.SysId.GetValueOrDefault()" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">出库匹配规则</label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="Status" id="Status" style="width: 80%">
+                                    @if (Model.Status.HasValue && Model.Status.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+
+
+
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:选择开启后,系统将根据下列规则设置对出库订单进行干预.关闭:选择关闭后系统将不会对出库订单进行任何干预.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">按批次属性匹配 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="MatchingLotAttr" id="MatchingLotAttr" style="width: 80%">
+                                    @if (Model.MatchingLotAttr.HasValue && Model.MatchingLotAttr.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:按批次属性匹配,在快速发货和分配的时候按照指定的批次属性对库存进行筛选.关闭:快速发货和分配的时候不对批次进行筛选
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">出库排序规则 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="DeliverySortRules" id="DeliverySortRules" style="width: 80%">
+                                    @{
+                                        foreach (var sortRule in (List<SelectListItem>)ViewBag.DeliverySortRulesList)
+                                        {
+                                            if (Model.DeliverySortRules.ToString() == sortRule.Value)
+                                            {
+                                                <option value="@sortRule.Value" selected>@sortRule.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@sortRule.Value">@sortRule.Text</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                设置出库发货时的排序规则,无规则时不进行排序
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">快速发货异步 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="DeliveryIsAsyn" id="DeliveryIsAsyn" style="width: 80%">
+                                    @if (Model.DeliveryIsAsyn.HasValue && Model.DeliveryIsAsyn.Value)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:快速发货异步,在点击快速发货之后不需要等待，可以去操作别的业务，消息会稍后返回.关闭:不进行异步，点击快速发货后需要等待
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">创建出库单异步 </label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="CreateOutboundIsAsyn" id="CreateOutboundIsAsyn" style="width: 80%">
+                                    @if (Model.CreateOutboundIsAsyn)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:创建出库单异步,在同步ECC创建出库单之后系统会延迟创建出库单.关闭:不进行异步
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">快速发货优先领料分拣货位</label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="IsPickingSkuLoc" id="IsPickingSkuLoc" style="width: 80%">
+                                    @if (Model.IsPickingSkuLoc)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:发货优先领料分拣货位,在快速发货时优先扣减领料分拣货位库存.关闭:不优先扣减，无规则
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <label class="control-label" for="">出库单自动分配</label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="AutomaticAllocation" id="AutomaticAllocation" style="width: 80%">
+                                    @if (Model.AutomaticAllocation)
+                                    {
+                                        <option value="true" selected="selected">开启</option>
+                                        <option value="false">关闭</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="true">开启</option>
+                                        <option value="false" selected="selected">关闭</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-10" style="margin-left: -40px; color: #a9a9a9; margin-top: 15px;">
+                                开启:出库单进入系统后开始自动进行出库单分配.关闭:出库单进入系统后不进行自动分配
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-11">
+                </div>
+                <div class="col-sm-1">
+                    <button id="btnSave" class="btn btn-primary" type="button" style="margin-top: 23px; float: left;" onclick="SavePreOrderRule()">保存</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+
+
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        function SavePreOrderRule() {
+           
+            $.ajax({
+                url: "/RuleSetting/SaveOutboundRule",
+                type: "POST",
+                data: $("#OutboundRuleForm").serializeObject(),
+                success: function(data) {
+                    if (data.Success) {
+                        msgSuccess(data.Message);
+                        window.location.href = "/RuleSetting/OutboundRule";
+                    } else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function(data) {
+                    msgErro(data.Message);
+                }
+            });
+        }
+
+    </script>
+}

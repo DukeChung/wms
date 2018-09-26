@@ -1,0 +1,74 @@
+2017-11-22 09:08:39,808 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:08:39/更新报表缓存开始
+2017-11-22 09:09:01,804 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:09:01/异步更新出库单经纬度开始
+2017-11-22 09:09:06,404 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:09:06/总共需要更新：1040 条
+2017-11-22 09:13:06,850 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:13:06/异步更新出库单经纬度开始
+2017-11-22 09:13:09,832 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:13:09/总共需要更新：1034 条
+2017-11-22 09:14:09,096 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:14:09/异步更新出库单经纬度开始
+2017-11-22 09:14:11,739 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:14:11/总共需要更新：1031 条
+2017-11-22 09:14:31,301 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:14:31 更新出库单经纬度错误：ceshi
+2017-11-22 09:14:35,226 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:14:35/异步更新出库单经纬度开始
+2017-11-22 09:14:37,471 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:14:37/总共需要更新：1031 条
+2017-11-22 09:16:13,699 [8] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:16:13/异步更新出库单经纬度开始
+2017-11-22 09:16:18,507 [8] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:16:18/总共需要更新：1031 条
+2017-11-22 09:16:20,783 [8] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:16:20/第1次更新经纬度报错：
+2017-11-22 09:16:22,900 [8] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:16:22/第2次更新经纬度报错：
+2017-11-22 09:16:39,634 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:16:39/异步更新出库单经纬度开始
+2017-11-22 09:16:47,234 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:16:47/总共需要更新：1031 条
+2017-11-22 09:38:52,107 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:38:52/异步更新出库单经纬度开始
+2017-11-22 09:38:54,295 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:38:54 更新出库单经纬度错误：无法连接到远程服务器
+2017-11-22 09:41:49,108 [8] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:41:49/异步更新出库单经纬度开始
+2017-11-22 09:42:31,427 [8] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:42:31 更新出库单经纬度错误：远程服务器返回错误: (500) 内部服务器错误。
+2017-11-22 09:42:34,572 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:42:34/异步更新出库单经纬度开始
+2017-11-22 09:42:35,461 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:42:35/总共需要更新：576 条
+2017-11-22 09:43:37,051 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:37/第1次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:39,068 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:39/第2次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:41,083 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:41/第3次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:43,111 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:43/第4次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:45,125 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:45/第5次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:47,152 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:47/第6次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:49,172 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:49/第7次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:51,191 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:51/第8次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:53,216 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:53/第9次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:55,231 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:55/第10次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:57,242 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:57/第11次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:43:59,258 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:43:59/第12次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:01,273 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:01/第13次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:03,289 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:03/第14次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:05,309 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:05/第15次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:07,325 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:07/第16次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:09,341 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:09/第17次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:11,359 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:11/第18次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:13,375 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:13/第19次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:15,390 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:15/第20次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:44:15,390 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:15/更新出库单经纬度结束
+2017-11-22 09:44:36,318 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:44:36/异步更新出库单经纬度开始
+2017-11-22 09:45:19,381 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:45:19 更新出库单经纬度错误：远程服务器返回错误: (500) 内部服务器错误。
+2017-11-22 09:45:23,231 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:45:23/异步更新出库单经纬度开始
+2017-11-22 09:45:24,142 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:45:24/总共需要更新：576 条
+2017-11-22 09:53:39,524 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:53:39/异步更新出库单经纬度开始
+2017-11-22 09:54:18,031 [9] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:54:18 更新出库单经纬度错误：远程服务器返回错误: (500) 内部服务器错误。
+2017-11-22 09:54:22,324 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:54:22/异步更新出库单经纬度开始
+2017-11-22 09:54:23,283 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:54:23/总共需要更新：576 条
+2017-11-22 09:56:03,337 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:56:03/第1次更新经纬度报错：请求被中止: 操作超时。
+2017-11-22 09:57:39,430 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:39/第2次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:41,444 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:41/第3次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:43,459 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:43/第4次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:45,475 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:45/第5次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:47,491 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:47/第6次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:49,507 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:49/第7次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:51,528 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:51/第8次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:53,544 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:53/第9次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:55,560 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:55/第10次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:57,576 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:57/第11次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:57:59,593 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:57:59/第12次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:01,608 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:01/第13次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:03,625 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:03/第14次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:05,644 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:05/第15次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:07,659 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:07/第16次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:09,676 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:09/第17次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:11,693 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:11/第18次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:13,709 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:13/第19次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:15,724 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:15/第20次更新经纬度报错：无法连接到远程服务器
+2017-11-22 09:58:15,724 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 9:58:15/更新出库单经纬度结束
+2017-11-22 10:27:53,984 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 10:27:53/更新报表缓存开始
+2017-11-22 10:28:48,335 [10] INFO  NBK.WMSJob.UpdateReportRedisJob - 2017/11/22 10:28:48/更新报表缓存结束

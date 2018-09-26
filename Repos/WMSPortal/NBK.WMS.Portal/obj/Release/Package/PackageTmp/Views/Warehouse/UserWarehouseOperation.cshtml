@@ -1,0 +1,248 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "用户仓库分配";
+}
+
+@Html.Breadcrumb("用户仓库分配", "仓库管理")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="divUserWarehouse">
+        <div class="ibox-content m-b-sm border-bottom">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label class="col-sm-4 control-label" style="margin-top:5px;">选择用户</label>
+                    <div class="col-sm-8">
+                        <select id="UserId" name="UserId" class="form-control chosen-select" data-placeholder="请选择" onchange="Model.gridReload()">
+                            @{
+                                foreach (var user in (List<SelectListItem>)ViewBag.UserList)
+                                {
+                                    <option value="@user.Value">@user.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    
+                    <div class="col-lg-12">
+                        <div class="ibox">
+                            
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label" style="color:red">未分配仓库</label>
+                                </div>
+                                <table id="gvNoAssignedWarehouse" class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%"></th>
+                                            <th data-data="WarehouseName">仓库名称</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <label class="col-sm-4 control-label" style="color:red">已分配仓库</label>
+                                    </div>
+                                    <table id="gvAssignedWarehouse" class="table table-striped table-bordered table-hover dataTables-example">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%"></th>
+                                                <th data-data="WarehouseName">仓库名称</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/chosen")
+
+    <script>
+        var Model = {
+            noAssignedTable: {},
+            assignedTable: {},
+            init: function () {
+                _self = this;
+                $('.chosen-select').chosen({ width: "100%" });
+
+                _self.noAssignedTable = $('#gvNoAssignedWarehouse').DataTable({
+                    "sAjaxSource": "GetNoAssignedWarehouse",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "UserId", "value": $("#UserId").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "40px",
+                            render: function (data, type, full, meta) {
+                                return '<a onclick="Model.mapWarehouse(' + "'" + full.WarehouseSysId + "'" + ')">添加</a>';
+                            }
+                        }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[1, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+
+                _self.assignedTable = $('#gvAssignedWarehouse').DataTable({
+                    "sAjaxSource": "GetAssignedWarehouse",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "UserId", "value": $("#UserId").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "40px",
+                            render: function (data, type, full, meta) {
+                                return '<a onclick="Model.deleteMapWarehouse(' + "'" + full.WarehouseSysId + "'" + ')">删除</a>';
+                            }
+                        }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[1, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+            },
+            mapWarehouse: function (sysId) {
+                var requestData = {
+                    MapWarehouseSysId: sysId,
+                    UserId: $("#UserId").val(),
+                    DisplayName: $("#UserId").find("option:selected").text()
+                };
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("SetAssignedWarehouse", "Warehouse")",
+                    data: requestData,
+                    type: "post",
+                    success: function (data) {
+                        saveLoading();
+                        if (data.success) {
+                            msgSuccess("操作成功!");
+                            Model.gridReload();
+                        }
+                        else {
+                            msgErro(data.message);
+                        }
+                    },
+                    error: function () {
+                        saveLoading();
+                        msgErro("操作失败！");
+                    }
+                });
+            },
+            deleteMapWarehouse: function (sysId) {
+                var requestData = {
+                    MapWarehouseSysId: sysId,
+                    UserId: $("#UserId").val()
+                };
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("SetNoAssignedWarehouse", "Warehouse")",
+                    data: requestData,
+                    type: "post",
+                    success: function (data) {
+                        saveLoading();
+                        if (data.success) {
+                            msgSuccess("操作成功!");
+                            Model.gridReload();
+                        }
+                        else {
+                            msgErro(data.message);
+                        }
+                    },
+                    error: function () {
+                        saveLoading();
+                        msgErro("操作失败！");
+                    }
+                });
+            },
+            gridReload: function () {
+                Model.assignedTable.ajax.reload();
+                Model.noAssignedTable.ajax.reload();
+            }
+        };
+
+        $(function () {
+            Model.init();
+        });
+
+    </script>
+}

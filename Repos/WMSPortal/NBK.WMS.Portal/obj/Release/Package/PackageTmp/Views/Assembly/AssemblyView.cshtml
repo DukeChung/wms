@@ -1,0 +1,1082 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+@{
+    ViewBag.Title = "生产加工单详情";
+}
+
+@Html.Breadcrumb("生产加工单管理", "/Assembly/AssemblyList", "生产加工单详情")
+
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="~/Content/plugins/ui-dialog.css" />
+@Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+<div id="div_AssemblyView" class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="row" style="margin-left:-40px;margin-right:20px">
+                    <label class="col-sm-2 control-label">加工单号:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="AssemblyOrder" class="form-control" readonly="readonly"></div>
+
+                    <label class="col-sm-2 control-label">单据状态:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="StatusText" class="form-control" readonly="readonly"></div>
+
+                    <label class="col-sm-2 control-label">备注:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="Remark" class="form-control" readonly="readonly"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row" style="margin-left:-40px;margin-right:20px">
+                    <label class="col-sm-2 control-label">计划加工日期:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="PlanProcessingDateText" class="form-control" readonly="readonly"></div>
+
+                    <label class="col-sm-2 control-label">计划完工日期:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="PlanCompletionDateText" class="form-control" readonly="readonly"></div>
+
+                    <label class="col-sm-2 control-label">计划加工数量:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="PlanQty" class="form-control" readonly="readonly"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row" style="margin-left:-40px;margin-right:20px">
+                    <label class="col-sm-2 control-label">实际加工日期:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="ActualProcessingDateText" class="form-control" readonly="readonly"></div>
+
+                    <label class="col-sm-2 control-label">实际完工日期:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="ActualCompletionDateText" class="form-control" readonly="readonly"></div>
+
+                    <label class="col-sm-2 control-label">仓库:</label>
+                    <div class="col-sm-2"><input type="text" id="" name="" v-model="WareHouseName" class="form-control" readonly="readonly"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div id="divPick" class="modal inmodal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-body" style="max-height:600px">
+                                <div class="form-group">
+                                    <label class="col-sm-12">请输入商品条码:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" id="pickUPC" name="pickUPC" class="form-control">
+                                        <input type="hidden" id="pickSkuSysId" name="pickSkuSysId" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-12">请输入库位条码:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" id="pickLoc" name="pickLoc" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-12">请输入拣货数量:</label>
+                                    <div class="col-sm-12">
+                                        <input type="number" id="pickQty" name="pickQty" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group" id="divStock">
+                                    @*<label class="col-sm-12">提示：当前商品在以下库位中有库存</label>*@
+                                    <div id="pickInvList"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-sm btn-primary" id="btnSavePick" v-on:click="pick"><i class="fa fa-check-square-o"></i> <span>拣货</span></a>
+                                <a class="btn btn-white btn-sm" id="btnClosePick" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divShelve" class="modal inmodal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-body" style="max-height:600px">
+                            <div class="form-group">
+                                <label class="col-sm-12">请输入商品条码:</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="shelveUPC" name="shelveUPC" class="form-control">
+                                    <input type="hidden" id="shelveSkuSysId" name="shelveSkuSysId" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-12">请输入库位条码:</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="shelveLoc" name="shelveLoc" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-12">请输入上架数量:</label>
+                                <div class="col-sm-12">
+                                    <input type="number" id="shelveQty" name="shelveQty" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group" id="divStock">
+                                @*<label class="col-sm-12">提示：当前商品在以下库位中有库存</label>*@
+                                <div id="shelveInvList"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-sm btn-primary" id="btnSaveShelve" v-on:click="shelve"><i class="fa fa-check-square-o"></i> <span>上架</span></a>
+                            <a class="btn btn-white btn-sm" id="btnCloseShelve" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ibox-content m-b-sm border-bottom">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="table-responsive" style="margin-left:40px;margin-right:40px">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>成品编号</th>
+                                <th>成品名称</th>
+                                <th>成品UPC</th>
+                                <th>包装方式</th>
+                                <th>包装重量</th>
+                                <th>包装等级</th>
+                                <th>存储条件</th>
+                                <th>包装规格</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ SkuCode }}</td>
+                                <td>{{ SkuName }}</td>
+                                <td>{{ SkuUPC }}</td>
+                                <td>{{ Packing }}</td>
+                                <td>{{ PackWeight }}</td>
+                                <td>{{ PackGrade }}</td>
+                                <td>{{ StorageConditions }}</td>
+                                <td>{{ PackSpecification }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row" style="margin-left:-40px;margin-right:20px">
+                    <label class="col-sm-2 control-label">包装方式详细描述:</label>
+                    <div class="col-sm-4"><input type="text" id="" name="" v-model="PackDescr" class="form-control" readonly="readonly"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ibox-content m-b-sm border-bottom">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="table-responsive" style="margin-left:40px;margin-right:40px">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>商品编号</th>
+                                <th>UPC</th>
+                                <th>商品名称</th>
+                                <th>品级</th>
+                                <th>单位</th>
+                                <th>需用数量</th>
+                                <th style="width:140px">损耗数量</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="item in AssemblyDetails">
+                            <tr>
+                                <td>{{ item.SkuCode }}</td>
+                                <td>{{ item.SkuUPC }}</td>
+                                <td>{{ item.SkuName }}</td>
+                                <td>{{ item.Grade }}</td>
+                                <td>{{ item.UOMCode }}</td>
+                                <td>{{ item.UnitQty }}</td>
+                                <td><input type="number" id="" name="" v-model="item.LossQty" v-on:blur="checkLossQty(item)" class="form-control" placeholder="填写损耗数量" readonly="readonly" style="height:25px"></td>
+                                <th>
+                                    <input name="btnWeight" class="btn btn-primary btn-xs" type="button" style="width:60px;display:none" value="称重" onclick="AssemblyView.OpenWeighWindow('{{ item.SkuUPC }}','{{ item.SkuName }}','{{ item.SkuSysId }}')" />
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row" style="margin-left:-40px;margin-right:20px">
+                    <label class="col-sm-2 control-label">实际加工数量:</label>
+                    <div class="col-sm-2"><input type="text" id="ActualQty" name="ActualQty" v-model="ActualQty" v-on:blur="checkActualQty(ActualQty)" class="form-control" placeholder="填写实际加工数量" readonly="readonly"></div>
+
+                    <label class="col-sm-2 control-label">上架数量:</label>
+                    <div class="col-sm-2"><input type="text" id="ShelvesQty" name="ShelvesQty" v-model="ShelvesQty" class="form-control" readonly="readonly"></div>
+
+                    <label class="col-sm-2 control-label">上架状态:</label>
+                    <div class="col-sm-2"><input type="text" id="ShelvesStatusDisplay" name="ShelvesStatusDisplay" v-model="ShelvesStatusDisplay"  class="form-control"  readonly="readonly"></div>
+                </div>
+            </div>
+            <div class="form-group"></div>
+            <div class="form-group ibox-footer text-right">
+                <input type="button" class="btn btn-sm btn-primary" id="btnReceive" v-on:click="receive" value="领料" />
+                <input type="button" class="btn btn-sm btn-primary" id="btnCancelReceive" v-on:click="cancelReceive" value="撤销领料" />
+                <input type="button" class="btn btn-sm btn-primary" id="btnPick" data-toggle="modal" data-target="#divPick" v-on:click="skuUPCFocus" value="拣货" />
+                <input type="button" class="btn btn-sm btn-primary" id="btnFinish" v-on:click="finish" value="完成" />
+                <input type="button" class="btn btn-sm btn-primary" id="btnShelve" data-toggle="modal" data-target="#divShelve" v-on:click="skuUPCFocus" value="上架" />
+                <a class="btn btn-sm btn-white" id="btnPrint" v-on:click="printReceiveOrder"><i class="fa fa-print"></i> 打印领料单</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="divWindowWeigh" class="modal fade" aria-hidden="true" style="display: none;">
+        <div class="ibox-content modal-dialog">
+            <div class="row">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>称重</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form class="form-horizontal">
+                            <input type="hidden" id="weighSkuSysId" class="form-control">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">商品条码</label>
+                                    <div class="col-sm-4"><input type="text" id="weighUPC" class="form-control" readonly="readonly"></div>
+
+                                    <label class="col-sm-2 control-label">商品名称</label>
+                                    <div class="col-sm-4"><input type="text" id="weighSkuName" class="form-control" readonly="readonly"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">录入重量(kg)</label>
+                                    <div class="col-sm-4"><input type="number" min="1" id="weight" class="form-control"></div>
+
+                                    <div class="col-sm-3">
+                                        <button id="btnSaveWeigh" class="btn btn-primary" type="button" style="float: left; " onclick="AssemblyView.SaveAssemblySkuWeight()">保存</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>已称重记录</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table id="gvWeighSku" class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th data-data="DisplayWeight">重量(kg)</th>
+                                    <th data-data="CreateUserName">称重人</th>
+                                    <th data-data="DisplayCreateDate">称重时间</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript" src="~/Scripts/plugins/artDialog/dialog-plus-min.js"></script>
+    <script type="text/javascript">
+        var AssemblyView = {
+            assemblyVM: {},
+            initData: function () {
+                $.ajax({
+                    url: "@Url.Action("GetAssemblyViewDtoById", "Assembly")" + "?sysId=" + '@ViewBag.SysId',
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            AssemblyView.initVue(data.Data);
+                            AssemblyView.setButtonStatus(data.Data.Status);
+                            if (data.Data.Status == 20) {
+                                $("input[type='number']").removeAttr("readonly");
+                                $("#ActualQty").removeAttr("readonly");
+
+                                if (data.Data.Source == "WMS") {
+                                    $("input[name='btnWeight']").css("display", "block");
+                                }
+                            }
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    }
+                });
+
+                AssemblyView.initWeighInfo();
+            },
+            initVue: function (data) {
+                this.assemblyVM = new Vue({
+                    el: "#div_AssemblyView",
+                    data: data,
+                    methods: {
+                        receive: function () {
+                            saveLoading('show');
+                            //更新生产加工单状态
+                            $.ajax({
+                                url: "/Assembly/PrintAssemblyRCMDPickDetail?sysId=" + AssemblyView.assemblyVM.$data.SysId,
+                                type: "GET",
+                                success: function (data) {
+                                    saveLoading();
+                                    if (data.Success) {
+                                        //打印推荐货位拣货单
+                                        var LODOP = getLodop();
+                                        LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                                        LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                                        LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                                        LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintAssemblyRCMDPickDetail?assemblySysId=" + '@ViewBag.SysId' + "&userName=@ViewBag.CurrentUserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+                                        LODOP.ADD_PRINT_BARCODE(40, 480, 300, 58, "128B", AssemblyView.assemblyVM.$data.AssemblyOrder);
+                                        LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+                                        LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+                                        LODOP.PRINT();
+                                        msgSuccess("已打印推荐货位拣货单，请稍后", AssemblyView.refresh());
+                                    } else {
+                                        msgErro(data.Message);
+                                    }
+                                }
+                            });
+                        },
+                        skuUPCFocus: function () {
+                            setTimeout(function () {
+                                $("#pickUPC").focus();
+                                $("#pickUPC").val("");
+                                $("#pickSkuSysId").val("");
+                                $("#pickLoc").val("");
+                                $("#pickQty").val("");
+                                $("#pickInvList").html("");
+                                $("#shelveUPC").focus();
+                                $("#shelveUPC").val("");
+                                $("#shelveSkuSysId").val("");
+                                $("#shelveLoc").val("");
+                                $("#shelveQty").val("");
+                                $("#shelveInvList").html("");
+                            }, 500);
+                        },
+                        pick: function () {
+                            AssemblyView.SaveAssemblyPick();
+                        },
+                        shelve: function () {
+                            AssemblyView.SaveAssemblyShelve();
+                        },
+                        cancelReceive: function () {
+                            saveLoading('show');
+                            $.ajax({
+                                url: "/Assembly/CancelAssemblyPicking?sysId=" + AssemblyView.assemblyVM.$data.SysId,
+                                type: "GET",
+                                success: function (data) {
+                                    saveLoading();
+                                    if (data.Success) {
+                                        msgSuccess(data.Message, AssemblyView.refresh());
+                                    } else {
+                                        msgErro(data.Message);
+                                    }
+                                }
+                            });
+                        },
+                        finish: function () {
+                            var positiveInt = /^[1-9]\d*$/;
+                            if (!positiveInt.test(AssemblyView.assemblyVM.$data.ActualQty)) {
+                                AssemblyView.assemblyVM.$data.ActualQty = null;
+                                msgErro("请填写正确的实际加工数量");
+                                return false;
+                            }
+
+                            var assemblyFinishDto = {
+                                SysId: AssemblyView.assemblyVM.$data.SysId,
+                                ActualQty: AssemblyView.assemblyVM.$data.ActualQty,
+                                AssemblyDetails: []
+                            };
+                            var nonNegativeFloat = /^\d+(\.\d+)?$/;
+                            for (var i = 0; i < AssemblyView.assemblyVM.$data.AssemblyDetails.length; i++) {
+                                var detail = AssemblyView.assemblyVM.$data.AssemblyDetails[i];
+                                if (!nonNegativeFloat.test(detail.LossQty)) {
+                                    detail.LossQty = 0;
+                                    msgErro("请填写正确的损耗数量");
+                                    return false;
+                                }
+                                if (detail.LossQty > detail.UnitQty) {
+                                    detail.LossQty = 0;
+                                    msgErro("损耗数量不能大于需用数量");
+                                    return false;
+                                }
+
+                                assemblyFinishDto.AssemblyDetails.push({
+                                    SkuSysId: detail.SkuSysId,
+                                    LossQty: detail.LossQty
+                                });
+                            }
+
+                            msgConfirm("确定要完成加工单?", function (isConfirm) {
+                                if (isConfirm) {
+                                    saveLoading('show');
+                                    $.ajax({
+                                        url: "/Assembly/FinishAssemblyOrder",
+                                        type: "POST",
+                                        data: assemblyFinishDto,
+                                        success: function (data) {
+                                            saveLoading();
+                                            setTimeout(function () {
+                                                if (data.Success) {
+                                                    msgSuccess(data.Message, AssemblyView.refresh());
+                                                } else {
+                                                    msgErro(data.Message);
+                                                }
+                                            }, 100);
+                                        }
+                                    });
+                                }
+                            }, true);
+                        },
+                        printReceiveOrder: function () {
+                            var LODOP = getLodop();
+                            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintAssembly?assemblySysId=" + '@ViewBag.SysId' + "&warehouseSysId=@ViewBag.WarehouseSysId");
+                            LODOP.ADD_PRINT_BARCODE(40, 480, 300, 58, "128B", AssemblyView.assemblyVM.$data.AssemblyOrder);
+                            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+                            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+                            //LODOP.PREVIEW();
+                            LODOP.PRINT();
+                            msgAlert("打印成功");
+                        },
+                        checkLossQty: function (item) {
+                            var pattern = /^\d+(\.\d+)?$/;
+                            if (!pattern.test(item.LossQty)) {
+                                item.LossQty = 0;
+                                msgErro("请填写正确的损耗数量");
+                                return false;
+                            }
+                            if (item.LossQty > item.UnitQty) {
+                                item.LossQty = 0;
+                                msgErro("损耗数量不能大于需用数量");
+                                return false;
+                            }
+                        },
+                        checkActualQty: function (actualQty) {
+                            if ($("#ActualQty").attr("readonly") != "readonly")
+                            {
+                                var pattern = /^[1-9]\d*$/;
+                                if (!pattern.test(actualQty)) {
+                                    AssemblyView.assemblyVM.$data.ActualQty = null;
+                                    msgErro("请填写正确的实际加工数量");
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            setButtonStatus: function (status) {
+                if (status == 10) {
+                    $('#btnCancelReceive').attr("disabled", "disabled");
+                    $('#btnFinish').attr("disabled", "disabled");
+                    $('#btnPick').attr("disabled", "disabled");
+                    $('#btnShelve').attr("disabled", "disabled");
+                } else if (status == 20) {
+                    $('#btnReceive').attr("disabled", "disabled");
+                    $('#btnShelve').attr("disabled", "disabled");
+                } else if (status == 30) {
+                    $('#btnReceive').attr("disabled", "disabled");
+                    $('#btnCancelReceive').attr("disabled", "disabled");
+                    $('#btnPick').attr("disabled", "disabled");
+                    $('#btnFinish').attr("disabled", "disabled");
+                }
+            },
+            refresh: function () {
+                setTimeout(function () { window.location.reload(); }, 2000);
+            },
+
+            weighTable:{},
+            initWeighInfo: function(){
+                AssemblyView.weighTable = $('#gvWeighSku').DataTable({
+                    "sAjaxSource": "GetWeighSkuListForAssembly",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "SkuSysId", "value": $("#weighSkuSysId").val() },
+                            { "name": "AssemblySysId", "value": '@ViewBag.SysId' }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    "columnDefs": [],
+                    "sScrollX": "100%",
+                    "sScrollXInner": "100%",
+                    "bScrollCollapse": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "iDisplayLength": 5,
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+            },
+            OpenWeighWindow: function (upc,skuName,skuSysId) {
+                $("#weighUPC").val(upc);
+                $("#weighSkuName").val(skuName);
+                $("#weighSkuSysId").val(skuSysId);
+
+                $("#divWindowWeigh").modal('show');
+
+                AssemblyView.weighTable.ajax.reload();
+            },
+            SaveAssemblySkuWeight: function () {
+
+                var pattern = /^\d+(\.\d+)?$/;
+                if (!pattern.test($("#weight").val()) || $("#weight").val() > 99999) {
+                    msgErro("请填写正确的重量");
+                    return false;
+                }
+
+                $.ajax({
+                    url: "@Url.Action("SaveAssemblySkuWeight", "Assembly")",
+                    data: {
+                        SkuSysId: $("#weighSkuSysId").val(),
+                        AssemblySysId: '@ViewBag.SysId',
+                        Weight: $("#weight").val()
+                    },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success) {
+                            AssemblyView.weighTable.ajax.reload();
+                            $("#weight").val('');
+                            msgSuccess("保存成功!");
+
+                            //AddAssemblyModel.backParentPage();
+
+                        }
+                        else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function () {
+                        msgErro("操作失败！");
+                    }
+                });
+            },
+            SaveAssemblyPick: function () {
+                var loc = $("#pickLoc").val();
+                var upc = $("#pickUPC").val();
+                var qty = $("#pickQty").val();
+                var skuSysId = $("#pickSkuSysId").val();
+
+                if (upc.trim() == "") {
+                    msgErro("商品条码不能为空");
+                    $("#pickUPC").focus();
+                    return false;
+                }
+                if (loc.trim() == "") {
+                    msgErro("货位不能为空");
+                    $("#pickLoc").focus();
+                    return false;
+                }
+                if (qty.trim() == "") {
+                    msgErro("商品数量不能为空");
+                    $("#pickQty").focus();
+                    return false;
+                }
+                if (parseFloat(qty.trim()) <= 0) {
+                    msgErro("商品数量必须大于0");
+                    $("#pickQty").focus();
+                    return false;
+                }
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("AssemblyScanPickDetail", "Assembly")",
+                    data: {
+                        AssemblyOrder: AssemblyView.assemblyVM.$data.AssemblyOrder,
+                        SkuSysId: skuSysId,
+                        UPC: upc,
+                        Loc: loc,
+                        DisplayQty: qty
+                    },
+                    type: "post",
+                    success: function (data) {
+                        saveLoading('hide');
+                        if (data != null && data.Success) {
+                            $("#pickUPC").focus();
+                            $("#pickUPC").val("");
+                            $("#pickSkuSysId").val("");
+                            $("#pickLoc").val("");
+                            $("#pickQty").val("");
+                            $("#pickInvList").html("");
+                        } else {
+                            msgErro(data.Message);
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        saveLoading('hide');
+                        msgErro("操作失败！");
+                    }
+                });
+            },
+            SaveAssemblyShelve: function () {
+                var loc = $("#shelveLoc").val();
+                var upc = $("#shelveUPC").val();
+                var qty = $("#shelveQty").val();
+                var skuSysId = $("#shelveSkuSysId").val();
+
+                if (upc.trim() == "") {
+                    msgErro("商品条码不能为空");
+                    $("#shelveUPC").focus();
+                    return false;
+                }
+                if (loc.trim() == "") {
+                    msgErro("货位不能为空");
+                    $("#shelveLoc").focus();
+                    return false;
+                }
+                if (qty.trim() == "") {
+                    msgErro("商品数量不能为空");
+                    $("#shelveQty").focus();
+                    return false;
+                }
+                if (parseFloat(qty.trim()) <= 0) {
+                    msgErro("商品数量必须大于0");
+                    $("#shelveQty").focus();
+                    return false;
+                }
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("AssemblyScanShelves", "Assembly")",
+                    data: {
+                        AssemblyOrder: AssemblyView.assemblyVM.$data.AssemblyOrder,
+                        SkuSysId: skuSysId,
+                        UPC: upc,
+                        Loc: loc,
+                        Qty: qty
+                    },
+                    type: "post",
+                    success: function (data) {
+                        saveLoading('hide');
+                        if (data != null && data.Success) {
+                            $("#shelveUPC").focus();
+                            $("#shelveUPC").val("");
+                            $("#shelveSkuSysId").val("");
+                            $("#shelveLoc").val("");
+                            $("#shelveQty").val("");
+                            $("#shelveInvList").html("");
+                            window.location.reload();
+                        } else {
+                            msgErro(data.Message);
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        saveLoading('hide');
+                        msgErro("操作失败！");
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            AssemblyView.initData();
+
+            //加工单拣货
+            $("#pickUPC").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    $("#pickLoc").focus();
+                }
+            });
+
+            $("#pickUPC").on("blur", function () {
+                if ($("#pickUPC").val().trim() != "") {
+                    var skuUPC = $("#pickUPC").val().trim();
+                    var skuPackUPCCount = 0; //统计明细商品所有包装码等于输入UPC的数量
+                    var skuSysIdList = new Array();
+                    var isUPC = false;
+                    $.each(AssemblyView.assemblyVM.$data.AssemblyDetails, function (index, el) {
+                        isUPC = false;
+                        if (el.SkuUPC == skuUPC) {
+                            isUPC = true;
+                        }
+
+                        if (el.UPC02 == skuUPC) {
+                            skuPackUPCCount++;
+                            isUPC = true;
+                        }
+                        if (el.UPC03 == skuUPC) {
+                            skuPackUPCCount++;
+                            isUPC = true;
+                        }
+                        if (el.UPC04 == skuUPC) {
+                            skuPackUPCCount++;
+                            isUPC = true;
+                        }
+                        if (el.UPC05 == skuUPC) {
+                            skuPackUPCCount++;
+                            isUPC = true;
+                        }
+
+                        if (isUPC) {
+                            var existsResult = $.inArray(el.SkuSysId, skuSysIdList);
+                            if (existsResult == -1) {  //该skusysid 未出现过，才添加队列，防止出现同商品不同批次，导致弹出选择UPC页面 但只有一个sku结果的场景
+                                skuSysIdList.push(el.SkuSysId);  //记录当前单据的所有 skuUPC ，如果后续需要弹出选择UPC页面，那么这个集合会作为筛选条件
+                            }
+                        }
+
+                    });
+
+                    var assemblyArr = AssemblyView.assemblyVM.$data.AssemblyDetails.filter(function (item) {
+                        return item.SkuUPC == skuUPC;
+                    });
+
+                    //UI 当前输入的qty 数量，后边作为与包装qty 乘积的系数
+                    var tempUIQty = $("#pickQty").val();
+                    if (tempUIQty == 0 || tempUIQty.length == 0) {
+                        tempUIQty = 1;
+                    }
+
+                    if (skuSysIdList.length <= 1) {
+                        if (skuPackUPCCount == 0) { //输入的是商品UPC
+                            //正常扫码，只有商品UPC
+                            if (skuSysIdList.length == 1) {
+                                $("#pickSkuSysId").val(skuSysIdList[0]);
+                            } else {
+                                $("#pickSkuSysId").val("");
+                            }
+                            pickUPCBlur();
+                        } else if (skuSysIdList.length == 0 && skuPackUPCCount == 1) {
+                            var skuPackArr = AssemblyView.assemblyVM.$data.AssemblyDetails.filter(function (item) {
+                                return item.UPC02 == skuUPC || item.UPC03 == skuUPC ||
+                                    item.UPC04 == skuUPC || item.UPC05 == skuUPC;
+                            });
+
+                            //仅存在箱子码
+                            //此处将UI当前qty * 包装qty，得到最终 qty，即 x 箱 *  y个（每箱数量） = 最终数量
+                            if (skuPackArr[0].UPC02 == skuUPC && !isNaN(skuPackArr[0].FieldValue02)) {
+                                $("#pickQty").val(skuPackArr[0].FieldValue02 * tempUIQty);
+                            }
+                            else if (skuPackArr[0].UPC03 == skuUPC && !isNaN(skuPackArr[0].FieldValue03)) {
+                                $("#pickQty").val(skuPackArr[0].FieldValue03 * tempUIQty);
+                            }
+                            else if (skuPackArr[0].UPC04 == skuUPC && !isNaN(skuPackArr[0].FieldValue04)) {
+                                $("#pickQty").val(skuPackArr[0].FieldValue04 * tempUIQty);
+                            }
+                            else if (skuPackArr[0].UPC05 == skuUPC && !isNaN(skuPackArr[0].FieldValue05)) {
+                                $("#pickQty").val(skuPackArr[0].FieldValue05 * tempUIQty);
+                            }
+
+                            $("#pickUPC").val(skuPackArr[0].SkuUPC); //将sku upc 赋值给 skuUPC栏位
+                            $("#pickSkuSysId").val(skuPackArr[0].SkuSysId);
+
+                            pickUPCBlur();
+                        } else {
+                            //出现重复UPC 商品，需要手动筛选
+                            ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                            ChooseSkuModel.showModal(skuUPC, function (chooseSku) {
+                                $("#pickSkuSysId").val(chooseSku.SkuSysId);
+                                $("#pickUPC").val(chooseSku.UPC);
+                                $("#pickQty").val(chooseSku.Qty * tempUIQty);
+                                pickUPCBlur();
+                            });
+                        }
+
+                    } else {
+                        //出现重复UPC 商品，需要手动筛选
+                        ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                        ChooseSkuModel.showModal(skuUPC, function (chooseSku) {
+                            $("#pickSkuSysId").val(chooseSku.SkuSysId);
+                            $("#pickUPC").val(chooseSku.UPC);
+                            $("#pickQty").val(chooseSku.Qty * tempUIQty);
+                            pickUPCBlur();
+                        });
+                    }
+                }
+            });
+
+            function pickUPCBlur() {
+                $.ajax({
+                    url: "@Url.Action("GetInventoryList", "Assembly")",
+                    data: {
+                        SkuSysId: $("#pickSkuSysId").val(),
+                        UPC: $("#pickUPC").val()
+                    },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success) {
+                            if (data.Data != null && data.Data.length > 0) {
+                                var jsonArray = new Array();
+                                jsonArray.push('提示：当前商品在以下库位中有库存');
+                                for (var i = 0; i < data.Data.length; i++) {
+                                    jsonArray.push('<div class="row">');
+                                    jsonArray.push('<div class="col-xs-5">' + data.Data[i].Loc + '</div>');
+                                    jsonArray.push('<div class="col-xs-7">' + data.Data[i].DisplayQty + '</div>');
+                                    jsonArray.push('</div>');
+                                }
+                                $("#pickInvList").html(jsonArray.join(''));
+                            }
+                            $("#pickLoc").focus();
+                        }
+                        else {
+                            msgErro(data.Message);
+                            $("#pickUPC").focus();
+                            $("#pickUPC").val("");
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        msgErro("操作失败！");
+                    }
+                });
+            }
+
+            $("#pickLoc").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    $("#pickQty").focus();
+                }
+            });
+
+            $("#pickLoc").on("blur", function () {
+                if ($("#pickLoc").val().trim() != "") {
+                    $.ajax({
+                        url: "@Url.Action("LocIsExist", "Assembly")",
+                        data: {
+                            LocationSearch: $("#pickLoc").val().trim(),
+                        },
+                        type: "post",
+                        success: function (data) {
+                            if (!data.Success) {
+                                msgErro(data.Message);
+                                $("#pickLoc").focus();
+                                $("#pickLoc").val("");
+                                return false;
+                            }
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            });
+
+            $("#pickQty").on("keyup", function () {
+                if (isNaN($("#pickQty").val())) {
+                    $("#pickQty").val("");
+                }
+            });
+
+            $("#pickQty").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    AssemblyView.SaveAssemblyPick();
+                }
+            });
+
+
+            //加工单上架
+            $("#shelveUPC").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    $("#shelveLoc").focus();
+                }
+            });
+
+            $("#shelveUPC").on("blur", function () {
+                if ($("#shelveUPC").val().trim() != "") {
+                    var skuUPC = $("#shelveUPC").val().trim();
+                    var skuPackUPCCount = 0; //统计明细商品所有包装码等于输入UPC的数量
+                    var skuSysIdList = new Array();
+                    var isUPC = false;
+
+                    if (AssemblyView.assemblyVM.$data.SkuUPC == skuUPC) {
+                        isUPC = true;
+                    }
+
+                    if (AssemblyView.assemblyVM.$data.UPC02 == skuUPC) {
+                        skuPackUPCCount++;
+                        isUPC = true;
+                    }
+                    if (AssemblyView.assemblyVM.$data.UPC03 == skuUPC) {
+                        skuPackUPCCount++;
+                        isUPC = true;
+                    }
+                    if (AssemblyView.assemblyVM.$data.UPC04 == skuUPC) {
+                        skuPackUPCCount++;
+                        isUPC = true;
+                    }
+                    if (AssemblyView.assemblyVM.$data.UPC05 == skuUPC) {
+                        skuPackUPCCount++;
+                        isUPC = true;
+                    }
+
+                    if (isUPC) {
+                        var existsResult = $.inArray(AssemblyView.assemblyVM.$data.SkuSysId, skuSysIdList);
+                        if (existsResult == -1) {  //该skusysid 未出现过，才添加队列，防止出现同商品不同批次，导致弹出选择UPC页面 但只有一个sku结果的场景
+                            skuSysIdList.push(AssemblyView.assemblyVM.$data.SkuSysId);  //记录当前单据的所有 skuUPC ，如果后续需要弹出选择UPC页面，那么这个集合会作为筛选条件
+                        }
+                    }
+
+                    //var assemblyArr = AssemblyView.assemblyVM.$data.AssemblyDetails.filter(function (item) {
+                    //    return item.SkuUPC == skuUPC;
+                    //});
+
+                    //UI 当前输入的qty 数量，后边作为与包装qty 乘积的系数
+                    var tempUIQty = $("#shelveQty").val();
+                    if (tempUIQty == 0 || tempUIQty.length == 0) {
+                        tempUIQty = 1;
+                    }
+
+                    if (skuSysIdList.length <= 1) {
+                        if (skuPackUPCCount == 0) { //输入的是商品UPC
+                            //正常扫码，只有商品UPC
+                            if (skuSysIdList.length == 1) {
+                                $("#shelveSkuSysId").val(skuSysIdList[0]);
+                            } else {
+                                $("#shelveSkuSysId").val("");
+                            }
+                            shelveUPCBlur();
+                        } else if (skuSysIdList.length == 0 && skuPackUPCCount == 1) {
+                            //var skuPackArr = AssemblyView.assemblyVM.$data.AssemblyDetails.filter(function (item) {
+                            //    return item.UPC02 == skuUPC || item.UPC03 == skuUPC ||
+                            //        item.UPC04 == skuUPC || item.UPC05 == skuUPC;
+                            //});
+
+                            //仅存在箱子码
+                            //此处将UI当前qty * 包装qty，得到最终 qty，即 x 箱 *  y个（每箱数量） = 最终数量
+                            if (AssemblyView.assemblyVM.$data.UPC02 == skuUPC && !isNaN(AssemblyView.assemblyVM.$data.FieldValue02)) {
+                                $("#shelveQty").val(AssemblyView.assemblyVM.$data.FieldValue02 * tempUIQty);
+                            }
+                            else if (AssemblyView.assemblyVM.$data.UPC03 == skuUPC && !isNaN(AssemblyView.assemblyVM.$data.FieldValue03)) {
+                                $("#shelveQty").val(AssemblyView.assemblyVM.$data.FieldValue03 * tempUIQty);
+                            }
+                            else if (AssemblyView.assemblyVM.$data.UPC04 == skuUPC && !isNaN(AssemblyView.assemblyVM.$data.FieldValue04)) {
+                                $("#shelveQty").val(AssemblyView.assemblyVM.$data.FieldValue04 * tempUIQty);
+                            }
+                            else if (AssemblyView.assemblyVM.$data.UPC05 == skuUPC && !isNaN(AssemblyView.assemblyVM.$data.FieldValue05)) {
+                                $("#shelveQty").val(AssemblyView.assemblyVM.$data.FieldValue05 * tempUIQty);
+                            }
+
+                            $("#shelveUPC").val(AssemblyView.assemblyVM.$data.SkuUPC); //将sku upc 赋值给 skuUPC栏位
+                            $("#shelveSkuSysId").val(AssemblyView.assemblyVM.$data.SkuSysId);
+
+                            shelveUPCBlur();
+                        } else {
+                            //出现重复UPC 商品，需要手动筛选
+                            ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                            ChooseSkuModel.showModal(skuUPC, function (chooseSku) {
+                                $("#shelveSkuSysId").val(chooseSku.SkuSysId);
+                                $("#shelveUPC").val(chooseSku.UPC);
+                                $("#shelveQty").val(chooseSku.Qty * tempUIQty);
+                                shelveUPCBlur();
+                            });
+                        }
+
+                    } else {
+                        //出现重复UPC 商品，需要手动筛选
+                        ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                        ChooseSkuModel.showModal(skuUPC, function (chooseSku) {
+                            $("#shelveSkuSysId").val(chooseSku.SkuSysId);
+                            $("#shelveUPC").val(chooseSku.UPC);
+                            $("#shelveQty").val(chooseSku.Qty * tempUIQty);
+                            shelveUPCBlur();
+                        });
+                    }
+                }
+            });
+
+            function shelveUPCBlur() {
+                $.ajax({
+                    url: "@Url.Action("GetInventoryList", "Assembly")",
+                    data: {
+                        SkuSysId: $("#shelveSkuSysId").val(),
+                        UPC: $("#shelveUPC").val()
+                    },
+                    type: "post",
+                    success: function (data) {
+                        if (data.Success) {
+                            if (data.Data != null && data.Data.length > 0) {
+                                var jsonArray = new Array();
+                                jsonArray.push('提示：当前商品在以下库位中有库存');
+                                for (var i = 0; i < data.Data.length; i++) {
+                                    jsonArray.push('<div class="row">');
+                                    jsonArray.push('<div class="col-xs-5">' + data.Data[i].Loc + '</div>');
+                                    jsonArray.push('<div class="col-xs-7">' + data.Data[i].DisplayQty + '</div>');
+                                    jsonArray.push('</div>');
+                                }
+                                $("#shelveInvList").html(jsonArray.join(''));
+                            }
+                            $("#shelveLoc").focus();
+                        }
+                        else {
+                            msgErro(data.Message);
+                            $("#shelveUPC").focus();
+                            $("#shelveUPC").val("");
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        msgErro("操作失败！");
+                    }
+                });
+            }
+
+            $("#shelveLoc").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    $("#shelveQty").focus();
+                }
+            });
+
+            $("#shelveLoc").on("blur", function () {
+                if ($("#shelveLoc").val().trim() != "") {
+                    $.ajax({
+                        url: "@Url.Action("LocIsExist", "Assembly")",
+                        data: {
+                            LocationSearch: $("#shelveLoc").val().trim(),
+                        },
+                        type: "post",
+                        success: function (data) {
+                            if (!data.Success) {
+                                msgErro(data.Message);
+                                $("#shelveLoc").focus();
+                                $("#shelveLoc").val("");
+                                return false;
+                            }
+                        },
+                        error: function () {
+                            msgErro("操作失败！");
+                        }
+                    });
+                }
+            });
+
+            $("#shelveQty").on("keyup", function () {
+                if (isNaN($("#shelveQty").val())) {
+                    $("#shelveQty").val("");
+                }
+            });
+
+            $("#shelveQty").on("keydown", function () {
+                if (event.keyCode == 13) {
+                    AssemblyView.SaveAssemblyShelve();
+                }
+            });
+
+
+        });
+    </script>
+}

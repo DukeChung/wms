@@ -1,0 +1,685 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "创建盘点单";
+}
+
+@Html.Breadcrumb("盘点查询", "/StockTake/StockTakeList", "创建盘点单")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="tabs-container">
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active"><a id="all" data-toggle="tab" href="#tab-1">全局盘点</a></li>
+            <li class=""><a id="touch" data-toggle="tab" href="#tab-2">动碰盘点</a></li>
+        </ul>
+
+        <div class="ibox">
+            <div class="ibox-content" style="overflow-x:auto">
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <form class="form-horizontal" style="margin-bottom:30px">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label" style="text-align:left">盘点方式:</label>
+                                @{
+                                    foreach (var stockTakeType in (List<SelectListItem>)ViewBag.StockTakeTypeList)
+                                    {
+                                        if (stockTakeType.Value == "10")
+                                        {
+                                            <div class="col-sm-2 radio radio-info radio-inline">
+                                                <label><input type="radio" id="@string.Format("StockTakeType_{0}", stockTakeType.Value)" name="StockTakeType" value="@stockTakeType.Value" checked onchange="stockTakeTypeChanged(this)" />@stockTakeType.Text</label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-sm-2 radio">
+                                                <label><input type="radio" id="@string.Format("StockTakeType_{0}", stockTakeType.Value)" name="StockTakeType" value="@stockTakeType.Value" onchange="stockTakeTypeChanged(this)" />@stockTakeType.Text</label>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                <div class="col-sm-2"></div>
+                            </div>
+                        </form>
+
+                        <div id="div_StockTake_10" style="display: block;">
+                            <form id="addStockTakeForm_10" class="form-horizontal">
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">指派给</label>
+                                        <select id="AssignBy" name="AssignBy" class="form-control chosen-select">
+                                            @{
+                                                <option value="">请选择</option>
+                                                foreach (var user in (List<SelectListItem>)ViewBag.UserList)
+                                                {
+                                                    <option value="@user.Value">@user.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">仓库</label>
+                                        <select id="WarehouseSysId" name="WarehouseSysId" class="form-control" disabled="disabled">
+                                            @{
+                                                <option value="">请选择</option>
+                                                foreach (var warehouse in (List<SelectListItem>)ViewBag.WarehouseList)
+                                                {
+                                                    if (ViewBag.WarehouseSysId.ToString() == warehouse.Value)
+                                                    {
+                                                        <option value="@warehouse.Value" selected="selected">@warehouse.Text</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@warehouse.Value">@warehouse.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">区域</label>
+                                        <select id="ZoneSysId" name="ZoneSysId" class="form-control" onchange="zoneChanged()">
+                                            @{
+                                                <option value="">请选择</option>
+                                                foreach (var zone in (List<SelectListItem>)ViewBag.ZoneList)
+                                                {
+                                                    <option value="@zone.Value">@zone.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">库位</label>
+                                        <select id="LocSysId" name="LocSysId" class="form-control chosen-select">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <button id="btnLocationSearch" class="btn btn-primary" type="button" style="margin-top:24px;float: left; ">查询</button>
+                                    </div>
+                                </div>
+                                <table id="gvLocationSku" class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th data-data="SkuCode" style="width:100px">商品编号</th>
+                                            <th data-data="SkuUPC" style="width:100px">UPC</th>
+                                            <th data-data="SkuName" style="width:100px">商品名称</th>
+                                            <th data-data="Loc" style="width:100px">库位</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </form>
+                        </div>
+
+                        <div id="div_StockTake_20" style="display: none;">
+                            <form id="addStockTakeForm_20" class="form-horizontal">
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">指派给</label>
+                                        <select id="AssignBy" name="AssignBy" class="form-control chosen-select">
+                                            @{
+                                                <option value="">请选择</option>
+                                                foreach (var user in (List<SelectListItem>)ViewBag.UserList)
+                                                {
+                                                    <option value="@user.Value">@user.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">仓库</label>
+                                        <select id="WarehouseSysId" name="WarehouseSysId" class="form-control" disabled="disabled">
+                                            @{
+                                                <option value="">请选择</option>
+                                                foreach (var warehouse in (List<SelectListItem>)ViewBag.WarehouseList)
+                                                {
+                                                    if (ViewBag.WarehouseSysId.ToString() == warehouse.Value)
+                                                    {
+                                                        <option value="@warehouse.Value" selected="selected">@warehouse.Text</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@warehouse.Value">@warehouse.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">UPC</label>
+                                        <input type="text" id="SkuUPC" name="SkuUPC" class="form-control">
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">一级类别</label>
+                                        <select id="SkuClassSysId1" name="SkuClassSysId1" class="form-control chosen-select" index="1" onchange="skuClassChanged(this)">
+                                            @{
+                                                <option value="">请选择</option>
+                                                foreach (var skuClass in (List<SelectListItem>)ViewBag.SkuClass1List)
+                                                {
+                                                    <option value="@skuClass.Value">@skuClass.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">二级类别</label>
+                                        <select id="SkuClassSysId2" name="SkuClassSysId2" class="form-control chosen-select" index="2" onchange="skuClassChanged(this)">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">三级类别</label>
+                                        <select id="SkuClassSysId3" name="SkuClassSysId3" class="form-control chosen-select" index="3" onchange="skuClassChanged(this)">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">四级类别</label>
+                                        <select id="SkuClassSysId4" name="SkuClassSysId4" class="form-control chosen-select" index="4" onchange="skuClassChanged(this)">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">五级类别</label>
+                                        <select id="SkuClassSysId5" name="SkuClassSysId5" class="form-control chosen-select">
+                                            <option value="">请选择</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <button id="btnSkuSearch" class="btn btn-primary" type="button" style="margin-top:24px;float: left; ">查询</button>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-12">
+                                        <select class="form-control dual_select" multiple></select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+                        <div id="div_StockTake_50" class="row form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label">指派给</label>
+                                <select id="AssignBy" name="AssignBy" class="form-control chosen-select">
+                                    @{
+                                        <option value="">请选择</option>
+                                        foreach (var user in (List<SelectListItem>)ViewBag.UserList)
+                                        {
+                                            <option value="@user.Value">@user.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label class="control-label">仓库</label>
+                                <select id="WarehouseSysId" name="WarehouseSysId" class="form-control" disabled="disabled">
+                                    @{
+                                        <option value="">请选择</option>
+                                        foreach (var warehouse in (List<SelectListItem>)ViewBag.WarehouseList)
+                                        {
+                                            if (ViewBag.WarehouseSysId.ToString() == warehouse.Value)
+                                            {
+                                                <option value="@warehouse.Value" selected="selected">@warehouse.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@warehouse.Value">@warehouse.Text</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label" for="StartDate">开始日期</label>
+                                <div class="form-group" id="divStartDate">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"> <i class="fa fa-calendar"></i></span>
+                                        <input type="text" class="form-control" id="StartDate" name="StartDate" value='' placeholder="请输入开始日期">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label class="control-label" for="EndDate">结束日期</label>
+                                <div class="form-group" id="divEndDate">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"> <i class="fa fa-calendar"></i></span>
+                                        <input type="text" class="form-control" id="EndDate" name="EndDate" value='' placeholder="请输入结束日期">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <button id="btnTouchSearch" class="btn btn-primary" type="button" style="margin-top:24px;float: left; ">查询</button>
+                            </div>
+                        </div>
+                        <table id="gvTouchSku" class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th data-data="SkuCode" style="width:100px">商品编号</th>
+                                    <th data-data="SkuUPC" style="width:100px">UPC</th>
+                                    <th data-data="SkuName" style="width:100px">商品名称</th>
+                                    <th data-data="Loc" style="width:100px">库位</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-sm btn-primary" id="btnSave" onclick="newStockTake();"><i class="fa fa-check-square-o"></i> 保存</a>
+                @*<a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/duallistStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validate/cnMessage")
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/duallist")
+    <script type="text/javascript">
+        var stockTakeType = 10;
+        var skuDualSelect;
+
+        $(document).ready(function () {
+            $('.chosen-select').chosen({ width: "100%" });
+
+            $("#myTab li:eq(0) a").tab("show");
+
+            $('#divStartDate .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#divEndDate .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            var today = new Date();
+            var yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+            function formatDate(date) {
+                var y = date.getFullYear();
+                var m = date.getMonth() + 1;
+                m = m < 10 ? '0' + m : m;
+                var d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                return y + '-' + m + '-' + d;
+            };
+
+            $("#StartDate").val(formatDate(yesterday));
+            $("#EndDate").val(formatDate(yesterday));
+
+            $("#addStockTakeForm_10").validate({
+                rules: {
+                    AssignBy: {
+                        required: true
+                    }
+                }
+            });
+
+            $("#addStockTakeForm_20").validate({
+                rules: {
+                    AssignBy: {
+                        required: true
+                    }
+                }
+            });
+
+            skuDualSelect = $('.dual_select').bootstrapDualListbox({
+                selectorMinimalHeight: 240,
+                moveOnSelect: false,
+                nonSelectedListLabel: "商品信息",
+                selectedListLabel: "盘点明细",
+                infoText: "(数量{0})",
+                infoTextFiltered: '<span class="label label-warning">从 {1} 条中过滤出 {0} 条</span>',
+                infoTextEmpty: '(无数据)',
+                filterTextClear: '显示全部',
+                filterPlaceHolder: '请输入过滤内容',
+                moveSelectedLabel: '添加选中',
+                moveAllLabel: '添加全部',
+                removeSelectedLabel: '删除选中',
+                removeAllLabel: '删除全部',
+                preserveSelectionOnMove: false
+            });
+
+            $(".clear1").before("<button id='btnClearNonSelected' class='btn pull-right btn-default btn-xs' type='button'>清空</button>")
+            $(".clear2").before("<button id='btnClearSelected' class='btn pull-right btn-default btn-xs' type='button'>清空</button>")
+
+            $("#btnClearNonSelected").click(function () {
+                var options = $(".dual_select").find("option");
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i];
+                    if ($(option).attr("data-sortindex") == undefined) {
+                        $(option).remove();
+                    }
+                }
+                skuDualSelect.bootstrapDualListbox('refresh');
+            });
+
+            $("#btnClearSelected").click(function () {
+                var options = $(".dual_select").find("option");
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i];
+                    if ($(option).attr("data-sortindex") != undefined) {
+                        $(option).remove();
+                    }
+                }
+                skuDualSelect.bootstrapDualListbox('refresh');
+            });
+
+            var tableLocationSku = $('#gvLocationSku').DataTable({
+                "sAjaxSource": "GetWaitingStockTakeSkuList",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "StockTakeType", "value": 10 },
+                        { "name": "ZoneSysId", "value": $("#ZoneSysId").val() },
+                        { "name": "LocSysId", "value": $("#LocSysId").val() }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [],
+                "columnDefs": [],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnLocationSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                tableLocationSku.ajax.reload();
+            });
+
+            var tableTouchSku = $('#gvTouchSku').DataTable({
+                "sAjaxSource": "GetWaitingStockTakeSkuList",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "StockTakeType", "value": 50 },
+                        { "name": "StartDate", "value": $("#StartDate").val() },
+                        { "name": "EndDate", "value": $("#EndDate").val() }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [],
+                "columnDefs": [],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnTouchSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                tableTouchSku.ajax.reload();
+            });
+
+            zoneChanged();
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var activeTabId = e.target.id;
+                if (activeTabId == "all") {
+                    if ($("#StockTakeType_10").is(':checked')) {
+                        stockTakeType = 10;
+                    } else if ($("#StockTakeType_20").is(':checked')) {
+                        stockTakeType = 20;
+                    }
+                } else if (activeTabId == "touch") {
+                    stockTakeType = 50;
+                }
+                $("#gvTouchSku").width($("#gvLocationSku").width() + "px");
+            });
+
+            $("#btnSkuSearch").click(function () {
+                var options = $(".dual_select").find("option");
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i];
+                    if ($(option).attr("data-sortindex") == undefined) {
+                        $(option).remove();
+                    }
+                }
+                skuDualSelect.bootstrapDualListbox('refresh');
+                $.ajax({
+                    url: "/StockTake/GetWaitingStockTakeSkuList",
+                    type: "POST",
+                    data: getSkuSearchData(),
+                    success: function (data) {
+                        //$("#bootstrap-duallistbox-nonselected-list_").html("");
+                        //skuDualSelect.empty();
+                        if (data != null && data.aaData != null && data.aaData.length > 0) {
+                            for (var i = 0; i < data.aaData.length; i++) {
+                                var sku = data.aaData[i];
+                                skuDualSelect.append("<option value='" + sku.SysId + "'>" + sku.SkuName + "</option>");
+                            }
+                            skuDualSelect.bootstrapDualListbox('refresh', true);
+                        }
+                    },
+                    error: function (data) {
+                        msgErro("获取商品信息失败");
+                    }
+                });
+            });
+
+            function getSkuSearchData() {
+                var postData = {};
+                postData["StockTakeType"] = 20;
+                postData["SkuUPC"] = $("#SkuUPC").val();
+                for (var i = 5; i > 0; i--) {
+                    var skuClassSysId = $("#SkuClassSysId" + i).val();
+                    if (skuClassSysId != null && skuClassSysId.trim() != "") {
+                        postData["SkuClassSysId"] = skuClassSysId;
+                        break;
+                    }
+                }
+                return postData;
+            }
+        });
+
+        function stockTakeTypeChanged(e) {
+            $("#div_StockTake_10").attr("style", "display: none;");
+            $("#div_StockTake_20").attr("style", "display: none;");
+
+            if (e.value == "30" || e.value == "40") {
+                $("#btnSave").attr("disabled", true);
+                return;
+            }
+
+            $("#div_StockTake_" + e.value).attr("style", "display: block;");
+            $("#btnSave").attr("disabled", false);
+
+            stockTakeType = parseInt(e.value);
+        }
+
+        function newStockTake() {
+            var postData = {};
+            postData["StockTakeType"] = stockTakeType;
+            postData["AssignBy"] = $("#div_StockTake_" + stockTakeType).find("#AssignBy option:selected").val();
+            postData["AssignUserName"] = $("#div_StockTake_" + stockTakeType).find("#AssignBy option:selected").text();
+            if (stockTakeType == 10) {
+                postData["ZoneSysId"] = $("#ZoneSysId").val();
+                postData["LocSysId"] = $("#LocSysId").val();
+            } else if (stockTakeType == 20) {
+                postData["SkuSysIds"] = [];
+                var options = $(".dual_select").find("option");
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i];
+                    if ($(option).attr("data-sortindex") != undefined) {
+                        postData["SkuSysIds"].push($(option).val());
+                    }
+                }
+
+            } else if (stockTakeType == 50) {
+                postData["StartDate"] = $("#StartDate").val();
+                postData["EndDate"] = $("#EndDate").val();
+            }
+
+            if (postData["AssignBy"].trim() == "") {
+                msgErro("请选择指派人");
+                return false;
+            }
+            if (stockTakeType == 10 && postData["ZoneSysId"].trim() == "") {
+                msgErro("请选择储区或库位");
+                return false;
+            }
+            if (stockTakeType == 20 && postData["SkuSysIds"].length == 0) {
+                msgErro("请查询并添加盘点明细");
+                return false;
+            }
+            if (stockTakeType == 50 && (postData["StartDate"].trim() == "" || postData["EndDate"].trim() == "")) {
+                msgErro("请选择正确的开始和结束日期");
+                return false;
+            }
+
+            msgConfirm("将会根据条件创建盘点单，是否继续？", function (isConfirm) {
+                if (isConfirm) {
+                    saveLoading('show');
+                    $.ajax({
+                        url: "/StockTake/SaveNewStockTake",
+                        type: "POST",
+                        data: postData,
+                        success: function (data) {
+                            setTimeout(function () {
+                                saveLoading();
+                                if (data.Success) {
+                                    msgSuccess(data.Message, setTimeout(function () {
+                                        window.location.href = "/StockTake/StockTakeList";
+                                    }, 100));
+                                } else {
+                                    msgErro(data.Message);
+                                }
+                            }, 100);
+                        },
+                        error: function (data) {
+                            saveLoading();
+                            msgErro(data.Message);
+                        }
+                    });
+                }
+            }, true);
+        }
+
+        function getSerializedData() {
+            var postData = $("div[style^='display: block;']").children().serializeObject();
+            postData["StockTakeType"] = $('input[type=radio]:checked').val() || '';
+            postData["AssignUserName"] = $("div[style^='display: block;'] a[class='chosen-single']").text();
+            return postData;
+        }
+
+        function zoneChanged() {
+            $("#LocSysId").empty();
+            $("#LocSysId").append("<option value=''>请选择</option>");
+            $("#LocSysId").trigger('chosen:updated');
+            if ($("#ZoneSysId").val().trim() != "") {
+                $.ajax({
+                    url: "/StockTake/GetSelectLocationList?zoneSysId=" + $("#ZoneSysId").val(),
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            for (var i in data.Data) {
+                                $("#LocSysId").append("<option value='" + data.Data[i].Value + "'>" + data.Data[i].Text + "</option>");
+                            }
+                        }
+                        $("#LocSysId").trigger('chosen:updated');
+                    },
+                    error: function (data) {
+                        msgErro("获取库位信息失败");
+                        $("#LocSysId").trigger('chosen:updated');
+                    }
+                });
+            }
+        }
+
+        function skuClassChanged(e) {
+            for (var i = (parseInt($(e).attr("index")) + 1) ; i < 6; i++) {
+                $("#SkuClassSysId" + i).empty();
+                $("#SkuClassSysId" + i).append("<option value=''>请选择</option>");
+                $("#SkuClassSysId" + i).trigger('chosen:updated');
+            }
+            $.ajax({
+                url: "/StockTake/GetSelectSkuClass?parentSysId=" + e.value,
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                traditional: true,
+                success: function (data) {
+                    for (var i in data) {
+                        $("#SkuClassSysId" + (parseInt($(e).attr("index")) + 1)).append("<option value='" + data[i].Value + "'>" + data[i].Text + "</option>");
+                    }
+                    $("#SkuClassSysId" + (parseInt($(e).attr("index")) + 1)).trigger('chosen:updated');
+                },
+                error: function (data) {
+                    msgErro("获取商品分类失败");
+                    $("#SkuClassSysId" + (parseInt($(e).attr("index")) + 1)).trigger('chosen:updated');
+                }
+            });
+        }
+    </script>
+}

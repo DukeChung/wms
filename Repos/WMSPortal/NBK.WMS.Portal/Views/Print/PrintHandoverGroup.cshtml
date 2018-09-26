@@ -1,0 +1,65 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.HandoverGroupDto
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">交接单</H1>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("交接单号", Model.HandoverGroupOrder)
+                @Html.PrintTitle("交接物流", Model.CarrierName)
+                @Html.PrintTitle("创建时间", Model.HandoverCreateDateDisplay)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("合计件数", Model.TotalCount.ToString())
+                @Html.PrintTitle("合计重量", Model.TotalWeight.ToString("F2"))
+
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("包裹单号")
+                            @Html.PrintTh("物流面单号")
+                            @Html.PrintTh("重量(kg)")
+                        </tr>
+                        @{
+                            foreach (var info in Model.HandoverGroupDetailList)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.VanningOrderDisplay)
+                                    @Html.PrintTd(info.CarrierNumber)
+                                    @Html.PrintTd(info.Weight.ToString("F2"))
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class='col-xs-2'></div>
+                @Html.PrintLongTitle("承运人签字(日期)", string.Empty, 5)
+                @Html.PrintLongTitle("收货人签字(日期)", string.Empty, 5)
+
+            </div>
+
+        </form>
+    </div>
+</div> 

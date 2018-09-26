@@ -1,0 +1,506 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil;
+
+@{
+    ViewBag.Title = "拣货单管理";
+}
+
+@Html.Breadcrumb("出库管理", "拣货单管理")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("拣货单号", "PickDetailOrderSearch")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("出库单号", "OutboundOrderSearch")
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="StatusSearch">单据状态</label>
+                    <select class="form-control m-b" name="account" id="StatusSearch">
+                        <option>全部</option>
+                        <option value="10">新建</option>
+                        <option value="20">部分拣货</option>
+                        <option value="50">拣货完成</option>
+                        <option value="-999">取消拣货</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="OutboundTypeSearch">单据类型</label>
+                    <select class="form-control m-b" name="OutboundTypeSearch" id="OutboundTypeSearch">
+                        <option selected>全部</option>
+                        <option value="10">正常</option>
+                        <option value="20">B2C</option>
+                        <option value="30">B2B</option>
+                        <option value="40">退货出库</option>
+                        <option value="50">快进快出</option>
+                        <option value="60">移仓</option>
+                        <option value="70">原材料出库</option>
+                        <option value="80">农资出库</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品UPC", "SkuUPCSearch")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品名称", "SkuNameSearch")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("平台订单号", "PlatformOrderSearch")
+            </div>
+            <div class="col-sm-2">
+                @Html.SearchTextBox("服务综合体", "ServiceStationName")
+            </div>
+            <div class="col-sm-1">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:23px;float: left; ">查询</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvPickDetail" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="PickDetailOrder" width="8%">拣货单编号</th>
+                                <th data-data="OutboundOrder" width="6%">出库单号</th>
+                                <th data-data="PlatformOrder" width="8%">平台订单号</th>
+                                <th data-data="OutboundChildType" width="10%">业务类型</th>
+                                <th data-data="StatusText" width="5%">状态</th>
+                                <th data-data="SkuName" width="13%">商品名称</th>
+                                <th data-data="SkuDescr" width="10%">商品描述</th>
+                                <th data-data="Channel" width="5%">渠道</th>
+                                <th data-data="Loc" width="6%">库位</th>
+                                <th data-data="Lot" width="5%">批次</th>
+                                <th data-data="DisplayQty" width="5%">数量</th>
+                                <th data-data="DisplayPickedQty" width="5%">拣货数量</th>
+                                <th data-data="UomCode" width="4%">单位</th>
+                                <th data-data="ServiceStationName" width="10%">服务综合体</th>
+                                <th data-data="PickDateText" width="12%">拣货时间</th>
+                                <th data-data="AppointUserNames">拣货人</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="PurchaseForm" class="form-horizontal">
+        <div class="modal inmodal fade" id="cancelPick" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-12">请输入取消数量:</label>
+                            <div class="col-sm-12">
+                                <input type="number" id="cancelQty" name="cancelQty" class="form-control">
+                            </div>
+                            <label class="col-sm-12">请输入拣货容器:</label>
+                            <div class="col-sm-12">
+                                <input type="text" id="storageCase" name="storageCase" class="form-control">
+                            </div>
+                            <label id="msg" class="col-sm-12 control-label" style="color:red;text-align:left"></label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnSaveCancelPick" type="button" class="btn btn-primary">确定</button>
+                        <button id="btnCloseCancelPick" type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal fade" id="div_PickingSku" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width:930px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        拣货商品列表
+                    </h4>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center">拣货单编号</th>
+                            <th class="text-center">出库单号</th>
+                            <th class="text-center">商品名称</th>
+                            <th class="text-center">UPC</th>
+                            <th class="text-center">商品描述</th>
+                            <th class="text-center">库位</th>
+                            <th class="text-center">批次</th>
+                            <th class="text-center">分配数量</th>
+                            <th class="text-center">拣货数量</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pickingSkuList"></tbody>
+                </table>
+                <div class="modal-footer">
+                    <a class="btn btn-sm btn-primary" onclick="SavePickingOperation()">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/print")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+            table = $('#gvPickDetail').DataTable({
+                "sAjaxSource": "/PickDetail/GetPickDetailList",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "PickDetailOrderSearch", "value": $("#PickDetailOrderSearch").val() },
+                        { "name": "OutboundOrderSearch", "value": $("#OutboundOrderSearch").val() },
+                        { "name": "StatusSearch", "value": $("#StatusSearch").val() },
+                        { "name": "OutboundTypeSearch", "value": $("#OutboundTypeSearch").val() },
+                        { "name": "SkuUPCSearch", "value": $("#SkuUPCSearch").val() },
+                        { "name": "SkuNameSearch", "value": $("#SkuNameSearch").val() },
+                        { "name": "PlatformOrderSearch", "value": $("#PlatformOrderSearch").val() },
+                    { "name": "ServiceStationNameSearch", "value": $("#ServiceStationName").val() }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'pageLength',
+                    {
+                        text: '创建拣货',
+                        action: function (e, dt, node, config) {
+                            window.location.href = "/PickDetail/CreatePickDetail";
+                        }
+                    },
+                    {
+                        text: '取消拣货',
+                        action: function (e, dt, node, config) {
+                            var check = $("table tbody input:checked");
+                            if (check.length === 0) {
+                                msgErro("请在列表中勾选一项!");
+                                return null;
+                            }
+
+                            msgConfirm("拣货单中的出库单将全部取消拣货，是否取消拣货？", function (isConfirm) {
+                                if (isConfirm) {
+                                    $(".sweet-overlay").hide();
+                                    $(".sweet-alert").hide();
+                                    saveLoading('show');
+                                    var pickDetailOrders = "";
+
+                                    $(check).each(function () {
+                                        pickDetailOrders += pickDetailOrders != "" ? "," + $(this).attr("PickDetailOrder") : $(this).attr("PickDetailOrder");
+                                    });
+
+                                    if (pickDetailOrders != null) {
+                                        $.ajax({
+                                            url: "/PickDetail/CancelPickDetail",
+                                            type: "post",
+                                            data: { pickDetailOrders },
+                                                    success: function(data) {
+                                                        saveLoading('hide');
+                                                        if (data.success) {
+                                                            table.ajax.reload();
+                                                            msgSuccess('', function () {
+                                                            });
+                                                        } else {
+                                                            msgErro(data.message);
+                                                        }
+                                                    },
+                                            error: function () {
+                                                saveLoading('hide');
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                        }
+                    },
+                    @if (AuthorizeManager.HasFunction(AuthKeyConst.Outbound_PickDetail_PickingOperation, User.Identity.Name))
+                    {
+                        <text>
+                            {
+                                text: '拣货',
+                                action: function (e, dt, node, config) {
+                                    PickingOperation();
+                                }
+                            },
+                        </text>
+                    }
+                    {
+                        text: '取消拣货数量',
+                        action: function (e, dt, node, config) {
+                            var sysId = GetGridSysId();
+                            if (sysId != null) {
+                                $("#msg").html("");
+                                $("#cancelQty").val("");
+                                $("#storageCase").val("");
+                                $("#cancelPick").modal("show");
+                            }
+                        }
+                    },
+                    {
+                        text: '拣货单打印',
+                        action: function (e, dt, node, config) {
+                            var check = $("table tbody input:checked");
+                            if (check.length === 0) {
+                                msgErro("请在列表中勾选一项!");
+                                return null;
+                            }
+
+                            var pickdetailOrders = [];
+                            msgConfirm("确定要打印吗？", function (isConfirm) {
+                                if (isConfirm) {
+                                    for (var i = 0; check.length > i; i++) {
+                                        if ($(check[i]).attr("StatusText") === "取消拣货") {
+                                            msgErro("被取消的拣货单无法进行补打!");
+                                            return;
+                                        }
+                                    }
+
+                                    for (var i = 0; check.length > i; i++) {
+                                        var pds = pickdetailOrders.filter(function (item) {
+                                            if (item == $(check[i]).attr("PickDetailOrder")) {
+                                                return $(check[i]).attr("PickDetailOrder");
+                                            }
+                                        });
+
+                                        if (pds.length > 0) {
+                                            continue;
+                                        } else {
+                                            pickdetailOrders.push($(check[i]).attr("PickDetailOrder"));
+                                        }
+
+                                        if (parseInt($(check[i]).attr("OutboundCount")) > 1) {
+                                            var LODOP = getLodop();
+                                            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                                            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintNameBatch");
+                                            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                                            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintPickDetailByBatch?pickDetailOrder=" + $(check[i]).attr("PickDetailOrder") + "&userName=@ViewBag.UserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+                                            LODOP.ADD_PRINT_BARCODE(40, 550, 206, 58, "128B", $(check[i]).attr("PickDetailOrder"));
+                                            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+                                            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+                                            //LODOP.PREVIEW();
+                                            LODOP.PRINT();
+                                        } else {
+                                            var LODOP = getLodop();
+                                            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+                                            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintNameOrder");
+                                            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                                            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintPickDetailByOrder?pickDetailOrder=" + $(check[i]).attr("PickDetailOrder") + "&userName=@ViewBag.UserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+                                            LODOP.ADD_PRINT_BARCODE(40, 550, 206, 58, "128B", $(check[i]).attr("PickDetailOrder"));
+                                            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+                                            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+                                            //LODOP.PREVIEW();
+                                            LODOP.PRINT();
+                                        }
+                                    }
+                                    msgAlert("打印成功");
+                                }
+                            });
+                        }
+                    }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": 0,
+                        "width": "15px",
+                        render: function (data, type, full, meta) {
+                            return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" PickDetailOrder="' + full.PickDetailOrder + '"  StatusText="' + full.StatusText + '"  OutboundCount="' + full.OutboundCount + '" />';
+                        }
+                    }
+                ],
+                //"sScrollX": "100%",
+                //"sScrollXInner": "160%",
+                //"bScrollCollapse": true,
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    buttons: {
+                        pageLength: {
+                            _: "每页显示 %d 条记录"
+                        }
+                    },
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                table.ajax.reload();
+            });
+
+            $("#btnSaveCancelPick").bind("click", function () {
+                $("#msg").html("");
+                var sysId = GetGridSysId();
+                var cancelQty = $("#cancelQty").val();
+                var reg = /^[1-9]\d*$/;
+                if (reg.test(cancelQty)) {
+                    $.ajax({
+                        url: "/PickDetail/CancelPickQty?sysId=" + sysId + "&qty=" + cancelQty + "&storageCase=" + $("#storageCase").val(),
+                        type: "GET",
+                        success: function (data) {
+                            saveLoading('hide');
+                            if (data.success) {
+                                $("#cancelPick").modal("hide");
+                                table.ajax.reload();
+                                msgSuccess('', function () {
+                                });
+                            } else {
+                                msgErro(data.message);
+                            }
+                        },
+                        error: function () {
+                            saveLoading('hide');
+                        }
+                    });
+                } else {
+                    $("#msg").html("请输入有效的取消数量");
+                }
+            });
+        });
+
+        function PickingOperation() {
+            var sysId = GetGridOnlySysId();
+            if (sysId == null) {
+                return false;
+            }
+            var selectedData = getSelectedData(table);
+            var isSameOrder = true;
+            var pickDetailOrder = null;
+            for (var i = 0; i < selectedData.length; i++) {
+                if (pickDetailOrder == null) {
+                    pickDetailOrder = selectedData[i].PickDetailOrder;
+                } else {
+                    if (selectedData[i].PickDetailOrder != pickDetailOrder)
+                    {
+                        isSameOrder = false;
+                        break;
+                    }
+                }
+            }
+            
+            if (!isSameOrder) {
+                msgErro("所选记录必须为同一拣货单!");
+                return false;
+            }
+
+            saveLoading('show');
+            $.ajax({
+                url: "@Url.Action("GetPickingOperationDetails", "PickDetail")",
+                data: { PickDetailOrder: pickDetailOrder },
+                dataType: "json",
+                type: "post",
+                success: function (data) {
+                    saveLoading();
+                    if (data.Success) {
+                        var trs = new Array();
+                        for (var i = 0; i < data.Data.length; i++) {
+                            trs.push('<tr style="padding:10px;">');
+                            trs.push('<td class="text-center" style="width:6%">' + (i + 1) + '</td>')
+                            trs.push('<td class="text-center" style="width:10%">' + data.Data[i].PickDetailOrder + '</td>')
+                            trs.push('<td class="text-center" style="width:10%">' + data.Data[i].OutboundOrder + '</td>');
+                            trs.push('<td class="text-center" style="width:10%">' + data.Data[i].SkuName + '</td>');
+                            trs.push('<td class="text-center" style="width:10%">' + data.Data[i].UPC + '</td>');
+                            trs.push('<td class="text-center" style="width:16%">' + data.Data[i].SkuDescr + '</td>');
+                            trs.push('<td class="text-center" style="width:10%">' + data.Data[i].Loc + '</td>');
+                            trs.push('<td class="text-center" style="width:10%">' + data.Data[i].Lot + '</td>');
+                            trs.push('<td class="text-center" style="width:8%">' + data.Data[i].DisplayQty + '</td>');
+                            trs.push('<td class="text-center" style="width:10%"><input type="hidden" value="' + data.Data[i].SysId + '"><input type="hidden" value="' + data.Data[i].SkuSysId + '"><input type="number" style="width:100%" value="' + data.Data[i].DisplayPickedQty + '" onblur=\'var re = new RegExp("^(([0-9]+)|([0-9]+\.[0-9]{1,2}))$", "g"); this.value = re.test(this.value) ? this.value : "";\' /></td>');
+                            trs.push('</tr>');
+                        }
+                        $("#pickingSkuList").html(trs.join(''));
+                        $("#div_PickingSku").modal("show");
+                    } else {
+                        msgErro(data.Message);
+                    }
+                },
+                error: function () {
+                    saveLoading('hide');
+                    msgErro("操作失败！");
+                }
+            });
+        }
+
+        function SavePickingOperation() {
+            var submitFlag = true;
+            var pickingDetails = [];
+            $("#pickingSkuList").children("tr").each(function () {
+                var sysId = $(this).children("td").children("input").eq(0).val();
+                var skuSysId = $(this).children("td").children("input").eq(1).val();
+                var displayQty = parseFloat($(this).children("td").eq(8).text());
+                var displayPickedQty = $(this).children("td").children("input").eq(2).val();
+                if (displayPickedQty != "") {
+                    if (parseFloat(displayPickedQty) > displayQty) {
+                        msgErro("拣货数量不能大于分配数量!");
+                        submitFlag = false;
+                        return false;
+                    } else {
+                        var pickingDetail = { SysId: sysId, SkuSysId: skuSysId, DisplayQty: displayQty, DisplayPickedQty: displayPickedQty };
+                        pickingDetails.push(pickingDetail);
+                    }
+                } else {
+                    msgErro("请填写正确的拣货数量!");
+                    submitFlag = false;
+                    return false;
+                }
+            });
+
+            if (submitFlag && pickingDetails.length > 0) {
+                saveLoading('show');
+                $.ajax({
+                    url: "@Url.Action("SavePickingOperation", "PickDetail")",
+                    data: { PickingOperationDetails: pickingDetails },
+                    dataType: "json",
+                    type: "post",
+                    success: function (data) {
+                        saveLoading();
+                        if (data.Success) {
+                            $("#div_PickingSku").modal("hide");
+                            table.ajax.reload();
+                        } else {
+                            msgErro(data.Message);
+                        }
+                    },
+                    error: function () {
+                        saveLoading('hide');
+                        msgErro("操作失败！");
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,964 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NBK.ECService.WMSReport.ApiController</name>
+    </assembly>
+    <members>
+        <member name="T:NBK.ECService.WMSReport.ApiController.AccountController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.AccountController.#ctor(NBK.ECService.WMSReport.Application.Interface.IAccountAppService)">
+            <summary>
+            
+            </summary>
+            <param name="accountAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.AccountController.AccountApi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.AccountController.UserLoginCheck(NBK.ECService.WMSReport.DTO.Base.LoginUserInfo)">
+            <summary>
+            校验用户登陆验证
+            #1. 失败登陆次数
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.AccountController.GetSystemMenuList">
+            <summary>
+            获取系统菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.AccountController.SynchroMenu">
+            <summary>
+            同步菜单
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.#ctor(NBK.ECService.WMSReport.Application.Interface.IChartAppService)">
+            <summary>
+            
+            </summary>
+            <param name="chartAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.ChartAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.GetPurchaseAndOutboundChart(System.Guid)">
+            <summary>
+            获取入库出库订单占比
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.GetAdventSkuChartTop5(System.Guid)">
+            <summary>
+            获取临期产品
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.GetSkuReceiptOutboundChartAfter10(System.Guid)">
+            <summary>
+            过去十天收发货商品数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.GetOutboundAndReturnCharDataOfLastTenDays(System.Guid)">
+            <summary>
+            获取过去十天订单与退货数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.GetPrePackBoardTop12(System.Guid)">
+            <summary>
+            首页预包装看板
+            </summary>
+            <param name="wareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.GetExceedThreeDaysPurchase(System.Guid)">
+            <summary>
+            首页超过三天未收货的入库单6条
+            </summary>
+            <param name="wareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ChartController.GetToDayOrderStatusTotal(System.Guid)">
+            <summary>
+            首页获取当天订单数
+            </summary>
+            <param name="wareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSReport.ApiController.GlobalController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.#ctor(NBK.ECService.WMSReport.Application.Interface.IGlobalAppService)">
+            <summary>
+            
+            </summary>
+            <param name="globalAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetAllWarehouse">
+            <summary>
+            获取所有仓库
+            </summary> 
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetPurchaseDetailReport(NBK.ECService.WMSReport.DTO.PurchaseDetailGlobalQuery)">
+            <summary>
+            入库明细报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetInvLocBySkuReport(NBK.ECService.WMSReport.DTO.InvSkuLocGlobalQuery)">
+            <summary>
+            货位库存查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetInvLotBySkuReport(NBK.ECService.WMSReport.DTO.InvSkuLotGlobalQuery)">
+            <summary>
+            批次库存查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetInvLotLocLpnBySkuReport(NBK.ECService.WMSReport.DTO.InvSkuLotLocLpnGlobalQuery)">
+            <summary>
+            货位批次库存查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetExpiryInvLotBySkuReport(NBK.ECService.WMSReport.DTO.InvSkuLotGlobalQuery)">
+            <summary>
+            获取临过期批次商品库存信息
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetReceiptDetailReport(NBK.ECService.WMSReport.DTO.ReceiptDetailGlobalQuery)">
+            <summary>
+            收货明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundDetailReport(NBK.ECService.WMSReport.DTO.OutboundDetailGlobalQuery)">
+            <summary>
+            出库明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundDetailReportByFile(NBK.ECService.WMSReport.DTO.OutboundDetailGlobalQuery)">
+            <summary>
+            出库明细报表导出
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetTransferinventoryReport(NBK.ECService.WMSReport.DTO.TransferinventoryGlobalQuery)">
+            <summary>
+            移仓单报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetInvSkuReport(NBK.ECService.WMSReport.DTO.InvSkuGlobalQuery)">
+            <summary>
+            库存查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetReceivedAndSendSkuReport(NBK.ECService.WMSReport.DTO.ReceivedAndSendSkuGlobalQuery)">
+            <summary>
+            仓库收发货明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetFinanceInvoicingReport(NBK.ECService.WMSReport.DTO.FinanceInvoicingGlobalQueryDto)">
+            <summary>
+            进销存查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetInboundReport(NBK.ECService.WMSReport.DTO.InboundGlobalQuery)">
+            <summary>
+            入库汇总查询
+            </summary>
+            <param name="inboundReportQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetAdjustmentDetailReport(NBK.ECService.WMSReport.DTO.AdjustmentDetailGlobalQuery)">
+            <summary>
+            损益明细报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetSelectBySysCode(System.String,System.Boolean)">
+            <summary>
+            获取系统设置明细
+            </summary>
+            <param name="sysCodeType"></param>
+            <param name="isActive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetFrozenSkuReport(NBK.ECService.WMSReport.DTO.FrozenSkuGlobalQuery)">
+            <summary>
+            冻结商品明细报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundHandleDateStatisticsReport(NBK.ECService.WMSReport.DTO.OutboundHandleDateStatisticsGlobalQuery)">
+            <summary>
+            出库处理时间统计表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetReceiptAndDeliveryDateReport(NBK.ECService.WMSReport.DTO.ReceiptAndDeliveryDateGlobalQuery)">
+            <summary>
+            出库处理时间统计表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetSNManageReport(NBK.ECService.WMSReport.DTO.SNManageGlobalQuery)">
+            <summary>
+            SN报表查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundExceptionReport(NBK.ECService.WMSReport.DTO.OutboundExceptionGlobalQuery)">
+            <summary>
+            异常报告报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundBoxReport(NBK.ECService.WMSReport.DTO.OutboundBoxGlobalQuery)">
+            <summary>
+            出库箱数统计报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetBalanceReport(NBK.ECService.WMSReport.DTO.BalanceGlobalQuery)">
+            <summary>
+            B2C结算报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundPackReport(NBK.ECService.WMSReport.DTO.OutboundPackGlobalQuery)">
+            <summary>
+            整散箱装箱明细报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundPackSkuReport(NBK.ECService.WMSReport.DTO.OutboundPackSkuGlobalQuery)">
+            <summary>
+            整散箱商品明细报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetSkuPackReport(NBK.ECService.WMSReport.DTO.SkuPackGlobalQuery)">
+            <summary>
+            商品包装查询报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundSkuReport(NBK.ECService.WMSReport.DTO.OutboundSkuGlobalQuery)">
+            <summary>
+            出库单商品汇总报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetPickingTimeSpanReport(NBK.ECService.WMSReport.DTO.PickingTimeSpanGlobalQuery)">
+            <summary>
+            出库捡货工时统计
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundTransferOrderReport(NBK.ECService.WMSReport.DTO.OutboundTransferOrderGlobalQuery)">
+            <summary>
+            出库复核工时统计
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetAccessBizList(System.Boolean)">
+            <summary>
+            业务接口访问量统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetFertilizerRORadarList(System.Boolean,NBK.ECService.WMSReport.DTO.FertilizerRORadarGlobalQuery)">
+            <summary>
+            化肥出入库
+            </summary>
+            <param name="flag"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetFertilizerInvRadarList(System.Boolean,NBK.ECService.WMSReport.DTO.FertilizerInvRadarGlobalQuery)">
+            <summary>
+            化肥库存
+            </summary>
+            <param name="flag"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetFertilizerInvPieList(System.Boolean,NBK.ECService.WMSReport.DTO.FertilizerInvPieGlobalQuery)">
+            <summary>
+            化肥库存分布
+            </summary>
+            <param name="flag"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetReturnOrderGlobalReport(NBK.ECService.WMSReport.DTO.ReturnOrderGlobalQuery)">
+            <summary>
+            退货单全局报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetReturnOrderReportExport(NBK.ECService.WMSReport.DTO.ReturnOrderGlobalQuery)">
+            <summary>
+            退货单全局报表导出
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundSummaryReport(NBK.ECService.WMSReport.DTO.OutboundGlobalQuery)">
+            <summary>
+            出库汇总报表查看
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetOutboundSummaryExport(NBK.ECService.WMSReport.DTO.OutboundGlobalQuery)">
+            <summary>
+            出库汇总报表导出
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetFertilizerOutboundSkuReport(NBK.ECService.WMSReport.DTO.FertilizerOutboundSkuGlobalQuery)">
+            <summary>
+            农资出库商品报表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.GlobalController.GetChannelInventoryByPage(NBK.ECService.WMSReport.DTO.ChannelInventoryGlobalQuery)">
+            <summary>
+            渠道库存查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSReport.ApiController.HomeController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.#ctor(NBK.ECService.WMSReport.Application.Interface.IHomeAppService)">
+            <summary>
+            
+            </summary>
+            <param name="homeAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.HomeAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetSparkLineSummaryDto(System.Boolean)">
+            <summary>
+            获取采购入库/B2B出库/B2C出库数据
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetPurchaseTypePieDto(System.Boolean)">
+            <summary>
+            顶部入库单据类型占比
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetOutboundTypePieDto(System.Boolean)">
+            <summary>
+            顶部入库单据类型占比
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetStockInOutData(System.Boolean)">
+            <summary>
+            全局一年之内收发存
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetWareHouseReceiptQtyList(System.Boolean)">
+            <summary>
+            获取所有仓库总收货分布
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetWareHouseOutboundQtyList(System.Boolean)">
+            <summary>
+            获取所有仓库总出库分布
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetWareHouseQtyList(System.Boolean)">
+            <summary>
+            获取所有仓库剩余库存
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetStockAgeGroup(System.Boolean)">
+            <summary>
+            仓库出库，库存库龄占比
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetSkuSellingTop10(System.Boolean)">
+            <summary>
+            获取畅销商品Top10
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetSkuUnsalableTop10(System.Boolean)">
+            <summary>
+            获取滞销商品Top10
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetServiceStationOutboundTopTen(System.Boolean)">
+            <summary>
+            获取服务站发货Top10
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetChannelPieData(System.Boolean)">
+            <summary>
+            获取渠道库存
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetReturnPurchase(System.Boolean)">
+            <summary>
+            获取最新10个退货入库收货完成的单子
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetOutboundNoLngLatCount">
+            <summary>
+            获取所有需要更新经纬度的出库单总条数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.UpdataOutboundLngLat(System.Int32)">
+            <summary>
+            批量处理没有经纬度的出库单
+            </summary>
+            <param name="pageCount">页面大小</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetHistoryServiceStationData(System.Int32)">
+            <summary>
+            获取仓库业务分部
+            </summary>
+            <param name="page">页码</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetWarehouseStationRelation">
+            <summary>
+            获取仓库城市出库关系
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetDailyEventDataCountInfo(System.Boolean,System.String,System.String)">
+            <summary>
+             仓库日历订单统计 每天出入库，和预计出入库的数量
+            </summary>
+            <param name="flag"></param>
+            <param name="startDate"></param>
+            <param name="endDate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetCalendarDataByDate(System.String)">
+            <summary>
+            获取某一天的所有仓库出入库数据
+            </summary>
+            <param name="date">日期字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetWorkDistributionData(System.Boolean)">
+            <summary>
+            仓库作业时间分布图
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetWorkDistributionByWarehouse(System.Boolean,System.Guid)">
+            <summary>
+            根据仓库获业务类型获取作业时间分布
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <param name="sysId">仓库ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.HomeController.GetWorkDistributionPieData(System.Boolean)">
+            <summary>
+            仓库作业类型占比
+            </summary>
+            <param name="flag">是否更新缓存：portal默认false，Job默认true</param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.#ctor(NBK.ECService.WMSReport.Application.Interface.IOtherReadAppService)">
+            <summary>
+            
+            </summary>
+            <param name="otherReadAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetOutboundByPage(NBK.ECService.WMSReport.DTO.Query.OutboundQuery)">
+            <summary>
+            出库单管理
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetOutboundBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取出库单明细
+            </summary>
+            <param name="sysid"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetOutboundDetailList(NBK.ECService.WMSReport.DTO.Other.OutboundExceptionQueryDto)">
+            <summary>
+            获取出库单明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetOutboundPrePackDiff(System.Guid,System.Guid)">
+            <summary>
+            获取出库单预包装差异
+            </summary>
+            <param name="outboundSysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetOutboundPreBulkPackDiff(System.Guid,System.Guid)">
+            <summary>
+            获取出库单散货箱差异
+            </summary>
+            <param name="outboundSysId"></param>
+            <param name="wareHouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetOutboundBox(System.Guid,System.Guid)">
+            <summary>
+            获取出库单整件或者散件装箱数据
+            </summary>
+            <param name="outboundSysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetOutbooundExceptionData(System.Guid,System.Guid)">
+            <summary>
+            根据出库单ID获取异常明细
+            </summary>
+            <param name="sysid"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetPickDetailListDtoByPageInfo(NBK.ECService.WMSReport.DTO.Query.PickDetailQuery)">
+            <summary>
+            获取分页信息
+            </summary>
+            <param name="pickDetailQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetPickOutboundListDtoByPageInfo(NBK.ECService.WMSReport.DTO.Query.PickDetailQuery)">
+            <summary>
+            获取分页信息
+            </summary>
+            <param name="pickDetailQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetPurchaseDtoListByPageInfo(NBK.ECService.WMSReport.DTO.Query.PurchaseQuery)">
+            <summary>
+            获取分页信息
+            </summary>
+            <param name="purchaseQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetPurchaseReturnDtoListByPageInfo(NBK.ECService.WMSReport.DTO.Query.PurchaseReturnQuery)">
+            <summary>
+            退货入库
+            </summary>
+            <param name="purchaseQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetPurchaseViewDtoBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取采购订单
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetPurchaseReturnViewDtoBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取退货入库单
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetReceiptList(NBK.ECService.WMSReport.DTO.Query.ReceiptQuery)">
+            <summary>
+            获取收货单列表
+            </summary>
+            <param name="receiptQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetReceiptViewBySysId(System.Guid,System.Guid)">
+            <summary>
+            获取收货单明细
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetReceiptDetailViewList(System.Guid,System.Guid)">
+            <summary>
+            收货清单
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetReceiptDetailLotViewList(System.Guid,System.Guid)">
+            <summary>
+            收货批次清单
+            </summary>
+            <param name="sysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetReceiptDetailViewListByCollectionLot(System.Guid,System.Guid)">
+            <summary>
+            批次采集时获取收货清单明细
+            </summary>
+            <param name="receiptSysId"></param>
+            <param name="warehouseSysId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.OtherReadController.GetStockTransferLotByPage(NBK.ECService.WMSReport.DTO.Query.StockTransferQuery)">
+            <summary>
+            库存转移分页查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSReport.ApiController.ReportController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.#ctor(NBK.ECService.WMSReport.Application.Interface.IReportAppService)">
+            <summary>
+            
+            </summary>
+            <param name="reportAppService"></param>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.PrintAPI">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetInvTransBySkuReport(NBK.ECService.WMSReport.DTO.InvTransBySkuReportQuery)">
+            <summary>
+            货卡查询
+            </summary>
+            <param name="invTransBySkuReportQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetInvLocBySkuReport(NBK.ECService.WMSReport.DTO.InvSkuLocReportQuery)">
+            <summary>
+            货位库存查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetInvLotBySkuReport(NBK.ECService.WMSReport.DTO.InvSkuLotReportQuery)">
+            <summary>
+            批次库存查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetInvLotLocLpnBySkuReport(NBK.ECService.WMSReport.DTO.InvSkuLotLocLpnReportQuery)">
+            <summary>
+            货位批次库存查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetExpiryInvLotBySkuReport(NBK.ECService.WMSReport.DTO.InvSkuLotReportQuery)">
+            <summary>
+            获取临过期批次商品库存信息
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetReceiptDetailReport(NBK.ECService.WMSReport.DTO.ReceiptDetailReportQuery)">
+            <summary>
+            收货明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundDetailReport(NBK.ECService.WMSReport.DTO.OutboundDetailReportQuery)">
+            <summary>
+            出库明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundDetailReportByFile(NBK.ECService.WMSReport.DTO.OutboundDetailReportQuery)">
+            <summary>
+            出库明细报表上传
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetInvSkuReport(NBK.ECService.WMSReport.DTO.InvSkuReportQuery)">
+            <summary>
+            库存查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetFinanceInvoicingReport(NBK.ECService.WMSReport.DTO.FinanceInvoicingReportQueryDto)">
+            <summary>
+            进销存查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetAdjustmentDetailReport(NBK.ECService.WMSReport.DTO.AdjustmentDetailReportQuery)">
+            <summary>
+            损益明细报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetPurchaseDetailReport(NBK.ECService.WMSReport.DTO.PurchaseDetailReportQuery)">
+            <summary>
+            入库明细报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetInboundReport(NBK.ECService.WMSReport.DTO.InboundReportQuery)">
+            <summary>
+            入库汇总查询
+            </summary>
+            <param name="inboundReportQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetSkuBorrowListByPage(NBK.ECService.WMSReport.DTO.SkuBorrowReportQuery)">
+            <summary>
+            分页查询商品外借
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetFrozenSkuReport(NBK.ECService.WMSReport.DTO.FrozenSkuReportQuery)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetFrozenSkuReportByFile(NBK.ECService.WMSReport.DTO.FrozenSkuReportQuery)">
+            <summary>
+            冻结商品明细导出
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetReceivedAndSendSkuReport(NBK.ECService.WMSReport.DTO.ReceivedAndSendSkuReportQuery)">
+            <summary>
+            仓库收发货明细
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundHandleDateStatisticsReport(NBK.ECService.WMSReport.DTO.OutboundHandleDateStatisticsQuery)">
+            <summary>
+            出库处理时间统计表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetReceiptAndDeliveryDateReport(NBK.ECService.WMSReport.DTO.ReceiptAndDeliveryDateQuery)">
+            <summary>
+            出库处理时间统计表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetMonitorReportPurchaseDto(NBK.ECService.WMSReport.DTO.MonitorReportQuery)">
+            <summary>
+            监控报表-入库
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetMonitorReportOutBoundDto(NBK.ECService.WMSReport.DTO.MonitorReportQuery)">
+            <summary>
+            监控报表-出库
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetMonitorReportWorkDto(NBK.ECService.WMSReport.DTO.MonitorReportQuery)">
+            <summary>
+            监控报表-工单
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetMonitorReportPurchaseReturnDto(NBK.ECService.WMSReport.DTO.MonitorReportQuery)">
+            <summary>
+            监控报表-退货入库
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetMonitorReportStockTransferDto(NBK.ECService.WMSReport.DTO.MonitorReportQuery)">
+            <summary>
+            监控报表-库存转移
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetSNManageReport(NBK.ECService.WMSReport.DTO.Report.SNManageReportQuery)">
+            <summary>
+            SN报表查询
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundExceptionReport(NBK.ECService.WMSReport.DTO.OutboundExceptionReportQuery)">
+            <summary>
+            异常报告报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundBoxReport(NBK.ECService.WMSReport.DTO.OutboundBoxReportQuery)">
+            <summary>
+            出库箱数统计报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetBalanceReport(NBK.ECService.WMSReport.DTO.BalanceReportQuery)">
+            <summary>
+            B2C结算报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundPackReport(NBK.ECService.WMSReport.DTO.OutboundPackReportQuery)">
+            <summary>
+            仓储费结算统计明表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundPackSkuReport(NBK.ECService.WMSReport.DTO.OutboundPackSkuReportQuery)">
+            <summary>
+            整散箱商品明细报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetSkuPackReport(NBK.ECService.WMSReport.DTO.SkuPackReportQuery)">
+            <summary>
+            商品包装查询报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundSummaryReport(NBK.ECService.WMSReport.DTO.Query.OutboundQuery)">
+            <summary>
+            出库汇总报表查看
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetOutboundSummaryExport(NBK.ECService.WMSReport.DTO.Query.OutboundQuery)">
+            <summary>
+            出库汇总报表导出
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.ReportController.GetChannelInventoryByPage(NBK.ECService.WMSReport.DTO.ChannelInventoryQuery)">
+            <summary>
+            渠道库存报表
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NBK.ECService.WMSReport.ApiController.WMSReportApiControllerModule">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NBK.ECService.WMSReport.ApiController.WMSReportApiControllerModule.Initialize">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,489 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.DTO;
+
+@{
+    ViewBag.Title = "创建加工单";
+}
+
+@Html.Breadcrumb("生产加工单管理", "/Assembly/AssemblyList", "创建加工单")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+@Styles.Render("~/plugins/dataPickerStyles")
+}
+
+
+<div id="div_AssemblyView" class="wrapper wrapper-content animated fadeInRight ecommerce">
+
+    <div class="row">
+        <div class="col-sm-6">
+            @*<div class="ibox-content m-b-sm border-bottom">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.SearchTextBox("商品名称", "SkuNameSearch")
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.SearchTextBox("商品条码", "SkuUPCSearch")
+                    </div>
+                    <div class="col-sm-3">
+                        <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:23px;float: left; ">查询</button>
+                    </div>
+                </div>
+            </div>*@
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>查询条件 </h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal">
+                        <input type="hidden" id="SkuSysId" class="form-control">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-2 control-label">商品条码</label>
+                                <div class="col-sm-5"><input type="text" id="SkuUPCSearch" class="form-control" placeholder="请输入商品条码"></div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <label class="col-sm-2 control-label">商品名称</label>
+                                <div class="col-sm-5"><input type="text" id="SkuNameSearch" class="form-control" placeholder="请输入商品名称"></div>
+
+                                <div class="col-sm-3">
+                                    <button id="btnSearch" class="btn btn-primary" type="button" style="float: left; ">查询</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>加工目标计划信息 </h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" id="planForm">
+                        <input type="hidden" id="SkuSysId" class="form-control">
+                        <div class="form-group">
+                            <div class="row">
+
+                                <label class="col-sm-3 control-label">计划加工日期</label>
+                                <div class="col-sm-5" id="divPlanProcessingDate">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="PlanProcessingDate" name="PlanProcessingDate" required placeholder="请输入计划加工日期">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-sm-3 control-label">计划完工日期</label>
+
+                                <div class="col-sm-5" id="divPlanCompletionDate">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="PlanCompletionDate" name="PlanCompletionDate" required placeholder="请输入计划完工日期">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>选择商品 </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table id="gvSku" class="table table-striped table-bordered table-hover dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th width="5%"><input type="checkbox" id="ckbAll" onclick="AddAssemblyModel.gvSkuCheckAll(this);" /></th>
+                                        <th data-data="SkuName">商品名称</th>
+                                        <th data-data="UPC">商品条码</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>加工目标成品信息 </h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal">
+                        <input type="hidden" id="SkuSysId" class="form-control">
+                        <div class="form-group">
+                            <div class="row">
+
+                                <label class="col-sm-2 control-label">商品条码</label>
+                                <div class="col-sm-5"><input type="text" id="UPC" class="form-control" readonly="readonly"></div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <label class="col-sm-2 control-label">商品名称</label>
+                                <div class="col-sm-7"><input type="text" id="SkuName" class="form-control" readonly="readonly"></div>
+
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>加工源商品列表 </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table id="gvAssemblySku" class="table table-striped table-bordered table-hover dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th width="5%"><input type="checkbox" id="ckbAll" onclick="AddAssemblyModel.gvdetailsCheckAll(this);" /></th>
+                                        <th data-data="SkuName">商品名称</th>
+                                        <th data-data="UPC">商品条码</th>
+                                        <th data-data="Qty">数量</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    <script>
+        var AddAssemblyModel = {
+            skutable: {},
+            detailTable: {},
+            init: function () {
+                $('#divPlanProcessingDate .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+
+                $('#divPlanCompletionDate .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+
+                $("#planForm").validate({
+                    rules: {
+                        PlanProcessingDate: {
+                            required: true
+                        },
+                        PlanCompletionDate: {
+                            required: true
+                        }
+                    }
+                });
+
+                AddAssemblyModel.skutable = $('#gvSku').DataTable({
+                    "sAjaxSource": "GetSkuListForAssembly",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "UPC", "value": $("#SkuUPCSearch").val() },
+                            { "name": "SkuName", "value": $("#SkuNameSearch").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '添加至加工源商品',
+                            action: function (e, dt, node, config) {
+                                var sysIdList = GetGridMultiselectSysId();
+                                if (sysIdList != null) {
+                                    var arr = AddAssemblyModel.skutable.rows(':has(:checkbox:checked)');
+                                    var details = AddAssemblyModel.getPlanSkuSource();
+
+                                    $.each(arr.data(), function (i) {
+                                        var selectSku = this;
+                                        var isAdd = false;
+                                        if (details.length > 0) {
+                                            for (var i = 0; i < details.length ; i++) {
+                                                if (details[i].SkuSysId == selectSku.SkuSysId) {
+                                                    //msgErro("已添加过商品 '" + selectSku.SkuName + "',请勿重复添加!");
+                                                    isAdd = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        if (!isAdd) {
+                                            AddAssemblyModel.detailTable.rows.add([{
+                                                "SkuSysId": selectSku.SkuSysId,
+                                                "SkuName": selectSku.SkuName,
+                                                "UPC": selectSku.UPC,
+                                                "Qty": 1
+                                            }]).draw();
+                                        }
+                                    });
+
+                                }
+                            },
+                        },
+                        {
+                            text: '添加至加工目标成品',
+                            action: function (e, dt, node, config) {
+                                var arr = AddAssemblyModel.skutable.rows(':has(:checkbox:checked)');
+                                if (arr.data().length == 0) {
+                                    msgAlert("请选择一个商品添加至加工目标成品列表!");
+                                    return;
+                                }
+
+                                if (arr.data().length > 1) {
+                                    msgAlert("只能选择一个商品添加至加工目标成品列表!");
+                                    return;
+                                }
+
+                                $("#SkuSysId").val(arr.data()[0].SkuSysId);
+                                $("#SkuName").val(arr.data()[0].SkuName);
+                                $("#UPC").val(arr.data()[0].UPC);
+                            }
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                AddAssemblyModel.detailTable = $('#gvAssemblySku').DataTable({
+                    //data: _self.ajustmentDetailsSource,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '删除',
+                            action: function (e, dt, node, config) {
+                                AddAssemblyModel.detailTable
+                                    .rows(':has(:checkbox:checked)')
+                                    .remove()
+                                    .draw();
+                            },
+                        },
+                        {
+                            text: '保存加工单',
+                            action: function (e, dt, node, config) {
+                                AddAssemblyModel.SaveAssembly();
+                            },
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        },
+                        {
+                            "targets": 3,
+                            //"width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="number" style="width:100px;" value="1" min="1" onblur="AddAssemblyModel.qtyBlur(this)"/>';
+                            }
+                        }
+                    ],
+                    "bServerSide": false,
+                    "bProcessing": true,
+                    "bPaginate": false, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+            },
+            gvSkuCheckAll: function (obj) {
+                $("#gvSku tbody input[type='checkbox']").each(function () {
+                    this.checked = obj.checked;
+                });
+            },
+            gvdetailsCheckAll: function (obj) {
+                $("#gvAssemblySku tbody input[type='checkbox']").each(function () {
+                    this.checked = obj.checked;
+                });
+            },
+            getPlanSkuSource: function () {
+                var detailList = [];
+                var detaildata = AddAssemblyModel.detailTable.data();
+
+                for (var i = 0; i < detaildata.length; i++) {
+                    detailList.push(detaildata[i]);
+                }
+
+                return detailList;
+            },
+            qtyBlur: function (obj) {
+                var selectIndex = $(obj).parent().parent().index();
+
+                if ($(obj).val() <= 0) {
+                    $(obj).val(1);
+                }
+                AddAssemblyModel.detailTable.data()[selectIndex]["Qty"] = $(obj).val();
+            },
+            SaveAssembly: function () {
+                if (!commonCheckDateCompare($("#PlanProcessingDate").val(), $("#PlanCompletionDate").val())) {
+                    msgAlert("计划完工日期应不小于计划加工日期！");
+                    return false;
+                }
+
+                if ($("#SkuSysId").val().length == 0) {
+                    msgAlert("请选择一个加工目标成品！");
+                    return false;
+                }
+
+                if (AddAssemblyModel.detailTable.data().length == 0) {
+                    msgAlert("请选择一个商品添加至加工源商品列表!");
+                    return;
+                }
+
+                if ($("#planForm").valid()) {
+
+                    msgConfirm("确定要创建加工单吗？", function (isConfirm) {
+                        if (isConfirm) {
+                            var addAssemblyDetailList = [];
+
+                            $.each(AddAssemblyModel.detailTable.data(), function (i) {
+                                addAssemblyDetailList.push({
+                                    SkuSysId: AddAssemblyModel.detailTable.data()[i].SkuSysId,
+                                    UnitQty: AddAssemblyModel.detailTable.data()[i].Qty
+                                });
+                            });
+
+                            var request = {
+                                SkuSysId: $("#SkuSysId").val(),
+                                PlanProcessingDate: $("#PlanProcessingDate").val(),
+                                PlanCompletionDate: $("#PlanCompletionDate").val(),
+                                AddAssemblyDetailList: addAssemblyDetailList
+                            };
+
+
+                            $.ajax({
+                                url: "@Url.Action("AddAssemblyService", "Assembly")",
+                                data: request,
+                                type: "post",
+                                success: function (data) {
+                                    if (data.Success) {
+                                        msgSuccess("创建成功!");
+                                        AddAssemblyModel.backParentPage();
+                                    }
+                                    else {
+                                        msgErro(data.Message);
+                                    }
+                                },
+                                error: function () {
+                                    msgErro("操作失败！");
+                                }
+                            });
+                        }
+                    });
+                }
+            },
+            backParentPage: function () {
+                window.location.href = '@Url.Action("AssemblyList", "Assembly")'
+            }
+        };
+
+        $(function () {
+            //$("#divWindowManualWeighing").modal('hide');
+            AddAssemblyModel.init();
+
+            $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                AddAssemblyModel.skutable.ajax.reload();
+            });
+        });
+
+    </script>
+}

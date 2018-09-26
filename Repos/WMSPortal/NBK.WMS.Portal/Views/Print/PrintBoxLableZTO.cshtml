@@ -1,0 +1,94 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.Utility;
+@model NBK.ECService.WMS.DTO.PrintVanningDetailStickDto
+
+
+@{
+    ViewBag.Title = "PrintBoxLableZTO";
+    Layout = null;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div style="font-size:11px;font-family:微软雅黑;margin-top:65px">
+
+    <div style="width:360px; border:1px solid #000;">
+        <div style="border-bottom:1px solid #000;"> 
+            <div style="width:100%;height:56.7px; float:left; font-size:36px; font-weight:500; padding:5px 5px 5px 5px;">@Model.Marke</div>
+        </div>
+
+        <div style="border-bottom:1px solid #000;">
+            <div style="width:100%;height:37.8px">
+                <div style="width:75.5%;height:100%; float:left; border-right:1px solid #000;font-size:18px;padding:5px 5px 5px 5px;text-align:center">@PublicConst.ZTOSenderCityTitle</div>
+                <div style="width:24.5%;height:100%; float:left; font-size:14px;font-weight:500;padding:5px 5px 5px 5px;text-align:center">@DateTime.Now.ToString("yyyy-MM-dd")</div>
+            </div>
+        </div>
+
+        <div style="border-bottom:1px solid #000;">
+            <div style="width:100%;height:113.4px">
+                <div style="width:75.5%;float:left; border-right:1px solid #000;">
+                    <div style="width:100%;height:68.4px;float:left;border-bottom:1px solid #000;font-size:12px;">
+                        <div style="width:10%;height:100%; float:left; border-right:1px solid #000;padding:5px 5px 0px 5px;text-align:center" >收<br />件</div>
+                        <div style="width:90%;height:100%; float:left; padding:5px 5px 0px 5px;">@Model.ConsigneeName &nbsp;&nbsp;&nbsp; @Model.ConsigneePhone<br/>@Model.ConsigneeAddress</div>
+                    </div>
+                    <div style="width:100%;height:45.3px;font-size:10px;">
+                        <div style="width:10%;height:100%; float:left; border-right:1px solid #000;padding:5px 5px 0px 5px;;text-align:center">寄<br />件</div>
+                        <div style="width:90%;height:100%; float:left;padding:5px 5px 0px 5px; ">@PublicConst.ZTOSenderName &nbsp;&nbsp;&nbsp; @PublicConst.ZTOSenderPhone <br />@PublicConst.ZTOSenderAddress </div>
+                    </div>
+                </div>
+                <div style="width:24.5%;float:left;">
+                    <div style="width:100%;height:18.9px;border-bottom:1px solid #000;font-size:12px;padding-left:5px;text-align:center">服务</div>
+                    <div style="width:100%;height:20px;font-size:10px;padding-left:5px">包裹重量：@Html.Raw(@Model.Weight)kg</div>
+                    <div style="width:100%;height:74px;font-size:8px;padding-left:5px">单号：@Model.OutboundOrder</div>
+                </div>
+            </div>
+        </div> 
+
+        <div style="border-bottom:1px solid #000; font-size:10px;">
+            <div style="width:100%;height:70px">
+
+            </div>
+        </div>
+
+        <div style="font-size:10px;height:72px"> 
+            <div style="padding:5px 0px 5px 5px; width:55%;height:100%; float:left; border-right:1px solid #000;">
+                收件送达收件人地址，经收件人或收件<br />
+                人（寄送人）允许的代收人签字，视为<br />
+                送达。您的签字代表您已验收此包裹，<br />
+                并已确认商品信息无误，包装完好，没<br />
+                有划痕、破损等表面质量问题。
+            </div>
+            <div style="width:45%;height:100%;float:left;">
+                <div style="padding:0px 0px 20px 5px; margin-top:-10px;font-size:14px">签收人：</div>
+                <div style="padding:25px 0px 20px 5px;font-size:14px">时间：</div>
+            </div> 
+        </div>
+
+    </div>
+
+    <div style="width: 360px; border:1px solid #000;"> 
+        <div style="border-bottom:1px solid #000;height:70px"> 
+        </div> 
+
+        <div style="border-bottom:1px solid #000;">
+            <div style="width:100%;height:90px"> 
+                <div style="width:100%;height:55px;float:left;border-bottom:1px solid #000;font-size:10px;">
+                    <div style="width:10%;height:100%; float:left; border-right:1px solid #000;padding:5px 5px 0px 5px;text-align:center">收<br />件</div>
+                    <div style="width:90%;height:100%; float:left; padding:5px 5px 0px 5px;">@Model.ConsigneeName &nbsp;&nbsp;&nbsp; @Model.ConsigneePhone<br />@Model.ConsigneeAddress</div>
+                </div>
+                <div style="width:100%;height:35px;font-size:10px;">
+                    <div style="width:10%;height:100%; float:left; border-right:1px solid #000;padding:5px 5px 0px 5px;text-align:center">寄<br />件</div>
+                    <div style="width:90%;height:100%; float:left;padding:5px 5px 0px 5px; ">@PublicConst.ZTOSenderName &nbsp;&nbsp;&nbsp; 400-188-0871<br />@PublicConst.ZTOSenderAddress</div>
+                </div> 
+            </div>
+        </div> 
+        <div style="height:40px">
+            <div style="padding:5px 0px 5px 10px;width:100%;">
+                <div style="float:left;width:25%; font-size:14px; font-weight:500;">@PublicConst.ZTOSenderName</div>
+                <div style="float:left;width:30%; font-size:10px; padding:2px 0px 0px 0px">http://www.gznb.com</div>
+                <div style="float:left;width:45%; font-size:10px; padding:2px 5px 0px 5px">客服热线：@PublicConst.ZTOSenderPhone</div>
+            </div>
+        </div> 
+    </div>
+</div>

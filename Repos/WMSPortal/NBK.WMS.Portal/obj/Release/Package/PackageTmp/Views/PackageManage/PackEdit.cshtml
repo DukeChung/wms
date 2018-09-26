@@ -1,0 +1,252 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "编辑包装信息";
+}
+
+@Html.Breadcrumb("货品包装管理", "/PackageManage/PackMaintain", "编辑包装信息")
+@section Styles {
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="PackEdit" class="ibox-content m-b-sm border-bottom">
+        <form id="packForm" class="form-horizontal">
+
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <label class="col-sm-3 control-label" style="margin-top:5px; padding:2px;">包装代码</label>
+                    <div class="col-sm-9"><input id="PackCode" name="PackCode" v-model="PackCode" type="text" class="form-control" ></div>
+                </div>
+                <div class="col-sm-8">
+                    <label class="col-sm-1 control-label" style="margin-top:5px;">描述</label>
+                    <div class="col-sm-11"><input id="Descr" name="Descr" v-model="Descr" type="text" class="form-control" ></div>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="10%"></th>
+                        <th width="20%">数量</th>
+                        <th width="10%">单位</th>
+                        <th width="10%">UPC</th>
+                        @*<th width="10%">装箱</th>
+                        <th width="10%">补货</th>*@
+                        <th width="10%">单位转换</th>
+                        @*<th width="10%">出库</th>
+                        <th width="10%">查询</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>基本单位</td>
+                        <td><input id="FieldValue01" name="FieldValue01" v-model="FieldValue01" type="number" class="form-control required" maxlength="11"></td>
+                        <td>
+                            <select class="form-control m-b" id="FieldUom01" name="FieldUom01" v-model="FieldUom01"></select>
+                        </td>
+                        <td> <input id="UPC01" name="UPC01" v-model="UPC01" class="form-control required" type="text"  > </td>
+                        @*<td> <input id="Cartonize01" name="Cartonize01" v-model="Cartonize01" class="i-checks" type="checkbox" value=""> </td>
+                        <td><input id="Replenish01" name="Replenish01" v-model="Replenish01" class="i-checks" type="checkbox" value=""></td>*@
+                        <td><input id="InLabelUnit01" name="InLabelUnit01" v-model="InLabelUnit01" class="i-checks" type="checkbox" value=""></td>
+                        @*<td><input id="OutLabelUnit01" name="OutLabelUnit01" v-model="OutLabelUnit01" class="i-checks" type="checkbox" value=""></td>
+                        <td><input id="QueryLabelUnit01" name="QueryLabelUnit01" v-model="QueryLabelUnit01" class="i-checks" type="checkbox" value=""></td>*@
+                    </tr>
+                    <tr>
+                        <td>内包装</td>
+                        <td><input id="FieldValue02" name="FieldValue02" v-model="FieldValue02" type="number" class="form-control isrequired" maxlength="11"></td>
+                        <td>
+                            <select class="form-control m-b" id="FieldUom02" name="FieldUom02" v-model="FieldUom02"></select>
+                        </td>
+                        <td> <input id="UPC02" name="UPC02" v-model="UPC02" class="form-control isNeed" type="text"  > </td>
+                        @*<td> <input id="Cartonize02" name="Cartonize02" v-model="Cartonize02" class="i-checks" type="checkbox" value=""> </td>
+                        <td><input id="Replenish02" name="Replenish02" v-model="Replenish02" class="i-checks" type="checkbox" value=""></td>*@
+                        <td>@*<input id="InLabelUnit02" name="InLabelUnit02" v-model="InLabelUnit02" class="i-checks" type="checkbox" value="">*@</td>
+                        @*<td><input id="OutLabelUnit02" name="OutLabelUnit02" v-model="OutLabelUnit02" class="i-checks" type="checkbox" value=""></td>
+                        <td><input id="QueryLabelUnit02" name="QueryLabelUnit02" v-model="QueryLabelUnit02" class="i-checks" type="checkbox" value=""></td>*@
+                    </tr>
+                <tr>
+                    <td>箱</td>
+                    <td><input id="FieldValue03" name="FieldValue03" v-model="FieldValue03" type="number" class="form-control isrequired" maxlength="11"></td>
+                    <td><select class="form-control m-b" id="FieldUom03" name="FieldUom03" v-model="FieldUom03"></select></td>
+                    <td> <input id="UPC03" name="UPC03" v-model="UPC03" class="form-control isNeed" type="text" > </td>
+                    @*<td> <input id="Cartonize03" name="Cartonize03" v-model="Cartonize03" class="i-checks" type="checkbox" value=""> </td>
+                    <td><input id="Replenish03" name="Replenish03" v-model="Replenish03" class="i-checks" type="checkbox" value=""></td>*@
+                    <td>@*<input id="InLabelUnit03" name="InLabelUnit03" v-model="InLabelUnit03" class="i-checks" type="checkbox" value="">*@</td>
+                    @*<td><input id="OutLabelUnit03" name="OutLabelUnit03" v-model="OutLabelUnit03" class="i-checks" type="checkbox" value=""></td>
+                    <td><input id="QueryLabelUnit03" name="QueryLabelUnit03" v-model="QueryLabelUnit03" class="i-checks" type="checkbox" value=""></td>*@
+                </tr>
+                <tr>
+                        <td>其他单位1</td>
+                        <td><input id="FieldValue04" name="FieldValue04" v-model="FieldValue04" type="number" class="form-control isrequired" maxlength="11"></td>
+                        <td><select class="form-control m-b" id="FieldUom04" name="FieldUom04" v-model="FieldUom04"></select></td>
+                        <td> <input id="UPC04" name="UPC04" v-model="UPC04" class="form-control isNeed" type="text" > </td>
+                        <td>  </td>
+                        @*<td>  </td>
+                        <td>  </td>
+                        <td>  </td>*@
+                    </tr>
+                <tr>
+                        <td>其他单位2</td>
+                        <td><input id="FieldValue05" name="FieldValue05" v-model="FieldValue05" type="number" class="form-control isrequired" maxlength="11"></td>
+                        <td><select class="form-control m-b" id="FieldUom05" name="FieldUom05" v-model="FieldUom05"></select></td>
+                        <td> <input id="UPC05" name="UPC05" v-model="UPC05" class="form-control isNeed" type="text"  > </td>
+                        <td> </td>
+                        @*<td> </td>
+                        <td> </td>
+                        <td> </td>*@
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ibox-footer text-right tooltip-demo">
+                <a class="btn btn-sm btn-primary" id="btnEditPack" v-on:click="PackEditFun"><i class="fa fa-check-square-o"></i> 保存</a>
+                <a class="btn btn-white btn-sm" id="btnReturn" v-on:click="Return"><i class="fa fa-times"></i> 返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+@Scripts.Render("~/plugins/iCheck")
+    <script>
+
+        var PackEdit = {
+            pack: {},
+            init: function () {
+                var _self = this;
+
+                $("#packForm").validate({
+                    ignore: [],
+                    rules: {
+                        PackCode: {
+                            required: true,
+                            maxlength: 32
+                        },
+                        Descr: {
+                            required: true,
+                            maxlength: 128
+                        },
+                    }
+                });
+
+                $.ajax({
+                    url: "@Url.Action("GetAllUOM", "PackageManage")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.success) {
+                            var uomList = data.uomList;
+
+                            var selectList = [];
+                            selectList.push($("#FieldUom01"));
+                            selectList.push($("#FieldUom02"));
+                            selectList.push($("#FieldUom03"));
+                            selectList.push($("#FieldUom04"));
+                            selectList.push($("#FieldUom05"));
+
+                            $.each(selectList, function (i, val) {
+
+                                $.each(uomList, function (uomi, uomval) {
+                                    val.append("<option value='" + uomval.SysId + "'>" + uomval.Descr + "</option>");
+                                });
+                            });
+
+                            _self.initVue();
+                        }
+                    },
+                    error: function () {
+                        msgErro("计量单位数据源获取失败！");
+                    }
+                });
+
+            },
+            initVue: function () {
+
+                $.ajax({
+                    url: "@Url.Action("GetPackBySysId", "PackageManage")",
+                    data:
+                    {
+                        'sysId': '@ViewBag.PackSysId'
+                    },
+                    type: "GET",
+                    success: function (data) {
+                        if (data.success) {
+                            PackEdit.pack = new Vue({
+                                el: '#PackEdit',
+                                data: data.Pack,
+                                methods: {
+                                    PackEditFun: function (event) {
+                                        if ($("#packForm").valid()) {
+                                            $.ajax({
+                                                url: "@Url.Action("UpdatePack", "PackageManage")",
+                                                data: PackEdit.getUISpecialValue(),
+                                                type: "post",
+                                                success: function (data) {
+                                                    if (data.success) {
+                                                        msgSuccess("更新成功!");
+                                                        PackEdit.backParentPage();
+                                                    }
+                                                    else {
+                                                        alert(data.message);
+                                                    }
+                                                },
+                                                error: function () {
+                                                    msgErro("操作失败！");
+                                                }
+                                            });
+                                        }
+                                    },
+                                    Return: function (event) {
+                                        PackEdit.backParentPage();
+                                    }
+                                }
+                            });
+
+                            PackEdit.initUIStyle();
+                        }
+                        else {
+                            msgErro(data.message);
+                        }
+                    },
+                    error: function () {
+                        msgErro("数据获取失败！");
+                    }
+                });
+                
+            },
+            initUIStyle: function () {
+                //注意 iCheck的渲染需要等到 vue 初始化完成之后再进行渲染，否则会有显示异常的bug
+                $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green'
+                });
+            },
+            getUISpecialValue: function () {
+                //注意 icheck 插件的赋值取值 与 vue 不兼容，所以需要单独给vue 的数据源赋值，radio估计也有类似问题
+                $('.i-checks').each(function () {
+                    PackEdit.pack.$data[$(this).prop("id")] = $(this).prop("checked");
+                });
+                return PackEdit.pack.$data;
+            },
+            backParentPage: function () {
+                window.location.href = '@Url.Action("PackMaintain", "PackageManage")';
+            }
+        }
+
+        $(function () {
+            PackEdit.init();
+            
+            //增加必填项验证
+            $(".isrequired").on('blur', function () {
+                var obj = $(this);
+                if (obj.val().trim() != '') {
+                    obj.parent().parent().find('.isNeed').addClass('required');
+                }
+                else {
+                    obj.parent().parent().find('.isNeed').removeClass('required');
+                }
+            });
+        })
+
+    </script>
+}

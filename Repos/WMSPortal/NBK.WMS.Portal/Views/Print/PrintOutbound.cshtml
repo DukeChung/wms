@@ -1,0 +1,127 @@
+﻿
+@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.Utility.Enum
+@model NBK.ECService.WMS.DTO.PrintOutboundDto
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-12 control-label ">
+                    <H1 style="color: red;text-align:left">发货单</H1>
+                </label>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            @{
+                if (Model.OutboundType == (int)OutboundType.TransferInventory)
+                {
+                    <div class="form-group">
+                        @Html.PrintTitle("移出仓", Model.FromWareHouseName)
+                        @Html.PrintTitle("移入仓", Model.ToWareHouseName)
+                        @*@Html.PrintTitle("移仓单号", Model.TransferInventoryOrder)*@
+                    </div>
+                }
+            }
+            <div class="form-group">
+                @Html.PrintTitle("发货时间", Model.ActualShipDateText)
+                @Html.PrintTitle("收货人", Model.ConsigneeName)
+                @Html.PrintTitle("联系方式", Model.ConsigneePhone)
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <div style="width: 100%;">
+                        <div class="PrintTitle" style="float: left; width: 10%; margin-left: -20px;"> 收货地址:</div>
+                        <div class="PrintTitleValue" style="margin-left: 30px; float: left; width: 88%;">@Model.ConsigneeAddress</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 " style="margin-top: 5px"> </div>
+                        <div class="col-xs-9 line-dashed" style="margin-top: 5px; margin-left: -40px"> </div>
+                        <div class="col-xs-1 " style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("服务综合体", Model.ServiceStationName)
+                @Html.PrintTitle("业务类型", Model.OutboundChildType)
+                @Html.PrintTitle("外部单号", Model.ExternOrderId)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("操作人", Model.UserName)
+                @Html.PrintTitle("操作时间", Model.OperateDate)
+                @Html.PrintTitle("作业人", Model.AppointUserNames)
+                <div class="col-sm-4" style="margin-top:10px;">&nbsp;</div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("发货人签字", string.Empty)
+                @Html.PrintTitle("承运人签字", string.Empty)
+                @Html.PrintTitle("收货人签字", string.Empty)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("日期", string.Empty)
+                @Html.PrintTitle("日期", string.Empty)
+                @Html.PrintTitle("日期", string.Empty)
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12" style="font-size:10px; padding:10px 0px 10px 0px;">
+                    <div class="col-xs-4" style="font-weight:500;">发货清单</div>
+                    <div class="col-xs-8" style="text-align:right;">
+                        <span>商品种类合计：@Model.SkuCount 种</span>
+                        <span style="margin-left:10px;">商品数量合计：@Model.DisplaySkuQty </span>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("商品编号")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("UPC")
+                            @Html.PrintTh("商品描述")
+                            @Html.PrintTh("包装单位")
+                            @Html.PrintTh("出库单数量")
+                            @Html.PrintTh("发货数量")
+                            @Html.PrintTh("包装系数")
+                            @Html.PrintTh("备注")
+                        </tr>
+                        @{
+                            foreach (var info in Model.PrintOutboundDetailDto)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.SkuCode)
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.UPC)
+                                    @Html.PrintTd(info.SkuDescr)
+                                    @Html.PrintTd(info.UomCode)
+                                    @Html.PrintTd(info.DisplayQty.Value.ToString("f3"))
+                                    @Html.PrintTd(info.DisplayShippedQty.Value.ToString("f3"))
+                                    @Html.PrintTd(info.PackFactor)
+                                    @Html.PrintTd(info.Memo)
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+        $(function () {
+            $("#divBarCode").empty().barcode($("#divBarCodeValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+        });
+    </script>
+}

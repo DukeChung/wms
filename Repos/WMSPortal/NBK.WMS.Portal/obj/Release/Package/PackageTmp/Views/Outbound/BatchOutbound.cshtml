@@ -1,0 +1,413 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "批量出库";
+}
+
+@Html.Breadcrumb("批量出库", "出库单管理")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="divBatchOutbound" >
+
+        <div class="col-lg-6">
+            <form id="skuForm" class="form-horizontal">
+                <div class="row" style=" height:200px;">
+                 
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            @*@Html.SearchTextBox("商品条码", "UPC")*@
+                            <label class="col-sm-3 control-label" style="margin-top:5px;">UPC</label>
+                            <div class="col-sm-9">
+                                <input id="UPC" name="UPC" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            @*@Html.SearchTextBox("商品编号", "SkuCode")*@
+                            <label class="col-sm-3 control-label" style="margin-top:5px;">商品编号</label>
+                            <div class="col-sm-9">
+                                <input id="SkuCode" name="SkuCode" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            @*@Html.SearchTextBox("商品名称", "SkuName")*@
+                            <label class="col-sm-3 control-label" style="margin-top:5px;">商品名称</label>
+                            <div class="col-sm-9">
+                                <input id="SkuName" name="SkuName" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="btnSearch" class="btn btn-primary" type="button" style="float: left; ">查询</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <table id="gvSkuList" class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%"></th>
+                                            <th data-data="SkuCode">商品编号</th>
+                                            <th data-data="SkuName">商品名称</th>
+                                            <th data-data="UPC">商品条码</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="col-lg-6">
+            <form id="outboundForm" class="form-horizontal">
+                <div class="row" style=" height:200px;">
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <label class="col-sm-3 control-label" style="margin-top:5px;">收货人姓名</label>
+                            <div class="col-sm-9">
+                                <input id="ConsigneeName" name="ConsigneeName" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <label class="col-sm-3 control-label" style="margin-top:5px;">收货人电话</label>
+                            <div class="col-sm-9">
+                                <input id="ConsigneePhone" name="ConsigneePhone" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <label class="col-sm-3 control-label" style="margin-top:5px;">收货人地址</label>
+                            <div class="col-sm-9">
+                                <input id="ConsigneeAddress" name="ConsigneeAddress" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <a class="btn btn-sm btn-primary" id="btnAdd"><i class="fa fa-check-square-o"></i> 保存发货</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox">
+                            <div class="ibox-content"  style="height: 525px;overflow-y:auto">
+
+                                <table id="outboundDetails" class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                            <th data-data="SkuCode">商品编号</th>
+                                            <th data-data="SkuName">商品名称</th>
+                                            <th data-data="UPC">商品条码</th>
+                                            <th data-data="Qty">数量</th>
+                                        </tr>
+                                    </thead>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+
+    <script>
+        var BatchOutboundModel = {
+            skutable: {},
+            outboundDetailsTable: {},
+            outboundDetailsSource: {},
+            init: function () {
+                var _self = this;
+                _self.initValidate();
+
+                _self.skutable = $('#gvSkuList').DataTable({
+                    "sAjaxSource": "GetSkuList",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "UPC", "value": $("#UPC").val() },
+                            { "name": "SkuCodeSearch", "value": $("#SkuCode").val() },
+                            { "name": "SkuNameSearch", "value": $("#SkuName").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "40px",
+                            render: function (data, type, full, meta) {
+                                //return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                                return '<a onclick="BatchOutboundModel.addSelectSku(' + "'" + full.SysId + "'" + ',' + "'" + full.SkuName + "'" + ',' + "'" + full.UPC + "'" + ',' + "'" + full.SkuCode + "'" + ')">添加</a>';
+                            }
+                        }
+                    ],
+                    "fnInfoCallback": function (oSettings, iStart, iEnd, iMax, iTotal, sPre) {
+                        if (iTotal == 1) {
+                            //如果只查询到一条记录，则直接添加到右边
+                            var row = BatchOutboundModel.skutable.rows().data();
+                            BatchOutboundModel.addSelectSku(row[0].SysId, row[0].SkuName, row[0].UPC, row[0].SkuCode);
+                        }
+                    },
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                var click = function (e) {
+                    var _td = this;
+
+                    var selectIndex = $(_td).parent().index();
+
+                    $('#outboundDetails').off('click', 'tbody td:last-child', click);
+                    var val = _td.innerText;
+                    $(_td).text('');
+                    var textBox = $('<input type="number" style="width:100px;" />').blur(function () {
+                        var _txt = this;
+
+                        var re = /^[0-9]*[1-9][0-9]*$/;
+                        if (!re.test($(_txt).val())) {
+                            msgAlert("请输入正整数!");
+                            $(_txt).focus();
+                            return;
+                        }
+
+                        $('#outboundDetails').on('click', 'tbody td:last-child', click);
+                        $(_td).text($(_txt).val());
+
+                        BatchOutboundModel.outboundDetailsTable.data()[selectIndex]["Qty"] = $(_td).text();
+
+                        $(_txt).remove();
+                    }).val(val);
+                    $(_td).append(textBox);
+                    textBox.focus();
+                };
+
+                $('#outboundDetails').on('click', 'tbody td:last-child', click);
+
+                _self.outboundDetailsTable = $('#outboundDetails').DataTable({
+                    data: _self.outboundDetailsSource,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '删除',
+                            action: function (e, dt, node, config) {
+                                BatchOutboundModel.outboundDetailsTable
+                                    .rows(':has(:checkbox:checked)')
+                                    .remove()
+                                    .draw();
+                            },
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        }
+                    ],
+                    "bServerSide": false,
+                    "bProcessing": true,
+                    "bPaginate": false, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function ()
+                { //按钮 触发table重新请求服务器
+                    BatchOutboundModel.skutable.ajax.reload();
+                    $("#SkuName").val("");
+                    $("#UPC").val("");
+                    $("#SkuCode").val("");
+
+                });
+
+                $("#btnAdd").bind("click", function () {
+                    if ($("#outboundForm").valid()) {
+                        var outboundDetaildata = BatchOutboundModel.outboundDetailsTable.data();
+                        if (outboundDetaildata.length == 0) {
+                            msgAlert("请至少选择一个出库商品");
+                            return;
+                        }
+
+                        var outboundDetailList = BatchOutboundModel.getOutboundDetailSource();
+
+                        var requestData = {
+                            OutboundGroup: '@ViewData["OutboundGroup"]',
+                            ConsigneeName: $("#ConsigneeName").val(),
+                            ConsigneeAddress: $("#ConsigneeAddress").val(),
+                            ConsigneePhone: $("#ConsigneePhone").val(),
+                            BatchOutboundDetailDtos: outboundDetailList
+                        };
+                        saveLoading('show');
+                        $.ajax({
+                            url: "@Url.Action("BatchOutboundCreate", "Outbound")",
+                            data: requestData,
+                            dataType: "json",
+                            type: "post",
+                            success: function (data) {
+                                if (data.success)
+                                {
+                                    msgSuccess("出库单已经发货完成,请继续进行其他业务操作!");
+                                    _self.clearPage();
+
+                                    var LODOP = getLodop();
+                                    LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+
+                                    LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+                                    LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+                                    LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintOutbound?outboundOrder=" + data.outboundOrder + "&userName=@ViewBag.CurrentUserName" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+                                    LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+                                    LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+                                    //LODOP.PREVIEW();
+                                    LODOP.PRINT();
+
+                                }
+                                else {
+                                    msgErro(data.message);
+                                }
+                                saveLoading();
+                            },
+                            error: function () {
+                                msgErro("操作失败！");
+                                _self.clearPage();
+                            }
+                        });
+                    }
+                });
+
+                _self.bindEvent();
+            },
+            addSelectSku: function (skuSysId, skuName, UPC, skuCode) {
+                var outboundDetails = BatchOutboundModel.getOutboundDetailSource();
+                if (outboundDetails.length > 0) {
+                    for (var i = 0; i < outboundDetails.length ; i++) {
+                        if (outboundDetails[i].SkuSysId == skuSysId) {
+                            msgAlert("已添加过该商品!");
+                            return;
+                        }
+                    }
+                }
+
+                BatchOutboundModel.outboundDetailsTable.rows.add([{
+                    "SkuSysId": skuSysId,
+                    "SkuCode": skuCode,
+                    "SkuName": skuName,
+                    "UPC": UPC,
+                    "Qty": 1
+                }]).draw();
+            },
+            initValidate: function () {
+                $("#outboundForm").validate({
+                    ignore: [],
+                    rules: {
+                        ConsigneeName: {
+                            required: true,
+                            maxlength: 32
+                        },
+                        ConsigneeAddress: {
+                            required: true,
+                            maxlength: 128
+                        },
+                        ConsigneePhone: {
+                            required: true,
+                            maxlength: 32
+                        }
+                    }
+                });
+            },
+            getOutboundDetailSource: function () {
+                var outboundDetailList = [];
+                var outboundDetaildata = BatchOutboundModel.outboundDetailsTable.data();
+
+                for (var i = 0; i < outboundDetaildata.length; i++) {
+                    outboundDetailList.push(outboundDetaildata[i]);
+                }
+
+                return outboundDetailList;
+            },
+            bindEvent: function () {
+                $('#UPC,#SkuCode,#SkuName').keydown(function (e) {
+                    if (e.keyCode == 13) {
+                        BatchOutboundModel.skutable.ajax.reload();
+                        $("#SkuName").val("");
+                        $("#UPC").val("");
+                        $("#SkuCode").val("");
+                    }
+                });
+            },
+            clearPage: function () {
+                BatchOutboundModel.outboundDetailsTable
+                    .rows()
+                    .remove()
+                    .draw();
+                $("#ConsigneeName").val("");
+                $("#ConsigneeAddress").val("");
+                $("#ConsigneePhone").val("");
+            }
+        }
+
+        $(function () {
+            BatchOutboundModel.init();
+        })
+
+    </script>
+}

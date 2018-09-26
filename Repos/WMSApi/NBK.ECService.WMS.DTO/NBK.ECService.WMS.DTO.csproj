@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{04E6E310-A536-4CF9-B0A6-01A765DBF38C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBK.ECService.WMS.DTO</RootNamespace>
+    <AssemblyName>NBK.ECService.WMS.DTO</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Abp">
+      <HintPath>..\packages\Abp.0.7.1.0\lib\net451\Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab">
+      <HintPath>..\packages\FortuneLab.1.6.4.13\lib\net451\FortuneLab.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Abp">
+      <HintPath>..\packages\FortuneLab.Abp.1.6.2.1\lib\net451\FortuneLab.Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\LoginUserInfo.cs" />
+    <Compile Include="Adjustment\AdjustmentAuditDto.cs" />
+    <Compile Include="Adjustment\AdjustmentDto.cs" />
+    <Compile Include="Adjustment\AdjustmentListDto.cs" />
+    <Compile Include="Adjustment\AdjustmentQuery.cs" />
+    <Compile Include="Adjustment\AdjustmentViewDto.cs" />
+    <Compile Include="Assembly\AddAssemblyDto.cs" />
+    <Compile Include="Assembly\AssemblyDetailDto.cs" />
+    <Compile Include="Assembly\AssemblyFinishDto.cs" />
+    <Compile Include="Assembly\AssemblyListDto.cs" />
+    <Compile Include="Assembly\AssemblyQuery.cs" />
+    <Compile Include="Assembly\AssemblySkuDto.cs" />
+    <Compile Include="Assembly\AssemblyViewDto.cs" />
+    <Compile Include="Assembly\AssemblyWeith.cs" />
+    <Compile Include="Base\BaseDto.cs" />
+    <Compile Include="Base\CoordinateDto.cs" />
+    <Compile Include="Carrier\CarrierDto.cs" />
+    <Compile Include="Carrier\CarrierQuery.cs" />
+    <Compile Include="Chart\AdventSkuChartDto.cs" />
+    <Compile Include="Chart\CharDataDto.cs" />
+    <Compile Include="Chart\ExceedThreeDaysPurchase.cs" />
+    <Compile Include="Chart\OutboundAndReturnCharDto.cs" />
+    <Compile Include="Chart\OutboundTotalChartDto.cs" />
+    <Compile Include="Chart\PrePackBoardDto.cs" />
+    <Compile Include="Chart\PurchaseAndOutboundChartDto.cs" />
+    <Compile Include="Component\ComponentDetailDto.cs" />
+    <Compile Include="Component\ComponentDto.cs" />
+    <Compile Include="Component\ComponentListDto.cs" />
+    <Compile Include="Component\ComponentQuery.cs" />
+    <Compile Include="Container\ContainerDto.cs" />
+    <Compile Include="Container\ContainerQuery.cs" />
+    <Compile Include="Delivery\RFScanDeliveryDto.cs" />
+    <Compile Include="Delivery\ScanDeliveryDto.cs" />
+    <Compile Include="Extend\AsynBussinessProcessLogDto.cs" />
+    <Compile Include="Extend\BaseQuery.cs" />
+    <Compile Include="Extend\CommonResponse.cs" />
+    <Compile Include="Extend\GenOrderReponseDto.cs" />
+    <Compile Include="Extend\MQProcessDto.cs" />
+    <Compile Include="Extend\Pages.cs" />
+    <Compile Include="Extend\TMSCommonResponse.cs" />
+    <Compile Include="Frozen\FrozenListDto.cs" />
+    <Compile Include="Frozen\FrozenListQuery.cs" />
+    <Compile Include="Frozen\FrozenLocSkuDto.cs" />
+    <Compile Include="Frozen\FrozenRequestDto.cs" />
+    <Compile Include="Frozen\FrozenRequestQuery.cs" />
+    <Compile Include="Frozen\FrozenRequestSkuDto.cs" />
+    <Compile Include="Frozen\FrozenSkuDto.cs" />
+    <Compile Include="Inventory\GetInventoryDto.cs" />
+    <Compile Include="Inventory\InitInventoryFromChannelDto.cs" />
+    <Compile Include="Inventory\InvSkuLocDto.cs" />
+    <Compile Include="Inventory\SkuInvLotLocLpnDto.cs" />
+    <Compile Include="Inventory\SkuInvLotLocLpnQuery.cs" />
+    <Compile Include="Inventory\StockTransferDto.cs" />
+    <Compile Include="Inventory\StockTransferLotListDto.cs" />
+    <Compile Include="Inventory\StockTransferQuery.cs" />
+    <Compile Include="Inventory\UpdateInventoryDto.cs" />
+    <Compile Include="InvLotLocLpn\InvLotLocLpnDto.cs" />
+    <Compile Include="Location\LocationDto.cs" />
+    <Compile Include="Location\LocationListDto.cs" />
+    <Compile Include="Location\LocationQuery.cs" />
+    <Compile Include="LotTemplate\LotTemplateDto.cs" />
+    <Compile Include="LotTemplate\LotTemplateListDto.cs" />
+    <Compile Include="LotTemplate\LotTemplateQuery.cs" />
+    <Compile Include="LotTemplate\LotTemplateValueDto.cs" />
+    <Compile Include="MQ\Inventory\InvTransMqDto.cs" />
+    <Compile Include="MQ\Log\AccessLogDto.cs" />
+    <Compile Include="MQ\Log\BusinessLogDto.cs" />
+    <Compile Include="MQ\Log\InterfaceLogDto.cs" />
+    <Compile Include="MQ\OrderRule\MQOrderRuleDto.cs" />
+    <Compile Include="MQ\TransferInventory\MQTransferInventoryDto.cs" />
+    <Compile Include="MQ\TransferInventory\MQTransferinventoryReceiptExtendDto.cs" />
+    <Compile Include="MQ\Work\MQWorkDto.cs" />
+    <Compile Include="OutboundTransferOrder\OutboundTransferOrderDto.cs" />
+    <Compile Include="OutboundTransferOrder\OutboundTransferOrderMoveDto.cs" />
+    <Compile Include="OutboundTransferOrder\OutboundTransferOrderQuery.cs" />
+    <Compile Include="OutboundTransferOrder\OutboundTransferOrderQueryDto.cs" />
+    <Compile Include="Outbound\AddOutboundExceptionDto.cs" />
+    <Compile Include="Outbound\BatchTMSBoxNumberDto.cs" />
+    <Compile Include="Outbound\InsufficientStockSkuListDto.cs" />
+    <Compile Include="Outbound\OutboundAllocationDeliveryDto.cs" />
+    <Compile Include="Outbound\OutboundBatchDto.cs" />
+    <Compile Include="Outbound\OutboundBindQuery.cs" />
+    <Compile Include="Outbound\OutboundBoxDto.cs" />
+    <Compile Include="Outbound\OutboundDetailBatchDto.cs" />
+    <Compile Include="Outbound\OutboundDetailViewDto.cs" />
+    <Compile Include="Outbound\OutboundExceptionDto.cs" />
+    <Compile Include="Outbound\OutboundExceptionQueryDto.cs" />
+    <Compile Include="Outbound\OutboundListDto.cs" />
+    <Compile Include="Outbound\OutboundOperateDto.cs" />
+    <Compile Include="Outbound\OutboundPartReturnDto.cs" />
+    <Compile Include="Outbound\OutboundPreBulkPackDto.cs" />
+    <Compile Include="Outbound\OutboundPrePackDiffDto.cs" />
+    <Compile Include="Outbound\OutboundQuery.cs" />
+    <Compile Include="Outbound\OutboundQuickDeliveryDto.cs" />
+    <Compile Include="Outbound\OutboundReturnDto.cs" />
+    <Compile Include="Outbound\OutboundTransferPrintDto.cs" />
+    <Compile Include="Outbound\OutboundViewDto.cs" />
+    <Compile Include="Outbound\PartShipmentDetailDto.cs" />
+    <Compile Include="Outbound\PartShipmentMemoDto.cs" />
+    <Compile Include="Outbound\TMSBoxNumberDto.cs" />
+    <Compile Include="Outbound\UpdateOutboundDetailDto.cs" />
+    <Compile Include="Outbound\UpdateOutboundDto.cs" />
+    <Compile Include="Package\PackDto.cs" />
+    <Compile Include="Package\PackQuery.cs" />
+    <Compile Include="Package\SkuPackageConvertDto.cs" />
+    <Compile Include="Package\UOMDto.cs" />
+    <Compile Include="Package\UOMQuery.cs" />
+    <Compile Include="PerPack\PrePackDetailDto.cs" />
+    <Compile Include="PerPack\PrePackListDto.cs" />
+    <Compile Include="PerPack\PrePackQuery.cs" />
+    <Compile Include="PerPack\PrePackSkuDto.cs" />
+    <Compile Include="PerPack\PrePackSkuListDto.cs" />
+    <Compile Include="PerPack\PrePackSkuQuery.cs" />
+    <Compile Include="PerPack\UpdatePrePackDetailDto.cs" />
+    <Compile Include="PickDetail\CancelPickDetailDto.cs" />
+    <Compile Include="PickDetail\CancelPickQtyDto.cs" />
+    <Compile Include="PickDetail\ClearContainerDto.cs" />
+    <Compile Include="PickDetail\CreatePickDetailRuleDto.cs" />
+    <Compile Include="PickDetail\PickDetailDto.cs" />
+    <Compile Include="PickDetail\PickDetailListDto.cs" />
+    <Compile Include="PickDetail\PickDetailOperationDto.cs" />
+    <Compile Include="PickDetail\PickDetailQuery.cs" />
+    <Compile Include="PickDetail\PickDetailSumDto.cs" />
+    <Compile Include="PickDetail\PickingOperationDto.cs" />
+    <Compile Include="PickDetail\PickingOperationQuery.cs" />
+    <Compile Include="PickDetail\PickOutboundDetailListDto.cs" />
+    <Compile Include="PickDetail\PickOutboundListDto.cs" />
+    <Compile Include="Picture\PictureDto.cs" />
+    <Compile Include="PreBulkPack\BatchPreBulkPackDto.cs" />
+    <Compile Include="PreBulkPack\PreBulkPackDto.cs" />
+    <Compile Include="PreBulkPack\PreBulkPackQuery.cs" />
+    <Compile Include="Print\PrintAssemblyPickDetailDto.cs" />
+    <Compile Include="Print\PrintAssemblyRCMDPickDetailDto.cs" />
+    <Compile Include="Print\PrintAutoShelvesDto.cs" />
+    <Compile Include="Print\PrintOutboundDetailDto.cs" />
+    <Compile Include="Print\PrintOutboundDto.cs" />
+    <Compile Include="Print\PrintOutboundPrePackDiffDto.cs" />
+    <Compile Include="Print\PrintPickDetailByBatchDto.cs" />
+    <Compile Include="Print\PrintPickDetailByOrderDto.cs" />
+    <Compile Include="Print\PrintPickDetailDto.cs" />
+    <Compile Include="Print\PrintPickingMaterialDetailDto.cs" />
+    <Compile Include="Print\PrintPickingMaterialDto.cs" />
+    <Compile Include="Print\PrintPickingMaterialQuery.cs" />
+    <Compile Include="Print\PrintPrebulkPackByBatchDto.cs" />
+    <Compile Include="Print\PrintPurchaseDetailViewDto.cs" />
+    <Compile Include="Print\PrintPurchaseViewDto.cs" />
+    <Compile Include="Print\PrintQualityControlDetailDto.cs" />
+    <Compile Include="Print\PrintQualityControlDto.cs" />
+    <Compile Include="Print\PrintReceiptDetailDto.cs" />
+    <Compile Include="Print\PrintReceiptDto.cs" />
+    <Compile Include="Print\PrintStockTakeDetailDto.cs" />
+    <Compile Include="Print\PrintStockTakeDto.cs" />
+    <Compile Include="Print\PrintStockTakeReportDetailDto.cs" />
+    <Compile Include="Print\PrintStockTakeReportDto.cs" />
+    <Compile Include="Print\PrintTMSPackNumberListDto.cs" />
+    <Compile Include="Print\PrintVanningDetailDto.cs" />
+    <Compile Include="Print\PrintVanningDetailStickDto .cs" />
+    <Compile Include="Print\PrintVanningDetailStickSkuDto.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Purchase\PurchaseAutoShelvesSkuInfo.cs" />
+    <Compile Include="Purchase\PurchaseBatchDto.cs" />
+    <Compile Include="Purchase\PurchaseDetailBatchDto.cs" />
+    <Compile Include="Purchase\PurchaseDetailDto.cs" />
+    <Compile Include="Purchase\PurchaseDetailReturnDto.cs" />
+    <Compile Include="Purchase\PurchaseDetailReturnViewDto.cs" />
+    <Compile Include="Purchase\PurchaseDetailSkuDto.cs" />
+    <Compile Include="Purchase\PurchaseDetailViewDto.cs" />
+    <Compile Include="Purchase\PurchaseDto.cs" />
+    <Compile Include="Purchase\PurchaseForReturnDto.cs" />
+    <Compile Include="Purchase\PurchaseListDto.cs" />
+    <Compile Include="Purchase\PurchaseOperateDto.cs" />
+    <Compile Include="Purchase\PurchaseQcDto.cs" />
+    <Compile Include="Purchase\PurchaseQuery.cs" />
+    <Compile Include="Purchase\PurchaseReturnListDto.cs" />
+    <Compile Include="Purchase\PurchaseReturnQuery.cs" />
+    <Compile Include="Purchase\PurchaseReturnViewDto.cs" />
+    <Compile Include="Purchase\PurchaseViewDto.cs" />
+    <Compile Include="QualityControl\DocDetailDto.cs" />
+    <Compile Include="QualityControl\DocDetailQuery.cs" />
+    <Compile Include="QualityControl\FinishQualityControlDto.cs" />
+    <Compile Include="QualityControl\QCDetailQuery.cs" />
+    <Compile Include="QualityControl\QualityControlDetailDto.cs" />
+    <Compile Include="QualityControl\QualityControlDto.cs" />
+    <Compile Include="QualityControl\QualityControlListDto.cs" />
+    <Compile Include="QualityControl\QualityControlQuery.cs" />
+    <Compile Include="QualityControl\SaveQualityControlDto.cs" />
+    <Compile Include="Receipt\CheckDuplicateSNDto.cs" />
+    <Compile Include="Receipt\PickingMaterialDetailDto.cs" />
+    <Compile Include="Receipt\PickingMaterialDto.cs" />
+    <Compile Include="Receipt\PickingMaterialListDto.cs" />
+    <Compile Include="Receipt\PickingMaterialQuery.cs" />
+    <Compile Include="Receipt\ReceiptCancelDto.cs" />
+    <Compile Include="Receipt\ReceiptCollectionLotDto.cs" />
+    <Compile Include="Receipt\ReceiptCollectionLotQuery.cs" />
+    <Compile Include="Receipt\ReceiptCollectionLotViewDto.cs" />
+    <Compile Include="Receipt\ReceiptdetailAutoShelvesDto.cs" />
+    <Compile Include="Receipt\ReceiptDetailCheckLotDto.cs" />
+    <Compile Include="Receipt\ReceiptDetailDto.cs" />
+    <Compile Include="Receipt\ReceiptDetailOperationDto.cs" />
+    <Compile Include="Receipt\ReceiptDetailResponseDto.cs" />
+    <Compile Include="Receipt\ReceiptDetailSkuDto.cs" />
+    <Compile Include="Receipt\ReceiptDetailViewDto.cs" />
+    <Compile Include="Receipt\ReceiptDto.cs" />
+    <Compile Include="Receipt\ReceiptListDto.cs" />
+    <Compile Include="Receipt\ReceiptOperationDto.cs" />
+    <Compile Include="Receipt\ReceiptOperationUpdatePurchaseDto.cs" />
+    <Compile Include="Receipt\ReceiptPurchaseDto.cs" />
+    <Compile Include="Receipt\ReceiptQuery.cs" />
+    <Compile Include="Receipt\ReceiptSNDto.cs" />
+    <Compile Include="Receipt\ReceiptViewDto.cs" />
+    <Compile Include="Receipt\UpdatePurchaseDetailDto.cs" />
+    <Compile Include="Receipt\UpdateReceiptDetailDto.cs" />
+    <Compile Include="Report\AdjustmentDetailReportDto.cs" />
+    <Compile Include="Report\AdjustmentDetailReportQuery.cs" />
+    <Compile Include="Report\BalanceReportDto.cs" />
+    <Compile Include="Report\BalanceReportQuery.cs" />
+    <Compile Include="Report\ChannelInventoryDto.cs" />
+    <Compile Include="Report\ChannelInventoryQuery.cs" />
+    <Compile Include="Report\FinanceInvoicingReportDto.cs" />
+    <Compile Include="Report\FinanceInvoicingReportQuery.cs" />
+    <Compile Include="Report\FrozenSkuReportDto.cs" />
+    <Compile Include="Report\FrozenSkuReportQuery.cs" />
+    <Compile Include="Report\InboundReportDto.cs" />
+    <Compile Include="Report\InboundReportQuery.cs" />
+    <Compile Include="Report\InvSkuLocReportDto.cs" />
+    <Compile Include="Report\InvSkuLotLocLpnReportDto.cs" />
+    <Compile Include="Report\InvSkuLotReportDto.cs" />
+    <Compile Include="Report\InvSkuReportDto.cs" />
+    <Compile Include="Report\InvSkuReportQuery.cs" />
+    <Compile Include="Report\InvTranDto.cs" />
+    <Compile Include="Report\InvTransBySkuReportDto.cs" />
+    <Compile Include="Report\InvTransBySkuReportQuery.cs" />
+    <Compile Include="Report\MonitorReportDto.cs" />
+    <Compile Include="Report\MonitorReportQuery.cs" />
+    <Compile Include="Report\OutboundBoxReportDto.cs" />
+    <Compile Include="Report\OutboundBoxReportQuery.cs" />
+    <Compile Include="Report\OutboundDetailReportDto.cs" />
+    <Compile Include="Report\OutboundExceptionReportDto.cs" />
+    <Compile Include="Report\OutboundExceptionReportQuery.cs" />
+    <Compile Include="Report\OutboundHandleDateStatisticsDto.cs" />
+    <Compile Include="Report\OutboundHandleDateStatisticsQuery.cs" />
+    <Compile Include="Report\OutboundPackReportQuery.cs" />
+    <Compile Include="Report\OutboundPackSkuReportQuery.cs" />
+    <Compile Include="Report\PurchaseDetailReportQuery.cs" />
+    <Compile Include="Report\ReceiptAndDeliveryDateDto.cs" />
+    <Compile Include="Report\ReceiptAndDeliveryDateQuery.cs" />
+    <Compile Include="Report\ReceiptDetailReportDto.cs" />
+    <Compile Include="Report\ReceivedAndSendSkuReportDto.cs" />
+    <Compile Include="Report\ReceivedAndSendSkuReportQuery.cs" />
+    <Compile Include="Report\SkuPackReportListDto.cs" />
+    <Compile Include="Report\SkuPackReportQuery.cs" />
+    <Compile Include="Report\SkuReceiptOutboundReportDto.cs" />
+    <Compile Include="Report\SNManageReportQuery.cs" />
+    <Compile Include="RFDto\AssemblyPick\RFAssemblyPickDetailDto.cs" />
+    <Compile Include="RFDto\AssemblyPick\RFAssemblyPickQuery.cs" />
+    <Compile Include="RFDto\AssemblyPick\RFWaitingAssemblyPickListDto.cs" />
+    <Compile Include="RFDto\AssemblyPick\RFWaitingAssemblyPickSkuListDto.cs" />
+    <Compile Include="RFDto\AssemblyShelves\RFAssemblyScanShelvesDto.cs" />
+    <Compile Include="RFDto\AssemblyShelves\RFAssemblyShelvesQuery.cs" />
+    <Compile Include="RFDto\AssemblyShelves\RFAssemblyWaitingShelvesListDto.cs" />
+    <Compile Include="RFDto\AssemblyShelves\RFAssemblyWaitingShelvesSkuListDto.cs" />
+    <Compile Include="RFDto\Base\RFPackDto.cs" />
+    <Compile Include="RFDto\Base\RFSkuPackDto.cs" />
+    <Compile Include="RFDto\Base\SkuPackDto.cs" />
+    <Compile Include="RFDto\Inventory\RFInventoryListDto.cs" />
+    <Compile Include="RFDto\Inventory\RFInventoryQuery.cs" />
+    <Compile Include="RFDto\Inventory\RFInvSkuLocListDto.cs" />
+    <Compile Include="RFDto\Inventory\RFInvSkuLocQuery.cs" />
+    <Compile Include="RFDto\OutboundTransferOrder\RFOutboundTransferOrderQuery.cs" />
+    <Compile Include="RFDto\OutboundTransferOrder\RFOutboundTransferOrderReviewDiffDto.cs" />
+    <Compile Include="RFDto\Pick\FRInvLotLocLpnListDto.cs" />
+    <Compile Include="RFDto\Pick\RFContainerPickingDto.cs" />
+    <Compile Include="RFDto\Review\RFOutboundReviewDiffDto.cs" />
+    <Compile Include="RFDto\Review\RFSingleReviewFinishDto.cs" />
+    <Compile Include="RFDto\Outbound\RFCheckPreBulkPackDetailSkuDto.cs" />
+    <Compile Include="RFDto\Outbound\RFCheckReviewDetailSkuDto.cs" />
+    <Compile Include="RFDto\Outbound\RFCheckReviewResultDto.cs" />
+    <Compile Include="RFDto\Outbound\RFOutboundDetailDto.cs" />
+    <Compile Include="RFDto\Outbound\RFOutboundQuery.cs" />
+    <Compile Include="RFDto\Review\RFOutboundReviewDetailDto.cs" />
+    <Compile Include="RFDto\Outbound\RFOutboundReviewInfo.cs" />
+    <Compile Include="RFDto\Review\RFOutboundReviewListDto.cs" />
+    <Compile Include="RFDto\Outbound\RFPreBulkPackDetailDto.cs" />
+    <Compile Include="RFDto\Outbound\RFPreBulkPackDto.cs" />
+    <Compile Include="RFDto\Outbound\RFReviewFinishDto.cs" />
+    <Compile Include="RFDto\Outbound\RFReviewResultDto.cs" />
+    <Compile Include="RFDto\Outbound\RFWaitingReviewDto.cs" />
+    <Compile Include="RFDto\Pick\RFContainerPickingDetailListDto.cs" />
+    <Compile Include="RFDto\Pick\RFContainerPickingListDto.cs" />
+    <Compile Include="RFDto\Pick\RFGenerateContainerPickingDetailDto.cs" />
+    <Compile Include="RFDto\Pick\RFPickDetailDto.cs" />
+    <Compile Include="RFDto\Pick\RFPickFinishDto.cs" />
+    <Compile Include="RFDto\Pick\RFPickQuery.cs" />
+    <Compile Include="RFDto\Pick\RFPickResultDto.cs" />
+    <Compile Include="RFDto\Pick\RFWaitingPickListDto.cs" />
+    <Compile Include="RFDto\Pick\RFWaitingPickSkuListDto.cs" />
+    <Compile Include="RFDto\Pick\UpdatePickDetailDto.cs" />
+    <Compile Include="RFDto\PrePack\RFPrePackDetailList.cs" />
+    <Compile Include="RFDto\PrePack\RFPrePackDto.cs" />
+    <Compile Include="RFDto\PrePack\RFPrePackQuery.cs" />
+    <Compile Include="RFDto\Receipt\RFReceiptListDto.cs" />
+    <Compile Include="RFDto\Receipt\RFReceiptOperationDetailListDto.cs" />
+    <Compile Include="RFDto\Receipt\RFReceiptQuery.cs" />
+    <Compile Include="RFDto\Review\RFSingleReviewScanningDto.cs" />
+    <Compile Include="RFDto\Review\RFWholeReviewFinishDto.cs" />
+    <Compile Include="RFDto\Review\RFWholeReviewScanningDto.cs" />
+    <Compile Include="RFDto\RFCommResult.cs" />
+    <Compile Include="RFDto\Shelves\RFShelvesQuery.cs" />
+    <Compile Include="RFDto\Shelves\RFWaitingShelvesListDto.cs" />
+    <Compile Include="RFDto\Shelves\RFWaitingShelvesSkuListDto.cs" />
+    <Compile Include="RFDto\Shelves\ScanShelvesDto.cs" />
+    <Compile Include="RFDto\StockMovement\RFStockMovementDto.cs" />
+    <Compile Include="RFDto\StockTake\RFCheckStockTakeFirstDetailSkuDto.cs" />
+    <Compile Include="RFDto\StockTake\RFStockTakeFirstDetailDto.cs" />
+    <Compile Include="RFDto\StockTake\RFStockTakeListDto.cs" />
+    <Compile Include="RFDto\StockTake\RFStockTakeListingDto.cs" />
+    <Compile Include="RFDto\StockTake\RFStockTakeQuery.cs" />
+    <Compile Include="RFDto\StockTake\StockTakeFirstDto.cs" />
+    <Compile Include="RFDto\StockTake\StockTakeFirstListDto.cs" />
+    <Compile Include="RFDto\StockTake\StockTakeSecondDto.cs" />
+    <Compile Include="RFDto\StockTake\StockTakeSecondListDto.cs" />
+    <Compile Include="RuleSetting\AssemblyRuleDto.cs" />
+    <Compile Include="RuleSetting\OutboundRuleDto.cs" />
+    <Compile Include="RuleSetting\PreOrderRuleDto.cs" />
+    <Compile Include="RuleSetting\WorkRuleDto.cs" />
+    <Compile Include="Shelves\CancelShelvesDto.cs" />
+    <Compile Include="SkuBorrow\SkuBorrowAuditDto.cs" />
+    <Compile Include="SkuBorrow\SkuBorrowDto.cs" />
+    <Compile Include="SkuBorrow\SkuBorrowListDto.cs" />
+    <Compile Include="SkuBorrow\SkuBorrowQuery.cs" />
+    <Compile Include="SkuBorrow\SkuBorrowViewDto.cs" />
+    <Compile Include="Sku\SelectSkuClassDto.cs" />
+    <Compile Include="Sku\SkuBaseInfoDto.cs" />
+    <Compile Include="Sku\SkuCurrentDto.cs" />
+    <Compile Include="Sku\SkuDto.cs" />
+    <Compile Include="Sku\SkuListDto.cs" />
+    <Compile Include="Sku\SkuQuery.cs" />
+    <Compile Include="Sku\SkuWithPackDto.cs" />
+    <Compile Include="StockMovement\SkuPackUomDto.cs" />
+    <Compile Include="StockMovement\StockMovementDto.cs" />
+    <Compile Include="StockMovement\StockMovementImportDto.cs" />
+    <Compile Include="StockMovement\StockMovementOperationDto.cs" />
+    <Compile Include="StockMovement\StockMovementQuery.cs" />
+    <Compile Include="StockMovement\StockMovementSkuDto.cs" />
+    <Compile Include="StockMovement\StockMovementSkuQuery.cs" />
+    <Compile Include="StockTake\CreateAdjustmentDto.cs" />
+    <Compile Include="StockTake\NewStockTakeDto.cs" />
+    <Compile Include="StockTake\ReplayStockTakeDto.cs" />
+    <Compile Include="StockTake\StockTakeCompleteDto.cs" />
+    <Compile Include="StockTake\StockTakeDetailViewDto.cs" />
+    <Compile Include="StockTake\StockTakeDto.cs" />
+    <Compile Include="StockTake\StockTakeListDto.cs" />
+    <Compile Include="StockTake\StockTakeQuery.cs" />
+    <Compile Include="StockTake\StockTakeReportListDto.cs" />
+    <Compile Include="StockTake\StockTakeReportQuery.cs" />
+    <Compile Include="StockTake\StockTakeSkuListDto.cs" />
+    <Compile Include="StockTake\StockTakeSkuQuery.cs" />
+    <Compile Include="StockTake\StockTakeStartDto.cs" />
+    <Compile Include="StockTake\StockTakeViewDto.cs" />
+    <Compile Include="StockTake\StockTakeViewQuery.cs" />
+    <Compile Include="SysCode\SelectItem.cs" />
+    <Compile Include="SysCode\SysCodeDetailDto.cs" />
+    <Compile Include="SysCode\SysCodeDto.cs" />
+    <Compile Include="SysCode\SysCodeQuery.cs" />
+    <Compile Include="System\MenuDto.cs" />
+    <Compile Include="ThirdParty\Adjustment\ThirdPartAdjustmentDetailDto.cs" />
+    <Compile Include="ThirdParty\Adjustment\ThirdPartAdjustmentDto.cs" />
+    <Compile Include="ThirdParty\InStockDto.cs" />
+    <Compile Include="ThirdParty\InStockOrderBussinessDto.cs" />
+    <Compile Include="ThirdParty\InStockOrderDetailDto.cs" />
+    <Compile Include="ThirdParty\InStockOrderItemDetailDto.cs" />
+    <Compile Include="ThirdParty\LockOrder\LockOrderInput.cs" />
+    <Compile Include="ThirdParty\OutboundReturn\CreatePurchaseOrderNumberRequest.cs" />
+    <Compile Include="ThirdParty\OutboundReturn\CreatePurchaseOrderNumberResponse.cs" />
+    <Compile Include="ThirdParty\OutStockBussinessDto.cs" />
+    <Compile Include="ThirdParty\OutStockDto.cs" />
+    <Compile Include="ThirdParty\OutStockOrderDetailDto.cs" />
+    <Compile Include="ThirdParty\OutStockOrderItemDetailDto.cs" />
+    <Compile Include="ThirdParty\StockTransfer\ThirdPartyStockTransferDetailDto.cs" />
+    <Compile Include="ThirdParty\StockTransfer\ThirdPartyStockTransferDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyECCLendResponse.cs" />
+    <Compile Include="ThirdParty\ThirdPartyFinishQualityControlDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyLoadingSequenceDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyPushBoxCountDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyRegionIntactDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyRegionListDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyRegionListQuery.cs" />
+    <Compile Include="ThirdParty\ThirdPartySkuBorrowLendDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartySkuBorrowReturnDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyReturnPurchaseDetailDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyReturnPurchaseDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartySkuBorrowAddDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartySkuPackDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyUpdateOutboundDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyUpdateOutboundTypeDto.cs" />
+    <Compile Include="ThirdParty\ThirdPreBullPackDto.cs" />
+    <Compile Include="ThirdParty\TransferInventory\ThirdPartTransferInventoryDetailDto.cs" />
+    <Compile Include="ThirdParty\TransferInventory\ThirdPartTransferInventoryDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyAssemblyDetailDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyAssemblyDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyAssemblyModifyStatusDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyAssemblyWriteBackDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyInStockDetailDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyInStockDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyOutboundDetailDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyOutboundDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyOutStockDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyPurchaseDetailDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyPurchaseDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyPurchaseOperateDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyResponse.cs" />
+    <Compile Include="ThirdParty\ThirdPartySkuClassDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartySkuDto.cs" />
+    <Compile Include="ThirdParty\ThirdPartyWareHouseDto.cs" />
+    <Compile Include="ThirdParty\TransferInventory\ThirdPartyTransferInventoryInboundBackDto.cs" />
+    <Compile Include="ThirdParty\TransferInventory\ThirdPartyTransferInventoryInboundDetailBackDto.cs" />
+    <Compile Include="ThirdParty\TransferInventory\ThirdPartyTransferInventoryOutBackDto.cs" />
+    <Compile Include="ThirdParty\ZTO\CreateZTOOrderRequest.cs" />
+    <Compile Include="ThirdParty\ZTO\CreateZTOOrderResponse.cs" />
+    <Compile Include="ThirdParty\ZTO\CreateZTOOrderResponseFail.cs" />
+    <Compile Include="ThirdParty\ZTO\GenerateZTOOrderMarkeRequest.cs" />
+    <Compile Include="ThirdParty\ZTO\GenerateZTOOrderMarkeResponse.cs" />
+    <Compile Include="ThirdParty\ZTO\GenerateZTOOrderSubmitRequest.cs" />
+    <Compile Include="ThirdParty\ZTO\GenerateZTOOrderSubmitResponse.cs" />
+    <Compile Include="ThirdParty\ZTO\ZTOOrderResponse.cs" />
+    <Compile Include="TransferInventory\TransferInventoryDetailDto.cs" />
+    <Compile Include="TransferInventory\TransferInventoryDto.cs" />
+    <Compile Include="TransferInventory\TransferinventoryListDto.cs" />
+    <Compile Include="TransferInventory\TransferinventoryQuery.cs" />
+    <Compile Include="TransferInventory\TransferinventoryUpdateQuery.cs" />
+    <Compile Include="TransferInventory\TransferInventoryViewDto.cs" />
+    <Compile Include="Vanning\DeliveryHandoverGroupDto.cs" />
+    <Compile Include="Vanning\HandoverGroupDetailDto.cs" />
+    <Compile Include="Vanning\HandoverGroupDto.cs" />
+    <Compile Include="Vanning\HandoverGroupQuery.cs" />
+    <Compile Include="Vanning\VanningCancelDto.cs" />
+    <Compile Include="Vanning\VanningDeliveryDto.cs" />
+    <Compile Include="Vanning\VanningDetailDto.cs" />
+    <Compile Include="Vanning\VanningDetailOperationDto.cs" />
+    <Compile Include="Vanning\VanningDetailViewDto.cs" />
+    <Compile Include="Vanning\VanningDto.cs" />
+    <Compile Include="Vanning\VanningOperationDto.cs" />
+    <Compile Include="Vanning\VanningPickDetailDto.cs" />
+    <Compile Include="Vanning\VanningPickDetailOperationDto.cs" />
+    <Compile Include="Vanning\VanningQueryDto.cs" />
+    <Compile Include="Vanning\VanningRecordDto.cs" />
+    <Compile Include="Vanning\VanningViewDto.cs" />
+    <Compile Include="Vanning\VanningViewQuery.cs" />
+    <Compile Include="WareHouse\UserWarehouseDto.cs" />
+    <Compile Include="WareHouse\WareHouseDto.cs" />
+    <Compile Include="WorkUser\WorkUserDto.cs" />
+    <Compile Include="WorkUser\WorkUserListDto.cs" />
+    <Compile Include="WorkUser\WorkUserQuery.cs" />
+    <Compile Include="Work\CancelWorkDto.cs" />
+    <Compile Include="Work\WorkDetailDto.cs" />
+    <Compile Include="Work\WorkListDto.cs" />
+    <Compile Include="Work\WorkQueryDto.cs" />
+    <Compile Include="Work\WorkUpdateDto.cs" />
+    <Compile Include="Zone\ZoneDto.cs" />
+    <Compile Include="Zone\ZoneQuery.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NBK.ECService.WMS.Utility\NBK.ECService.WMS.Utility.csproj">
+      <Project>{9302533b-2489-4bf3-9e43-61dcbd361d01}</Project>
+      <Name>NBK.ECService.WMS.Utility</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

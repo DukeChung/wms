@@ -1,0 +1,130 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.ApiController", "NBK.ECService.WMSLog.ApiController\NBK.ECService.WMSLog.ApiController.csproj", "{31F4E307-49F0-49D7-902D-CB1FC9E527DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.Application", "NBK.ECService.WMSLog.Application\NBK.ECService.WMSLog.Application.csproj", "{2818CE61-3EB4-4BCC-9603-165A020B5FF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.Repository", "NBK.ECService.WMSLog.Repository\NBK.ECService.WMSLog.Repository.csproj", "{0C989120-D441-4AE6-9818-5B09AED30823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.DTO", "NBK.ECService.WMSLog.DTO\NBK.ECService.WMSLog.DTO.csproj", "{04E6E310-A536-4CF9-B0A6-01A765DBF38C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.Model", "NBK.ECService.WMSLog.Model\NBK.ECService.WMSLog.Model.csproj", "{4B986AAB-284C-4583-952C-4E9D8F5DD426}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.Utility", "NBK.ECService.WMSLog.Utility\NBK.ECService.WMSLog.Utility.csproj", "{9302533B-2489-4BF3-9E43-61DCBD361D01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBK.ECService.WMSLog.WebApi", "NBK.ECService.WMSLog.WebApi\NBK.ECService.WMSLog.WebApi.csproj", "{FFEF3878-7125-4419-8F87-15715652DE54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		GQC|Any CPU = GQC|Any CPU
+		PRD|Any CPU = PRD|Any CPU
+		PRE|Any CPU = PRE|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.GQC|Any CPU.ActiveCfg = Release|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.GQC|Any CPU.Build.0 = Release|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.PRD|Any CPU.ActiveCfg = Release|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.PRD|Any CPU.Build.0 = Release|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.PRE|Any CPU.ActiveCfg = Release|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.PRE|Any CPU.Build.0 = Release|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F4E307-49F0-49D7-902D-CB1FC9E527DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.GQC|Any CPU.ActiveCfg = Release|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.GQC|Any CPU.Build.0 = Release|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.PRD|Any CPU.ActiveCfg = Release|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.PRD|Any CPU.Build.0 = Release|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.PRE|Any CPU.ActiveCfg = Release|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.PRE|Any CPU.Build.0 = Release|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2818CE61-3EB4-4BCC-9603-165A020B5FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.GQC|Any CPU.ActiveCfg = Release|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.GQC|Any CPU.Build.0 = Release|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.PRD|Any CPU.ActiveCfg = Release|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.PRD|Any CPU.Build.0 = Release|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.PRE|Any CPU.ActiveCfg = Release|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.PRE|Any CPU.Build.0 = Release|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C989120-D441-4AE6-9818-5B09AED30823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.GQC|Any CPU.ActiveCfg = Release|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.GQC|Any CPU.Build.0 = Release|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.PRD|Any CPU.ActiveCfg = Release|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.PRD|Any CPU.Build.0 = Release|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.PRE|Any CPU.ActiveCfg = Release|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.PRE|Any CPU.Build.0 = Release|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04E6E310-A536-4CF9-B0A6-01A765DBF38C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.GQC|Any CPU.ActiveCfg = Release|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.GQC|Any CPU.Build.0 = Release|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.PRD|Any CPU.ActiveCfg = Release|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.PRD|Any CPU.Build.0 = Release|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.PRE|Any CPU.ActiveCfg = Release|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.PRE|Any CPU.Build.0 = Release|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B986AAB-284C-4583-952C-4E9D8F5DD426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.GQC|Any CPU.ActiveCfg = Release|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.GQC|Any CPU.Build.0 = Release|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.PRD|Any CPU.ActiveCfg = Release|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.PRD|Any CPU.Build.0 = Release|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.PRE|Any CPU.ActiveCfg = Release|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.PRE|Any CPU.Build.0 = Release|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9302533B-2489-4BF3-9E43-61DCBD361D01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.GQC|Any CPU.ActiveCfg = Release|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.GQC|Any CPU.Build.0 = Release|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.PRD|Any CPU.ActiveCfg = Release|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.PRD|Any CPU.Build.0 = Release|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.PRE|Any CPU.ActiveCfg = Release|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.PRE|Any CPU.Build.0 = Release|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFEF3878-7125-4419-8F87-15715652DE54}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://10.66.2.12:8080/tfs/product
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = NBK.ECService.WMSLog.Utility\\NBK.ECService.WMSLog.Utility.csproj
+		SccProjectName1 = NBK.ECService.WMSLog.Utility
+		SccLocalPath1 = NBK.ECService.WMSLog.Utility
+		SccProjectUniqueName2 = NBK.ECService.WMSLog.DTO\\NBK.ECService.WMSLog.DTO.csproj
+		SccProjectName2 = NBK.ECService.WMSLog.DTO
+		SccLocalPath2 = NBK.ECService.WMSLog.DTO
+		SccProjectUniqueName3 = NBK.ECService.WMSLog.Model\\NBK.ECService.WMSLog.Model.csproj
+		SccProjectName3 = NBK.ECService.WMSLog.Model
+		SccLocalPath3 = NBK.ECService.WMSLog.Model
+		SccProjectUniqueName4 = NBK.ECService.WMSLog.Repository\\NBK.ECService.WMSLog.Repository.csproj
+		SccProjectName4 = NBK.ECService.WMSLog.Repository
+		SccLocalPath4 = NBK.ECService.WMSLog.Repository
+		SccProjectUniqueName5 = NBK.ECService.WMSLog.Application\\NBK.ECService.WMSLog.Application.csproj
+		SccProjectName5 = NBK.ECService.WMSLog.Application
+		SccLocalPath5 = NBK.ECService.WMSLog.Application
+		SccProjectUniqueName6 = NBK.ECService.WMSLog.ApiController\\NBK.ECService.WMSLog.ApiController.csproj
+		SccProjectName6 = NBK.ECService.WMSLog.ApiController
+		SccLocalPath6 = NBK.ECService.WMSLog.ApiController
+		SccProjectUniqueName7 = NBK.ECService.WMSLog.WebApi\\NBK.ECService.WMSLog.WebApi.csproj
+		SccProjectName7 = NBK.ECService.WMSLog.WebApi
+		SccLocalPath7 = NBK.ECService.WMSLog.WebApi
+	EndGlobalSection
+EndGlobal

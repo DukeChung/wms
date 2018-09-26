@@ -1,0 +1,257 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil;
+
+@{
+    ViewBag.Title = "库存转移管理";
+}
+
+@Html.Breadcrumb("库存管理", "库存转移管理")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+<link rel="stylesheet" type="text/css" href="~/Content/plugins/ui-dialog.css" />
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    
+        <div class="ibox-content m-b-sm border-bottom">
+
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("商品名称", "SkuName")
+                </div>
+                <div class="col-sm-3">
+                    @Html.SearchTextBox("商品UPC", "UPC")
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="Status">状态</label>
+                        <select class="form-control m-b" name="Status" id="Status">
+                            <option selected>全部</option>
+                            <option value="10">新增</option>
+                            <option value="20">已转移</option>
+                            <option value="-20">作废</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <table id="gvStockTransferList" class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                    <th data-data="StockTransferOrder">转移单号</th>
+                                    <th data-data="SkuName">商品名称</th>
+                                    <th data-data="SkuDescr">商品描述</th>
+                                    <th data-data="UPC">UPC</th>
+                                    <th data-data="DisplayCurrentQty">数量</th>
+                                    <th data-data="StatusDisplay">状态</th>
+                                    <th data-data="DisplayToQty">转移数量</th>
+                                    <th data-data="FromLoc">来源货位</th>
+                                    <th data-data="ToLoc">目标货位</th>
+                                    <th data-data="FromLot">来源批次</th>
+                                    <th data-data="ToLot">目标批次</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <form id="StockTransferForm" class="form-horizontal">
+        <div class="form-group">
+            <div class="modal inmodal fade" id="printLotModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-body" style="max-height:600px;">
+                            <div class="form-group">
+                                <label class="col-sm-12">请输入打印数量:</label>
+                                <div class="col-sm-12">
+                                    <input type="number" id="PrintQty" name="PrintQty" class="form-control" value="1">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-white btn-sm" onclick="PrintLotModal();"><i class="fa fa-print"></i>打印</a>
+                                <a class="btn btn-white btn-sm" id="btnCloseSkuClass" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript" src="~/Scripts/plugins/artDialog/dialog-plus-min.js"></script>
+    <script>
+        var StockTransferList = {
+            table: {},
+            init: function () {
+                var _self = this;
+
+                _self.table = $('#gvStockTransferList').DataTable({
+                    "sAjaxSource": "GetStockTransferOrderByPage",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "SkuName", "value": $("#SkuName").val() },
+                            { "name": "UPC", "value": $("#UPC").val() },
+                            { "name": "Status", "value": $("#Status").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '确认转移',
+                            action: function (e, dt, node, config) {
+                                var sysId = GetGridSysId();
+                                if (sysId != null) {
+                                    msgConfirm("确定要转移所选的批次库存吗？", function (isConfirm) {
+                                        if (isConfirm) {
+                                            saveLoading('show');
+                                            $.ajax({
+                                                url: "/StockTransfer/StockTransferOperation?sysId=" + sysId,
+                                                type: "GET",
+                                                success: function (data) {
+                                                    if (data.success) {
+                                                        msgSuccess("转移成功!", StockTransferList.table.ajax.reload());
+
+                                                    }
+                                                    else {
+                                                        msgErro(data.message);
+                                                    }
+                                                    saveLoading();
+                                                },
+                                                error: function () {
+                                                    msgErro("操作失败");
+                                                    saveLoading();
+                                                }
+                                            });
+                                        }
+                                    }, true);
+                                }
+                            },
+                        },
+                        {
+                            text: '作废',
+                            action: function (e, dt, node, config) {
+                                var sysId = GetGridSysId();
+                                if (sysId != null) {
+                                    msgConfirm("确定要取消所选的库存转移申请吗？", function (isConfirm) {
+                                        if (isConfirm) {
+                                            saveLoading('show');
+                                            $.ajax({
+                                                url: "/StockTransfer/StockTransferCancel?sysId=" + sysId,
+                                                type: "GET",
+                                                success: function (data) {
+                                                    saveLoading();
+                                                    if (data.success) {
+                                                        msgSuccess("取消成功!");
+                                                        StockTransferList.table.ajax.reload();
+                                                    }
+                                                    else {
+                                                        msgErro(data.message);
+                                                    }
+                                                },
+                                                error: function () {
+                                                    saveLoading();
+                                                    msgErro("操作失败");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            },
+                        },
+                        {
+                            text: '打印批次',
+                            action: function (e, dt, node, config) {
+                                var check = $("table tbody input:checked");
+                                if (check.length == 0) {
+                                    msgErro("请在列表中勾选一项!");
+                                    return null;
+                                }
+                                if (check.length > 1) {
+                                    msgErro("只能勾选一项!");
+                                    return null;
+                                }
+
+                                $("#printLotModal").modal();
+
+                            }
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" ToLot ="' + full.ToLot + '" ToLotAttr01 = "' + full.ToLotAttr01 +'" />';
+                            }
+                        },
+                        {
+                            "targets": 1,
+                            "width": "15%",
+                            render: function (data, type, full, meta) {
+                                return '<a href="/StockTransfer/StockTransferView?sysId=' + full.SysId + '">' + full.StockTransferOrder + '</a>';
+                            }
+                        }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    StockTransferList.table.ajax.reload();
+                });
+            }
+        }
+
+        $(function () {
+            StockTransferList.init();
+        })
+
+        function PrintLotModal() {
+            var check = $("table tbody input:checked");
+
+            var toLot = $(check[0]).attr("ToLot");
+            var toLotAttr01 = $(check[0]).attr("ToLotAttr01");
+
+            var printQty = parseInt($("#PrintQty").val());
+            var printName = '@ViewBag.PrintCaseName';
+            print.PrintLot(printQty, printName, toLot, toLotAttr01);
+        }
+    </script>
+
+}

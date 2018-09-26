@@ -1,0 +1,313 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "批量入库";
+}
+
+@Html.Breadcrumb("入库管理", "批量入库")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="row">
+        <!--SKU-->
+        <div class="col-sm-6">
+            <div class="ibox-content m-b-sm border-bottom">
+                <form class="form-horizontal">
+                    <div class="row form-group">
+                        <label class="col-sm-12 control-label" style="text-align:center;height:34px">选择SKU</label>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">UPC:</label>
+                        <div class="col-sm-6"><input type="text" id="UPCSearch" name="UPCSearch" class="form-control" placeholder="请输入UPC" onkeyup="if (event.keyCode == 13) { btnSearch.click(); }"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">商品编码:</label>
+                        <div class="col-sm-6"><input type="text" id="SkuCodeSearch" name="SkuCodeSearch" class="form-control" placeholder="请输入商品编号" onkeyup="if (event.keyCode == 13) { btnSearch.click(); }"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">商品名称:</label>
+                        <div class="col-sm-6"><input type="text" id="SkuNameSearch" name="SkuNameSearch" class="form-control" placeholder="请输入商品名称" onkeyup="if (event.keyCode == 13) { btnSearch.click(); }"></div>
+                        <div class="col-sm-3"><button id="btnSearch" class="btn btn-primary" type="button" style="float:left">查询</button></div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div id="divSku" class="ibox-content" style="overflow-x:auto">
+                            <table id="gvSku" class="table table-striped table-bordered table-hover dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th data-data="SysId" style="width:30px">操作</th>
+                                        <th data-data="SkuCode" style="width:100px">商品编号</th>
+                                        <th data-data="SkuName" style="width:100px">商品名称</th>
+                                        <th data-data="UPC" style="width:100px">UPC</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Purchase-->
+        <div id="purchase" class="col-sm-6">
+            <div class="ibox-content m-b-sm border-bottom">
+                <form id="purchaseForm" class="form-horizontal">
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">供应商名称:</label>
+                        <div class="col-sm-6">
+                            <select id="VendorSysId" name="VendorSysId" class="form-control">
+                                @{
+                                    <option value="">请选择</option>
+                                    foreach (var vendor in (List<SelectListItem>)ViewBag.VendorList)
+                                    {
+                                        <option value="@vendor.Value">@vendor.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">状态:</label>
+                        <div class="col-sm-6"><input type="text" id="Status" name="Status" class="form-control" value="新建" disabled></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">采购日期:</label>
+                        <div id="divPurchaseDate" class="col-sm-6" style="margin-left:0px">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input type="text" class="form-control" id="PurchaseDate" name="PurchaseDate" v-model="PurchaseDate" placeholder="请输入采购日期">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">类型:</label>
+                        <div class="col-sm-6"><input type="text" id="PurchaseType" name="PurchaseType" class="form-control" value="铺货单" disabled></div>
+                        <div class="col-sm-3"><button id="btnSave" v-on:click="save" class="btn btn-primary" type="button" style="float:left">采购单收货</button></div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div id="divPurchase" class="ibox-content" style="overflow-x:auto;overflow-y:scroll">
+                            <button id="btnDelete" v-on:click="del" class="btn btn-primary" type="button" style="float:left;margin-bottom:10px">删除</button>
+                            <table id="gvPurchaseDetail" class="table table-striped table-bordered table-hover dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:center;vertical-align:middle;padding:0px;width:20px"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                        <th style="width:20%">商品编号</th>
+                                        <th style="width:50%">商品名称</th>
+                                        <th style="width:20%">UPC</th>
+                                        <th style="width:10%">入库数量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in PurchaseDetailBatchDto">
+                                        <td style="text-align:center;vertical-align:middle;padding:0px;width:15px"><input type="checkbox" v-bind:value="item.SkuSysId" /></td>
+                                        <td v-text="item.SkuCode"></td>
+                                        <td v-text="item.SkuName"></td>
+                                        <td v-text="item.UPC"></td>
+                                        <td><input type="number" v-model="item.Qty" min="1" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script>
+        var table;
+        $(document).ready(function () {
+            $('#divPurchaseDate .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            table = $('#gvSku').DataTable({
+                "sAjaxSource": "/Sku/GetSkuList",
+                "fnServerParams": function (aoData) { //查询条件
+                    aoData.push(
+                        { "name": "SkuCodeSearch", "value": $("#SkuCodeSearch").val() },
+                        { "name": "UPCSearch", "value": $("#UPCSearch").val() },
+                        { "name": "SkuNameSearch", "value": $("#SkuNameSearch").val() }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [],
+                "columnDefs": [
+                    {
+                        "targets": 0,
+                        "width": "15%",
+                        render: function (data, type, full, meta) {
+                            return '<a onclick="addSku(' + "'" + full.SysId + "'" + ',' + "'" + full.SkuCode + "'" + ',' + "'" + full.SkuName + "'" + ',' + "'" + full.UPC + "'" + ')">添加</a>';
+                        }
+                    }
+                ],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                table.ajax.reload(function (data) {
+                    $("#SkuCodeSearch").val("");
+                    $("#UPCSearch").val("");
+                    $("#SkuNameSearch").val("");
+                    if (data.aaData.length == 1) {
+                        addSku(data.aaData[0].SysId, data.aaData[0].SkuCode, data.aaData[0].SkuName, data.aaData[0].UPC)
+                    }
+                });
+            });
+        });
+
+
+        var PurchaseBatch = {
+            viewModel: {},
+            init: function () {
+                var _self = this;
+                $("#purchaseForm").validate({
+                    ignore: [],
+                    rules: {
+                        PurchaseDate: {
+                            required: true
+                        },
+                        VendorSysId: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        VendorSysId: {
+                            required: "请选择"
+                        }
+                    }
+                });
+
+                $.ajax({
+                    url: "@Url.Action("GetPurchaseBatch", "Purchase")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            PurchaseBatch.initVue(data.ViewModel);
+                            $("#PurchaseDate").val(data.ViewModel.PurchaseDateText);
+                        }
+                    }
+                })
+            },
+            initVue: function (data) {
+                PurchaseBatch.viewModel = new Vue({
+                    el: "#purchase",
+                    data: data,
+                    methods: {
+                        del: function (event) {
+                            var check = $("table tbody input:checked");
+                            if (check.length === 0) {
+                                msgErro("请在列表中勾选一项!");
+                                return false;
+                            }
+                            var sysIds = [];
+                            $(check).each(function () {
+                                sysIds.push($(this).val());
+                            });
+                            for (var i = 0; i < sysIds.length; i++) {
+                                debugger
+                                var index = PurchaseBatch.viewModel.$data.PurchaseDetailBatchDto.getIndex(sysIds[i]);
+                                PurchaseBatch.viewModel.$data.PurchaseDetailBatchDto.removeAt(index);
+                            }
+                        },
+                        save: function (event) {
+                            if ($("#purchaseForm").valid()) {
+                                saveLoading('show');
+                                $.ajax({
+                                    url: "@Url.Action("SaveBatchPurchaseAndReceipt", "Purchase")",
+                                    data: PurchaseBatch.getData(),
+                                    type: "POST",
+                                    success: function (data) {
+                                        saveLoading('hide');
+                                        if (data.Success) {
+                                            msgSuccess(data.Message);
+                                            PurchaseBatch.viewModel.$data.PurchaseDetailBatchDto = [];
+                                        }
+                                        else {
+                                            msgErro(data.Message);
+                                        }
+                                    },
+                                    error: function (data) {
+                                        msgErro(data.Message);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            },
+            getData: function () {
+                PurchaseBatch.viewModel.$data.VendorSysId = $("#VendorSysId").val();
+                PurchaseBatch.viewModel.$data.PurchaseDate = $("#PurchaseDate").val();
+                return PurchaseBatch.viewModel.$data;
+            }
+        }
+
+        $(function () {
+            PurchaseBatch.init();
+        })
+
+        function addSku(skuSysId, skuCode, skuName, skuUPC) {
+            if (PurchaseBatch.viewModel.$data.PurchaseDetailBatchDto.getIndex(skuSysId) < 0) {
+                $("#divPurchase").css("height", $("#divSku").css("height"));
+                if (skuUPC == "null" || skuUPC == null) { skuUPC = ""; }
+                PurchaseBatch.viewModel.$data.PurchaseDetailBatchDto.push({ SkuSysId: skuSysId, SkuCode: skuCode, SkuName: skuName, UPC: skuUPC, Qty: 1 });
+            } else {
+                msgAlert("已添加过该商品!");
+            }
+        }
+
+        Array.prototype.getIndex = function (skuSysId) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i].SkuSysId == skuSysId) return i;
+            }
+            return -1;
+        };
+
+        Array.prototype.removeAt = function (index) {
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+    </script>
+}

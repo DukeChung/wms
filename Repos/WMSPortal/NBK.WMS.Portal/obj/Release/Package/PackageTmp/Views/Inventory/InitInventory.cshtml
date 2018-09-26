@@ -1,0 +1,87 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.DTO;
+
+@{
+    ViewBag.Title = "库存初始化";
+}
+
+@Html.Breadcrumb("库存管理", "/Inventory/InitInventory", "库存初始化")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-default btn-file">
+                        <input type="file" id="importButton" name="importButton" onchange="InitInventory.UploadFile(this);" />
+                    </span>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+
+    <script>
+        var InitInventory = {
+            UploadFile: function (obj) {
+                var typeName = common.GetFileTypeName(obj.files[0].name);
+               
+                if (typeName != '.xls') {
+                    msgAlert("请选择03版之前的excel文件进行导入！");
+                    return false;
+                }
+
+                if (typeName != '' && typeName == '.xls') {
+                    saveLoading('show');
+                    var formData = new FormData();
+                    formData.append("file", $(obj)[0].files[0]);
+                    $.ajax({
+                        url: "@Url.Action("ImportInitInventoryData", "Inventory")",
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            saveLoading('hide');
+                            if (data.Success) {
+                                msgSuccess("导入完成！");
+                                $("#importButton").val('');
+
+                            }
+                            else {
+                                msgErro(data.Message);
+                                $("#importButton").val('');
+                                return false;
+                            }
+                        },
+                        error: function (data) {
+                            saveLoading('hide');
+                            msgErro("导入失败！");
+                            $("#importButton").val('');
+                            return false;
+                        }
+                    });
+                }
+
+            }
+        }
+
+        $(function () {
+
+
+        });
+
+    </script>
+
+}

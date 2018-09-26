@@ -1,0 +1,299 @@
+﻿@using NBK.ECService.WMSReport.Utility
+@using WMS.Global.Portal.Helpers
+@{
+    ViewBag.Title = "仓库订单日历";
+    var month = ViewBag.Month;
+    var year = ViewBag.Year;
+}
+@Html.Breadcrumb("仓库订单日历", "")
+
+<div id="content">
+    <div class="row margin-top-5">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
+                    <h2 class="title-font">当月出入库统计</h2>
+
+                </header>
+                <div>
+                    <div class="jarviswidget-editbox">
+                        <input class="form-control" type="text">
+                    </div>
+                    <div class="widget-body no-padding">
+                        <div id="calendar"></div>
+                    </div>
+
+                </div>
+                <!-- end widget div -->
+            </div>
+        </article>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="logDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div id="div_LogDetail" class="modal-content">
+        </div>
+    </div>
+</div>
+<style>
+    .jarviswidget #calendar {
+        margin-top: 0;
+    }
+
+    .jarviswidget .fc-header-title h2 {
+        margin-top: 7px;
+    }
+
+    .fc-header .fc-button {
+        margin: 7px !important;
+    }
+
+
+    .fc-event-time {
+        display: none !important;
+    }
+
+    .outboundType {
+        margin-top: -1px;
+    }
+
+        .outboundType .fc-event-title {
+            margin-left: 20px;
+        }
+</style>
+<script>
+
+    var pageDataInit = {
+        init: function () {
+            pageDataInit.SetCalendarData();
+        },
+        formatData: function (data) {
+            var eventArr = [];
+            $.each(data.OutboundList5, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 12:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#A8D850"
+                });
+            });
+            $.each(data.OutboundList4, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 11:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#A8D850"
+                });
+            });
+            $.each(data.OutboundList3, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 10:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#A8D850"
+                });
+            });
+            $.each(data.OutboundList2, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 9:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#A8D850"
+                });
+            });
+            $.each(data.OutboundList1, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 8:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#A8D850"
+                });
+            });
+            $.each(data.OutboundList, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 7:00:00",
+                    backgroundColor: "#A8D850"
+                });
+            });
+
+            $.each(data.InboundList5, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 6:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#3FBFAF"
+                });
+            });
+            $.each(data.InboundList4, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 5:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#3FBFAF"
+                });
+            });
+            $.each(data.InboundList3, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 4:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#3FBFAF"
+                });
+            });
+            $.each(data.InboundList2, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 3:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#3FBFAF"
+                });
+            });
+            $.each(data.InboundList1, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 2:00:00",
+                    className: "outboundType",
+                    backgroundColor: "#3FBFAF"
+                });
+            });
+            $.each(data.InboundList, function () {
+                eventArr.push({
+                    title: this.BussinessNameDisplay,
+                    start: this.Year + '-' + this.Month + '-' + this.Day + " 1:00:00",
+                    // allDay: true,
+                    backgroundColor: "#3FBFAF"
+                });
+            });
+            return eventArr;
+        },
+        setCalendar: function (data) {
+            if ($("#calendar").length) {
+                $.ajax({
+                    url: "@Url.Action("GetDailyEventDataCountInfo", "Map")",
+                    type: "GET",
+                    success: function (data) {
+                        if (data.Success) {
+                            var date = new Date();
+                            var d = date.getDate();
+                            var m = date.getMonth();
+                            var y = date.getFullYear();
+                            var eventArr = [];
+                            var calendar = $('#calendar').fullCalendar({
+                                header: {
+                                    left: '',
+                                    center: 'title',
+                                    right: ''
+                                },
+                                firstDay: 1,
+                                titleFormat: {
+                                    month: 'YYYY年 MM月'
+                                },
+                                editable: false,
+                                select: function (start, end, allDay) {
+                                    var title = prompt('Event Title:');
+                                    if (title) {
+                                        calendar.fullCalendar('renderEvent', {
+                                            title: title,
+                                            start: start,
+                                            end: end,
+                                            allDay: allDay
+                                        }, true
+                                        );
+                                    }
+                                    calendar.fullCalendar('unselect');
+                                },
+                                events: pageDataInit.formatData(data.Data),
+                                //单击事件项时触发
+                                eventClick: function (calEvent, jsEvent, view) {
+                                    var eventTitle = calEvent.title;
+                                    var eventDate = calEvent.start.format("YYYY-MM-DD");
+                                    $("#div_LogDetail").load("@Url.Action("CalendarDataByDate", "Map")" + "?date=" + eventDate);
+                                    $('#logDetailModal').modal("show");
+                                },
+                                eventRender: function (event, element, icon) {
+                                }
+                            });
+                        }
+                    }
+                });
+            };
+        },
+    };
+
+    pageDataInit.SetCalendarData = function () {
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+        var eventArr = [];
+        var calendar = $('#calendar').fullCalendar({
+            header: {
+                left: 'prev',
+                center: 'title',
+                right: 'next'
+            },
+            firstDay: 1,
+            titleFormat: {
+                month: 'YYYY年 MM月'
+            },
+            buttonText: {
+                prev: '上一月',
+                next: '下一月'
+            },
+            editable: false,
+            select: function (start, end, allDay) {
+                var title = prompt('Event Title:');
+                if (title) {
+                    calendar.fullCalendar('renderEvent', {
+                        title: title,
+                        start: start,
+                        end: end,
+                        allDay: allDay
+                    }, true
+                    );
+                }
+                calendar.fullCalendar('unselect');
+            },
+            events: function (start, end, timezone, callback) {
+                var startDate = $('#calendar').fullCalendar('getDate').startOf('month').format("YYYY-MM-DD");
+                var da = new Date(startDate);
+                if (parseInt(@year) < parseInt(da.getFullYear())) {
+                    @*如果服务器年份小于当前点击下一月时的年份，则不去取数据*@
+                    return false;
+                }
+                if (parseInt(@month) < parseInt(da.getMonth() + 1)) {
+                    @*如果服务器月份小于当前点击下一月时的月份，则不去取数据*@
+                    return false;
+                }
+                var endDate = $('#calendar').fullCalendar('getDate').endOf('month').format("YYYY-MM-DD");
+                saveLoading('show');
+                $.ajax({
+                    url: "/Map/GetDailyEventDataCountInfo?startDate=" + startDate + "&endDate=" + endDate,
+                    type: "GET",
+                    success: function (doc) {
+                        var events = pageDataInit.formatData(doc.Data);
+                        callback(events);
+                        saveLoading();
+                    }
+                });
+            },
+            //单击事件项时触发
+            eventClick: function (calEvent, jsEvent, view) {
+                var eventTitle = calEvent.title;
+                var eventDate = calEvent.start.format("YYYY-MM-DD");
+                $("#div_LogDetail").load("@Url.Action("CalendarDataByDate", "Map")" + "?date=" + eventDate);
+                $('#logDetailModal').modal("show");
+            },
+            eventRender: function (event, element, icon) {
+            }
+        });
+    };
+
+    $(function () {
+        pageDataInit.init();
+    })
+
+</script>

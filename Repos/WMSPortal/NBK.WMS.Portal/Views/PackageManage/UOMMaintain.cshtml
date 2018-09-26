@@ -1,0 +1,151 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "货品单位管理";
+}
+
+@Html.Breadcrumb("基础资料", "货品单位管理")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("单位代码", "UOMCode")
+            </div>
+            <div class="col-sm-2">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:25px;float: left; ">查询</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvSysCode" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="UOMCode" width="30%">货品单位代码</th>
+                                <th data-data="Descr" width="30%">描述</th>
+                                <th data-data="UomTypeName">单位类型</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    <script>
+
+        var UOMMaintain = {
+            table: {},
+            init: function () {
+                var _self = this;
+
+                table = $('#gvSysCode').DataTable({
+                    "sAjaxSource": "GetUOMList",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "UOMCode", "value": $("#UOMCode").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '新增',
+                            action: function (e, dt, node, config) {
+                                window.location.href = "/PackageManage/UOMAdd";
+                            }
+                        },
+                        {
+                            text: '编辑',
+                            action: function (e, dt, node, config) {
+                                var sysId = GetGridSysId();
+                                if (sysId != null) {
+                                    window.location.href = "/PackageManage/UOMEdit?sysId=" + sysId;
+                                }
+                            }
+                        },
+                        {
+                            text: '删除',
+                            action: function (e, dt, node, config) {
+
+                                var sysIdList = GetGridMultiselectSysId();
+                                if (sysIdList != null) {
+                                    msgConfirm("确定要删除所选的记录吗？", function (isConfirm) {
+                                        $.ajax({
+                                            url: "/PackageManage/DeleteUOM?sysIdList=" + sysIdList,
+                                            type: "GET",
+                                            success: function (data) {
+                                                if (data.success) {
+                                                    msgSuccess("删除成功!", setTimeout(function () { table.ajax.reload(); }, 100));
+                                                }
+                                                else {
+                                                    msgErro(data.message);
+                                                }
+                                            },
+                                            error: function () {
+                                                msgErro("操作失败");
+                                            }
+                                        });
+                                    });
+                                }
+                            }
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    table.ajax.reload();
+                });
+
+            }
+        }
+
+        $(function () {
+            UOMMaintain.init();
+        })
+
+    </script>
+
+}

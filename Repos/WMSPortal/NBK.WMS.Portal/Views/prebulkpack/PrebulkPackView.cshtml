@@ -1,0 +1,153 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.PreBulkPackDto
+@{
+    ViewBag.Title = "散货封装明细";
+}
+
+@Html.Breadcrumb("散货封箱管理", "/PrebulkPack/Index", "散货封装明细")
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div id="divPrebulkPackView" class="ibox-content m-b-sm border-bottom">
+
+        <form id="PrePackForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">
+                    <h2 style="color: red; text-align: left">散货封装单</h2>
+                </label>
+                <div class="col-sm-7">
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                        </div>
+                        <div class="col-sm-5" id="divPrebulkPackCode">
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-8 font-italic" style="text-align: right" id="divPrebulkPackValue">@Model.PreBulkPackOrder</div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    散货封装单号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.PreBulkPackOrder </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    单据状态:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StatusName </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    箱号:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.StorageCase </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+
+            <div class="form-group">
+                <div class="col-sm-1">
+                    创建时间:
+                </div>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-12"> @Model.CreateDateDisplay </div>
+                        <div class="col-sm-12 hr-line-dashed" style="margin-top: 5px"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group   hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <label class="col-sm-1 control-label">封装清单</label>
+                <div class="col-sm-9"></div>
+                <label class="col-sm-2 control-label">SKU数:@Model.PreBulkPackDetailList.Select(p => p.SkuCode).Distinct().Count()</label>
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>商品编码</th>
+                                <th>商品名称</th>
+                                <th>UPC</th>
+                                <th>计划数量</th>
+                                <th>数量</th>
+                                <th>包装</th>
+                                <th>单位</th>
+                                @*<th>货位</th>
+                                    <th>批次</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var info in Model.PreBulkPackDetailList)
+                                {
+                            <tr>
+                                <td>@info.SkuCode</td>
+                                <td>@info.SkuName</td>
+                                <td>@info.UPC</td>
+                                <td>@info.PreQty</td>
+                                <td>@info.Qty</td>
+                                <td>@info.PackCode</td>
+                                <td>@info.UomCode</td>
+                                @*<td>@info.Loc</td>
+                                    <td>@info.Lot</td>*@
+                            </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-white btn-sm" id="btnPrint" onclick="print()"><i class="fa fa-print"></i> 打印</a>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript">
+        $(function () {
+            $("#divPrebulkPackCode").empty().barcode($("#divPrebulkPackValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+        });
+
+        function print() {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+            LODOP.SET_PRINT_PAGESIZE(1, "2100", "2970", "");
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", "http://" + window.location.host + "/Print/PrintPrebulkPackView?sysId=@Model.SysId" + "&warehouseSysId=@ViewBag.WarehouseSysId");
+            LODOP.ADD_PRINT_BARCODE(40, 500, 206, 58, "128B", "@Model.PreBulkPackOrder");
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+    </script>
+}

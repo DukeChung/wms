@@ -1,0 +1,16 @@
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\NBK.ECService.WMSLog.Utility.dll
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\NBK.ECService.WMSLog.Utility.pdb
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\AutoMapper.dll
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\RabbitMQ.Client.dll
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\ServiceStack.Common.dll
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\ServiceStack.Interfaces.dll
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\ServiceStack.Redis.dll
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\ServiceStack.Text.dll
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\AutoMapper.xml
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\RabbitMQ.Client.xml
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\ServiceStack.Common.xml
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\ServiceStack.Redis.xml
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\bin\Release\ServiceStack.Text.xml
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\obj\Release\NBK.ECService.WMSLog.Utility.csprojResolveAssemblyReference.cache
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\obj\Release\NBK.ECService.WMSLog.Utility.dll
+D:\GitWork\WMS\Repos\WMSLogApi\NBK.ECService.WMSLog.Utility\obj\Release\NBK.ECService.WMSLog.Utility.pdb

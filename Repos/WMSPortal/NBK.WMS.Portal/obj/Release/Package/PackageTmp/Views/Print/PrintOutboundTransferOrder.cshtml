@@ -1,0 +1,91 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.OutboundTransferOrderDto
+@{
+    ViewBag.Title = "";
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div id="OutboundTransferOrderView" class="ibox-content m-b-sm border-bottom">
+        <form id="OutboundTransferOrderForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-12 control-label ">
+                    <H2 style="color: red;text-align:left">交接箱明细</H2>
+                </label>
+            </div>
+
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.PrintTitle("交接号", Model.TransferOrder)
+                @Html.PrintTitle("出库单号", Model.OutboundOrder)
+                @Html.PrintTitle("来源容器", Model.PreBulkPackOrder)
+            </div>
+
+            <div class="form-group">
+                @Html.PrintTitle("状态", Model.StatusName)
+                @Html.PrintTitle("创建日期", Model.CreateDateDisplay)
+                @Html.PrintTitle("服务综合体", Model.ServiceStationName)
+            </div>
+
+            <br />
+            <br />
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">交接清单</label>
+                <div class="col-sm-11"></div>
+            </div>
+
+            <div class="form-group ">
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                @Html.PrintTh("商品编码")
+                                @Html.PrintTh("商品名称")
+                                @Html.PrintTh("UPC")
+                                @Html.PrintTh("数量")
+                                @Html.PrintTh("包装")
+                                @Html.PrintTh("单位")
+                                @Html.PrintTh("货位")
+                                @Html.PrintTh("批次")
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var itme in Model.OutboundTransferOrderDetailDto)
+                                {
+                                    <tr>
+                                        @Html.PrintTd(itme.SkuCode)
+                                        @Html.PrintTd(itme.SkuName)
+                                        @Html.PrintTd(itme.UPC)
+                                        @Html.PrintTd(itme.Qty.ToString())
+                                        @Html.PrintTd(itme.PackCode)
+                                        @Html.PrintTd(itme.UomCode)
+                                        @Html.PrintTd(itme.Loc)
+                                        @Html.PrintTd(itme.Lot)
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/plugins/barcode")
+    <script type="text/javascript">
+        $(function () {
+            $("#divTransferOrderNumberCode").empty().barcode($("#divTransferOrderNumberValue").html(), "code128", { barWidth: 1, barHeight: 45, showHRI: false });
+        });
+    </script>
+}

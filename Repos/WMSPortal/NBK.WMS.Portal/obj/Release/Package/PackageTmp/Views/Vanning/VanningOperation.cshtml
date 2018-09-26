@@ -1,0 +1,887 @@
+﻿@using NBK.ECService.WMS.DTO
+@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "装箱";
+}
+@Html.Breadcrumb("出库管理", "装箱")
+<link rel="stylesheet" type="text/css" href="~/Content/plugins/ui-dialog.css" />
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row" id="divVanningOperation">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form method="get" onSubmit="return false" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">出库单号/拣货单号</label>
+                            <div class="col-sm-4">
+                                <input type="text" id="txtPickDetailOrder" class="form-control" v-on:change="ScanPickDetailOrder" placeholder="请扫描出库单号/拣货单号">
+                            </div>
+                            <div class="col-sm-6">
+                                <label style="font-size:x-large">{{OutboundChildType}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12" id="divMessage">
+
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品条码</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="ScanBarCode" style="width: 100%" v-on:change="ScanBarCode" placeholder="请扫描商品条码">
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="col-sm-7 control-label">扫描数量</label>
+                                <input class="col-sm-5 form-control" style="width: 50px" type="text" v-model="UnitQty" id="UnitQty" name="UnitQty">
+                            </div>
+                            <div class="col-sm-4">
+                                @{
+                                    var list = ViewBag.containerList as List<ContainerDto>;
+                                    if (list != null)
+                                    {
+
+                                        var check = "checked='checked'";
+                                        foreach (var info in list)
+                                        {
+                                            <div class="radio radio-info radio-inline" title="@info.ContainerDescr">
+
+                                                <input type="radio" value="@info.SysId" name="radioInline" @Html.Raw(check)>
+
+
+                                                <label for="inlineRadio1" style="padding-left: 0px"> @info.ContainerName </label>
+                                            </div>
+                                            check = "";
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">封箱时打印</label>
+                            <div class="col-sm-3">
+                                <input type="checkbox" id="Box" checked="checked" /> 电子面单
+                                <input type="checkbox" id="Vanning" checked="checked" /> 装箱单
+                                <input type="checkbox" id="Express" style="display:none" /> @*快递面单*@
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="col-sm-7 control-label">重量</label>
+                                <input class="col-sm-5 form-control" style="width: 50px" type="text" id="boxWeight" v-model="Weight">
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" id="btnSealedBox" class="btn btn-w-m btn-primary" v-on:click="SealedBox">封箱</button>
+
+                                @*<button type="button" class="btn btn-w-m btn-danger"  v-on:click="Abnormal" >异常处理</button>*@
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">已扫描订单</label>
+                            <div class="col-sm-9">
+                                <small id="smallProgressOrderCount" style="display: none">全部订单({{TotalOrderCount}})-已扫描订单({{ScanTotalOrderCount}})</small>
+                                <div class="progress progress-mini">
+                                    <div id="divProgressOrderCount" style="width: 0%;" class="progress-bar"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">已扫商品数量</label>
+                            <div class="col-sm-9">
+                                <small id="smallProgressSkuCount" style="display: none">全部商品数量({{TotalSkuCount}})- 已扫描商品数量({{ScanTotalSkuCount}})</small>
+                                <div class="progress progress-mini">
+                                    <div id="divProgressSkuCount" style="width: 0%;" class="progress-bar"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="tabs-container">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#tab-1">出库单/拣货单详情</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-2">装箱详情</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="tab-1" class="tab-pane active">
+                                        <div class="panel-body col-sm-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="5%" align="left">序号</th>
+                                                        <th width="15%" align="left">出库单号</th>
+                                                        <th width="15%" align="left">商品条码</th>
+                                                        <th width="15%" align="left">商品名称</th>
+                                                        <th width="20%" align="right">商品描述</th>
+                                                        <th width="7%" align="right">数量</th>
+                                                        <th width="7%" align="right">已扫描数</th>
+                                                        <th width="6%" align="right">待扫描数</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="info in PickDetailSumDto" id="{{info.OutboundSysId}}">
+                                                        <td align="left">{{$index+1}}</td>
+                                                        <td align="left">{{info.OutboundOrder}}</td>
+                                                        <td align="left">{{info.UPC}}</td>
+                                                        <td align="left">{{info.SkuName}}</td>
+                                                        <td align="left">{{info.SkuDescr}}</td>
+                                                        <td align="right">{{info.Qty}}</td>
+                                                        <td align="right">{{info.ScanQty}}</td>
+                                                        <td align="right">{{info.UnScanQty}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="tab-2" class="tab-pane">
+                                        <div class="panel-body col-sm-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="5%" align="left">序号</th>
+                                                        <th width="15%" align="left">箱号</th>
+                                                        <th width="25%" align="left">商品条码</th>
+                                                        <th width="20%" align="left">商品名称</th>
+                                                        <th width="25%" align="right">商品描述</th>
+                                                        <th width="10%" align="right">数量</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="info in VanningPickDetailOperationDto">
+                                                        <td align="left">{{$index+1}}</td>
+                                                        <td align="left">{{info.ContainerNumber}}</td>
+                                                        <td align="left">{{info.UPC}}</td>
+                                                        <td align="left">{{info.SkuName}}</td>
+                                                        <td align="left">{{info.SkuDescr}}</td>
+                                                        <td align="right">{{info.Qty}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="divWindowException" class="modal fade" aria-hidden="true" style="display: none;">
+            <div class="ibox-content modal-dialog">
+                <h4 class="m-t-none m-b">异常处理</h4>
+                <div class="text-center m-t-md">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="30%">商品条码</th>
+                                <th width="30%">商品名称</th>
+                                <th width="30%">商品描述</th>
+                                <th width="10%">数量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="info in PurchaseDetailViewDto" v-on:click="SelectBarCode(info,this)">
+                                <td>{{info.SkuCode}}</td>
+                                <td>{{info.SkuName}}</td>
+                                <td>{{info.SkuDescr}}</td>
+                                <td>{{info.Qty}}</td>
+                            </tr>
+                            <tr>
+                                <td>条码类型</td>
+                                <td>商品Code</td>
+                                <td>SN</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>打印位置</td>
+                                <td><input class="form-control input-sm m-b required" />行</td>
+                                <td><input class="form-control input-sm m-b required" />列</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ibox-footer text-right tooltip-demo">
+                    <a class="btn btn-sm btn-primary" id="btnPrintBarCode" onclick=""><i class="fa fa-check-square-o"></i> 打印</a>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div id="divWindowCarrier" class="modal fade" aria-hidden="true" style="display: none;">
+
+            <div class="ibox-content modal-dialog">
+                <h4 class="m-t-none m-b">选择承运商</h4>
+                <div class="text-center ">
+                    <form id="formSkuStyle">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="col-sm-4" style="margin-top: 5px;">面单号</div>
+                                    <div class="col-sm-8">
+                                        <input id="SkuSysId" name="SkuSysId" type="hidden" />
+                                        <input placeholder="请填写面单号" id="ContainerNumber" name="ContainerNumber" class="form-control input-sm m-b required" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="col-sm-4" style="margin-top: 5px;">快递商</div>
+                                    <div class="col-sm-8">
+                                        <select id="CarrierSysId" name="CarrierSysId" class="form-control">
+                                            @{
+                                                foreach (var info in (List<CarrierDto>)ViewBag.ExpressList)
+                                                {
+                                                    <option value="@info.SysId">@info.CarrierName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="ibox-footer text-right tooltip-demo">
+                    <a class="btn btn-sm btn-primary" id="btnCarrier" onclick="SaveCarrier();"><i class="fa fa-check-square-o"></i> 保存</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <embed src="~/Content/error.wav" autostart="true" hidden="true" loop="false">
+</div>
+@Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+
+@section Scripts {
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript" src="~/Scripts/plugins/artDialog/dialog-plus-min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#txtPickDetailOrder").focus();
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+            vanning.InitVue();
+
+        });
+
+        function SaveCarrier() {
+            $("#divWindowCarrier").modal('hide');
+            currentCarrierNumber = $("#ContainerNumber").val();
+            currentCarrierSysId = $("#CarrierSysId").val();
+            SaveVanning();
+            $("#ContainerNumber").val("");
+        }
+
+        function PayError() {
+            $("embed").hide();
+            $("embed").show();
+
+        }
+
+        function message(flag, msg) {
+            var html = '<div id="vanningMsg" class="alert className" style="margin-bottom:0px;heigth:35px;padding: 10px;"> ' + msg + '</div>';
+            if (flag) {
+                html = html.replace(/className/g, "alert-success");
+            } else {
+                html = html.replace(/className/g, "alert-danger");
+            }
+            $("#divMessage").html(html);
+        }
+
+        function SaveVanning() {
+
+
+            if ($("#btnSealedBox").attr("disabled") === "disabled") {
+                return;
+            }
+
+            $("#btnSealedBox").attr("disabled", "disabled");
+            var isNextBoxNumber;
+            var pickDetailSumDto = vanning.vanningOperation.$data.PickDetailSumDto.filter(function (item) {
+                if (item.OutboundSysId === currentOutboundSysId) {
+                    //这里的判断主要是为了 验证 新的箱子扫描的是 同一个订单的还是 新的订单的数据
+                    // 如果同一个订单内的商品 全部扫描完成，那么就开启新的订单进行扫描
+                    if (parseInt(item.Qty) !== parseInt(item.ScanQty)) {
+                        isNextBoxNumber = true;
+                    }
+                }
+            });
+
+            ///取装箱记录
+            var vanningPickDetailDto = vanning.vanningOperation.$data.VanningPickDetailDto.filter(function (item) {
+                if (item.OutboundSysId === currentOutboundSysId
+                    && item.ContainerNumber === currentContainerNumber) {
+                    return item;
+                }
+            });
+
+            vanning.vanningOperation.$data.VanningDetailOperationDto.push({
+                OutboundSysId: currentOutboundSysId,
+                ContainerNumber: currentContainerNumber,
+                ContainerSysId: currentContainerSysId,
+                CarrierNumber: currentCarrierNumber,
+                CarrierSysId: currentCarrierSysId,
+                Weight: $("#boxWeight").val(),
+                VanningPickDetailDto: vanningPickDetailDto
+            });
+            var actionType = "";
+            if (isNextBoxNumber) {
+                currentContainerNumber = parseInt(currentContainerNumber) + 1;
+            } else {
+                actionType = "Finish";
+                currentContainerNumber = 1;
+                currentOutboundSysId = null;
+            }
+            isCurrentOutbound = false;
+            ///写入箱记录
+            $.ajax({
+                url: "/Vanning/SaveOperation?actionType=" + actionType,
+                type: "post",
+                data: vanning.vanningOperation.$data,
+                success: function (data) {
+
+                    $("#btnSealedBox").removeAttr("disabled");
+                    if (data.success) {
+                        $("#boxWeight").val("");
+                        //箱子明细ID data.VanningDetailDto.SysId
+                        message(true, "箱号:" + data.VanningDetailDto.ContainerNumber + "封箱完成!");
+                        $("#boxWeight").val("0");
+                        if ($('#Box').is(':checked')) {
+                            if (data.VanningDetailDto != null && data.VanningDetailDto.SysId != null) {
+                                // B2C 20
+                                // B2B 30
+                                if (data.VanningDetailDto.OutboundType === 20) {
+                                    if (data.VanningDetailDto.Marke == undefined || data.VanningDetailDto.Marke == "") {
+                                        var msg = "大头笔为空，确定要打印箱贴吗？";
+                                        msgConfirm(msg, function (isConfirm) {
+                                            if (isConfirm) {
+                                                print.PrintBoxLable(data.VanningDetailDto, actionType, "@ViewBag.PrintNameBoxLable", "@ViewBag.WarehouseSysId");
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        print.PrintBoxLable(data.VanningDetailDto, actionType, "@ViewBag.PrintNameBoxLable", "@ViewBag.WarehouseSysId");
+                                    }
+
+                                } else {
+                                    print.PrintBoxLableToB(data.VanningDetailDto, actionType, "@ViewBag.PrintNameBoxLable", "@ViewBag.WarehouseSysId");
+                                }
+                            }
+                        }
+
+                        if ($('#Vanning').is(':checked')) {
+                            if (data.VanningDetailDto != null && data.VanningDetailDto.SysId != null) {
+                                if (data.VanningDetailDto.OutboundType === 20) {
+                                    print.PrintVanningPackingDetail(data.VanningDetailDto.SysId, "@ViewBag.PrintNamePackingDetail", "@ViewData["PrintUserName"]", actionType, "B2C", "@ViewBag.WarehouseSysId");
+                                } else {
+                                    print.PrintVanningPackingDetail(data.VanningDetailDto.SysId, "@ViewBag.PrintNamePackingDetail", "@ViewData["PrintUserName"]", actionType, "B2B", "@ViewBag.WarehouseSysId");
+                                }
+                            }
+                        }
+                        var refreshPage = true;
+                        vanning.vanningOperation.$data.PickDetailSumDto.filter(function (item) {
+                            if (parseInt(item.Qty) !== parseInt(item.ScanQty)) {
+                                refreshPage = false;
+                            }
+                        });
+                        if (refreshPage) {
+                            message(true, "订单完全装箱，请扫描下一单");
+                            window.location.reload();
+                        }
+
+                    } else {
+                        msgErro(data.message);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+            currentCarrierSysId = null;
+            currentCarrierNumber = null;
+        }
+
+        function CreateVanningDetail(pickDetailDetail, qty) {
+
+            ///取装箱记录
+            var vanningPickDetailDto = vanning.vanningOperation.$data.VanningPickDetailDto.filter(function (item) {
+                if (item.OutboundSysId === currentOutboundSysId
+                    && item.ContainerNumber === currentContainerNumber
+                    && item.PickDetailSysId === pickDetailDetail.SysId) {
+                    return item;
+                }
+            });;
+
+            //没有装箱记录  创建装箱记录
+            if (vanningPickDetailDto === null || vanningPickDetailDto.length === 0) {
+                vanning.vanningOperation.$data.VanningPickDetailDto.push({
+                    ContainerNumber: currentContainerNumber,
+                    OutboundSysId: currentOutboundSysId,
+                    PickDetailSysId: pickDetailDetail.SysId,
+                    SkuSysId: pickDetailDetail.SkuSysId,
+                    UOMSysId: pickDetailDetail.UOMSysId,
+                    PackSysId: pickDetailDetail.PackSysId,
+                    Loc: pickDetailDetail.Loc,
+                    Lot: pickDetailDetail.Lot,
+                    Lpn: pickDetailDetail.Lpn,
+                    Qty: qty
+                });
+                ///取装箱记录
+                vanningPickDetailDto = vanning.vanningOperation.$data.VanningPickDetailDto.filter(function (item) {
+                    if (item.OutboundSysId === currentOutboundSysId
+                        && item.ContainerNumber === currentContainerNumber
+                        && item.PickDetailSysId === pickDetailDetail.SysId) {
+                        return item;
+                    }
+                });
+
+
+            } else {
+                vanningPickDetailDto[0].Qty = parseInt(vanningPickDetailDto[0].Qty) + parseInt(qty);
+            }
+
+
+        }
+
+
+        var currentOutboundSysId = null; //
+        var currentOutboundOrder = null; //
+        var currentContainerNumber = 1; //当前箱编号  封箱后累加
+        var currentContainerSysId = null; //当前容器编号 封箱后清空
+        var currentCarrierSysId = null;
+        var currentCarrierNumber = null;
+        var currentOutboundDetailSysId = null;
+        var isCurrentOutbound = false;
+
+        var vanning =
+        {
+            vanningOperation: {},
+            InitVue: function () {
+                vanning.vanningOperation = new Vue({
+                    el: '#divVanningOperation',
+                    data: {},
+                    methods:
+                    {
+                        ScanPickDetailOrder: function () {
+                            if ($("#txtPickDetailOrder").val().trim().length === 0) {
+                                return;
+                            }
+
+                            $.ajax({
+                                url: "/Vanning/GetVanningOperationDtoByOrder?orderNumber=" + $("#txtPickDetailOrder").val().trim(),
+                                type: "post",
+                                success: function (data) {
+                                    if (data.success) {
+                                        $("#ScanBarCode").focus();
+                                        vanning.vanningOperation.$data = data.VanningOperationDto;
+                                        $("#smallProgressOrderCount").show();
+                                        $("#smallProgressSkuCount").show();
+                                    } else {
+                                        PayError();
+                                        msgAlert(data.message);
+                                    }
+                                },
+                                error: function () {
+
+                                }
+                            });
+                        },
+                        ScanBarCode: function () {
+                            $("#vanningMsg").remove();
+                            currentContainerSysId = $("input[name='radioInline']:checked").val();
+                            if (currentContainerSysId === null || currentContainerSysId === undefined || currentContainerSysId.length === 0) {
+                                $("#ScanBarCode").focus();
+                                $("#ScanBarCode").val("");
+                                PayError();
+                                msgAlert("请选择装箱容器!");
+                                return;
+                            }
+                            if ($("#ScanBarCode").val().length === 0) {
+                                $("#ScanBarCode").focus();
+                                return;
+                            }
+                            var barCode = $("#ScanBarCode").val().trim();
+                            $("#ScanBarCode").val("");
+                            $("#ScanBarCode").focus();
+
+                            var unitQty = vanning.vanningOperation.$data.UnitQty;
+                            if (unitQty.length === 0) {
+                                vanning.vanningOperation.$data.UnitQty = 1;
+                                unitQty = 1;
+                            }
+                            if (parseFloat(unitQty) <= 0) {
+                                $("#UnitQty").val("");
+                                $("#UnitQty").focus();
+                                msgAlert("请输入正确的扫描数量!");
+                                return;
+                            }
+
+                            var skuPackUPCCount = 0; //统计明细商品所有包装码等于输入UPC的数量
+                            var skuSysIdList = new Array();
+                            var isUPC = false;
+                            $.each(vanning.vanningOperation.$data.PickDetailSumDto, function (index, el) {
+                                isUPC = false;
+                                if (el.UPC == barCode) {
+                                    isUPC = true;
+                                }
+
+                                if (el.UPC02 == barCode) {
+                                    skuPackUPCCount++;
+                                    isUPC = true;
+                                }
+                                if (el.UPC03 == barCode) {
+                                    skuPackUPCCount++;
+                                    isUPC = true;
+                                }
+                                if (el.UPC04 == barCode) {
+                                    skuPackUPCCount++;
+                                    isUPC = true;
+                                }
+                                if (el.UPC05 == barCode) {
+                                    skuPackUPCCount++;
+                                    isUPC = true;
+                                }
+
+                                if (isUPC && $.inArray(el.SkuSysId, skuSysIdList) == -1) {
+                                    skuSysIdList.push(el.SkuSysId);  //记录当前单据的所有 skuUPC ，如果后续需要弹出选择UPC页面，那么这个集合会作为筛选条件
+                                }
+
+                            });
+
+                            var pickDetailDetailArr = vanning.vanningOperation.$data.PickDetailSumOperationDto.filter(function (item) {
+                                return item.UPC == barCode;
+                            });
+                            if (pickDetailDetailArr.length === 0 && skuPackUPCCount == 0) {
+                                PayError();
+                                msgAlert("扫描的条码未找到对应的货品,请仔细核对!");
+                                return;
+                            }
+
+                            if (skuSysIdList.length == 1 && skuPackUPCCount == 0) {
+                                //正常扫码
+                                var selectPickDetailDetailArr = vanning.vanningOperation.$data.PickDetailOperationDto.filter(function (item) {
+                                    if (item.UPC === barCode && item.OutboundSysId === currentOutboundSysId && item.ScanQty !== item.Qty) {
+                                        currentOutboundDetailSysId = item.OutboundDetailSysId;
+                                        return item;
+                                    } else {
+                                        if (currentOutboundSysId == null) {
+                                            if (item.UPC === barCode && item.ScanQty !== item.Qty) {
+                                                vanning.SetProgressAndTableDisplay(item);
+                                                return item;
+                                            }
+                                        }
+                                    }
+                                });
+                                vanning.ScanBarCode_Fun(selectPickDetailDetailArr, unitQty);
+                            } else if (skuSysIdList.length == 0 && skuPackUPCCount == 1) {
+
+                                var skuPackArr = vanning.vanningOperation.$data.PickDetailOperationDto.filter(function (item) {
+                                    return item.UPC02 == barCode || item.UPC03 == barCode ||
+                                        item.UPC04 == barCode || item.UPC05 == barCode;
+                                });
+
+                                //扫码 只存在一个匹配的包装码 并且没有匹配的商品UPC时，将包装码对应的商品信息带出
+                                //此处将UI当前qty * 包装qty，得到最终 qty，即 x 箱 *  y个（每箱数量） = 最终数量
+                                if (skuPackArr[0].UPC02 == barCode && !isNaN(skuPackArr[0].FieldValue02)) {
+                                    vanning.vanningOperation.$data.UnitQty = skuPackArr[0].FieldValue02 * unitQty;
+                                    unitQty = vanning.vanningOperation.$data.UnitQty;
+                                }
+                                else if (skuPackArr[0].UPC03 == barCode && !isNaN(skuPackArr[0].FieldValue03)) {
+                                    vanning.vanningOperation.$data.UnitQty = skuPackArr[0].FieldValue03 * unitQty;
+                                    unitQty = vanning.vanningOperation.$data.UnitQty;
+                                }
+                                else if (skuPackArr[0].UPC04 == barCode && !isNaN(skuPackArr[0].FieldValue04)) {
+                                    vanning.vanningOperation.$data.UnitQty = skuPackArr[0].FieldValue04 * unitQty;
+                                    unitQty = vanning.vanningOperation.$data.UnitQty;
+                                }
+                                else if (skuPackArr[0].UPC05 == barCode && !isNaN(skuPackArr[0].FieldValue05)) {
+                                    vanning.vanningOperation.$data.UnitQty = skuPackArr[0].FieldValue05 * unitQty;
+                                    unitQty = vanning.vanningOperation.$data.UnitQty;
+                                }
+
+                                barCode = skuPackArr[0].SkuUPC; //将sku upc 赋值给 barCode
+                                var selectPickDetailDetailArr = vanning.vanningOperation.$data.PickDetailOperationDto.filter(function (item) {
+                                    if (item.SkuSysId == skuPackArr[0].SkuSysId && item.OutboundSysId == currentOutboundSysId && item.ScanQty !== item.Qty) {
+                                        currentOutboundDetailSysId = item.OutboundDetailSysId;
+                                        return item;
+                                    } else {
+                                        if (currentOutboundSysId == null) {
+                                            if (item.SkuSysId === skuPackArr[0].SkuSysId && item.ScanQty !== item.Qty) {
+                                                vanning.SetProgressAndTableDisplay(item);
+                                                return item;
+                                            }
+                                        }
+                                    }
+                                });
+
+                                vanning.ScanBarCode_Fun(selectPickDetailDetailArr, unitQty);
+                            } else {
+                                //出现重复UPC 商品，需要手动筛选
+                                ChooseSkuModel.existsSkuSysId = skuSysIdList;
+                                ChooseSkuModel.showModal(barCode, function (chooseSku) {
+                                    //检查订单内商品
+                                    var selectPickDetailDetailArr = vanning.vanningOperation.$data.PickDetailOperationDto.filter(function (item) {
+                                        if (item.SkuSysId === chooseSku.SkuSysId && item.OutboundSysId === currentOutboundSysId && item.ScanQty !== item.Qty) {
+                                            currentOutboundDetailSysId = item.OutboundDetailSysId;
+                                            return item;
+                                        } else {
+                                            if (currentOutboundSysId == null) {
+                                                if (item.SkuSysId === chooseSku.SkuSysId && item.ScanQty !== item.Qty) {
+                                                    vanning.SetProgressAndTableDisplay(item);
+                                                    return item;
+                                                }
+                                            }
+                                        }
+                                    });
+                                    vanning.vanningOperation.$data.UnitQty = unitQty * chooseSku.Qty;
+                                    vanning.ScanBarCode_Fun(selectPickDetailDetailArr, vanning.vanningOperation.$data.UnitQty);
+                                });
+                            }
+                            isCurrentOutbound = true;
+                        },
+                        SealedBox: function () {
+
+                            if ($("#txtPickDetailOrder").val().length === 0) {
+                                PayError();
+                                msgAlert("请先扫描单据!");
+                                return;
+                            }
+                            if (undefined === vanning.vanningOperation.$data.PickDetailSumDto) {
+                                PayError();
+                                msgAlert("未找到需要装箱的信息!");
+                                return;
+                            }
+
+
+                            var weight = $("#boxWeight").val();
+                            if (weight === "" || weight.length === 0 || parseFloat(weight) === 0) {
+                                PayError();
+                                msgAlert("封箱操作前,请先进行称重!");
+                                return;
+                            }
+
+                            var express = $('#Express').is(':checked');
+                            if (express) {
+                                if (currentCarrierSysId === null && currentCarrierNumber === null) {
+                                    $("#divWindowCarrier").modal('show');
+                                    return;
+                                }
+                            }
+
+                            if (isCurrentOutbound == false) {
+                                msgErro("未找到需要装箱的记录");
+                                $("#btnSealedBox").removeAttr("disabled");
+                                return;
+                            }
+
+                            SaveVanning();
+                        },
+                        Abnormal: function () {
+
+                            // 拣货明细PickDetailOperationDto
+                            //展示用PickDetailSumDto
+                            //展示用VanningPickDetailOperationDto
+                            //装箱明细VanningPickDetailDto
+                            //装箱 箱子明细  箱子和 装箱明细通过OutBoundSysId+箱号关联
+                            //VanningDetailOperationDto { get; set; }
+
+                            // 取当前扫描订单箱记录
+                            ///取箱的展示记录
+
+                            ///取箱的展示记录
+                            var vanningPickDetailOperationDto = vanning.vanningOperation.$data.VanningPickDetailOperationDto.filter(function (item) {
+                                if (item.OutboundSysId === currentOutboundSysId && item.ContainerNumber === currentContainerNumber) {
+                                    return item;
+                                }
+                            });
+
+                            if (vanningPickDetailOperationDto.length > 0) {
+
+                                for (var i = 0; vanningPickDetailOperationDto.length > i; i++) {
+                                    var qty = vanningPickDetailOperationDto[i].Qty;
+
+                                    vanning.vanningOperation.$data.PickDetailSumDto.filter(function (item) {
+                                        if (item.OutboundSysId === currentOutboundSysId) {
+                                            if (parseInt(item.Qty) < parseInt(item.ScanQty) + parseInt(unitQty)) {
+                                                PayError();
+                                                msgAlert("当前货品数量不能大于本次拣货数量,请仔细核对!");
+                                                return;
+                                            } else {
+                                                item.ScanQty = parseInt(item.ScanQty) + parseInt(unitQty);
+                                                item.UnScanQty = parseInt(item.UnScanQty) - parseInt(unitQty);
+                                                return item;
+                                            }
+
+                                        }
+                                    });
+
+
+                                }
+
+
+                            }
+
+
+                            vanning.vanningOperation.$data.VanningPickDetailOperationDto.push({
+                                OutboundSysId: pickDetailDetailArr[0].OutboundSysId,
+                                ContainerNumber: currentContainerNumber,
+                                SkuSysId: pickDetailDetailArr[0].SkuSysId,
+                                SkuName: pickDetailDetailArr[0].SkuName,
+                                UPC: pickDetailDetailArr[0].UPC,
+                                SkuDescr: pickDetailDetailArr[0].SkuDescr,
+                                Qty: unitQty
+                            });
+
+
+                            ///检查数量
+                            var pickDetailSumDto = vanning.vanningOperation.$data.PickDetailSumDto.filter(function (item) {
+                                if (item.OutboundSysId === currentOutboundSysId) {
+                                    if (parseInt(item.Qty) < parseInt(item.ScanQty) + parseInt(unitQty)) {
+                                        PayError();
+                                        msgAlert("当前货品数量不能大于本次拣货数量,请仔细核对!");
+                                        return;
+                                    } else {
+                                        item.ScanQty = parseInt(item.ScanQty) + parseInt(unitQty);
+                                        item.UnScanQty = parseInt(item.UnScanQty) - parseInt(unitQty);
+                                        return item;
+                                    }
+
+                                }
+                            });
+                            if (pickDetailSumDto.length === 0) {
+                                return;
+                            }
+                            //剩余数量
+                            var residualQty = unitQty;
+
+                            for (var i = 0; pickDetailDetailArr.length > i; i++) {
+                                if (pickDetailDetailArr[i].Qty > 0) {
+                                    var deductionQty = 0;
+                                    //当前可用数量
+                                    var currentQty = pickDetailDetailArr[i].Qty;
+                                    deductionQty = residualQty <= currentQty ? residualQty : currentQty;
+                                    residualQty = residualQty - deductionQty;
+                                    pickDetailDetailArr[i].Qty = currentQty - deductionQty;
+                                    CreateVanningDetail(pickDetailDetailArr[i], deductionQty);
+                                    if (residualQty === 0) {
+                                        break;
+                                    }
+                                }
+                            }
+                            if (residualQty !== 0) {
+                                //异常
+                            }
+
+
+                            vanning.vanningOperation.$data.ScanTotalSkuCount = parseInt(vanning.vanningOperation.$data.ScanTotalSkuCount) + parseInt(unitQty);
+
+                            var skuProgress = parseInt(vanning.vanningOperation.$data.ScanTotalSkuCount) / parseInt(vanning.vanningOperation.$data.TotalSkuCount) * 100;
+                            $("#divProgressSkuCount").attr("style", "width: " + skuProgress + "%;");
+                        }
+                    }
+                });
+            },
+            ScanBarCode_Fun: function (pickDetailDetailArr, unitQty) {
+                if (pickDetailDetailArr.length === 0) {
+                    PayError();
+                    msgAlert("扫描的条码已扫描过,请仔细核对!");
+                    return;
+                }
+
+                ///检查数量
+                var pickDetailSumDto = vanning.vanningOperation.$data.PickDetailSumDto.filter(function (item) {
+                    if (item.OutboundDetailSysId === currentOutboundDetailSysId && item.OutboundSysId === currentOutboundSysId) {
+                        if (parseInt(item.Qty) < parseInt(item.ScanQty) + parseInt(unitQty)) {
+                            PayError();
+                            msgAlert("当前货品数量不能大于本次拣货数量,请仔细核对!");
+                            return;
+                        } else {
+                            item.ScanQty = parseInt(item.ScanQty) + parseInt(unitQty);
+                            item.UnScanQty = parseInt(item.UnScanQty) - parseInt(unitQty);
+                            return item;
+                        }
+
+                    }
+                });
+                if (pickDetailSumDto.length === 0) {
+                    return;
+                }
+                //剩余数量
+                var residualQty = unitQty;
+
+                for (var i = 0; pickDetailDetailArr.length > i; i++) {
+                    if (pickDetailDetailArr[i].Qty > 0) {
+                        var deductionQty = 0;
+                        //当前可用数量
+                        var currentQty = pickDetailDetailArr[i].Qty;
+                        deductionQty = residualQty <= currentQty ? residualQty : currentQty;
+                        residualQty = residualQty - deductionQty;
+                        pickDetailDetailArr[i].Qty = currentQty - deductionQty;
+                        CreateVanningDetail(pickDetailDetailArr[i], deductionQty);
+                        if (residualQty === 0) {
+                            break;
+                        }
+                    }
+                }
+                if (residualQty !== 0) {
+                    //异常
+                }
+
+
+                ///取箱的展示记录
+                var vanningPickDetailOperationDto = vanning.vanningOperation.$data.VanningPickDetailOperationDto.filter(function (item) {
+                    if (item.OutboundSysId === currentOutboundSysId && item.SkuSysId === pickDetailDetailArr[0].SkuSysId && item.ContainerNumber === currentContainerNumber) {
+                        return item;
+                    }
+                });
+                if (vanningPickDetailOperationDto === null || vanningPickDetailOperationDto.length === 0) {
+                    vanning.vanningOperation.$data.VanningPickDetailOperationDto.push({
+                        OutboundSysId: pickDetailDetailArr[0].OutboundSysId,
+                        ContainerNumber: currentContainerNumber,
+                        SkuSysId: pickDetailDetailArr[0].SkuSysId,
+                        SkuName: pickDetailDetailArr[0].SkuName,
+                        UPC: pickDetailDetailArr[0].UPC,
+                        SkuDescr: pickDetailDetailArr[0].SkuDescr,
+                        Qty: unitQty
+                    });
+                } else {
+                    vanningPickDetailOperationDto[0].Qty = parseInt(vanningPickDetailOperationDto[0].Qty) + parseInt(unitQty);
+                }
+                vanning.vanningOperation.$data.ScanTotalSkuCount = parseInt(vanning.vanningOperation.$data.ScanTotalSkuCount) + parseInt(unitQty);
+
+                var skuProgress = parseInt(vanning.vanningOperation.$data.ScanTotalSkuCount) / parseInt(vanning.vanningOperation.$data.TotalSkuCount) * 100;
+                $("#divProgressSkuCount").attr("style", "width: " + skuProgress + "%;");
+            },
+            SetProgressAndTableDisplay: function (item) {
+                vanning.vanningOperation.$data.ScanTotalOrderCount = parseInt(vanning.vanningOperation.$data.ScanTotalOrderCount) + 1;
+                var orderProgress = parseInt(vanning.vanningOperation.$data.ScanTotalOrderCount) / parseInt(vanning.vanningOperation.$data.TotalOrderCount) * 100;
+                $("#divProgressOrderCount").attr("style", "width: " + orderProgress + "%;");
+                currentOutboundSysId = item.OutboundSysId;
+                isCurrentOutbound = true;
+                $("table tbody tr ").attr("style", "  display: none;");
+                $("table tbody tr[id='" + currentOutboundSysId + "']").attr("style", "  display:'';");
+                currentOutboundDetailSysId = item.OutboundDetailSysId;
+                vanning.vanningOperation.$data.VanningRecordDto.filter(function (v) {
+                    if (v.OutboundSysId === currentOutboundSysId) {
+                        currentContainerNumber = parseInt(v.VanningNumber) + parseInt(1);
+                    }
+                });
+            }
+
+        }
+
+
+    </script>
+}

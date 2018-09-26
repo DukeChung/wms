@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "InventoryTypeDistrib";
+    Layout = null;
+}
+
+<script>
+    var InventoryTypeDistrib = {
+        init: function (flag) {
+            var height = Math.ceil($(window).height()) * 0.5;
+            $(".eachChannelInvOut").height(height);
+            InventoryTypeDistrib.initChart(flag)
+        },
+        initChart: function (flag) {
+            $.ajax({
+                url: "@Url.Action("GetInventoryTypeDistrib", "Home")",
+                data: { flag: flag },
+                type: "POST",
+                success: function (result) {
+                    if (result.Success) {
+                        echarts.init(document.getElementById("div_InventoryTypeDistrib" + flag)).setOption(option = {
+                            toolbox: {
+                                right: 20,
+                                feature: {
+                                    restore: { show: true, title: '刷新' },
+                                    saveAsImage: { show: true, title: '保存图片' }
+                                }
+                            },
+                            tooltip: {},
+                            legend: {
+                                data: ['入库', '出库', '剩余']
+                            },
+                            radar: {
+                                indicator: InventoryTypeDistrib.formartMaxData(result.Data)
+                            },
+                            series: [{
+                                type: 'radar',
+                                data: InventoryTypeDistrib.formartData(result.Data)
+
+                            }]
+                        });
+                    }
+                }
+            });
+        },
+        formartData: function (data) {
+            var result = [];
+            if (data.InventoryTypeDistribListDto.length > 0) {
+                for (var i = 0; i < data.InventoryTypeDistribListDto.length; i++) {
+                    var dataArray = new Array(data.SkuClassName.length);
+                    for (var m = 0; m < data.SkuClassName.length; m++) {
+                        dataArray[m] = 0;
+                    }
+                    for (var j = 0; j < data.InventoryTypeDistribListDto[i].InventoryTypeDistrib.length; j++) {
+
+                        var index = data.SkuClassName.indexOf(data.InventoryTypeDistribListDto[i].InventoryTypeDistrib[j].SkuClassName);
+                        dataArray[index] = data.InventoryTypeDistribListDto[i].InventoryTypeDistrib[j].Qty;
+
+                    }
+                    result.push({ name: data.InventoryTypeDistribListDto[i].TypeName, value: dataArray });
+                }
+            }
+            return result;
+        },
+        formartMaxData: function (data) {
+            var resultMax = [];
+            if (data.SkuClassName.length > 0) {
+                for (var i = 0; i < data.SkuClassName.length; i++) {
+                    var maxVal = 0;
+                    for (var j = 0; j < data.InventoryTypeDistribListDto.length; j++) {
+                        for (var k = 0; k < data.InventoryTypeDistribListDto[j].InventoryTypeDistrib.length; k++) {
+                            if (data.SkuClassName[i] == data.InventoryTypeDistribListDto[j].InventoryTypeDistrib[k].SkuClassName) {
+                                if (parseInt(maxVal) < parseInt(data.InventoryTypeDistribListDto[j].InventoryTypeDistrib[k].Qty)) {
+                                    maxVal = parseInt(data.InventoryTypeDistribListDto[j].InventoryTypeDistrib[k].Qty) * 1.5;
+                                }
+                            }
+                        }
+                    }
+                    resultMax.push({ name: data.SkuClassName[i], max: maxVal })
+                }
+            }
+            return resultMax;
+        }
+    }
+
+    $(function () {
+        InventoryTypeDistrib.init('@ViewBag.Flag');
+    });
+
+</script>

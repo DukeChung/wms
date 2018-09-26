@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+    <div class="page-group">
+        <div id="page-outboundreview-finish" class="page page-current">
+
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back">
+                    <i class="fa fa-chevron-left pad-l-10"></i>
+                    返回
+                </a>
+                <h1 class="title">复核差异</h1>
+                <a id="btnBackMainMenu" class="button button-link button-nav pull-right" style="margin-right:8px">
+                    完成
+                    <i class="fa fa-check"></i>
+                </a>
+            </header>
+
+            <div class="row page-content content">
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row">
+
+                        <div class="col-xs-12">
+                            <div class="ibox float-e-margins">
+
+                                <div class="ibox-content">
+                                    <div class="buttons-tab">
+                                        <a href="#tab1" class="tab-link active button" style="font-size:14px">商品差异</a>
+                                        <a href="#tab2" class="tab-link button" style="font-size:14px">数量差异</a>
+                                    </div>
+
+                                    <div class="tabs">
+                                        <div id="tab1" class="tab active">
+                                            <div class="ibox-content">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td style="width:50%;text-align:left">已复核SKU数: <label id="txt_SkuCount1">0</label>个</td>
+                                                        <td style="width:50%;text-align:right">已复核箱数: <label id="txt_PackCount1">0</label>件</td>
+                                                    </tr>
+                                                </table>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="10%">NO</th>
+                                                            <th width="30%">商品名称</th>
+                                                            <th width="30%">商品条码</th>
+                                                            <th width="15%">出库数量</th>
+                                                            <th width="15%">复核数量</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="OutboundFinishList1"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div id="tab2" class="tab">
+                                            <div class="ibox-content">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td style="width:50%;text-align:left">已复核SKU数: <label id="txt_SkuCount2">0</label>个</td>
+                                                        <td style="width:50%;text-align:right">已复核箱数: <label id="txt_PackCount2">0</label>件</td>
+                                                    </tr>
+                                                </table>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="10%">NO</th>
+                                                            <th width="30%">商品名称</th>
+                                                            <th width="30%">商品条码</th>
+                                                            <th width="15%">出库数量</th>
+                                                            <th width="15%">复核数量</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="OutboundFinishList2"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+

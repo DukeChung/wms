@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+
+    <title>登录</title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="Content/animate.css" rel="stylesheet" />
+    <link href="Content/style.css" rel="stylesheet" />
+    <link href="Content/sm.css" rel="stylesheet" />
+    <link href="Content/base.css?ver=0.1" rel="stylesheet" />
+</head>
+
+<body class="gray-bg">
+
+    <div class="page-group">
+        <div id="page-login" class="page page-current">
+
+            <div class="row page-content content">
+
+                <div class="middle-box text-center loginscreen  animated fadeInDown">
+                    <div>
+                        <h3>Welcome to WMS</h3>
+                        <form class="m-t" role="form" action="#">
+                            <div class="form-group">
+                                <input id="username" name="username" type="text" class="form-control" placeholder="Username" required="">
+                            </div>
+                            <div class="form-group">
+                                <input id="password" name="password" type="password" class="form-control" placeholder="Password" required="">
+                            </div>
+                            <button type="button" class="btn btn-primary block full-width m-b" onclick="login();">登录</button>
+                            <p id="msg" name="msg" class="msg-error" style="text-align:left;"></p>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!--<input type="hidden" id="selectkey" name="selectkey" value="" />
+    <input type="hidden" id="values" name="values" value="" />
+    <input type="hidden" id="texts" name="texts" value="" />-->
+    <input type="hidden" id="inputQty" name="inputQty" value="" />
+
+    <input type="hidden" id="hdnkey" value="MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGsXYGuspXPOoIcBdmLhgMIM+EOE
+3OwvNcw8FWfYRGeuhvv4ARFgPn8W/MRjyc/LbeceLux2h13/eaure3zPUfzzmvDj
+fKoTs+uTlH21R/vQF17nZJKw+OJ/xztjILeGzMp2cJj8Yn4khOiuc8yVIZTSJt1O
+1Q6LSf+S61dD+oLfAgMBAAE=" />
+</body>
+</html>
+<script src="Scripts/zepto.min.js"></script>
+<script src="Scripts/sm.min.js"></script>
+<script src="Scripts/jquery-2.1.1.min.js"></script>
+<script src="Scripts/bootstrap.js"></script>
+<script src="Scripts/common.js?v=0.2"></script>
+<script src="Scripts/jsencrypt.min.js"></script>
+<script src="Scripts/Pages/Index.js?ver=1.7.11"></script>
+
+
+<!--<script>
+    $(function () {
+        document.documentElement.style.fontSize = 20 * (document.documentElement.clientWidth / 320) + 'px';
+        ssoLogin();
+    });
+
+    function ssoLogin() {
+        var isDebug = false;
+        if (isDebug) {
+            debugMode();
+        } else {
+            launchMode();
+        }
+    }
+
+    function launchMode() {
+        if (GetlocalStorage("UserId") != "") {
+            $.router.load("Home.html");
+        } else {
+            var code = com.GetQueryString("code");
+            if (code != null) {
+                $.ajax({
+                    type: 'post',
+                    //Local
+                    //url: 'http://localhost:26356/Account/SSORFLogin?code=' + code,
+
+                    //GQC
+                    url: 'http://10.66.8.47:8088/Account/SSORFLogin?code=' + code,
+
+                    //PRE
+                    //url: 'http://10.66.141.100:8088/Account/SSORFLogin?code=' + code,
+
+                    //PRD
+                    //url: 'http://wms.gznb.com/Account/SSORFLogin?code=' + code,
+                    //data: { userName: username, password: password },
+                    success: function (data) {
+                        $("#msg").html("");
+                        if (data.success) {
+                            SetlocalStorage("UserName", data.UserName);
+                            SetlocalStorage("DisplayName", data.DisplayName);
+                            SetlocalStorage("UserId", data.UserId);
+                            SetlocalStorage("WarehouseList", JSON.stringify(data.WarehouseList));
+                            SetlocalStorage("WarehouseSysId", data.WarehouseList[0].SysId);
+                            SetlocalStorage("WarehouseName", data.WarehouseList[0].Name);
+                            $.router.load("Home.html");
+                        } else {
+                            com.FailMsg("#msg", data.Message);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        window.softinput.PlayError();
+                        alert("出现异常");
+                    }
+                });
+            } else {
+                window.tracejs.ssoLogin();
+            }
+        }
+    }
+
+    function debugMode() {
+        var username = "wms_admin";
+        var password = "111111";
+
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey($("#hdnkey").val());
+        username = encrypt.encrypt(username);
+        password = encrypt.encrypt(password);
+
+        $.ajax({
+            type: 'post',
+            //Local
+            //url: 'http://localhost:26356/Account/RFLogin',
+
+            //GQC
+            url: 'http://10.66.8.47:8088/Account/RFLogin',
+
+            //PRE
+            //url: 'http://10.66.141.100:8088/Account/RFLogin',
+
+            //PRD
+            //url: 'http://wms.gznb.com/Account/RFLogin',
+            data: { userName: username, password: password },
+            success: function (data) {
+                $("#msg").html("");
+                if (data.success) {
+                    SetlocalStorage("UserName", data.UserName);
+                    SetlocalStorage("DisplayName", data.DisplayName);
+                    SetlocalStorage("UserId", data.UserId);
+                    SetlocalStorage("WarehouseList", JSON.stringify(data.WarehouseList));
+                    SetlocalStorage("WarehouseSysId", data.WarehouseList[0].SysId);
+                    SetlocalStorage("WarehouseName", data.WarehouseList[0].Name);
+                    $.router.load("Home.html");
+                } else {
+                    com.FailMsg("#msg", data.Message);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                window.softinput.PlayError();
+                alert("出现异常");
+            }
+        });
+    }
+</script>-->
+
+
+<script>
+    //获取光标文本框
+    function ScanText(str) {
+        $("input:focus").val(str);
+    }
+
+    $(function () {
+        document.documentElement.style.fontSize = 20 * (document.documentElement.clientWidth / 320) + 'px';
+        $("#username").focus();
+        if (GetlocalStorage("UserId") != "") {
+            $.router.load("Home.html");
+        }
+
+        $("#username").keydown(function () {
+            if (event.keyCode == 13) {
+                if ($("#username").val() != "") {
+                    $("#password").focus();
+                } else {
+                    $("#username").focus();
+                }
+            }
+        });
+
+        $("#password").keydown(function () {
+            if (event.keyCode == 13) {
+                login();
+            }
+        });
+    });
+
+    function login() {
+        $("#msg").html("登录中...");
+        var username = $("#username").val();
+        var password = $("#password").val();
+
+        if (username.trim() == "") {
+            com.FailMsg("#msg", "用户名不能为空");
+            $("#username").focus();
+            return false;
+        }
+
+        if (password.trim() == "") {
+            com.FailMsg("#msg", "密码不能为空");
+            $("#password").focus();
+            return false;
+        }
+
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey($("#hdnkey").val());
+        username = encrypt.encrypt(username);
+        password = encrypt.encrypt(password);
+
+        $.ajax({
+            type: 'post',
+            //Local
+            //url: 'http://localhost:26356/Account/RFLogin',
+
+            //GQC
+            url: 'http://10.66.8.47:8088/Account/RFLogin',
+
+            //PRE
+            //url: 'http://10.66.141.100:8088/Account/RFLogin',
+
+            //PRD
+            //url: 'http://wms.gznb.com/Account/RFLogin',
+            data: { userName: username, password: password },
+            success: function (data) {
+                $("#msg").html("");
+                if (data.success) {
+                    SetlocalStorage("UserName", data.UserName);
+                    SetlocalStorage("DisplayName", data.DisplayName);
+                    SetlocalStorage("UserId", data.UserId);
+                    SetlocalStorage("WarehouseList", JSON.stringify(data.WarehouseList));
+                    SetlocalStorage("WarehouseSysId", data.WarehouseList[0].SysId);
+                    SetlocalStorage("WarehouseName", data.WarehouseList[0].Name);
+                    $.router.load("Home.html");
+                } else {
+                    com.FailMsg("#msg", data.Message);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                window.softinput.PlayError();
+                alert("出现异常");
+            }
+        });
+
+    }
+
+</script>

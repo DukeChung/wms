@@ -1,0 +1,204 @@
+﻿@using NBK.ECService.WMS.DTO
+@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "质检单管理";
+}
+
+@Html.Breadcrumb("增值服务", "质检单管理")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("质检单号", "QCOrderSearch")
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="StatusSearch">单据状态</label>
+                    <select class="form-control m-b" name="account" id="StatusSearch">
+                        @{
+                            <option value="">请选择</option>
+                            foreach (var status in (List<SelectListItem>)ViewBag.StatusList)
+                            {
+                                <option value="@status.Value">@status.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="QCTypeSearch">质检类型</label>
+                    <select class="form-control m-b" name="account" id="QCTypeSearch">
+                        @{
+                            <option value="">请选择</option>
+                            foreach (var type in (List<SelectListItem>)ViewBag.QCTypeList)
+                            {
+                                <option value="@type.Value">@type.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("相关单据号", "DocOrderSearch")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("外部单据号", "ExternOrderIdSearch")
+            </div>
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top: 25px; float: left;">查询</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <table id="gvQualityControl" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="QCOrder" width="15%">质检单编号</th>
+                                <th data-data="QCTypeText" width="10%">质检类型</th>
+                                <th data-data="StatusText" width="10%">单据状态</th>
+                                <th data-data="QCUserName" width="10%">质检人</th>
+                                <th data-data="QCDateText" width="20%">质检日期</th>
+                                <th data-data="DocOrder" width="15%">相关单据号</th>
+                                <th data-data="ExternOrderId" width="15%">外部单据号</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function ()
+        {
+            table = $('#gvQualityControl').DataTable({
+                "sAjaxSource": "/QualityControl/GetQualityControlList",
+                "fnServerParams": function(aoData) { //查询条件
+                    aoData.push(
+                        { "name": "QCOrderSearch", "value": $("#QCOrderSearch").val() },
+                        { "name": "StatusSearch", "value": $("#StatusSearch").val() },
+                        { "name": "QCTypeSearch", "value": $("#QCTypeSearch").val() },
+                        { "name": "DocOrderSearch", "value": $("#DocOrderSearch").val() },
+                        { "name": "ExternOrderIdSearch", "value": $("#ExternOrderIdSearch").val() }
+                    );
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: '删除',
+                        action: function () {
+                            deleteQCOrder();
+                        }
+                    }
+                ],
+                "columnDefs": [
+                     {
+                         "targets": 0,
+                         "width": "15px",
+                         render: function (data, type, full, meta) {
+                             return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                         }
+                     },
+                     {
+                         "targets": 1,
+                         "width": "15%",
+                         render: function (data, type, full, meta) {
+                             return '<a target="_blank" href="/QualityControl/QualityControlView?sysId=' + full.SysId + '">' + full.QCOrder + '</a>';
+                         }
+                     }
+                ],
+                "bServerSide": true,
+                "bProcessing": true,
+                "bPaginate": true, //翻页功能
+                "bLengthChange": true, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bSort": false, //排序功能
+                "bInfo": true, //页脚信息
+                "bAutoWidth": true, //自动宽度
+                "aaSorting": [[2, "Asc"]],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据"
+                }
+            });
+
+            $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                table.ajax.reload();
+            });
+        });
+
+        function deleteQCOrder() {
+            var selectedData = getSelectedData(table);
+            if (selectedData != null) {
+                var isAllNew = true;
+                for (var i = 0; i < selectedData.length; i++) {
+                    if (selectedData[i].Status != 10) {
+                        msgErro("只能删除新建状态的质检单");
+                        isAllNew = false;
+                        break;
+                    }
+                }
+
+                if (isAllNew) {
+                    var sysIds = GetGridMultiselectSysId();
+                    if (sysIds != null) {
+                        msgConfirm("确定要删除所选质检单吗？", function (isConfirm) {
+                            if (isConfirm) {
+                                saveLoading('show');
+                                $.ajax({
+                                    url: "/QualityControl/DeleteQualityControl?sysIds=" + sysIds,
+                                    type: "GET",
+                                    success: function (data) {
+                                        setTimeout(function () {
+                                            saveLoading();
+                                            if (data.Success) {
+                                                msgSuccess(data.Message, setTimeout(function () { table.ajax.reload(); }, 100));
+                                            } else {
+                                                msgErro(data.Message);
+                                            }
+                                        }, 100);
+                                    },
+                                    error: function (data) {
+                                        saveLoading();
+                                        msgErro(data.Message);
+                                    }
+                                });
+                            }
+                        }, true);
+                    }
+                }
+            } else {
+                msgErro("请在列表中勾选一项!");
+                return false;
+            }
+        }
+    </script>
+}

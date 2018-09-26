@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s1="urn:Gznb.authcenter" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s2="http://microsoft.com/wsdl/types/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="urn:Gznb.authcenter" />
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="tns:SystemUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SystemUser">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:SystemUserBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="CompanySysNO" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="CompanyName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CompanyCode" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SystemUserBase">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="SysNO" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LoginName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DepartmentName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PhoneNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="s1:UserStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="InUser" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="InDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EditUser" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="EditDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DepartmentID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserDepartmentName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserDepartmentDescription" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LoginAuth">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginAuthResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginAuthResult" type="tns:SystemUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TrustedLogin">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TrustedLoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TrustedLoginResult" type="tns:SystemUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangePassword">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="oldPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="newPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangePasswordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ChangePasswordResult" type="tns:SystemUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserFunction">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="applicationID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="loginName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserFunctionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserFunctionResult" type="tns:ArrayOfSystemRole" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfSystemRole">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SystemRole" nillable="true" type="tns:SystemRole" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SystemRole">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:SystemRoleBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ApplicationName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="FunctionList" type="tns:ArrayOfSystemFunction" />
+              <s:element minOccurs="1" maxOccurs="1" name="UserHad" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="CompanySysNO" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="CompanyName" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SystemRoleBase">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="SysNO" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicationID" type="s2:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoleName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomCondition" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ParentRoleSysNO" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:RoleStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="InUser" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="InDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EditUser" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="EditDate" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="RoleStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Disabled" />
+          <s:enumeration value="Enabled" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfSystemFunction">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SystemFunction" nillable="true" type="tns:SystemFunction" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SystemFunction">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:SystemFunctionBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="UserHad" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="SystemFunctionBase">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="SysNO" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ApplicationID" type="s2:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AuthKey" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:FunctionType" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:FunctionStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="InUser" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="InDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EditUser" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="EditDate" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="FunctionType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Page" />
+          <s:enumeration value="Button" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="FunctionStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Disabled" />
+          <s:enumeration value="Enabled" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetUserAuthKey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="applicationID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="loginName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserAuthKeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserAuthKeyResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CheckUserFunction">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="applicationID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="loginName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckUserFunctionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckUserFunctionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSystemUserByApplicationID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="applicationID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSystemUserByApplicationIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSystemUserByApplicationIDResult" type="tns:ArrayOfSystemUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfSystemUser">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SystemUser" nillable="true" type="tns:SystemUser" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetSystemUserBySysNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sysNo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSystemUserBySysNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSystemUserBySysNoResult" type="tns:SystemUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSystemUserByLoginName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSystemUserByLoginNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSystemUserByLoginNameResult" type="tns:SystemUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="urn:Gznb.authcenter">
+      <s:simpleType name="UserStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Disabled" />
+          <s:enumeration value="Enabled" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginAuthSoapIn">
+    <wsdl:part name="parameters" element="tns:LoginAuth" />
+  </wsdl:message>
+  <wsdl:message name="LoginAuthSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginAuthResponse" />
+  </wsdl:message>
+  <wsdl:message name="TrustedLoginSoapIn">
+    <wsdl:part name="parameters" element="tns:TrustedLogin" />
+  </wsdl:message>
+  <wsdl:message name="TrustedLoginSoapOut">
+    <wsdl:part name="parameters" element="tns:TrustedLoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangePasswordSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangePassword" />
+  </wsdl:message>
+  <wsdl:message name="ChangePasswordSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangePasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserFunctionSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserFunction" />
+  </wsdl:message>
+  <wsdl:message name="GetUserFunctionSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserFunctionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserAuthKeySoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserAuthKey" />
+  </wsdl:message>
+  <wsdl:message name="GetUserAuthKeySoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserAuthKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserFunctionSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckUserFunction" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserFunctionSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckUserFunctionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSystemUserByApplicationIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSystemUserByApplicationID" />
+  </wsdl:message>
+  <wsdl:message name="GetSystemUserByApplicationIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSystemUserByApplicationIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSystemUserBySysNoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSystemUserBySysNo" />
+  </wsdl:message>
+  <wsdl:message name="GetSystemUserBySysNoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSystemUserBySysNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSystemUserByLoginNameSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSystemUserByLoginName" />
+  </wsdl:message>
+  <wsdl:message name="GetSystemUserByLoginNameSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSystemUserByLoginNameResponse" />
+  </wsdl:message>
+  <wsdl:portType name="AuthServiceSoap">
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginAuth">
+      <wsdl:input message="tns:LoginAuthSoapIn" />
+      <wsdl:output message="tns:LoginAuthSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TrustedLogin">
+      <wsdl:input message="tns:TrustedLoginSoapIn" />
+      <wsdl:output message="tns:TrustedLoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangePassword">
+      <wsdl:input message="tns:ChangePasswordSoapIn" />
+      <wsdl:output message="tns:ChangePasswordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFunction">
+      <wsdl:input message="tns:GetUserFunctionSoapIn" />
+      <wsdl:output message="tns:GetUserFunctionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserAuthKey">
+      <wsdl:input message="tns:GetUserAuthKeySoapIn" />
+      <wsdl:output message="tns:GetUserAuthKeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserFunction">
+      <wsdl:input message="tns:CheckUserFunctionSoapIn" />
+      <wsdl:output message="tns:CheckUserFunctionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserByApplicationID">
+      <wsdl:input message="tns:GetSystemUserByApplicationIDSoapIn" />
+      <wsdl:output message="tns:GetSystemUserByApplicationIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserBySysNo">
+      <wsdl:input message="tns:GetSystemUserBySysNoSoapIn" />
+      <wsdl:output message="tns:GetSystemUserBySysNoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserByLoginName">
+      <wsdl:input message="tns:GetSystemUserByLoginNameSoapIn" />
+      <wsdl:output message="tns:GetSystemUserByLoginNameSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AuthServiceSoap" type="tns:AuthServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginAuth">
+      <soap:operation soapAction="http://tempuri.org/LoginAuth" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TrustedLogin">
+      <soap:operation soapAction="http://tempuri.org/TrustedLogin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePassword">
+      <soap:operation soapAction="http://tempuri.org/ChangePassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFunction">
+      <soap:operation soapAction="http://tempuri.org/GetUserFunction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserAuthKey">
+      <soap:operation soapAction="http://tempuri.org/GetUserAuthKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserFunction">
+      <soap:operation soapAction="http://tempuri.org/CheckUserFunction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserByApplicationID">
+      <soap:operation soapAction="http://tempuri.org/GetSystemUserByApplicationID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserBySysNo">
+      <soap:operation soapAction="http://tempuri.org/GetSystemUserBySysNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserByLoginName">
+      <soap:operation soapAction="http://tempuri.org/GetSystemUserByLoginName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="AuthServiceSoap12" type="tns:AuthServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://tempuri.org/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginAuth">
+      <soap12:operation soapAction="http://tempuri.org/LoginAuth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TrustedLogin">
+      <soap12:operation soapAction="http://tempuri.org/TrustedLogin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePassword">
+      <soap12:operation soapAction="http://tempuri.org/ChangePassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFunction">
+      <soap12:operation soapAction="http://tempuri.org/GetUserFunction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserAuthKey">
+      <soap12:operation soapAction="http://tempuri.org/GetUserAuthKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserFunction">
+      <soap12:operation soapAction="http://tempuri.org/CheckUserFunction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserByApplicationID">
+      <soap12:operation soapAction="http://tempuri.org/GetSystemUserByApplicationID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserBySysNo">
+      <soap12:operation soapAction="http://tempuri.org/GetSystemUserBySysNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystemUserByLoginName">
+      <soap12:operation soapAction="http://tempuri.org/GetSystemUserByLoginName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AuthService">
+    <wsdl:port name="AuthServiceSoap" binding="tns:AuthServiceSoap">
+      <soap:address location="http://10.66.2.30:8091/AuthService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="AuthServiceSoap12" binding="tns:AuthServiceSoap12">
+      <soap12:address location="http://10.66.2.30:8091/AuthService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

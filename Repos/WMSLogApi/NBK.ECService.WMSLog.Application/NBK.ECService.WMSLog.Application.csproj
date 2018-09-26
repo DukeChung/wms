@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2818CE61-3EB4-4BCC-9603-165A020B5FF6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBK.ECService.WMSLog.Application</RootNamespace>
+    <AssemblyName>NBK.ECService.WMSLog.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Abp">
+      <HintPath>..\packages\Abp.0.7.1.0\lib\net451\Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="Abp.AutoMapper">
+      <HintPath>..\packages\Abp.AutoMapper.0.7.1.0\lib\net451\Abp.AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Abp.Web">
+      <HintPath>..\packages\Abp.Web.0.7.1.0\lib\net451\Abp.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Logging">
+      <HintPath>..\packages\Castle.LoggingFacility.3.3.0\lib\net45\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab">
+      <HintPath>..\packages\FortuneLab.1.6.4.13\lib\net451\FortuneLab.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Abp">
+      <HintPath>..\packages\FortuneLab.Abp.1.6.2.1\lib\net451\FortuneLab.Abp.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Abp.Web">
+      <HintPath>..\packages\FortuneLab.Abp.Web.1.6.2.1\lib\net451\FortuneLab.Abp.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.Authorizations">
+      <HintPath>..\packages\FortuneLab.Authorizations.1.0.1.2\lib\net451\FortuneLab.Authorizations.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.ECService.Core">
+      <HintPath>..\packages\FortuneLab.ECService.Core.1.7.2.8\lib\net451\FortuneLab.ECService.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FortuneLab.WebApiClient">
+      <HintPath>..\packages\FortuneLab.WebApiClient.1.7.2.12\lib\net451\FortuneLab.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender">
+      <HintPath>..\packages\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessLogAppService.cs" />
+    <Compile Include="AsynBussinessProcessLogAppService.cs" />
+    <Compile Include="BusinessLogAppService.cs" />
+    <Compile Include="CheckStockAppService.cs" />
+    <Compile Include="ConnectionConfigAppService.cs" />
+    <Compile Include="InterfaceLogAppService.cs" />
+    <Compile Include="Interface\IAccessLogAppService.cs" />
+    <Compile Include="Interface\IAsynBussinessProcessLogAppService.cs" />
+    <Compile Include="Interface\IBusinessLogAppService.cs" />
+    <Compile Include="Interface\ICheckStockAppService.cs" />
+    <Compile Include="Interface\IConnectionConfigAppService.cs" />
+    <Compile Include="Interface\IInterfaceLogAppService.cs" />
+    <Compile Include="Interface\IMessageAppService.cs" />
+    <Compile Include="Interface\IPushMessageAppService.cs" />
+    <Compile Include="Interface\ISummaryLogAppService.cs" />
+    <Compile Include="MessageAppService.cs" />
+    <Compile Include="OtherService\AuthorizeManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PushMessageAppService.cs" />
+    <Compile Include="Service References\AuthServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="SummaryLogAppService.cs" />
+    <Compile Include="WMSLogApplicationModule.cs" />
+    <Compile Include="WMSSettingProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Service References\AuthServiceReference\AuthService.wsdl" />
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.ArrayOfString.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.ChangePasswordResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.CheckUserFunctionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.GetSystemUserByApplicationIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.GetSystemUserByLoginNameResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.GetSystemUserBySysNoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.GetUserAuthKeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.GetUserFunctionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.LoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.SystemRole.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.SystemUser.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AuthServiceReference\NBK.ECService.WMSLog.Application.AuthServiceReference.TrustedLoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NBK.ECService.WMSLog.DTO\NBK.ECService.WMSLog.DTO.csproj">
+      <Project>{04e6e310-a536-4cf9-b0a6-01a765dbf38c}</Project>
+      <Name>NBK.ECService.WMSLog.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBK.ECService.WMSLog.Model\NBK.ECService.WMSLog.Model.csproj">
+      <Project>{4b986aab-284c-4583-952c-4e9d8f5dd426}</Project>
+      <Name>NBK.ECService.WMSLog.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBK.ECService.WMSLog.Repository\NBK.ECService.WMSLog.Repository.csproj">
+      <Project>{0c989120-d441-4ae6-9818-5b09aed30823}</Project>
+      <Name>NBK.ECService.WMSLog.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NBK.ECService.WMSLog.Utility\NBK.ECService.WMSLog.Utility.csproj">
+      <Project>{9302533b-2489-4bf3-9e43-61dcbd361d01}</Project>
+      <Name>NBK.ECService.WMSLog.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AuthServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AuthServiceReference\AuthService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AuthServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AuthServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AuthServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

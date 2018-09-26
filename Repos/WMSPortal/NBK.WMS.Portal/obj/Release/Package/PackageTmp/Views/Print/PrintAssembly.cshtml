@@ -1,0 +1,109 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.AssemblyViewDto
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">农产品原材料申请领用单</H1>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("加工单号", Model.AssemblyOrder)
+                @Html.PrintTitle("计划数量", Model.PlanQty.ToString())
+                @Html.PrintTitle("仓库", Model.WareHouseName)
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("成品编号")
+                            @Html.PrintTh("成品名称")
+                            @Html.PrintTh("成品UPC")
+                            @Html.PrintTh("包装方式")
+                            @Html.PrintTh("包装重量")
+                            @Html.PrintTh("包装等级")
+                            @Html.PrintTh("存储条件")
+                            @Html.PrintTh("包装规格")
+                        </tr>
+                        @{
+                            <tr>
+                                @Html.PrintTd(Model.SkuCode)
+                                @Html.PrintTd(Model.SkuName)
+                                @Html.PrintTd(Model.SkuUPC)
+                                @Html.PrintTd(Model.Packing)
+                                @Html.PrintTd(Model.PackWeight)
+                                @Html.PrintTd(Model.PackGrade)
+                                @Html.PrintTd(Model.StorageConditions)
+                                @Html.PrintTd(Model.PackSpecification)
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("包装描述", Model.PackDescr, 12)
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("商品编号")
+                            @Html.PrintTh("UPC")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("品级")
+                            @Html.PrintTh("单位")
+                            @Html.PrintTh("需用数量(kg)")
+                        </tr>
+                        @{
+                            foreach (var info in Model.AssemblyDetails)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.SkuCode)
+                                    @Html.PrintTd(info.SkuUPC)
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.Grade)
+                                    @Html.PrintTd(info.UOMCode)
+                                    @Html.PrintTd(info.UnitQty.ToString())
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("加工日期", Model.PlanProcessingDateText)
+                @Html.PrintTitle("完工日期", Model.PlanCompletionDateText)
+                @Html.PrintTitle("备注", Model.Remark)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("成品数量", string.Empty, 12)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("加工组签字", string.Empty, 6)
+                @Html.PrintTitle("日期", string.Empty, 6)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("仓管签字", string.Empty, 6)
+                @Html.PrintTitle("日期", string.Empty, 6)
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("品控签字", string.Empty, 6)
+                @Html.PrintTitle("日期", string.Empty, 6)
+            </div>
+        </form>
+    </div>
+</div> 

@@ -1,0 +1,190 @@
+﻿@using NBK.WMS.Portal.Helpers
+@{
+    ViewBag.Title = "工单用户管理";
+}
+
+@Html.Breadcrumb("基础资料管理", "工单用户管理")
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("用户编号", "WorkUserCodeSearch")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("用户姓名", "WorkUserNameSearch")
+            </div>
+            <div class="col-sm-3">
+                <label class="control-label">是否启用</label>
+                <select id="IsActiveSearch" name="IsActiveSearch" class="form-control">
+                    @{
+                        <option value="">请选择</option>
+                        foreach (var isActive in (List<SelectListItem>)ViewBag.IsActiveList)
+                        {
+                            <option value="@isActive.Value">@isActive.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label class="control-label">工种</label>
+                <select id="WorkTypeSearch" name="WorkTypeSearch" class="form-control">
+                    @{
+                        <option value="">请选择</option>
+                        foreach (var workType in (List<SelectListItem>)ViewBag.WorkTypeList)
+                        {
+                            <option value="@workType.Value">@workType.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label class="control-label">工作状态</label>
+                <select id="WorkStatusSearch" name="WorkStatusSearch" class="form-control">
+                    @{
+                        <option value="">请选择</option>
+                        foreach (var workStatus in (List<SelectListItem>)ViewBag.WorkStatusList)
+                        {
+                            <option value="@workStatus.Value">@workStatus.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top:23px;float: left;" onclick="WorkUser.search()">查询</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content" style="overflow-x:auto">
+                    <table id="gvWorkUser" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="WorkUserCode" style="width:100px">用户编号</th>
+                                <th data-data="WorkUserName" style="width:100px">用户姓名</th>
+                                <th data-data="IsActiveText" style="width:100px">是否启用</th>
+                                <th data-data="WorkTypeText" style="width:100px">工种</th>
+                                <th data-data="WorkStatusText" style="width:100px">工作状态</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+        var WorkUser = {
+            table: {},
+            init: function () {
+                _self = this;
+                _self.table = $('#gvWorkUser').DataTable({
+                    "sAjaxSource": "GetWorkUserList",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "WorkUserCodeSearch", "value": $("#WorkUserCodeSearch").val() },
+                            { "name": "WorkUserNameSearch", "value": $("#WorkUserNameSearch").val() },
+                            { "name": "IsActiveSearch", "value": $("#IsActiveSearch").val() },
+                            { "name": "WorkTypeSearch", "value": $("#WorkTypeSearch").val() },
+                            { "name": "WorkStatusSearch", "value": $("#WorkStatusSearch").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            text: '新增',
+                            action: function () {
+                                window.location.href = "/WorkUser/AddWorkUser";
+                            }
+                        },
+                        {
+                            text: '编辑',
+                            action: function (e, dt, node, config) {
+                                var sysId = GetGridSysId();
+                                if (sysId != null) {
+                                    window.location.href = "/WorkUser/EditWorkUser?sysId=" + sysId;
+                                }
+                            }
+                        },
+                        {
+                            text: '删除',
+                            action: function (e, dt, node, config) {
+                                var sysIds = GetGridMultiselectSysId();
+                                if (sysIds != null) {
+                                    msgConfirm("确定要删除所选记录吗？", function (isConfirm) {
+                                        if (isConfirm) {
+                                            $.ajax({
+                                                url: "/WorkUser/DeleteWorkUser?sysIds=" + sysIds,
+                                                type: "GET",
+                                                success: function (data) {
+                                                    if (data.Success) {
+                                                        msgSuccess(data.Message, setTimeout(function () { WorkUser.table.ajax.reload(); }, 100));
+                                                    } else {
+                                                        msgErro(data.Message);
+                                                    }
+                                                },
+                                                error: function (data) {
+                                                    msgErro(data.Message);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "15px",
+                            render: function (data, type, full, meta) {
+                                return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" />';
+                            }
+                        }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+            },
+            search: function () {
+                WorkUser.table.ajax.reload();
+            }
+        }
+
+        $(function () {
+            WorkUser.init();
+        })
+    </script>
+}

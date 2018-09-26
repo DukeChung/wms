@@ -1,0 +1,420 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.AuthServiceUtil
+@{
+    ViewBag.Title = "预包装管理";
+}
+@Html.Breadcrumb("订单管理", "预包装管理")
+@section Styles {
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="PrePackOrder">预包装单号</label>
+                    <input type="text" id="PrePackOrder" name="PrePackOrder" value="" placeholder="请输入预包装单号" title="支持多个单号查询，用逗号分隔" class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="OutboundOrder">出库单号</label>
+                    <input type="text" id="OutboundOrder" name="OutboundOrder" value="" placeholder="请输入出库订单号" title="支持多个单号查询，用逗号分隔" class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label" for="Status">订单状态</label>
+                    <select class="form-control m-b" name="Status" id="Status">
+                        <option selected>全部</option>
+                        <option value="10">新建</option>
+                        <option value="20">完成</option>
+                        <option value="30">作废</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("商品名称", "SkuName")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("UPC", "SkuUPC")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("托盘货位", "StorageLoc")
+            </div>
+            <div class="col-sm-3">
+                @Html.DataPickerTextBox("创建时间从", "CreateDateFrom")
+            </div>
+            <div class="col-sm-3">
+                @Html.DataPickerTextBox("创建时间到", "CreateDateTo")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                @Html.SearchTextBox("服务综合体名称", "ServiceStationName")
+            </div>
+            <div class="col-sm-3">
+                @Html.SearchTextBox("入库批号", "BatchNumber")
+            </div>
+            <div class="col-sm-3">
+                <button id="btnSearch" class="btn btn-primary" type="button" style="margin-top: 25px; float: left;">查询</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div style="float: right; margin-top: 10px;margin-right: 5px;">
+                        <a href="~/Template/预包装导入模板.xls">下载模板</a>
+                    </div>
+                    <table id="prePackData" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="ckbAll" onclick="gvCheckAll(this);" /></th>
+                                <th data-data="PrePackOrder">预包装单号</th>
+                                <th data-data="StorageLoc">托盘库位</th>
+                                <th data-data="ServiceStationName">服务综合体</th>
+                                <th data-data="BatchNumber">入库批号</th>
+                                <th data-data="StatusName">状态</th>
+                                <th data-data="CreateDateDisplay">创建日期</th>
+                                <th data-data="OutboundOrder">出库单号</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="modal inmodal fade" id="div_CopyPrePack" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width:420px;">
+            <div class="modal-content">
+                <div class="modal-body" style="height:85px;">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" style="padding-top: 7px;">复制数量:</label>
+                        <div class="col-sm-9">
+                            <input id="CopyNumber" class="form-control" type="number" value="" style="width:100%" max="50" placeholder="~请输入复制份数" />
+                            <input type="hidden" id="CopyPrePackSysId" name="CopyPrePackSysId" />
+                            <div id="errorCopyMsg" style="padding-top:7px;color:#F00;display:none">
+                                最大导入不能超过50份
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align:center  ">
+                    <a class="btn btn-sm btn-primary" id="btnSaveCopy"><i class="fa fa-check-square-o"></i> 保存</a>
+                    <a class="btn btn-white btn-sm" id="btnCloseCopy" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="file" id="importButton" name="importButton" class="hidden" onchange="ImportExcelData(this);" />
+@section Scripts {
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/dataPicker")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script>
+        var prePackIndexData = {
+            table: {},
+            init: function () {
+                var _self = this;
+                $('#divCreateDateFrom .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                $('#divCreateDateTo .input-group.date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true
+                });
+                _self.table = $('#prePackData').DataTable({
+                    "sAjaxSource": "/PrePack/GetPrePackByPage",
+                    "fnServerParams": function (aoData) { //查询条件
+                        aoData.push(
+                            { "name": "PrePackOrder", "value": $("#PrePackOrder").val() },
+                            { "name": "OutboundOrder", "value": $("#OutboundOrder").val() },
+                            { "name": "Status", "value": $("#Status").val() },
+                            { "name": "SkuName", "value": $("#SkuName").val() },
+                            { "name": "CreateDateFrom", "value": $("#CreateDateFrom").val() },
+                            { "name": "CreateDateTo", "value": $("#CreateDateTo").val() },
+                            { "name": "SkuUPC", "value": $("#SkuUPC").val() },
+                            { "name": "StorageLoc", "value": $("#StorageLoc").val() },
+                            { "name": "ServiceStationName", "value": $("#ServiceStationName").val() },
+                            { "name": "BatchNumber", "value": $("#BatchNumber").val() }
+                        );
+                    },
+                    dom: 'Bfrtip',
+                    buttons: [
+                        @*@if (AuthorizeManager.HasFunction(AuthKeyConst.OrderManger_PrePack_Add, User.Identity.Name))
+                        {
+                            <text>
+                            {
+                                text: '新增',
+                                action: function (e, dt, node, config) {
+                                    window.location.href = "/PrePack/AddPrePack";
+                                }
+                            },
+                            </text>
+                        }*@
+                        @if (AuthorizeManager.HasFunction(AuthKeyConst.OrderManger_PrePack_Edit, User.Identity.Name))
+                        {
+                            <text>
+                            {
+                                text: '编辑',
+                                action: function (e, dt, node, config) {
+                                    var sysId = GetGridSysId();
+                                    if (sysId != null) {
+                                        var selectRow = prePackIndexData.table.rows(':has(:checkbox:checked)');
+                                        if (selectRow.length == 1) {
+                                            if (selectRow.data()[0].Status != 10) {
+                                                msgAlert("只有新建的才能编辑!");
+                                                return;
+                                            }
+                                            window.location.href = "/PrePack/UpdatePerPack?sysId=" + sysId;
+                                        }
+                                    }
+                                }
+                            },
+                            </text>
+                        }
+                        @if (AuthorizeManager.HasFunction(AuthKeyConst.OrderManger_PrePack_Delete, User.Identity.Name))
+                        {
+                            <text>
+                            {
+                                text: '删除',
+                                action: function (e, dt, node, config) {
+                                    var selectRow = prePackIndexData.table.rows(':has(:checkbox:checked)');
+                                    if (selectRow.length == 1) {
+                                        if (selectRow[0].length > 1) {
+                                            for (var i = 0; i < selectRow[0].length; i++) {
+                                                if (selectRow.data()[i].Status != 10) {
+                                                    msgAlert("只有新建的才能删除!");
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    var sysIdList = GetGridMultiselectSysId();
+                                    if (sysIdList != null) {
+                                        msgConfirm("确定要删除所选的记录吗？", function (isConfirm) {
+                                            if (isConfirm) {
+                                                $.ajax({
+                                                    url: "/PrePack/DeletePerPack?sysIdList=" + sysIdList,
+                                                    type: "GET",
+                                                    success: function (data) {
+                                                        if (data.success) {
+                                                            msgSuccess("删除成功!");
+                                                            location.reload();
+                                                        }
+                                                        else {
+                                                            msgErro(data.message);
+                                                        }
+                                                    },
+                                                    error: function () {
+                                                        msgErro("操作失败");
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                },
+                            },
+                            </text>
+                        }
+                        @if (AuthorizeManager.HasFunction(AuthKeyConst.OrderManger_PrePack_Export, User.Identity.Name))
+                        {
+                            <text>
+                            {
+                                text: '导入',
+                                action: function (e, dt, node, config) {
+                                    $("#importButton").click();
+                                }
+                            }
+                            </text>
+                        },
+                         @if (AuthorizeManager.HasFunction(AuthKeyConst.OrderManger_PrePack_Copy, User.Identity.Name))
+                        {
+                            <text>
+                            {
+                                text: '复制',
+                                action: function (e, dt, node, config) {
+                                    var sysId = GetGridSysId();
+                                    if (sysId != null) {
+                                        var selectRow = prePackIndexData.table.rows(':has(:checkbox:checked)');
+                                        if (selectRow.length == 1) {
+                                            if (selectRow.data()[0].Status != 10) {
+                                                msgAlert("只有新建的才能复制!");
+                                                return;
+                                            }
+                                            else {
+                                                $("#CopyPrePackSysId").val(sysId);
+                                                $('#div_CopyPrePack').modal({ backdrop: 'static' });
+
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            </text>
+                        }
+
+                    ],
+                    "columnDefs": [
+                       {
+                           "targets": 0,
+                           "width": "15px",
+                           render: function (data, type, full, meta) {
+                               return '<input type="checkbox" id="checkbox-all-' + full.SysId + '" value="' + full.SysId + '" PrePackOrder="' + full.PrePackOrder + '" status="' + full.Status + '" />';
+                           }
+                       },
+                       {
+                           "targets": 1,
+                           "width": "15%",
+                           render: function (data, type, full, meta) {
+                               return '<a target="_blank" href="/PrePack/PerPackView?sysId=' + full.SysId + '">' + full.PrePackOrder + '</a>';
+                           }
+                       }
+                    ],
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bPaginate": true, //翻页功能
+                    "bLengthChange": true, //改变每页显示数据数量
+                    "bFilter": false, //过滤功能
+                    "bSort": false, //排序功能
+                    "bInfo": true, //页脚信息
+                    "bAutoWidth": true, //自动宽度
+                    "aaSorting": [[2, "Asc"]],
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                        "sInfoEmpty": "",
+                        "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "前一页",
+                            "sNext": "后一页",
+                            "sLast": "尾页"
+                        },
+                        "sZeroRecords": "没有检索到数据"
+                    }
+                });
+
+                $("#btnSearch").bind("click", function () { //按钮 触发table重新请求服务器
+                    if (!commonCheckDateCompare($("#CreateDateFrom").val(), $("#CreateDateTo").val())) {
+                        msgAlert("创建终止日期应大于创建起始日期！");
+                        return false;
+                    }
+                    prePackIndexData.table.ajax.reload();
+                });
+            }
+        }
+        function ImportExcelData(obj) {
+            var typeName = common.GetFileTypeName(obj.files[0].name);
+            if (typeName == '') {
+                msgAlert("请选择excel文件进行导入！");
+                return false;
+            }
+            if (typeName == '.xlsx') {
+                msgAlert("请选择03版之前的excel文件进行导入！");
+                return false;
+            }
+            if (typeName != '' && typeName == '.xls') {
+                saveLoading('show');
+                var formData = new FormData();
+                formData.append("file", $(obj)[0].files[0]);
+                $.ajax({
+                    url: "@Url.Action("ImportData", "PrePack")",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        saveLoading('hide');
+                        if (data.Success) {
+                            msgSuccess(data.Message);
+                            $("#importButton").val('');
+                            prePackIndexData.table.ajax.reload();
+                        }
+                        else {
+                            msgErro(data.Message);
+                            $("#importButton").val('');
+                            return false;
+                        }
+                    },
+                    error: function (data) {
+                        saveLoading('hide');
+                        msgErro("导入失败！");
+                        $("#importButton").val('');
+                        return false;
+                    }
+                });
+            }
+        }
+
+        $(function () {
+            prePackIndexData.init();
+            $("#btnSaveCopy").on('click', function () {
+                var flag = IsCopyNumberOk();
+                if (flag) {
+                    $('#btnSaveCopy').unbind("click");
+                    var datas = {
+                        CopyNumber: $("#CopyNumber").val(),
+                        SysId: $("#CopyPrePackSysId").val()
+                    };
+                    $.ajax({
+                        url: "@Url.Action("CopyPrePack", "PrePack")",
+                        type: "POST",
+                        data: datas,
+                        success: function (data) {
+                            $("#btnSaveCopy").bind("click");
+                            if (data.success) {
+                                $('#div_CopyPrePack').modal('hide');
+                                msgSuccess(data.message);
+                                window.location.reload();
+                            }
+                            else {
+                                msgErro(data.message);
+                                return false;
+                            }
+                        }
+                    });
+                }
+
+            });
+            $("#CopyNumber").on('change', function () {
+                IsCopyNumberOk();
+            });
+        });
+        function IsCopyNumberOk() {
+            var num = $("#CopyNumber").val();
+            if (parseInt(num) > 50) {
+                $("#errorCopyMsg").html('最大复制份数不能超过50份');
+                $("#errorCopyMsg").show(300);
+                setTimeout(function () { $("#errorCopyMsg").hide(300); $("#CopyNumber").val('50'); }, 3000);
+                return false;
+            }
+            else if (parseInt(num) < 1) {
+                $("#errorCopyMsg").html('最小复制份数不能小于1份');
+                $("#errorCopyMsg").show(300);
+                setTimeout(function () { $("#errorCopyMsg").hide(300); $("#CopyNumber").val('1'); }, 3000);
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+}

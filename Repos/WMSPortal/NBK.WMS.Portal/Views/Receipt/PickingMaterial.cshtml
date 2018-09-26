@@ -1,0 +1,223 @@
+﻿@using NBK.WMS.Portal.Helpers
+@model NBK.ECService.WMS.DTO.ReceiptViewDto
+@{
+    ViewBag.Title = "领料分拣";
+}
+
+@Html.Breadcrumb("收货单管理", "/Receipt/ReceiptList", "领料分拣")
+<link rel="stylesheet" type="text/css" href="~/Content/plugins/ui-dialog.css" />
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-12 control-label ">
+                    <H2 style="color: red;text-align:left">收货单（领料分拣）</H2>
+                </label>
+            </div>
+            <div class="form-group hr-line-dashed">
+                <div class="col-sm-12">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2 text-right">
+                    <label class="control-label" for="ReceiptOrder">收货单号：</label>
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" id="ReceiptOrder" name="ReceiptOrder" class="form-control" value="@Model.ReceiptOrder" readonly="readonly">
+                </div>
+                <div class="col-sm-2 text-right">
+                    <label class="control-label" for="pickingUserName">领料人：</label>
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" id="pickingUserName" name="pickingUserName" class="form-control">
+                </div>
+
+            </div>
+
+            <div class="form-group hr-line-dashed"></div>
+
+            <div class="form-group ">
+                <div class="col-sm-10"></div>
+                <label class="col-sm-2 control-label">SKU数:@Model.ReceiptDetailViewDtoList.Select(p => p.SkuCode).Distinct().Count()</label>
+
+                <div id="divReceiptDetailViewList" class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>商品编号</th>
+                                <th>商品名称</th>
+                                <th>UPC</th>
+                                <th>商品描述</th>
+                                <th>外部Id</th>
+                                <th>包装单位</th>
+                                <th>包装系数</th>
+                                <th>已入库数量</th>
+                                <th>上架状态</th>
+                                <th>上架数量</th>
+                                <th>领料数量</th>
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="info in ReceiptDetailViewList">
+                                <td>{{info.SkuCode}}</td>
+                                <td>{{info.SkuName}}</td>
+                                <td>{{info.SkuUPC}}</td>
+                                <td>{{info.SkuDescr}}</td>
+                                <td>{{info.OtherId}}</td>
+                                <td>{{info.UOMDescr}}</td>
+                                <td>{{info.PackFactor}}</td>
+                                <td>{{info.DisplayReceivedQty}}</td>
+                                <td>{{info.ShelvesStatusText}}</td>
+                                <td>{{info.DisplayShelvesQty}}</td>
+                                <td><input type="number" style="width:100px;" v-model="info.DisplayPickingQty" value="{{info.DisplayPickingQty}}" min="0" v-on:change="CheckPickingQty(info,$event)" /></td>
+                                <td>{{info.Remark}}</td>
+                            </tr>
+                            <tr id="noReceiptDetailList" style="display:none;"><td colspan="8">无收货明细</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnPickingMaterial">领料</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/vue.js")
+    @Scripts.Render("~/plugins/print")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //收货清单
+            var receipt = new Vue({
+                el: '#divReceiptDetailViewList',
+                data: {
+                    ReceiptDetailViewList: []
+                },
+                methods:
+                {
+                    getReceiptDetailViewList: function () {
+                        $.ajax({
+                            url: "/Receipt/GetReceiptDetailViewList",
+                            type: "POST",
+                            data: {
+                                sysId: '@Model.SysId'
+                            },
+                            success: function (data) {
+                                if (data != null && data.length > 0) {
+                                    receipt.ReceiptDetailViewList = data;
+                                } else {
+                                    $("#noReceiptDetailList").show();
+                                }
+                            },
+                            error: function () {
+                            }
+                        });
+                    },
+                    CheckPickingQty: function (info, e) {
+                        if (info.DisplayPickingQty < 0) {
+                            info.DisplayPickingQty = 0;
+                            return;
+                        }
+
+                        if ((info.DisplayReceivedQty - info.DisplayShelvesQty) < info.DisplayPickingQty) {
+                            msgErro("商品:" + info.SkuCode + "，领料数量不能大于待上架数量!");
+                            info.DisplayPickingQty = 0;
+                            return;
+                        }
+                    }
+                }
+            });
+
+            receipt.getReceiptDetailViewList();
+
+            //领料分拣
+            $("#btnPickingMaterial").click(function () {
+                var pickingUserName = $("#pickingUserName").val();
+                if (pickingUserName == "") {
+                    msgErro("请输入领料人!");
+                    return false;
+                }
+
+                var receiptDetailViewList = receipt.ReceiptDetailViewList.filter(function (item) {
+                    if ((item.DisplayReceivedQty - item.DisplayShelvesQty) < item.DisplayPickingQty) {
+                        msgErro("商品:" + info.SkuCode + "，领料数量不能大于待上架数量!");
+                        return false;
+                    }
+                    return item.DisplayPickingQty > 0;
+                });
+
+                if (receiptDetailViewList != null && receiptDetailViewList.length > 0) {
+                    msgConfirm("确定要领料分拣吗?", function (isConfirm) {
+                        if (isConfirm) {
+                            //组织领料分拣数据
+                            var picking = {
+                                ReceiptSysId: '@Model.SysId',
+                                ReceiptOrder: '@Model.ReceiptOrder',
+                                PickingUserName : $("#pickingUserName").val()
+                            }
+
+                            var pickingDetails = [];
+                            for (var i = 0; i < receiptDetailViewList.length; i++) {
+                                var info = receiptDetailViewList[i];
+
+                                var detail = {
+                                    SkuSysId: info.SkuSysId,
+                                    InputQty: info.DisplayPickingQty
+                                };
+                                pickingDetails.push(detail);
+                            }
+                            picking.PickingMaterialDetailListDto = pickingDetails;
+
+                            saveLoading('show');
+                            $.ajax({
+                                url: "@Url.Action("SavePickingMaterial", "Receipt")",
+                                data: picking,
+                                dataType: "json",
+                                type: "post",
+                                success: function (data) {
+                                    setTimeout(function () {
+                                        if (data.success) {
+                                            //领料成功打印
+                                            PrintPickingMaterial(picking.ReceiptSysId, picking.PickingUserName);
+
+                                            msgSuccess();
+                                            window.location.reload();
+                                        } else {
+                                            msgErro(data.message);
+                                        }
+                                        saveLoading();
+                                    }, 100);
+                                },
+                                error: function () {
+                                    msgErro("操作失败！");
+                                }
+                            });
+                        }
+                    }, true);
+                } else {
+                    msgErro("必须有领料数量大于0的明细");
+                    return;
+                }
+            });
+        });
+
+        //打印领料分拣单
+        function PrintPickingMaterial(receiptSysId, pickingUserName) {
+            var LODOP = getLodop();
+            LODOP.SET_LICENSES("", "B373432C4C51542C45D4E0F4A634612C", "C94CEE276DB2187AE6B65D56B3FC2848", "");
+
+            LODOP.SET_PRINTER_INDEX("@ViewBag.PrintName");
+            LODOP.SET_PRINT_STYLEA(0, "FontSize", 18);
+            LODOP.ADD_PRINT_URL(30, 20, 746, "95%", encodeURI("http://" + window.location.host + "/Print/PrintPickingMaterial?receiptSysId=" + receiptSysId + "&pickingUserName=" + pickingUserName + "&sysIds=" + "&warehouseSysId=@ViewBag.WarehouseSysId"));
+            LODOP.SET_PRINT_STYLEA(0, "HOrient", 3);
+            LODOP.SET_PRINT_STYLEA(0, "VOrient", 3);
+            LODOP.PRINT();
+            msgAlert("打印成功");
+        }
+    </script>
+}

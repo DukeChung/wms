@@ -1,0 +1,101 @@
+﻿@using NBK.WMS.Portal.Helpers
+@using NBK.ECService.WMS.Utility.Enum
+@model NBK.ECService.WMS.DTO.PrintOutboundPrePackDiffDto
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/Print.css" rel="stylesheet" />
+
+<div class="">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="PurchaseForm" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-xs-12" style="text-align:left">
+                    <H1 style="color: red; text-align: left">预包装差异明细</H1>
+                    <H4 style="color: black; text-align: left"> @Model.OutboundOrder </H4>
+                </div>
+            </div>
+            <div class="form-group line-dashed">
+                <div class="col-xs-12">
+                </div>
+            </div>
+            @{ 
+                if (Model.OutboundType == (int)OutboundType.TransferInventory)
+                {
+                    <div class="form-group">
+                        @Html.PrintTitle("移出仓", Model.FromWareHouseName)
+                        @Html.PrintTitle("移入仓", Model.ToWareHouseName)
+                        @Html.PrintTitle("移仓单号", Model.TransferInventoryOrder)
+                    </div>
+                }
+            }
+            <div class="form-group">
+                @Html.PrintTitle("发货时间", Model.ActualShipDateText)
+                @Html.PrintTitle("收货联系人", Model.ConsigneeName)
+                @Html.PrintTitle("联系方式", Model.ConsigneePhone)
+            </div>
+            <div class="form-group">
+
+                <div class="col-xs-12">
+                    <div style="width:100%;"> 
+                        <div class="PrintTitle" style="float:left; width:7%; margin-left:0px; "> 收货地址:</div> 
+                        <div class="PrintTitleValue" style="margin-left:30px; float:left; width:90%;">@Model.ConsigneeAddress</div>  
+                    </div> 
+                    <div class="row">   
+                        <div class="col-xs-2 " style="margin-top: 5px"> </div>  
+                        <div class="col-xs-9 line-dashed" style="margin-top: 5px;margin-left: -40px"> </div>
+                        <div class="col-xs-1 " style="margin-top: 5px"> </div>  
+                    </div>  
+                </div>
+
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("服务综合体", Model.ServiceStationName)
+                @Html.PrintTitle("预包装库位", Model.StorageLoc)
+                <div class="col-sm-4" style="margin-top:10px;">&nbsp;</div>
+            </div>
+            <div class="form-group">
+                @Html.PrintTitle("操作人", Model.UserName)
+                @Html.PrintTitle("操作时间", Model.OperateDate)
+                <div class="col-sm-4" style="margin-top:10px;">&nbsp;</div>
+            </div>
+            <div class="form-group ">
+                <div class="col-xs-12" style="font-size:10px; padding:10px 0px 10px 0px;">
+                    <div class="col-xs-4" style="font-weight:500;">预包装差异明细</div>
+                </div>
+                <div class="col-xs-12">
+                    <table class="table">
+                        <tr>
+                            @Html.PrintTh("商品条码")
+                            @Html.PrintTh("商品名称")
+                            @Html.PrintTh("商品描述")
+                            @Html.PrintTh("单位")
+                            @Html.PrintTh("预包装数量")
+                            @Html.PrintTh("出库单数量")
+                            @Html.PrintTh("提示")
+                        </tr>
+                        @{
+                            foreach (var info in Model.PrintOutboundDetailPrePackDiffDto)
+                            {
+                                <tr>
+                                    @Html.PrintTd(info.UPC)
+                                    @Html.PrintTd(info.SkuName)
+                                    @Html.PrintTd(info.SkuDescr)
+                                    @Html.PrintTd(info.UOMCode)
+                                    @Html.PrintTd(info.PrePackDisplayQty.ToString())
+                                    @Html.PrintTd(info.OutboundDisplayQty.ToString())
+                                    @Html.PrintTd(info.Memo)
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div> 

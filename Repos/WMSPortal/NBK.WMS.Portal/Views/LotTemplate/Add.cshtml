@@ -1,0 +1,945 @@
+﻿@using NBK.WMS.Portal.Helpers
+
+@{
+    ViewBag.Title = "批次模板新增";
+}
+
+
+@Html.Breadcrumb("批次模板管理", "/LotTemplate/Index", "批次模板新增")
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox-content  m-b-sm border-bottom">
+        <form id="lotTemplateForm" class="form-horizontal" method="get">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">批次模板代码:</label>
+
+                <div class="col-sm-10">
+                    <input type="text" id="LotCode" name="LotCode" class="form-control required">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">描述:</label>
+
+                <div class="col-sm-10">
+                    <input type="text" id="Descr" name="Descr" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-1">
+                        <label class="control-label">显示序号</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="control-label">显示名称</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3 ">
+                                <label class="control-label" title="PC可见">PC</label>
+                            </div>
+                            <div class="col-sm-3 ">
+                                <label class="control-label" title="RF可见">RF</label>
+                            </div>
+                            <div class="col-sm-3 ">
+                                <label class="control-label" title="入库必输">入库</label>
+                            </div>
+                            <div class="col-sm-3 ">
+                                <label class="control-label" title="出库必输">出库</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label class="control-label">类型</label>
+                            </div>
+                            <div class="col-sm-7 ">
+                                <label class="control-label">值</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 ">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="control-label">出库默认值</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label">入库默认值</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name01">批次01</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo01" name="SeqNo01" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot01" name="Lot01" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible01" name="LotVisible01" num="01"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible01" name="LotRFVisible01"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory01" name="LotMandatory01"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT01" name="LotMandatoryOT01"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType01" class="form-control m-b" name="LotType01">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue01" name="LotValue01" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN01" name="DefaultIN01" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT01" name="DefaultOT01" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name02" >批次02</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo02" name="SeqNo02" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot02" name="Lot02" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible02" name="LotVisible02" num="02"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible02" name="LotRFVisible02"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory02" name="LotMandatory02"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT02" name="LotMandatoryOT02"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType02" class="form-control m-b" name="LotType02">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue02" name="LotValue02" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN02" name="DefaultIN02" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT02" name="DefaultOT02" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name03">批次03</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo03" name="SeqNo03" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot03" name="Lot03" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible03" name="LotVisible03" num="03"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible03" name="LotRFVisible03"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory03" name="LotMandatory03"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT03" name="LotMandatoryOT03"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType03" class="form-control m-b" name="LotType03">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue03" name="LotValue03" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN03" name="DefaultIN03" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT03" name="DefaultOT03" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name04">批次04</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo04" name="SeqNo04" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot04" name="Lot04" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible04" name="LotVisible04" num="04"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible04" name="LotRFVisible04"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory04" name="LotMandatory04"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT04" name="LotMandatoryOT04"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType04" class="form-control m-b" name="LotType04">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue04" name="LotValue04" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN04" name="DefaultIN04" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT04" name="DefaultOT04" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name05">批次05</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo05" name="SeqNo05" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot05" name="Lot05" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible05" name="LotVisible05" num="05"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible05" name="LotRFVisible05"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory05" name="LotMandatory05"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT05" name="LotMandatoryOT05"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType05" class="form-control m-b" name="LotType05">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue05" name="LotValue05" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN05" name="DefaultIN05" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT05" name="DefaultOT05" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name06">批次06</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo06" name="SeqNo06" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot06" name="Lot06" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible06" name="LotVisible06" num="06"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible06" name="LotRFVisible06"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory06" name="LotMandatory06"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT06" name="LotMandatoryOT06"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType06" class="form-control m-b" name="LotType06">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue06" name="LotValue06" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN06" name="DefaultIN06" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT06" name="DefaultOT06" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name07">批次07</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo07" name="SeqNo07" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot07" name="Lot07" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible07" name="LotVisible07" num="07" ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible07" name="LotRFVisible07"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory07" name="LotMandatory07"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT07" name="LotMandatoryOT07"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType07" class="form-control m-b" name="LotType07">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue07" name="LotValue07" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN07" name="DefaultIN07" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT07" name="DefaultOT07" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name08">批次08</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo08" name="SeqNo08" class="form-control input-sm" value="8" disabled >
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot08" name="Lot08" class="form-control input-sm" value="采购单价" disabled >
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible08" name="LotVisible08" num="08"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible08" name="LotRFVisible08"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory08" name="LotMandatory08"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT08" name="LotMandatoryOT08"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType08" class="form-control m-b" name="LotType08">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue08" name="LotValue08" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN08" name="DefaultIN08" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT08" name="DefaultOT08" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 20px" id="Name09">批次09</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo09" name="SeqNo09" class="form-control input-sm" value="9" disabled >
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot09" name="Lot09" class="form-control input-sm" value="入库单号" disabled >
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible09" name="LotVisible09" num="09"  disabled ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible09" name="LotRFVisible09" disabled ><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory09" name="LotMandatory09" disabled ><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT09" name="LotMandatoryOT09" disabled ><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType09" class="form-control m-b" name="LotType09" disabled >
+                                    <option value="" selected="selected">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue09" name="LotValue09" style="width: 80%;" class="form-control input-sm" disabled >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN09" name="DefaultIN09" style="width: 80%;" class="form-control input-sm" disabled >
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT09" name="DefaultOT09" style="width: 80%;" class="form-control input-sm" disabled >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 8px">生产日期</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo10" name="SeqNo10" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot10" name="Lot10" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible10" name="LotVisible10"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible10" name="LotRFVisible10"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory10" name="LotMandatory10"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT10" name="LotMandatoryOT10"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType10" class="form-control m-b" name="LotType10">
+                                    <option value="Char">字符</option>
+                                    <option value="Number">数字</option>
+                                    <option value="Date">日期</option>
+                                    <option value="OptionList">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue10" name="LotValue10" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN10" name="DefaultIN10" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT10" name="DefaultOT10" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 8px">失效日期</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo11" name="SeqNo11" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot11" name="Lot11" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible11" name="LotVisible11"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible11" name="LotRFVisible11"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory11" name="LotMandatory11"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT11" name="LotMandatoryOT11"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType11" class="form-control m-b" name="LotType11">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue11" name="LotValue11" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN11" name="DefaultIN11" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT11" name="DefaultOT11" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <label class="control-label" style="margin-left: 8px">外部批次</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="SeqNo12" name="SeqNo12" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="text" id="Lot12" name="Lot12" class="form-control input-sm">
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-3" title="PC可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotVisible12" name="LotVisible12"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="RF可见">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotRFVisible12" name="LotRFVisible12"><i></i>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3" title="入库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatory12" name="LotMandatory12"><i></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" title="出库必输">
+                                <div class="checkbox i-checks">
+                                    <input type="checkbox" id="LotMandatoryOT12" name="LotMandatoryOT12"><i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <select id="LotType12" class="form-control m-b" name="LotType12">
+                                    <option value="">字符</option>
+                                    <option value="">数字</option>
+                                    <option value="">日期</option>
+                                    <option value="">选项</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" id="LotValue12" name="LotValue12" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultIN12" name="DefaultIN12" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="DefaultOT12" name="DefaultOT12" style="width: 80%;" class="form-control input-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div class="ibox-footer text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" id="btnSave" onclick="LotTemplateSave();"><i class="fa fa-check-square-o"></i> 保存</a>
+            <a class="btn btn-white btn-sm" id="btnBack" onclick="goBack();"><i class="fa fa-times"></i> 返回</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/iCheck")
+    <script src="~/Scripts/Utility/Common.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+            
+            $("#lotTemplateForm").validate({
+                ignore: [],
+                rules: {
+                    LotCode: {
+                        required: true,
+                        maxlength: 16
+                    },
+                    Descr: {
+                        required: true,
+                        maxlength: 64
+                    },
+                }
+            });
+
+            //$('input').on('ifChecked', function (event) {
+            //    var num = $("#" + event.currentTarget.id).attr('num');
+            //    var isCheck = $("#LotVisible" + num).is(':checked');
+            //    if (isCheck) {
+
+            //        $("#SeqNo" + num).val(parseInt(num));
+            //        $("#Lot" + num).val($("#Name" + num).html());
+            //    }
+            //});
+
+        });
+
+        function LotTemplateSave() {
+            if ($("#lotTemplateForm").valid()) {
+                $.ajax({
+                    url: "/LotTemplate/SaveLotTemplate?actionName=Add",
+                    type: "POST",
+                    data: $("#lotTemplateForm").serializeObject(),
+                    success: function (data) {
+                        if (data.success) {
+
+                            window.location.href = "/LotTemplate/Index";
+                        } else {
+                            msgErro(data.message);
+                        }
+                    },
+                    error: function () {
+                        msgErro("操作失败");
+                    }
+                });
+            }
+        }
+
+
+    </script>
+}
+
